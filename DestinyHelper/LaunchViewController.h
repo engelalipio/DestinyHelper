@@ -1,15 +1,17 @@
 //
-//  ViewController.h
+//  LaunchViewController.h
 //  DestinyHelper
 //
-//  Created by Bertle on 9/28/20.
+//  Created by Bertle on 10/5/20.
 //  Copyright © 2020 Agile Mobile Solutions. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+ 
 
+@interface LaunchViewController : UIViewController
 
 @end
 
+ 
