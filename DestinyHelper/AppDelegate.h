@@ -48,6 +48,12 @@ enum Destiny2GenderType{
 
 @property (assign,nonatomic) MBRResponse *currentMembership;
 
+@property (assign,nonatomic) Response *currentAuthResponse;
+
+@property (assign,nonatomic) AccessToken *currentAccessToken;
+
+@property (assign,nonatomic) RefreshToken *currentRefreshToken;
+
 @property (strong,nonatomic) NSDictionary *destinyManifest;
 
 @property (strong,nonatomic) NSDictionary *destinyClassDefinitions;

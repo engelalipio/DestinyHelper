@@ -29,6 +29,20 @@ NSString *const kResponseAccessToken = @"accessToken";
 @synthesize refreshToken = _refreshToken;
 @synthesize accessToken = _accessToken;
 
++ (NSDictionary *)mapping{
+    
+    
+    NSDictionary *map = [[NSDictionary alloc] initWithObjectsAndKeys:
+                         kResponseAccessToken,@"accessToken",
+                         nil];
+    
+    return map;
+}
+
++ (NSString *)key{
+    return nil;
+}
+
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {

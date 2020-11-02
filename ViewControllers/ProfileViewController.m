@@ -7,11 +7,12 @@
 //
 #import "UIImageView+AFNetworking.h"
 #import "NetworkAPISingleClient+Definition.h"
+#import "NetworkAPISingleClient+Auth.h"
 #import "ProfileViewController.h"
 #import "DataModels.h"
 #import "Constants.h"
 #import "GuardianViewController.h"
- 
+
 
 @interface ProfileViewController ()
 {
@@ -21,7 +22,11 @@
     NSArray *dMemberships,
             *destChars;
     
-    SFSafariViewController *webView;
+    ASWebAuthenticationSession *asWebAuthSession;
+    
+    NSString *AuthState;
+    
+ 
 }
 @end
 
@@ -64,7 +69,7 @@
 }
 
 -(void) registerNotifications{
-
+   
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedCharactersNotification
         object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
@@ -75,26 +80,6 @@
                                                      
         
     }];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyOAuthSFNotification
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification *note){
-         
-        NSDictionary *oAuthResponse = (NSDictionary *) [note object];
-        
-        if (oAuthResponse != nil){
-            
-        }
-         
-        [self->webView dismissViewControllerAnimated:true completion:nil];
-       
-        NSLog(@"ProfileViewController:kDestinyOAuthSFNotification:Received");
-                                                     
-        
-    }];
-    
-    
     
 }
 
@@ -133,35 +118,50 @@
 }
 
 
--(void) safariViewControllerWillOpenInBrowser:(SFSafariViewController *)controller{
-    NSLog(@"safariViewControllerWillOpenInBrowser Invoked...");
-}
-
--(void) safariViewController:(SFSafariViewController *)controller didCompleteInitialLoad:(BOOL)didLoadSuccessfully{
-    NSLog(@"didCompleteInitialLoad Invoked...");
+- (nonnull ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(nonnull ASWebAuthenticationSession *)session {
+    
+    ASPresentationAnchor anchor = nil;
+    
+    NSString *message = nil;
+    
+    @try{
+        
+        if (session != nil){
+           
+            message = @"presentationAnchorForWebAuthenticationSession invoked with ASWebAuthenticationSession";
+            
+            self->asWebAuthSession.presentationContextProvider = (id<ASWebAuthenticationPresentationContextProviding>)
+                                                                 [session presentationContextProvider];
+        }
+       
+        anchor = (ASPresentationAnchor) self.view.window;
+        
+    }
+    @catch(NSError *oEx){
+        message = [NSString stringWithFormat:@"presentationAnchorForWebAuthenticationSession:Error = %@",oEx.description];
+    }
+    @finally{
+        if (message){
+            NSLog(@"%@",message);
+        }
+    }
+    return anchor;
 }
 
  
--(void) safariViewControllerDidFinish:(SFSafariViewController *)controller{
-    
-    NSLog(@"initialLoadDidRedirectToURL Invoked...");
-    
-    [self dismissViewControllerAnimated:true completion:nil];
-}
- 
-
--(void) safariViewController:(SFSafariViewController *)controller initialLoadDidRedirectToURL:(NSURL *)URL{
-    NSLog(@"initialLoadDidRedirectToURL Invoked...for %@", URL.absoluteString);
-}
 
 - (IBAction)loginAction:(UIButton *)sender {
     
     NSString *strURL   = kBungieBaseURL,
              *strClientID = kBungieClientID,
              *strLocale = appDelegate.currentLocale,
-             *strGUID = [[NSUUID alloc] init].UUIDString;
+             *strGUID = [[NSUUID alloc] init].UUIDString,
+             *strCallBack = kamsDHRedirect;
+    
     
     NSURL *url = nil;
+    
+    
     
     @try{
         
@@ -169,35 +169,90 @@
         
         strGUID = [strGUID stringByReplacingOccurrencesOfString:@"-" withString:@""];
         
+        self->AuthState = strGUID;
+        
         strURL = [NSString stringWithFormat:@"%@%@&state=%@",strURL,kDestinyOAuthAuthorize,strGUID];
         
         strURL = [strURL stringByReplacingOccurrencesOfString:@"{locale}" withString:strLocale];
         strURL = [strURL stringByReplacingOccurrencesOfString:@"{client_id}" withString:strClientID];
         
         url = [[NSURL alloc] initWithString:strURL];
-         
-        SFSafariViewControllerConfiguration *sfConfig = [[SFSafariViewControllerConfiguration alloc] init];
-        [sfConfig setEntersReaderIfAvailable:YES];
         
- 
-     
         
-      self->webView = [[SFSafariViewController alloc] initWithURL:url configuration:sfConfig];
-           
-       [self->webView setDelegate:self];
+        self->asWebAuthSession = [[ASWebAuthenticationSession alloc] initWithURL:url
+                                                        callbackURLScheme:strCallBack
+                                                        completionHandler:^(NSURL *callbackURL, NSError *error){
+            
+            if (error != nil){
+                NSLog(@"ASWebAuthenticationSession::Exception=>%@",error.description);
+                return;
+            }
+            
+            if (callbackURL != nil){
+                NSString *authState = nil,
+                         *authCode  = nil;
+                
+                NSLog(@"Reponse URL = %@",callbackURL.absoluteString);
+                
+                NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString:callbackURL.absoluteString];
+                
+                if (urlComponents){
+                    for (int iC = 0; iC < urlComponents.queryItems.count ; iC++) {
+                        
+                        NSURLQueryItem *qItem = [urlComponents.queryItems objectAtIndex:iC];
+                        
+                        if (qItem){
+                            if ([qItem.name.lowercaseString isEqualToString:@"code"]){
+                                authCode = qItem.value;
+                            }
+                            if ([qItem.name.lowercaseString isEqualToString:@"state"]){
+                                authState = qItem.value;
+                            }
+                        }
+                        
+                    }
+                }
+                
+                if ([self->AuthState isEqualToString:authState]){
+                    //Matches the original request
+                    
+                    [NetworkAPISingleClient retrieveToken:authCode completionBlock:^(NSArray *values){
+                        
+                        if (values){
+                            
+                            [[NSNotificationCenter defaultCenter]
+                               postNotificationName:kDestinyOAuthSFNotification
+                             object:values];
+                            
+                            
+                        }
+                        
+                    } andErrorBlock:^(NSError* error){
+                        NSLog(@"ASWebAuthenticationSession::Exception->%@",error.description);
+                    }];
+                }
+               
+            }
+            
+        }];
         
-       [self presentViewController:self->webView
-                            animated:NO completion:nil];
-    
+        [self->asWebAuthSession setPresentationContextProvider:self];
+   
+        [self->asWebAuthSession start];
+  
         
     }
     @catch (NSException *exception){
         NSLog(@"%@",exception.description);
     }
     @finally{
-        
+        strURL = nil;
+        url = nil;
+        strGUID = nil;
     }
 }
+
+ 
 
 -(void) endTimer{
     
@@ -663,5 +718,8 @@
      
     
 }
+
+
+
 
 @end

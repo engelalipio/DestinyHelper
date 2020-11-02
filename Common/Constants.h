@@ -7,7 +7,7 @@
 
 #define kBungieAPIBaseD2URL @"https://www.bungie.net/Platform/Destiny2"
 
-#define kBungieAPIBaseURL @"https://www.bungie.net/Platform/"
+#define kBungieAPIBaseURL @"https://www.bungie.net/Platform"
 
 #define kBungieAPIKey @"4842bb28dcf24563af2ae2eba9919cbd"
 
@@ -21,13 +21,13 @@
 
 #define kDestinyOAuthSFNotification @"Destiny2.SFOAuth"
 
-#define kamsDHRedirect @"amsdh://redirect"
+#define kamsDHRedirect @"amsdh://oauth/callback"
 
 #define kDestinyOriginHeader @"AMSDestinyHelper"
 
 #define kDestinyOAuthAuthorize @"/{locale}/oauth/authorize?client_id={client_id}&response_type=code"
 
-#define kDestinyOAuthRefreshToken @"/platform/app/oauth/token/"
+#define kDestinyOAuthRefreshToken @"/app/oauth/token/"
 
 //END   OAuth Paths
 

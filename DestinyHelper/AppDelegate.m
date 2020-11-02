@@ -32,6 +32,9 @@
 @synthesize  destinyClassDefinitions = _destinyClassDefinitions;
 @synthesize  destinyGenderDefinitions = _destinyGenderDefinitions;
 @synthesize  isCharsLoaded = _isCharsLoaded;
+@synthesize  currentAuthResponse = _currentAuthResponse;
+@synthesize  currentAccessToken = _currentAccessToken;
+@synthesize  currentRefreshToken = _currentRefreshToken;
 
 +(AppDelegate *) currentDelegate{
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -60,6 +63,7 @@
     BOOL result = NO;
     
     NSString *requestValue = @"",
+             *sourceApplication = @"",
              *oAuthToken = @"";
     
     NSDictionary *userInfo  = nil;
@@ -68,9 +72,13 @@
     @try {
         
     
+        NSLog(@"application openURL options is called");
+           
+          sourceApplication = [options objectForKey:@"UIApplicationOpenURLOptionsSourceApplicationKey"];
+        
         
         // Check the calling application Bundle ID
-            if ([[url scheme] isEqualToString:@"amsdh"]  )
+            if ([[url scheme] isEqualToString:@"amsdh"] )
             {
                 NSLog(@"URL scheme:%@", [url scheme]);
                 requestValue = [url query];
@@ -94,6 +102,72 @@
 
 -(void) registerNotifications{
 
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyOAuthSFNotification
+                                                      object:nil
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification *note){
+         
+        NSDictionary *oAuthResponse = (NSDictionary *) [note object];
+        
+        NSLog(@"ProfileViewController:kDestinyOAuthSFNotification:Received");
+        
+        if (oAuthResponse != nil){
+            
+            AccessToken *aToken = [[AccessToken alloc] init];
+            RefreshToken *rToken = [[RefreshToken alloc] init];
+            Response    *aResponse = [[Response alloc] init];
+            
+            NSString *strExpires = nil;
+            
+            double expAuth = 0,
+                   expRefr = 0;
+            
+            
+            [aResponse setMembershipId:[oAuthResponse objectForKey:@"membership_id"]];
+            
+            strExpires = [oAuthResponse objectForKey:@"expires_in"];
+            
+            expAuth = [strExpires doubleValue];
+            
+            [aToken setValue:[oAuthResponse objectForKey:@"access_token"]];
+            [aToken setExpires:expAuth];
+            
+            [rToken setValue:[oAuthResponse objectForKey:@"refresh_token"]];
+            
+            strExpires = [oAuthResponse objectForKey:@"refresh_expires_in"];
+            
+            expRefr = [strExpires doubleValue];
+            
+            [aToken setExpires:expRefr];
+            
+            [aResponse setAccessToken:aToken];
+            [aResponse setRefreshToken:rToken];
+            
+            if (aResponse != nil){
+                
+                [self setCurrentAuthResponse:aResponse];
+                
+                if (aToken != nil){
+                    [self setCurrentAccessToken:aToken];
+                    
+                }
+                
+               
+                if (rToken != nil){
+                    [self setCurrentRefreshToken:rToken];
+                }
+                
+            }
+            
+            
+        }
+        
+                                                    
+        
+    }];
+    
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyManifestNotification
         object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){

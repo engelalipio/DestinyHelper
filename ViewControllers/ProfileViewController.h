@@ -10,9 +10,10 @@
 #import "AppDelegate.h"
 #import "NetworkAPISingleClient+SearchUser.h"
 #import <SafariServices/SafariServices.h>
+#import <AuthenticationServices/AuthenticationServices.h>
 
 @interface ProfileViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,
-UISearchBarDelegate,UISearchDisplayDelegate,SFSafariViewControllerDelegate>
+UISearchBarDelegate,UISearchDisplayDelegate,ASWebAuthenticationPresentationContextProviding>
 
 @property (strong, nonatomic) IBOutlet UIButton *btnLogin;
 

@@ -26,6 +26,21 @@ NSString *const kAccessTokenExpires = @"expires";
 @synthesize expires = _expires;
 
 
++ (NSDictionary *)mapping{
+    
+    
+    NSDictionary *map = [[NSDictionary alloc] initWithObjectsAndKeys:
+                         kAccessTokenValue,@"value",
+                         nil];
+    
+    return map;
+}
+
++ (NSString *)key{
+    return nil;
+}
+
+
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
     return [[self alloc] initWithDictionary:dict];
