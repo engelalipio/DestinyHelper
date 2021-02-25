@@ -6,10 +6,9 @@
 //  Copyright © 2020 Agile Mobile Solutions. All rights reserved.
 //
 
-#import "AppDelegate.h"
-#import "ViewController.h"
+#import "HomeViewController.h"
 
-@interface ViewController ()
+@interface HomeViewController ()
 {
     BOOL isFirstLaunch;
     
@@ -22,7 +21,7 @@
 
 @end
 
-@implementation ViewController
+@implementation HomeViewController
 
 @synthesize imgBackView = _imgBackView;
 @synthesize stackView = _stackView;
