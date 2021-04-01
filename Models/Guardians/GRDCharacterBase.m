@@ -23,6 +23,7 @@ NSString *const kGRDCharacterBaseGenderType = @"genderType";
 NSString *const kGRDCharacterBaseMembershipType = @"membershipType";
 NSString *const kGRDCharacterBaseClassHash = @"classHash";
 NSString *const kGRDCharacterBaseClassType = @"classType";
+NSString *const kGRDCharacterBaseRaceType = @"raceType";
 NSString *const kGRDCharacterBaseDateLastPlayed = @"dateLastPlayed";
 NSString *const kGRDCharacterBasePowerLevel = @"powerLevel";
 NSString *const kGRDCharacterBaseRaceHash = @"raceHash";
@@ -59,7 +60,7 @@ NSString *const kGRDCharacterBaseLastCompletedStoryHash = @"lastCompletedStoryHa
 @synthesize membershipId = _membershipId;
 @synthesize peerView = _peerView;
 @synthesize lastCompletedStoryHash = _lastCompletedStoryHash;
-
+@synthesize raceType = _raceType;
 
 + (NSDictionary *)mapping{
     
@@ -100,6 +101,7 @@ NSString *const kGRDCharacterBaseLastCompletedStoryHash = @"lastCompletedStoryHa
             self.membershipType = [[self objectOrNilForKey:kGRDCharacterBaseMembershipType fromDictionary:dict] doubleValue];
             self.classHash = [[self objectOrNilForKey:kGRDCharacterBaseClassHash fromDictionary:dict] doubleValue];
             self.classType = [[self objectOrNilForKey:kGRDCharacterBaseClassType fromDictionary:dict] doubleValue];
+            self.raceType = [[self objectOrNilForKey:kGRDCharacterBaseRaceType fromDictionary:dict] doubleValue];
             self.dateLastPlayed = [self objectOrNilForKey:kGRDCharacterBaseDateLastPlayed fromDictionary:dict];
             self.powerLevel = [[self objectOrNilForKey:kGRDCharacterBasePowerLevel fromDictionary:dict] doubleValue];
             self.raceHash = [[self objectOrNilForKey:kGRDCharacterBaseRaceHash fromDictionary:dict] doubleValue];
@@ -126,6 +128,7 @@ NSString *const kGRDCharacterBaseLastCompletedStoryHash = @"lastCompletedStoryHa
     [mutableDict setValue:[NSNumber numberWithDouble:self.grimoireScore] forKey:kGRDCharacterBaseGrimoireScore];
     [mutableDict setValue:[self.customization dictionaryRepresentation] forKey:kGRDCharacterBaseCustomization];
     [mutableDict setValue:[NSNumber numberWithDouble:self.genderType] forKey:kGRDCharacterBaseGenderType];
+    [mutableDict setValue:[NSNumber numberWithDouble:self.raceType] forKey:kGRDCharacterBaseRaceType];
     [mutableDict setValue:[NSNumber numberWithDouble:self.membershipType] forKey:kGRDCharacterBaseMembershipType];
     [mutableDict setValue:[NSNumber numberWithDouble:self.classHash] forKey:kGRDCharacterBaseClassHash];
     [mutableDict setValue:[NSNumber numberWithDouble:self.classType] forKey:kGRDCharacterBaseClassType];
@@ -168,6 +171,7 @@ NSString *const kGRDCharacterBaseLastCompletedStoryHash = @"lastCompletedStoryHa
     self.grimoireScore = [aDecoder decodeDoubleForKey:kGRDCharacterBaseGrimoireScore];
     self.customization = [aDecoder decodeObjectForKey:kGRDCharacterBaseCustomization];
     self.genderType = [aDecoder decodeDoubleForKey:kGRDCharacterBaseGenderType];
+    self.raceType = [aDecoder decodeDoubleForKey:kGRDCharacterBaseRaceType];
     self.membershipType = [aDecoder decodeDoubleForKey:kGRDCharacterBaseMembershipType];
     self.classHash = [aDecoder decodeDoubleForKey:kGRDCharacterBaseClassHash];
     self.classType = [aDecoder decodeDoubleForKey:kGRDCharacterBaseClassType];
@@ -193,6 +197,7 @@ NSString *const kGRDCharacterBaseLastCompletedStoryHash = @"lastCompletedStoryHa
     [aCoder encodeDouble:_grimoireScore forKey:kGRDCharacterBaseGrimoireScore];
     [aCoder encodeObject:_customization forKey:kGRDCharacterBaseCustomization];
     [aCoder encodeDouble:_genderType forKey:kGRDCharacterBaseGenderType];
+    [aCoder encodeDouble:_raceType forKey:kGRDCharacterBaseRaceType];
     [aCoder encodeDouble:_membershipType forKey:kGRDCharacterBaseMembershipType];
     [aCoder encodeDouble:_classHash forKey:kGRDCharacterBaseClassHash];
     [aCoder encodeDouble:_classType forKey:kGRDCharacterBaseClassType];
@@ -223,6 +228,7 @@ NSString *const kGRDCharacterBaseLastCompletedStoryHash = @"lastCompletedStoryHa
         copy.membershipType = self.membershipType;
         copy.classHash = self.classHash;
         copy.classType = self.classType;
+        copy.raceType = self.raceType;
         copy.dateLastPlayed = [self.dateLastPlayed copyWithZone:zone];
         copy.powerLevel = self.powerLevel;
         copy.raceHash = self.raceHash;

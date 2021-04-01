@@ -7,10 +7,11 @@
 
 #import "GRDResponse.h"
 #import "GRDData.h"
+#import "GRDInventory.h"
 
 
 NSString *const kGRDResponseData = @"data";
-
+NSString *const kGRDResponseInventory = @"inventory";
 
 @interface GRDResponse ()
 
@@ -21,6 +22,21 @@ NSString *const kGRDResponseData = @"data";
 @implementation GRDResponse
 
 @synthesize data = _data;
+
+
++ (NSDictionary *)mapping{
+    
+    
+    NSDictionary *map = [[NSDictionary alloc] initWithObjectsAndKeys:
+                         kGRDResponseData,@"data",
+                         nil];
+    
+    return map;
+}
+
++ (NSString *)key{
+    return nil;
+}
 
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
@@ -36,7 +52,7 @@ NSString *const kGRDResponseData = @"data";
     // passed into the model class doesn't break the parsing.
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
             self.data = [GRDData modelObjectWithDictionary:[dict objectForKey:kGRDResponseData]];
-
+            self.inventory = [GRDInventory modelObjectWithDictionary:[dict objectForKey:kGRDResponseInventory]];
     }
     
     return self;
@@ -47,7 +63,8 @@ NSString *const kGRDResponseData = @"data";
 {
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
     [mutableDict setValue:[self.data dictionaryRepresentation] forKey:kGRDResponseData];
-
+    [mutableDict setValue:[self.inventory dictionaryRepresentation] forKey:kGRDResponseInventory];
+    
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
 
@@ -71,6 +88,7 @@ NSString *const kGRDResponseData = @"data";
     self = [super init];
 
     self.data = [aDecoder decodeObjectForKey:kGRDResponseData];
+    self.data =[aDecoder decodeObjectForKey:kGRDResponseInventory];
     return self;
 }
 
@@ -78,6 +96,7 @@ NSString *const kGRDResponseData = @"data";
 {
 
     [aCoder encodeObject:_data forKey:kGRDResponseData];
+    [aCoder encodeObject:_inventory forKey:kGRDResponseInventory];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -87,6 +106,7 @@ NSString *const kGRDResponseData = @"data";
     if (copy) {
 
         copy.data = [self.data copyWithZone:zone];
+        copy.inventory = [self.inventory copyWithZone:zone];
     }
     
     return copy;

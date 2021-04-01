@@ -1,0 +1,977 @@
+{
+  "444348033" : {
+    "category" : 0,
+    "hash" : 444348033,
+    "index" : 18,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "20886954" : {
+    "category" : 3,
+    "hash" : 20886954,
+    "index" : 6,
+    "hasTransferDestination" : true,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 80,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Leg Armor",
+      "hasIcon" : false,
+      "description" : "Greaves and leggings."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "4292445962" : {
+    "category" : 0,
+    "hash" : 4292445962,
+    "index" : 17,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Clan Banners",
+      "hasIcon" : false,
+      "description" : "A battle standard raised in the name of your clan."
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "3448274439" : {
+    "category" : 3,
+    "hash" : 3448274439,
+    "index" : 3,
+    "hasTransferDestination" : true,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 50,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Helmet",
+      "hasIcon" : false,
+      "description" : "Helmets and hoods."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "497170007" : {
+    "category" : 0,
+    "hash" : 497170007,
+    "index" : 19,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "3796357825" : {
+    "category" : 3,
+    "hash" : 3796357825,
+    "index" : 39,
+    "hasTransferDestination" : false,
+    "itemCount" : 0,
+    "scope" : 0,
+    "bucketOrder" : 120,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "2689798310" : {
+    "category" : 0,
+    "hash" : 2689798310,
+    "index" : 23,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 1,
+    "bucketOrder" : 40,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 0,
+    "displayProperties" : {
+      "name" : "Silver",
+      "hasIcon" : false,
+      "description" : "Rare Reef coins struck during the height of the Golden Age. Of great value to certain collectors."
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "2025709351" : {
+    "category" : 3,
+    "hash" : 2025709351,
+    "index" : 9,
+    "hasTransferDestination" : true,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 110,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Vehicle",
+      "hasIcon" : false,
+      "description" : "Surface vehicles at your disposal."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "3313201758" : {
+    "category" : 1,
+    "hash" : 3313201758,
+    "index" : 13,
+    "hasTransferDestination" : true,
+    "itemCount" : 50,
+    "scope" : 1,
+    "bucketOrder" : 20,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 0,
+    "displayProperties" : {
+      "name" : "Modifications",
+      "hasIcon" : false,
+      "description" : "Components that modify gear function or appearance."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "953998645" : {
+    "category" : 3,
+    "hash" : 953998645,
+    "index" : 2,
+    "hasTransferDestination" : true,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 40,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Power Weapons",
+      "hasIcon" : false,
+      "description" : "Machine guns and rocket launchers."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "2689798311" : {
+    "category" : 2,
+    "hash" : 2689798311,
+    "index" : 24,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 1,
+    "bucketOrder" : 60,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 0,
+    "displayProperties" : {
+      "name" : "Bright Dust",
+      "hasIcon" : false,
+      "description" : "Obtained by completing certain bounties and from special reward sources."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "2689798304" : {
+    "category" : 2,
+    "hash" : 2689798304,
+    "index" : 25,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 50,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Upgrade Point",
+      "hasIcon" : false,
+      "description" : "Unlock an ability on one of your subclasses."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "2401704334" : {
+    "category" : 0,
+    "hash" : 2401704334,
+    "index" : 41,
+    "hasTransferDestination" : false,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : true
+  },
+  "1269569095" : {
+    "category" : 0,
+    "hash" : 1269569095,
+    "index" : 36,
+    "hasTransferDestination" : false,
+    "itemCount" : 5,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Auras",
+      "hasIcon" : false,
+      "description" : "Visual effects awarded on completion of challenging activities."
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "18606351" : {
+    "category" : 0,
+    "hash" : 18606351,
+    "index" : 35,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Shaders",
+      "hasIcon" : false,
+      "description" : "Apply new colors and materials to compatible gear."
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "2689798305" : {
+    "category" : 0,
+    "hash" : 2689798305,
+    "index" : 26,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 1,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 0,
+    "displayProperties" : {
+      "name" : "Strange Coin",
+      "hasIcon" : false,
+      "description" : "A curious artifact of the Nine. Present it to Xûr during his weekly visits for a reward."
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "1506418338" : {
+    "category" : 3,
+    "hash" : 1506418338,
+    "index" : 49,
+    "hasTransferDestination" : false,
+    "itemCount" : 4,
+    "scope" : 0,
+    "bucketOrder" : 46,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Seasonal Artifact",
+      "hasIcon" : false,
+      "description" : "Seasonal Artifacts."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "1367666825" : {
+    "category" : 0,
+    "hash" : 1367666825,
+    "index" : 20,
+    "hasTransferDestination" : false,
+    "itemCount" : 20,
+    "scope" : 1,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 4,
+    "displayProperties" : {
+      "name" : "Special Orders",
+      "hasIcon" : false,
+      "description" : "Special orders filled by suppliers in the City."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "2689798306" : {
+    "category" : 0,
+    "hash" : 2689798306,
+    "index" : 43,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "4274335291" : {
+    "category" : 3,
+    "hash" : 4274335291,
+    "index" : 27,
+    "hasTransferDestination" : false,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 150,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Emblems",
+      "hasIcon" : false,
+      "description" : "Emblems to display beside your name in Rosters and friends lists."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "3161908920" : {
+    "category" : 0,
+    "hash" : 3161908920,
+    "index" : 29,
+    "hasTransferDestination" : false,
+    "itemCount" : 20,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 4,
+    "displayProperties" : {
+      "name" : "Messages",
+      "hasIcon" : false,
+      "description" : "Messages and deliveries for pickup."
+    },
+    "enabled" : true,
+    "fifo" : true
+  },
+  "1116760585" : {
+    "category" : 0,
+    "hash" : 1116760585,
+    "index" : 42,
+    "hasTransferDestination" : false,
+    "itemCount" : 25,
+    "scope" : 1,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 0,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : true
+  },
+  "2973005342" : {
+    "category" : 3,
+    "hash" : 2973005342,
+    "index" : 14,
+    "hasTransferDestination" : true,
+    "itemCount" : 50,
+    "scope" : 1,
+    "bucketOrder" : 140,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 0,
+    "displayProperties" : {
+      "name" : "Shaders",
+      "hasIcon" : false,
+      "description" : "Apply new colors and materials to compatible gear."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "3284755031" : {
+    "category" : 3,
+    "hash" : 3284755031,
+    "index" : 16,
+    "hasTransferDestination" : false,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 10,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Subclass",
+      "hasIcon" : false,
+      "description" : "Your abilities."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "1585787867" : {
+    "category" : 3,
+    "hash" : 1585787867,
+    "index" : 7,
+    "hasTransferDestination" : true,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 90,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Class Armor",
+      "hasIcon" : false,
+      "description" : "Marks, bonds, and cloaks."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "2689798307" : {
+    "category" : 0,
+    "hash" : 2689798307,
+    "index" : 44,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "3551918588" : {
+    "category" : 3,
+    "hash" : 3551918588,
+    "index" : 4,
+    "hasTransferDestination" : true,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 60,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Gauntlets",
+      "hasIcon" : false,
+      "description" : "Gloves and gauntlets."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "3865314626" : {
+    "category" : 1,
+    "hash" : 3865314626,
+    "index" : 30,
+    "hasTransferDestination" : false,
+    "itemCount" : 0,
+    "scope" : 0,
+    "bucketOrder" : 10,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Materials",
+      "hasIcon" : false,
+      "description" : "Useful for equipment upgrades and more."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "3054419239" : {
+    "category" : 3,
+    "hash" : 3054419239,
+    "index" : 11,
+    "hasTransferDestination" : false,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 170,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Emotes",
+      "hasIcon" : false,
+      "description" : "Express yourself through Emotes."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "2689798308" : {
+    "category" : 2,
+    "hash" : 2689798308,
+    "index" : 21,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 1,
+    "bucketOrder" : 10,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 0,
+    "displayProperties" : {
+      "name" : "Glimmer",
+      "hasIcon" : false,
+      "description" : "The currency of the City. A form of programmable matter, used both for craft and as a fuel."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "1626737477" : {
+    "category" : 0,
+    "hash" : 1626737477,
+    "index" : 32,
+    "hasTransferDestination" : false,
+    "itemCount" : 5,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "2465295065" : {
+    "category" : 3,
+    "hash" : 2465295065,
+    "index" : 1,
+    "hasTransferDestination" : true,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 30,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Energy Weapons",
+      "hasIcon" : false,
+      "description" : "Weapons that deal Arc, Solar, or Void damage. Most effective when dealing with shielded enemies."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "1801258597" : {
+    "category" : 0,
+    "hash" : 1801258597,
+    "index" : 33,
+    "hasTransferDestination" : false,
+    "itemCount" : 46,
+    "scope" : 0,
+    "bucketOrder" : 60,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "138197802" : {
+    "category" : 1,
+    "hash" : 138197802,
+    "index" : 38,
+    "hasTransferDestination" : false,
+    "itemCount" : 500,
+    "scope" : 1,
+    "bucketOrder" : 30,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 2,
+    "displayProperties" : {
+      "name" : "General",
+      "hasIcon" : false,
+      "description" : "Safe storage for general items. Accessible to all your characters."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "2689798309" : {
+    "category" : 0,
+    "hash" : 2689798309,
+    "index" : 22,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 1,
+    "bucketOrder" : 30,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 0,
+    "displayProperties" : {
+      "name" : "Legendary Shards",
+      "hasIcon" : false,
+      "description" : "Obtained from dismantling Legendary and Exotic quality items."
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "2689798316" : {
+    "category" : 0,
+    "hash" : 2689798316,
+    "index" : 45,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "3683254069" : {
+    "category" : 3,
+    "hash" : 3683254069,
+    "index" : 47,
+    "hasTransferDestination" : false,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 160,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Finishers",
+      "hasIcon" : false,
+      "description" : "Strike the final blow against a damaged foe with a spectacular flourish."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "14239492" : {
+    "category" : 3,
+    "hash" : 14239492,
+    "index" : 5,
+    "hasTransferDestination" : true,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 70,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Chest Armor",
+      "hasIcon" : false,
+      "description" : "Cuirasses, jackets, and vestments."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "2422292810" : {
+    "category" : 0,
+    "hash" : 2422292810,
+    "index" : 37,
+    "hasTransferDestination" : false,
+    "itemCount" : 5,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : true
+  },
+  "2689798317" : {
+    "category" : 0,
+    "hash" : 2689798317,
+    "index" : 46,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "1107761855" : {
+    "category" : 0,
+    "hash" : 1107761855,
+    "index" : 12,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Emotes",
+      "hasIcon" : false,
+      "description" : "Configure the emotes currently assigned to shortcuts."
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "3350918817" : {
+    "category" : 0,
+    "hash" : 3350918817,
+    "index" : 51,
+    "hasTransferDestination" : false,
+    "itemCount" : 0,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Wrapped Items",
+      "hasIcon" : false,
+      "description" : "Eververse store items purchased with Silver will appear here."
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "1558457900" : {
+    "category" : 0,
+    "hash" : 1558457900,
+    "index" : 52,
+    "hasTransferDestination" : false,
+    "itemCount" : 12,
+    "scope" : 1,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 0,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "375726501" : {
+    "category" : 1,
+    "hash" : 375726501,
+    "index" : 31,
+    "hasTransferDestination" : false,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 40,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Engrams",
+      "hasIcon" : false,
+      "description" : "Encoded items discovered in the field."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "130233230" : {
+    "category" : 0,
+    "hash" : 130233230,
+    "index" : 50,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "215593132" : {
+    "category" : 0,
+    "hash" : 215593132,
+    "index" : 34,
+    "hasTransferDestination" : false,
+    "itemCount" : 21,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 4,
+    "displayProperties" : {
+      "name" : "Lost Items",
+      "hasIcon" : false,
+      "description" : "Items you may have missed, but that were recovered by your Ghost."
+    },
+    "enabled" : true,
+    "fifo" : true
+  },
+  "130233231" : {
+    "category" : 0,
+    "hash" : 130233231,
+    "index" : 48,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "1498876634" : {
+    "category" : 3,
+    "hash" : 1498876634,
+    "index" : 0,
+    "hasTransferDestination" : true,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 20,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Kinetic Weapons",
+      "hasIcon" : false,
+      "description" : "Weapons that deal kinetic damage. Most effective when dealing with unshielded enemies."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "4023194814" : {
+    "category" : 3,
+    "hash" : 4023194814,
+    "index" : 8,
+    "hasTransferDestination" : true,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 45,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Ghost",
+      "hasIcon" : false,
+      "description" : "Shells used by your assistant and guide, the Ghost."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "1345459588" : {
+    "category" : 0,
+    "hash" : 1345459588,
+    "index" : 40,
+    "hasTransferDestination" : false,
+    "itemCount" : 63,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Quests",
+      "hasIcon" : false,
+      "description" : "Missions for Guardians to carry out in the wilderness."
+    },
+    "enabled" : false,
+    "fifo" : false
+  },
+  "3621873013" : {
+    "category" : 0,
+    "hash" : 3621873013,
+    "index" : 28,
+    "hasTransferDestination" : false,
+    "itemCount" : 1,
+    "scope" : 0,
+    "bucketOrder" : 0,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "hasIcon" : false
+    },
+    "enabled" : false,
+    "fifo" : true
+  },
+  "1469714392" : {
+    "category" : 1,
+    "hash" : 1469714392,
+    "index" : 15,
+    "hasTransferDestination" : true,
+    "itemCount" : 50,
+    "scope" : 1,
+    "bucketOrder" : 30,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 0,
+    "displayProperties" : {
+      "name" : "Consumables",
+      "hasIcon" : false,
+      "description" : "Supplies and materials used in the field."
+    },
+    "enabled" : true,
+    "fifo" : false
+  },
+  "284967655" : {
+    "category" : 3,
+    "hash" : 284967655,
+    "index" : 10,
+    "hasTransferDestination" : true,
+    "itemCount" : 10,
+    "scope" : 0,
+    "bucketOrder" : 130,
+    "redacted" : false,
+    "blacklisted" : false,
+    "location" : 1,
+    "displayProperties" : {
+      "name" : "Ships",
+      "hasIcon" : false,
+      "description" : "Spacecraft at your disposal."
+    },
+    "enabled" : true,
+    "fifo" : false
+  }
+}

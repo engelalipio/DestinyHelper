@@ -1,0 +1,26 @@
+{
+  "2537374699" : {
+    "redacted" : false,
+    "order" : 2,
+    "hash" : 2537374699,
+    "blacklisted" : false,
+    "categoryName" : "Destination",
+    "index" : 2
+  },
+  "3227191227" : {
+    "redacted" : false,
+    "order" : 0,
+    "hash" : 3227191227,
+    "blacklisted" : false,
+    "categoryName" : "Limited Time",
+    "index" : 0
+  },
+  "679769104" : {
+    "redacted" : false,
+    "order" : 1,
+    "hash" : 679769104,
+    "blacklisted" : false,
+    "categoryName" : "Tower",
+    "index" : 1
+  }
+}

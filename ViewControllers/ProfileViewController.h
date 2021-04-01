@@ -17,7 +17,6 @@ UISearchBarDelegate,UISearchDisplayDelegate,ASWebAuthenticationPresentationConte
 
 @property (strong, nonatomic) IBOutlet UIButton *btnLogin;
 
-
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;

@@ -1,0 +1,107 @@
+{
+  "3772930460" : {
+    "redacted" : false,
+    "hash" : 3772930460,
+    "infusionProcess" : {
+      "baseQualityTransferRatio" : 0.5,
+      "minimumQualityIncrement" : 10
+    },
+    "blacklisted" : false,
+    "displayProperties" : {
+      "name" : "Basic",
+      "hasIcon" : false,
+      "description" : ""
+    },
+    "index" : 0
+  },
+  "4008398120" : {
+    "redacted" : false,
+    "hash" : 4008398120,
+    "infusionProcess" : {
+      "baseQualityTransferRatio" : 1,
+      "minimumQualityIncrement" : 6
+    },
+    "blacklisted" : false,
+    "displayProperties" : {
+      "name" : "Legendary",
+      "hasIcon" : false,
+      "description" : ""
+    },
+    "index" : 4
+  },
+  "2759499571" : {
+    "redacted" : false,
+    "hash" : 2759499571,
+    "infusionProcess" : {
+      "baseQualityTransferRatio" : 1,
+      "minimumQualityIncrement" : 4
+    },
+    "blacklisted" : false,
+    "displayProperties" : {
+      "name" : "Exotic",
+      "hasIcon" : false,
+      "description" : ""
+    },
+    "index" : 5
+  },
+  "1801258597" : {
+    "redacted" : false,
+    "hash" : 1801258597,
+    "infusionProcess" : {
+      "baseQualityTransferRatio" : 0.5,
+      "minimumQualityIncrement" : 10
+    },
+    "blacklisted" : false,
+    "displayProperties" : {
+      "name" : "Basic",
+      "hasIcon" : false,
+      "description" : ""
+    },
+    "index" : 6
+  },
+  "2395677314" : {
+    "redacted" : false,
+    "hash" : 2395677314,
+    "infusionProcess" : {
+      "baseQualityTransferRatio" : 0.5,
+      "minimumQualityIncrement" : 10
+    },
+    "blacklisted" : false,
+    "displayProperties" : {
+      "name" : "Common",
+      "hasIcon" : false,
+      "description" : ""
+    },
+    "index" : 2
+  },
+  "3340296461" : {
+    "redacted" : false,
+    "hash" : 3340296461,
+    "infusionProcess" : {
+      "baseQualityTransferRatio" : 0.5,
+      "minimumQualityIncrement" : 10
+    },
+    "blacklisted" : false,
+    "displayProperties" : {
+      "name" : "Basic",
+      "hasIcon" : false,
+      "description" : ""
+    },
+    "index" : 1
+  },
+  "2127292149" : {
+    "redacted" : false,
+    "hash" : 2127292149,
+    "infusionProcess" : {
+      "baseQualityTransferRatio" : 0.5,
+      "minimumQualityIncrement" : 10
+    },
+    "blacklisted" : false,
+    "displayProperties" : {
+      "name" : "Rare",
+      "hasIcon" : false,
+      "description" : ""
+    },
+    "index" : 3
+  }
+}

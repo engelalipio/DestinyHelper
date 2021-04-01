@@ -32,6 +32,8 @@
 @property (nonatomic, assign) BOOL showActivity;
 @property (nonatomic, strong) NSString *statusText;
 @property (nonatomic, strong) NSString *xboxDisplayName;
+@property (nonatomic, strong) NSString *currentSeasonRewardPowerCap;
+
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

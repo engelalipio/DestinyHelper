@@ -24,6 +24,21 @@ NSString *const kGRDEquipmentItemHash = @"itemHash";
 @synthesize itemHash = _itemHash;
 
 
+
++ (NSDictionary *)mapping{
+    
+    
+    NSDictionary *map = [[NSDictionary alloc] initWithObjectsAndKeys:
+                         kGRDEquipmentItemHash,@"itemHash",
+                         nil];
+    
+    return map;
+}
+
++ (NSString *)key{
+    return nil;
+}
+
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
     return [[self alloc] initWithDictionary:dict];

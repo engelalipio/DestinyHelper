@@ -47,6 +47,20 @@ NSString *const kGRDStatsSTATARMOR = @"STAT_ARMOR";
 @synthesize sTATARMOR = _sTATARMOR;
 
 
++ (NSDictionary *)mapping{
+    
+    
+    NSDictionary *map = [[NSDictionary alloc] initWithObjectsAndKeys:
+                         kGRDStatsSTATLIGHT,@"STAT_LIGHT",
+                         nil];
+    
+    return map;
+}
+
++ (NSString *)key{
+    return nil;
+}
+
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
     return [[self alloc] initWithDictionary:dict];

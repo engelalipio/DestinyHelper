@@ -29,7 +29,7 @@ NSString *const kUSRResponseStatusDate = @"statusDate";
 NSString *const kUSRResponseShowActivity = @"showActivity";
 NSString *const kUSRResponseStatusText = @"statusText";
 NSString *const kUSRResponseXboxDisplayName = @"xboxDisplayName";
-
+NSString *const kUSRResponseCurrentSeasonRewardPowerCap = @"currentSeasonRewardPowerCap";
 
 @interface USRResponse ()
 
@@ -60,7 +60,7 @@ NSString *const kUSRResponseXboxDisplayName = @"xboxDisplayName";
 @synthesize showActivity = _showActivity;
 @synthesize statusText = _statusText;
 @synthesize xboxDisplayName = _xboxDisplayName;
-
+@synthesize currentSeasonRewardPowerCap = _currentSeasonRewardPowerCap;
 
 + (NSDictionary *)mapping{
     
@@ -111,6 +111,7 @@ NSString *const kUSRResponseXboxDisplayName = @"xboxDisplayName";
             self.showActivity = [[self objectOrNilForKey:kUSRResponseShowActivity fromDictionary:dict] boolValue];
             self.statusText = [self objectOrNilForKey:kUSRResponseStatusText fromDictionary:dict];
             self.xboxDisplayName = [self objectOrNilForKey:kUSRResponseXboxDisplayName fromDictionary:dict];
+            self.currentSeasonRewardPowerCap = [self objectOrNilForKey:kUSRResponseCurrentSeasonRewardPowerCap fromDictionary:dict];
 
     }
     
@@ -142,7 +143,7 @@ NSString *const kUSRResponseXboxDisplayName = @"xboxDisplayName";
     [mutableDict setValue:[NSNumber numberWithBool:self.showActivity] forKey:kUSRResponseShowActivity];
     [mutableDict setValue:self.statusText forKey:kUSRResponseStatusText];
     [mutableDict setValue:self.xboxDisplayName forKey:kUSRResponseXboxDisplayName];
-
+    [mutableDict setValue:self.currentSeasonRewardPowerCap forKey:kUSRResponseCurrentSeasonRewardPowerCap];
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
 
@@ -186,6 +187,7 @@ NSString *const kUSRResponseXboxDisplayName = @"xboxDisplayName";
     self.showActivity = [aDecoder decodeBoolForKey:kUSRResponseShowActivity];
     self.statusText = [aDecoder decodeObjectForKey:kUSRResponseStatusText];
     self.xboxDisplayName = [aDecoder decodeObjectForKey:kUSRResponseXboxDisplayName];
+    self.currentSeasonRewardPowerCap = [aDecoder decodeObjectForKey:kUSRResponseCurrentSeasonRewardPowerCap];
     return self;
 }
 
@@ -213,6 +215,7 @@ NSString *const kUSRResponseXboxDisplayName = @"xboxDisplayName";
     [aCoder encodeBool:_showActivity forKey:kUSRResponseShowActivity];
     [aCoder encodeObject:_statusText forKey:kUSRResponseStatusText];
     [aCoder encodeObject:_xboxDisplayName forKey:kUSRResponseXboxDisplayName];
+    [aCoder encodeObject:_currentSeasonRewardPowerCap forKey:kUSRResponseCurrentSeasonRewardPowerCap];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -242,6 +245,7 @@ NSString *const kUSRResponseXboxDisplayName = @"xboxDisplayName";
         copy.showActivity = self.showActivity;
         copy.statusText = [self.statusText copyWithZone:zone];
         copy.xboxDisplayName = [self.xboxDisplayName copyWithZone:zone];
+        copy.currentSeasonRewardPowerCap = [self.currentSeasonRewardPowerCap copyWithZone:zone];
     }
     
     return copy;

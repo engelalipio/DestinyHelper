@@ -1,0 +1,62 @@
+{
+  "2803282938" : {
+    "genderedRaceNamesByGenderHash" : {
+      "2204441813" : "Awoken Female",
+      "3111576190" : "Awoken Male"
+    },
+    "genderedRaceNames" : {
+      "Female" : "Awoken Female",
+      "Male" : "Awoken Male"
+    },
+    "hash" : 2803282938,
+    "index" : 1,
+    "blacklisted" : false,
+    "redacted" : false,
+    "displayProperties" : {
+      "name" : "Awoken",
+      "hasIcon" : false,
+      "description" : "The Awoken survived the Collapse in deep space. But they were forever changed."
+    },
+    "raceType" : 1
+  },
+  "3887404748" : {
+    "genderedRaceNamesByGenderHash" : {
+      "2204441813" : "Human Female",
+      "3111576190" : "Human Male"
+    },
+    "genderedRaceNames" : {
+      "Female" : "Human Female",
+      "Male" : "Human Male"
+    },
+    "hash" : 3887404748,
+    "index" : 0,
+    "blacklisted" : false,
+    "redacted" : false,
+    "displayProperties" : {
+      "name" : "Human",
+      "hasIcon" : false,
+      "description" : "Human"
+    },
+    "raceType" : 0
+  },
+  "898834093" : {
+    "genderedRaceNamesByGenderHash" : {
+      "2204441813" : "Exo Female",
+      "3111576190" : "Exo Male"
+    },
+    "genderedRaceNames" : {
+      "Female" : "Exo Female",
+      "Male" : "Exo Male"
+    },
+    "hash" : 898834093,
+    "index" : 2,
+    "blacklisted" : false,
+    "redacted" : false,
+    "displayProperties" : {
+      "name" : "Exo",
+      "hasIcon" : false,
+      "description" : "Self-aware machines built for a long-forgotten war."
+    },
+    "raceType" : 2
+  }
+}

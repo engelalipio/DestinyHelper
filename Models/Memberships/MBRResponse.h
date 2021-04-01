@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) NSArray *destinyMemberships;
 @property (nonatomic, strong) MBRBungieNetUser *bungieNetUser;
+@property (nonatomic, strong) NSString* primaryMembershipId;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

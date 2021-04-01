@@ -7,11 +7,12 @@
 
 #import <Foundation/Foundation.h>
 
-@class GRDData;
+@class GRDData,GRDInventory;
 
 @interface GRDResponse : NSObject <NSCoding, NSCopying>
 
 @property (nonatomic, strong) GRDData *data;
+@property (nonatomic, strong) GRDInventory *inventory;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

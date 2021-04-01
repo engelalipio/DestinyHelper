@@ -34,6 +34,21 @@ NSString *const kGRDBaseClassThrottleSeconds = @"ThrottleSeconds";
 @synthesize throttleSeconds = _throttleSeconds;
 
 
+
++ (NSDictionary *)mapping{
+    
+    
+    NSDictionary *map = [[NSDictionary alloc] initWithObjectsAndKeys:
+                         kGRDBaseClassResponse,@"Response",
+                         nil];
+    
+    return map;
+}
+
++ (NSString *)key{
+    return nil;
+}
+
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
     return [[self alloc] initWithDictionary:dict];

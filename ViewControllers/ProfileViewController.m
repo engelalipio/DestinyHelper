@@ -41,13 +41,33 @@
 @synthesize searchBar = _searchBar;
 @synthesize activityIndicator = _activityIndicator;
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+   // if (! appDelegate){
+        appDelegate = [AppDelegate currentDelegate];
+   // }
+ 
+    [_searchBar setDelegate:self];
+  
+    [self registerNotifications];
+    [self initTableView];
+    [self initIndicator];
+    
+    if (! dMemberships){
+        if (appDelegate.destinyMemberships){
+            dMemberships = [appDelegate destinyMemberships];
+        }
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    if (! appDelegate){
+   // if (! appDelegate){
         appDelegate = [AppDelegate currentDelegate];
-    }
+   // }
  
  
     [_searchBar setDelegate:self];
@@ -62,9 +82,8 @@
    
     if (! self.activityIndicator){
         _activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:self.tblMemberships.frame];
+        [self.view addSubview:_activityIndicator];
     }
-    
-    [self.view addSubview:_activityIndicator];
     
 }
 
@@ -290,7 +309,7 @@
     GuardianViewController *targetVC = (GuardianViewController *) segue.destinationViewController;
     
      
-    if (targetVC){
+    if ([targetVC isKindOfClass:GuardianViewController.class]){
         [targetVC setDestChars:destChars];
         [targetVC setMemberships:dMemberships];
     }
@@ -303,10 +322,29 @@
     
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     
+    GuardianViewController *guardianVC = nil;
+ 
+    UINavigationController *navigationController = nil;
+    
  
     
     if(selectedCell){
        
+        /*
+        
+        navigationController =  [[UINavigationController alloc] initWithRootViewController:guardianVC];
+        
+        [guardianVC setDestChars:destChars];
+        [guardianVC setMemberships:dMemberships];
+        
+        
+        [self presentViewController:navigationController animated:YES completion:^{
+            
+            
+        }];*/
+        
+    
+        
         [self performSegueWithIdentifier:@"segGuardians" sender:destChars];
     }
     
@@ -341,14 +379,17 @@
     NSString *message = nil;
     @try {
         
-        if (! self.tblMemberships){
+      //  if (! self.tblMemberships){
             self.tblMemberships = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, self.lblPlayerMotto.frame.origin.y ,self.view.frame.size.width, self.view.frame.size.height)];
             
             [self.view addSubview:self.tblMemberships];
-        }
+            
+            [self.tblMemberships setDelegate:self];
+            [self.tblMemberships setDataSource:self];
+            
+    //    }
         
-        [self.tblMemberships setDelegate:self];
-        [self.tblMemberships setDataSource:self];
+      
       }
         @catch (NSException *exception) {
             message = [exception description];
@@ -365,6 +406,7 @@
     
 }
 
+/*
 -(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *message   = @"";
     
@@ -392,6 +434,7 @@
     }
 
 }
+ */
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -512,7 +555,8 @@
              *baseURL = nil,
              *bgURL   = nil,
              *strFirst  = nil,
-             *strLast   = nil;
+             *strLast   = nil,
+             *strPC     = nil;
     
     USRResponse *profile = nil;
     
@@ -558,6 +602,8 @@
                 dteFirst  = [dateFormatter dateFromString:profile.firstAccess];
                 dteLast   = [dateFormatter dateFromString:profile.lastUpdate];
                 
+                strPC  =  profile.currentSeasonRewardPowerCap;
+                
                 dateFormatter.timeStyle = NSDateFormatterShortStyle;
                 dateFormatter.dateStyle = NSDateIntervalFormatterMediumStyle;
                 
@@ -572,14 +618,14 @@
                 [self->_lblPlayerName setText:profile.displayName];
                 
                 enum Destiny2MembershipType mType = Xbox;
-               
+                
                 //xbox = 1
                 message = [NSString stringWithFormat:@"%@/%@",profile.membershipId,@"1" ];
                 
                 [appDelegate setCurrentLocale:profile.locale];
                 [appDelegate setCurrentProfile:profile];
                 
-                [self.tblMemberships reloadData];
+               // [self.tblMemberships reloadData];
                 
                 [self loadMembership:message];
                 //[self endTimer];
@@ -602,6 +648,8 @@
 -(void)loadMembership: (NSString *) anyMembership{
  
     
+    NSLog(@"1:ProfileViewController:loadMembership:Invoked for Membership->%@",anyMembership);
+    
     [NetworkAPISingleClient retrieveMembershipData:anyMembership
                                    completionBlock:^(NSArray *userData){
      
@@ -614,20 +662,26 @@
                 MBRResponse *memberResponse = [[MBRResponse alloc] initWithDictionary:[memberships response]];
                 
                 NSArray *membershipData = (NSArray*) [memberResponse destinyMemberships];
-       
         
                     if (membershipData){
+                        
+                        NSLog(@"2:ProfileViewController:loadMembership:Membership Data Received:Count=%lu",(unsigned long)membershipData.count);
                         
                         //Set memberships to delegate
                         [appDelegate setDestinyMemberships:membershipData];
                         
-                        [[NSNotificationCenter defaultCenter]
-                           postNotificationName:kDestinyLoadedMembership
-                         object:membershipData];
-                        
+                        NSLog(@"3:ProfileViewController:loadMembership:setDestinyMemberships on AppDelegate with the membershipData...");
                         dMemberships = membershipData;
                         
+                        NSLog(@"4:ProfileViewController:loadMembership:Refreshing tblMemberships DataSource...");
+                        //Refresh Data with Membership DataSource
                         [self.tblMemberships reloadData];
+                        
+                        NSLog(@"4:ProfileViewController:loadMembership:Triggering kDestinyLoadedMembership Notification...");
+                        //Trigger kDestinyLoadedMembership Notification
+                        [[NSNotificationCenter defaultCenter]
+                           postNotificationName:kDestinyLoadedMembership
+                                         object:membershipData];
                         
                     }
                     
@@ -636,12 +690,10 @@
             }
             
             
-              
-     
     }
         andErrorBlock:^(NSError *errorData){
         if (errorData){
-            NSLog(@"%@",errorData.description);
+            NSLog(@"ProfileViewController:loadMembership:Exception->%@",errorData.description);
         }
         
     }];
@@ -678,6 +730,8 @@
                                 
                                 [self loadProfile:userProfile];
                                 
+                                [self.searchBar setText:@""];
+                                [self.view endEditing:YES];
                             }
                             else{
                                // [self setTitle:@"Profile Not Found"];
@@ -689,8 +743,7 @@
                             NSLog(@"Profile Loaded");
                             userProfile = nil;
                             
-                            [self.searchBar setText:@""];
-                            
+
                         }
                         
                         

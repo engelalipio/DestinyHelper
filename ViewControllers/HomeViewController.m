@@ -7,13 +7,19 @@
 //
 
 #import "HomeViewController.h"
+#import "LoginViewController.h"
+#import "Utilities.h"
 
 @interface HomeViewController ()
 {
-    BOOL isFirstLaunch;
+    BOOL isFirstLaunch,
+         useTableView,
+         isLoggedIn;
     
     NSString *currentImageName;
     NSArray  *backgroundImages;
+    
+    CGSize   imageSize;
     
     AppDelegate *appDelegate;
 }
@@ -96,6 +102,33 @@
     
 }
 
+-(void) viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    [self refreshUI];
+    
+    [self startTimer];
+}
+
+-(void) refreshUI{
+    
+    if (! appDelegate){
+        appDelegate = [AppDelegate currentDelegate];
+    }
+    
+    if (appDelegate != nil){
+        
+        if ([appDelegate currentAccessToken]){
+            self->isLoggedIn = YES;
+         }
+        
+        [self.btnLogin setHidden:isLoggedIn];
+        [self.btnInventory setHidden:!isLoggedIn];
+        [self.btnGuardians setHidden:!isLoggedIn];
+    }
+    
+}
+
 - (void) viewDidDisappear:(BOOL)animated{
     
     [self endTimer];
@@ -106,17 +139,49 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    isFirstLaunch = YES;
+    self->isFirstLaunch = YES;
+    self->useTableView = NO;
+    self->isLoggedIn = NO;
     
-    if (! appDelegate){
-        appDelegate = [AppDelegate currentDelegate];
+    appDelegate = [AppDelegate currentDelegate];
+    
+    [self setupImages];
+    
+    if (useTableView){
+      [self initTableView];
     }
     
     
-    [self setupImages];
-    [self initTableView];
+    if (! isLoggedIn){
+        //show login view controller
+       // [self performSegueWithIdentifier:@"segLogin" sender:self];
+    }
 
 }
+
+/*
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    LoginViewController *loginVC = nil;
+    @try {
+        
+        if (segue.destinationViewController != nil){
+        
+            if ([segue.destinationViewController isKindOfClass:[LoginViewController class]]){
+                loginVC = (LoginViewController*) segue.destinationViewController;
+                if (loginVC){
+                
+                }
+            }
+        }
+        
+    } @catch (NSException *exception) {
+        NSLog(exception.description);
+    } @finally {
+        loginVC = nil;
+    }
+}
+ */
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
         NSInteger size = 200;
@@ -126,10 +191,8 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
    // return CGFLOAT_MIN;
-    NSInteger size =1.0f;//90;
+    NSInteger size = 1.0f;//90;
 
-    
-  
     return size;
 }
 
@@ -145,7 +208,7 @@
     @try {
         
         if (! self.tableView){
-            self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 100.0,self.view.frame.size.width, self.view.frame.size.height)];
+            self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 100.0,self.view.frame.size.width, self.view.frame.size.height/3)];
             
             [self.view addSubview:self.tableView];
         }
@@ -168,6 +231,21 @@
     
 }
 
+- (IBAction)GroupAction:(UIButton *)sender {
+    [self endTimer];
+}
+
+- (IBAction)guardiansAction:(UIButton *)sender {
+    [self endTimer];
+}
+
+- (IBAction)loginAction:(UIButton *)sender {
+    
+    NSLog(@"HomeViewController:loginAction:Invoked...");
+    
+    [self endTimer];
+}
+
 -(void) endTimer{
     if (self.timer != nil){
         [self.timer invalidate];
@@ -178,9 +256,10 @@
 
 -(void) startTimer{
     
+    return;
 
     double interval = [appDelegate interval];
-    
+       
         self.timer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]]
                                               interval:interval target:self
                                               selector:@selector(timerFireMethod:)
@@ -194,64 +273,54 @@
     
 }
 
- 
-
--(void) setupImages{
-    
-    UIImage *img = nil;
-    
-    @try {
-        
-        if (! backgroundImages){
-        backgroundImages = [[NSArray alloc] initWithObjects:@"Venus.jpg",@"Dreadnaught1.jpg",
-                                            @"Vex.jpg", @"Ship.jpg",@"Haaken.jpg", @"Mars.jpg", @"GuardianLootHall.jpg",
-                                            @"City.jpg", @"ExoGuardian.jpg", @"Cabal.jpg",@"Ketch.jpg", @"MercurySun.jpg",
-                                            @"Mercury.jpg", @"Loot.jpg", @"Dreadnaught.jpg", nil];
-        }
-         
-        if(isFirstLaunch){
-            
-             
-            currentImageName = @"DefaultEmblem.png";
-            
-            img =  [UIImage imageNamed:currentImageName];
-            
-            if (img != nil){
-               
-            //    [_imgBackView setImage:img];
-            }
-            
-            isFirstLaunch = NO;
-            
-           // [self startTimer];
-        }
-        
-    } @catch (NSException *exception) {
-       // NSLog(exception.description);
-    } @finally {
-        img = nil;
-    }
-}
 
 - (void)timerFireMethod:(NSTimer *)t{
     
-    NSString *message         = @"";
+    NSString *newImageName    = @"",
+             *message         = @"",
+             *title           = @"";
+    
     UIImage  *image           = nil;
     
     NSInteger randomImage     = -1;
     
     @try {
         
-            
+           message = @"HomeViewController:timerFireMethod:Image Change:%@->%@";
+        
             randomImage = arc4random_uniform(backgroundImages.count);
-           
-            currentImageName = [backgroundImages objectAtIndex:randomImage];
+        
+            newImageName = [backgroundImages objectAtIndex:randomImage];
+        
+             
+        if (! [newImageName isEqualToString:currentImageName]){
             
-            image =  [UIImage imageNamed:currentImageName];
+          //  NSLog(message,currentImageName,newImageName);
+            
+            image =  [UIImage imageNamed:newImageName];
+            
+            title = newImageName;
+            
+            title = [title stringByReplacingOccurrencesOfString:@"1.jpg" withString:@""];
+            
+            title = [title stringByReplacingOccurrencesOfString:@".jpg" withString:@""];
+            
+            title = [title stringByReplacingOccurrencesOfString:@".png" withString:@""];
+           
              
             if (image != nil){
+                image =   [Utilities imageResize:image andResizeTo:imageSize];
+                
                 [_imgBackView setImage:image];
+                [_lblTitle setText:title];
+                currentImageName = newImageName;
             }
+           
+            
+        }else{
+              message = @"HomeViewController:timerFireMethod:Same Image:%@->%@";
+              //NSLog(message,currentImageName,newImageName);
+        }
             
         
     }
@@ -260,14 +329,82 @@
     }
     @finally {
         
-        if ([message length] > 0){
-            NSLog(@"%@",message);
-        }
-       
+        newImageName = @"";
         randomImage = 0;
         
     }
     
+    
+}
+
+ 
+
+-(void) setupImages{
+    
+    UIImage *img = nil;
+    
+    NSString *title = @"";
+    
+    @try {
+        
+        currentImageName = @"Icons.png";
+        
+        if (! backgroundImages){
+            
+        backgroundImages = [[NSArray alloc] initWithObjects:@"Venus.jpg",@"Dreadnaught1.jpg",
+                                            @"Vex.jpg", @"Ship.jpg",@"Haaken.jpg", @"Mars.jpg", @"GuardianLootHall.jpg",
+                                            @"City.jpg", @"ExoGuardian.jpg", @"Cabal.jpg",@"Ketch.jpg", @"MercurySun.jpg",
+                                            @"Mercury.jpg", @"Loot.jpg", @"Dreadnaught.jpg", nil];
+        
+        NSLog(@"HomeViewController:setupImages:backgroundImages-> %lu",(unsigned long)backgroundImages.count);
+            
+        
+        }
+         
+        if(isFirstLaunch){
+            img =  [UIImage imageNamed:currentImageName];
+            
+            title = currentImageName;
+            
+            title = [title stringByReplacingOccurrencesOfString:@"1.jpg" withString:@""];
+            
+            title = [title stringByReplacingOccurrencesOfString:@".jpg" withString:@""];
+            
+            title = [title stringByReplacingOccurrencesOfString:@".png" withString:@""];
+            
+            imageSize = img.size;
+           
+            if (img != nil){
+                [_imgBackView setImage:img];
+                [_lblTitle setText:title];
+            }
+            
+            self->isFirstLaunch = NO;
+            
+            if (! useTableView){
+             [self startTimer];
+            }
+        }
+        
+    } @catch (NSException *exception) {
+        NSLog(@"HomeViewController:setupImages:Exception-> %@",exception.description);
+    } @finally {
+        img = nil;
+    }
+}
+
+
+
+-(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
+    
+    NSString *sourceVCTitle = segue.sourceViewController.title;
+    
+    NSLog(@"HomeViewController:prepareForUnwind:Invoked:For:%@",sourceVCTitle);
+    
+    if ([sourceVCTitle isEqualToString:@"Login"]){
+        //Refresh UI
+        [self refreshUI];
+    }
     
 }
 

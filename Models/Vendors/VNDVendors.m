@@ -1,27 +1,28 @@
 //
-//  DisplayProperties.m
+//  Vendors.m
 //
-//  Created by Engel Alipio on 10/11/20
-//  Copyright (c) 2020 Citi. All rights reserved.
+//  Created by Engel Alipio on 2/28/21
+//  Copyright (c) 2021 Citi. All rights reserved.
 //
 
-#import "DisplayProperties.h"
+#import "VNDVendors.h"
+#import "VNDData.h"
 
 
-NSString *const kDisplayPropertiesName = @"name";
-NSString *const kDisplayPropertiesHasIcon = @"hasIcon";
+NSString *const kVendorsPrivacy = @"privacy";
+NSString *const kVendorsData = @"data";
 
 
-@interface DisplayProperties ()
+@interface VNDVendors ()
 
 - (id)objectOrNilForKey:(id)aKey fromDictionary:(NSDictionary *)dict;
 
 @end
 
-@implementation DisplayProperties
+@implementation VNDVendors
 
-@synthesize name = _name;
-@synthesize hasIcon = _hasIcon;
+@synthesize privacy = _privacy;
+@synthesize data = _data;
 
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
@@ -36,8 +37,8 @@ NSString *const kDisplayPropertiesHasIcon = @"hasIcon";
     // This check serves to make sure that a non-NSDictionary object
     // passed into the model class doesn't break the parsing.
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
-            self.name = [self objectOrNilForKey:kDisplayPropertiesName fromDictionary:dict];
-            self.hasIcon = [[self objectOrNilForKey:kDisplayPropertiesHasIcon fromDictionary:dict] boolValue];
+            self.privacy = [[self objectOrNilForKey:kVendorsPrivacy fromDictionary:dict] doubleValue];
+            self.data = [VNDData modelObjectWithDictionary:[dict objectForKey:kVendorsData]];
 
     }
     
@@ -48,8 +49,8 @@ NSString *const kDisplayPropertiesHasIcon = @"hasIcon";
 - (NSDictionary *)dictionaryRepresentation
 {
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
-    [mutableDict setValue:self.name forKey:kDisplayPropertiesName];
-    [mutableDict setValue:[NSNumber numberWithBool:self.hasIcon] forKey:kDisplayPropertiesHasIcon];
+    [mutableDict setValue:[NSNumber numberWithDouble:self.privacy] forKey:kVendorsPrivacy];
+    [mutableDict setValue:[self.data dictionaryRepresentation] forKey:kVendorsData];
 
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
@@ -73,26 +74,26 @@ NSString *const kDisplayPropertiesHasIcon = @"hasIcon";
 {
     self = [super init];
 
-    self.name = [aDecoder decodeObjectForKey:kDisplayPropertiesName];
-    self.hasIcon = [aDecoder decodeBoolForKey:kDisplayPropertiesHasIcon];
+    self.privacy = [aDecoder decodeDoubleForKey:kVendorsPrivacy];
+    self.data = [aDecoder decodeObjectForKey:kVendorsData];
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
 
-    [aCoder encodeObject:_name forKey:kDisplayPropertiesName];
-    [aCoder encodeBool:_hasIcon forKey:kDisplayPropertiesHasIcon];
+    [aCoder encodeDouble:_privacy forKey:kVendorsPrivacy];
+    [aCoder encodeObject:_data forKey:kVendorsData];
 }
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    DisplayProperties *copy = [[DisplayProperties alloc] init];
+    VNDVendors *copy = [[VNDVendors alloc] init];
     
     if (copy) {
 
-        copy.name = [self.name copyWithZone:zone];
-        copy.hasIcon = self.hasIcon;
+        copy.privacy = self.privacy;
+        copy.data = [self.data copyWithZone:zone];
     }
     
     return copy;

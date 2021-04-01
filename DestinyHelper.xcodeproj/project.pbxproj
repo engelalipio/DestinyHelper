@@ -9,6 +9,19 @@
 /* Begin PBXBuildFile section */
 		AC00AFD52537721900922C2B /* GuardianCellTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC00AFD32537721900922C2B /* GuardianCellTableView.m */; };
 		AC00AFD62537721900922C2B /* GuardianCellTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC00AFD42537721900922C2B /* GuardianCellTableView.xib */; };
+		AC03956326056FF9009951D3 /* WeaponsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC03956226056FF9009951D3 /* WeaponsTableViewController.m */; };
+		AC039571260667F0009951D3 /* ArmorTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC039570260667F0009951D3 /* ArmorTableViewController.m */; };
+		AC243A9525F82B3E005DC7B6 /* BCKDisplayProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = AC243A8F25F82B3D005DC7B6 /* BCKDisplayProperties.m */; };
+		AC243A9625F82B3E005DC7B6 /* DestinyInventoryBucketDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = AC243A9025F82B3E005DC7B6 /* DestinyInventoryBucketDefinition.m */; };
+		AC243A9725F82B3E005DC7B6 /* BCKBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AC243A9425F82B3E005DC7B6 /* BCKBaseClass.m */; };
+		AC243A9B25F93651005DC7B6 /* DestinyItemCategoryDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = AC243A9A25F93651005DC7B6 /* DestinyItemCategoryDefinition.json */; };
+		AC2C7919255742A40060AD98 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC2C7918255742A40060AD98 /* LoginViewController.m */; };
+		AC2C7925255896490060AD98 /* Vanguard_1X.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AC2C7924255896490060AD98 /* Vanguard_1X.jpeg */; };
+		AC2C7928255896AF0060AD98 /* Vanguard_2X.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AC2C7927255896AF0060AD98 /* Vanguard_2X.jpeg */; };
+		AC2C792B255896CF0060AD98 /* Vanguard_3X.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AC2C792A255896CF0060AD98 /* Vanguard_3X.jpeg */; };
+		AC2C79312558A6390060AD98 /* MembershipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC2C79302558A6390060AD98 /* MembershipViewController.m */; };
+		AC7942AB25FDB06F00B30F2A /* TRXBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7942A825FDB06E00B30F2A /* TRXBaseClass.m */; };
+		AC7942B025FE971D00B30F2A /* LCKBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7942AF25FE971D00B30F2A /* LCKBaseClass.m */; };
 		ACA059FC25320FEE008CB2BD /* Es.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA059D225320FEA008CB2BD /* Es.m */; };
 		ACA059FD25320FEE008CB2BD /* JsonWorldContentPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA059D425320FEA008CB2BD /* JsonWorldContentPaths.m */; };
 		ACA059FE25320FEE008CB2BD /* ZhCht.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA059D625320FEA008CB2BD /* ZhCht.m */; };
@@ -46,7 +59,7 @@
 		ACA05A4625336A4F008CB2BD /* WarlockClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA05A3825336A4E008CB2BD /* WarlockClass.m */; };
 		ACA05A4725336A4F008CB2BD /* HunterClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA05A3925336A4E008CB2BD /* HunterClass.m */; };
 		ACA05A4825336A4F008CB2BD /* GenderedClassNamesByGenderHash.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA05A3A25336A4E008CB2BD /* GenderedClassNamesByGenderHash.m */; };
-		ACA05A4925336A4F008CB2BD /* DisplayProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA05A3B25336A4E008CB2BD /* DisplayProperties.m */; };
+		ACA05A4925336A4F008CB2BD /* BCKDisplayProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA05A3B25336A4E008CB2BD /* BCKDisplayProperties.m */; };
 		ACA05A4A25336A4F008CB2BD /* DCDBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA05A4125336A4F008CB2BD /* DCDBaseClass.m */; };
 		ACA05A4B25336A4F008CB2BD /* GenderedClassNames.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA05A4425336A4F008CB2BD /* GenderedClassNames.m */; };
 		ACA05A55253372FD008CB2BD /* NetworkAPISingleClient+Definition.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA05A54253372FD008CB2BD /* NetworkAPISingleClient+Definition.m */; };
@@ -54,9 +67,62 @@
 		ACA05A682533B748008CB2BD /* DestinyGenderDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = ACA05A672533B748008CB2BD /* DestinyGenderDefinition.json */; };
 		ACA05A6B2533B7E4008CB2BD /* DestinyAchievementDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = ACA05A6A2533B7E4008CB2BD /* DestinyAchievementDefinition.json */; };
 		ACA05A6F2533B976008CB2BD /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA05A6E2533B976008CB2BD /* Utilities.m */; };
+		ACB6981425EAFF8400EF7FD6 /* ItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB6981325EAFF8400EF7FD6 /* ItemsViewController.m */; };
+		ACBDC66825F950EA0098B6BB /* ITMCATBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC66225F950E90098B6BB /* ITMCATBaseClass.m */; };
+		ACBDC66925F950EA0098B6BB /* DestinyItemCategoryDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC66325F950EA0098B6BB /* DestinyItemCategoryDefinition.m */; };
+		ACBDC66A25F950EA0098B6BB /* ITMCATDisplayProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC66725F950EA0098B6BB /* ITMCATDisplayProperties.m */; };
+		ACBDC66E25F954C60098B6BB /* DestinyItemTierTypeDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = ACBDC66D25F954C60098B6BB /* DestinyItemTierTypeDefinition.json */; };
+		ACBDC67A25F955B70098B6BB /* DestinyItemTierTypeDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC67125F955B50098B6BB /* DestinyItemTierTypeDefinition.m */; };
+		ACBDC67B25F955B70098B6BB /* ITMTBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC67225F955B50098B6BB /* ITMTBaseClass.m */; };
+		ACBDC67C25F955B70098B6BB /* ITMTDisplayProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC67625F955B60098B6BB /* ITMTDisplayProperties.m */; };
+		ACBDC67D25F955B70098B6BB /* ITMTInfusionProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC67825F955B70098B6BB /* ITMTInfusionProcess.m */; };
+		ACBDC68325F95B180098B6BB /* ItemCellTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC68225F95B180098B6BB /* ItemCellTableView.m */; };
+		ACBDC68625F95B250098B6BB /* ItemCellTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACBDC68525F95B250098B6BB /* ItemCellTableView.xib */; };
+		ACBDC73825F99A380098B6BB /* ITMEItems.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC73525F99A380098B6BB /* ITMEItems.m */; };
+		ACBDC73925F99A380098B6BB /* ITMEBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC73625F99A380098B6BB /* ITMEBaseClass.m */; };
+		ACBDC78025FA9B480098B6BB /* INVDDestinyInventoryBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC77E25FA9B480098B6BB /* INVDDestinyInventoryBaseClass.m */; };
+		ACBDC78425FA9B8B0098B6BB /* INVDResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC78225FA9B8A0098B6BB /* INVDResponse.m */; };
+		ACBDC78825FA9C870098B6BB /* INVDMessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC78725FA9C870098B6BB /* INVDMessageData.m */; };
+		ACBDC78C25FA9DEC0098B6BB /* INVDDisplayProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC78B25FA9DEC0098B6BB /* INVDDisplayProperties.m */; };
+		ACBDC79025FA9E8D0098B6BB /* INVDPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC78F25FA9E8D0098B6BB /* INVDPreview.m */; };
+		ACBDC79525FA9F6E0098B6BB /* INVDQuality.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC79325FA9F6E0098B6BB /* INVDQuality.m */; };
+		ACBDC79925FAA3310098B6BB /* INVDInvestmentStats.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC79725FAA3310098B6BB /* INVDInvestmentStats.m */; };
+		ACBDC79D25FAA4240098B6BB /* INVDSockets.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC79B25FAA4240098B6BB /* INVDSockets.m */; };
+		ACBDC7A125FAA49E0098B6BB /* INVDBackgroundColor.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7A025FAA49E0098B6BB /* INVDBackgroundColor.m */; };
+		ACBDC7A525FAA52A0098B6BB /* INVDSocketCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7A425FAA52A0098B6BB /* INVDSocketCategories.m */; };
+		ACBDC7A925FAA6070098B6BB /* INVDSocketEntries.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7A825FAA6070098B6BB /* INVDSocketEntries.m */; };
+		ACBDC7AD25FAA66E0098B6BB /* INVDInventory.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7AB25FAA66E0098B6BB /* INVDInventory.m */; };
+		ACBDC7C025FAD3450098B6BB /* INSTBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7B425FAD3420098B6BB /* INSTBaseClass.m */; };
+		ACBDC7C125FAD3450098B6BB /* INSTMessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7B725FAD3430098B6BB /* INSTMessageData.m */; };
+		ACBDC7C225FAD3450098B6BB /* INSTPrimaryStat.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7B825FAD3430098B6BB /* INSTPrimaryStat.m */; };
+		ACBDC7C325FAD3450098B6BB /* INSTInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7BD25FAD3450098B6BB /* INSTInstance.m */; };
+		ACBDC7C425FAD3450098B6BB /* INSTResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7BE25FAD3450098B6BB /* INSTResponse.m */; };
+		ACBDC7C525FAD3450098B6BB /* INSTData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7BF25FAD3450098B6BB /* INSTData.m */; };
+		ACBDC7C825FC3BA10098B6BB /* DestinyVendorDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = ACBDC7C725FC3BA10098B6BB /* DestinyVendorDefinition.json */; };
+		ACBDC7CB25FD486C0098B6BB /* DestinyVendorGroupDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = ACBDC7CA25FD486C0098B6BB /* DestinyVendorGroupDefinition.json */; };
+		ACBDC7DD25FD9A9E0098B6BB /* INVCBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7D025FD9A990098B6BB /* INVCBaseClass.m */; };
+		ACBDC7DE25FD9A9E0098B6BB /* INVCData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7D225FD9A9A0098B6BB /* INVCData.m */; };
+		ACBDC7DF25FD9A9E0098B6BB /* INVCMessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7D425FD9A9B0098B6BB /* INVCMessageData.m */; };
+		ACBDC7E025FD9A9E0098B6BB /* INVCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7D825FD9A9C0098B6BB /* INVCResponse.m */; };
+		ACBDC7E125FD9A9E0098B6BB /* INVCItems.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7DB25FD9A9E0098B6BB /* INVCItems.m */; };
+		ACBDC7E225FD9A9E0098B6BB /* INVCInventory.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBDC7DC25FD9A9E0098B6BB /* INVCInventory.m */; };
+		ACBDC7E525FDA9680098B6BB /* DestinyInventoryItemDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = ACBDC7E425FDA9680098B6BB /* DestinyInventoryItemDefinition.json */; };
+		ACCE04C9260A428400C389B2 /* ItemCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = ACCE04C7260A428400C389B2 /* ItemCollectionView.m */; };
+		ACCE04D0260BFC3D00C389B2 /* ItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ACCE04CF260BFC3D00C389B2 /* ItemTableViewCell.m */; };
+		ACCE04D5260D09AE00C389B2 /* ItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04D4260D09AE00C389B2 /* ItemTableViewCell.xib */; };
+		ACCE04D9260D0B6500C389B2 /* heavyAmmo.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04D8260D0B6500C389B2 /* heavyAmmo.png */; };
+		ACCE04E0260D4A9400C389B2 /* ItemCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ACCE04DE260D4A9400C389B2 /* ItemCollectionViewCell.m */; };
+		ACCE04E1260D4A9400C389B2 /* ItemCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04DF260D4A9400C389B2 /* ItemCollectionViewCell.xib */; };
+		ACCE04E6260D619B00C389B2 /* primaryAmmo.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04E4260D619B00C389B2 /* primaryAmmo.png */; };
+		ACCE04E7260D619B00C389B2 /* energyAmmo.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04E5260D619B00C389B2 /* energyAmmo.png */; };
+		ACCE04EC260F894000C389B2 /* damage_kinetic.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04EB260F894000C389B2 /* damage_kinetic.png */; };
+		ACCE04EF260F8A0E00C389B2 /* damage_solar.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04EE260F8A0E00C389B2 /* damage_solar.png */; };
+		ACCE04F6260F8AC000C389B2 /* damage_void.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04F4260F8AC000C389B2 /* damage_void.png */; };
+		ACCE04F7260F8AC000C389B2 /* damage_arc.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04F5260F8AC000C389B2 /* damage_arc.png */; };
+		ACCE0500260FC99400C389B2 /* weaponFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04FF260FC99400C389B2 /* weaponFrame.png */; };
 		ACE2D19025225C1700FF095A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D18F25225C1700FF095A /* AppDelegate.m */; };
 		ACE2D19325225C1700FF095A /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D19225225C1700FF095A /* SceneDelegate.m */; };
-		ACE2D19625225C1700FF095A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D19525225C1700FF095A /* ViewController.m */; };
+		ACE2D19625225C1700FF095A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D19525225C1700FF095A /* HomeViewController.m */; };
 		ACE2D19925225C1700FF095A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACE2D19725225C1700FF095A /* Main.storyboard */; };
 		ACE2D19B25225C1A00FF095A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACE2D19A25225C1A00FF095A /* Assets.xcassets */; };
 		ACE2D19E25225C1A00FF095A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACE2D19C25225C1A00FF095A /* LaunchScreen.storyboard */; };
@@ -66,7 +132,7 @@
 		ACE2D1B125225DB800FF095A /* USRMessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D1AC25225DB700FF095A /* USRMessageData.m */; };
 		ACE2D1BE25225DC200FF095A /* BaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D1B525225DC200FF095A /* BaseClass.m */; };
 		ACE2D1BF25225DC200FF095A /* Response.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D1B925225DC200FF095A /* Response.m */; };
-		ACE2D1C025225DC200FF095A /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D1BB25225DC200FF095A /* MessageData.m */; };
+		ACE2D1C025225DC200FF095A /* VNDMessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D1BB25225DC200FF095A /* VNDMessageData.m */; };
 		ACE2D1C125225DC200FF095A /* AccessToken.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D1BC25225DC200FF095A /* AccessToken.m */; };
 		ACE2D1C225225DC200FF095A /* RefreshToken.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D1BD25225DC200FF095A /* RefreshToken.m */; };
 		ACE2D1CF25225DDF00FF095A /* GLSMessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D1C525225DDF00FF095A /* GLSMessageData.m */; };
@@ -139,6 +205,59 @@
 		ACE2D27A25225DE900FF095A /* MBRResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D23725225DE900FF095A /* MBRResponse.m */; };
 		ACE2D27B25225DE900FF095A /* MBRBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D23A25225DE900FF095A /* MBRBaseClass.m */; };
 		ACE2D27C25225DE900FF095A /* MBRBungieNetUser.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D23B25225DE900FF095A /* MBRBungieNetUser.m */; };
+		ACE432C925EC194B006CEAB1 /* VNDVendors.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4327225EC1940006CEAB1 /* VNDVendors.m */; };
+		ACE432CE25EC194B006CEAB1 /* VNDCurrencyLookups.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4327A25EC1941006CEAB1 /* VNDCurrencyLookups.m */; };
+		ACE432D225EC194B006CEAB1 /* VNDSales.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4328625EC1942006CEAB1 /* VNDSales.m */; };
+		ACE432D325EC194B006CEAB1 /* Progression.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4328825EC1942006CEAB1 /* Progression.m */; };
+		ACE432D825EC194B006CEAB1 /* VNDMessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4329325EC1944006CEAB1 /* VNDMessageData.m */; };
+		ACE432D925EC194B006CEAB1 /* VNDBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4329425EC1944006CEAB1 /* VNDBaseClass.m */; };
+		ACE432DD25EC194B006CEAB1 /* VNDCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4329A25EC1944006CEAB1 /* VNDCategories.m */; };
+		ACE432E025EC194B006CEAB1 /* VNDData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4329F25EC1945006CEAB1 /* VNDData.m */; };
+		ACE432EC25EC194B006CEAB1 /* VNDGroups.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE432BB25EC1949006CEAB1 /* VNDGroups.m */; };
+		ACE432ED25EC194B006CEAB1 /* VNDVendorGroups.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE432BC25EC1949006CEAB1 /* VNDVendorGroups.m */; };
+		ACE432EE25EC194B006CEAB1 /* VNDResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE432BD25EC1949006CEAB1 /* VNDResponse.m */; };
+		ACE4331825EEE161006CEAB1 /* VGDBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4331425EEE161006CEAB1 /* VGDBaseClass.m */; };
+		ACE4331925EEE161006CEAB1 /* VendorGroupDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4331625EEE161006CEAB1 /* VendorGroupDefinition.m */; };
+		ACE4331D25EEE2F4006CEAB1 /* DestinyRaceDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = ACE4331C25EEE2F4006CEAB1 /* DestinyRaceDefinition.json */; };
+		ACE4332225F15355006CEAB1 /* NetworkAPISingleClient+Clan.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4332125F15355006CEAB1 /* NetworkAPISingleClient+Clan.m */; };
+		ACE4336A25F1570B006CEAB1 /* Founder.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4335025F15706006CEAB1 /* Founder.m */; };
+		ACE4336B25F1570B006CEAB1 /* CurrentUserMemberMap.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4335325F15707006CEAB1 /* CurrentUserMemberMap.m */; };
+		ACE4336C25F1570B006CEAB1 /* ClanInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4335425F15707006CEAB1 /* ClanInfo.m */; };
+		ACE4336D25F1570B006CEAB1 /* D2ClanProgressions.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4335525F15707006CEAB1 /* D2ClanProgressions.m */; };
+		ACE4336E25F1570B006CEAB1 /* CLNDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4335925F15708006CEAB1 /* CLNDetail.m */; };
+		ACE4336F25F1570B006CEAB1 /* CLNResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4335A25F15708006CEAB1 /* CLNResponse.m */; };
+		ACE4337025F1570B006CEAB1 /* CLNMessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4335C25F15708006CEAB1 /* CLNMessageData.m */; };
+		ACE4337125F1570B006CEAB1 /* Features.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4335F25F15709006CEAB1 /* Features.m */; };
+		ACE4337225F1570B006CEAB1 /* ClanBannerData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4336025F15709006CEAB1 /* ClanBannerData.m */; };
+		ACE4337325F1570B006CEAB1 /* CLNBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4336125F15709006CEAB1 /* CLNBaseClass.m */; };
+		ACE4337425F1570B006CEAB1 /* DestinyUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4336225F15709006CEAB1 /* DestinyUserInfo.m */; };
+		ACE4337525F1570B006CEAB1 /* ProgressionHashKey.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4336325F1570A006CEAB1 /* ProgressionHashKey.m */; };
+		ACE4337625F1570B006CEAB1 /* CurrentUserPotentialMemberMap.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4336525F1570A006CEAB1 /* CurrentUserPotentialMemberMap.m */; };
+		ACE4338A25F15B69006CEAB1 /* CLNMResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4337C25F15B67006CEAB1 /* CLNMResponse.m */; };
+		ACE4338B25F15B69006CEAB1 /* Query.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4337E25F15B67006CEAB1 /* Query.m */; };
+		ACE4338C25F15B69006CEAB1 /* CLNMBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4337F25F15B68006CEAB1 /* CLNMBaseClass.m */; };
+		ACE4338D25F15B69006CEAB1 /* CLNMMessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4338125F15B68006CEAB1 /* CLNMMessageData.m */; };
+		ACE4338E25F15B69006CEAB1 /* CLNMDestinyUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4338525F15B69006CEAB1 /* CLNMDestinyUserInfo.m */; };
+		ACE4338F25F15B69006CEAB1 /* Results.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4338625F15B69006CEAB1 /* Results.m */; };
+		ACE4339025F15B69006CEAB1 /* CLNMBungieNetUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4338825F15B69006CEAB1 /* CLNMBungieNetUserInfo.m */; };
+		ACE4339B25F1626D006CEAB1 /* GroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE4339A25F1626D006CEAB1 /* GroupViewController.m */; };
+		ACE433C125F54043006CEAB1 /* VNDDetailsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433A025F5403C006CEAB1 /* VNDDetailsAction.m */; };
+		ACE433C225F54043006CEAB1 /* VNDDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433A225F5403C006CEAB1 /* VNDDetails.m */; };
+		ACE433C325F54043006CEAB1 /* VNDDetailsInteractions.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433A425F5403D006CEAB1 /* VNDDetailsInteractions.m */; };
+		ACE433C425F54043006CEAB1 /* VNDDetailsCreationLevels.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433A625F5403D006CEAB1 /* VNDDetailsCreationLevels.m */; };
+		ACE433C525F54043006CEAB1 /* VNDDetailsDisplayProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433A825F5403E006CEAB1 /* VNDDetailsDisplayProperties.m */; };
+		ACE433C625F54043006CEAB1 /* VNDDetailsItemList.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433A925F5403E006CEAB1 /* VNDDetailsItemList.m */; };
+		ACE433C725F54043006CEAB1 /* VNDDetailsGroups.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433AC25F5403F006CEAB1 /* VNDDetailsGroups.m */; };
+		ACE433C825F54043006CEAB1 /* VNDDetailsCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433AD25F5403F006CEAB1 /* VNDDetailsCategories.m */; };
+		ACE433C925F54043006CEAB1 /* VNDDetailsReplies.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433AF25F5403F006CEAB1 /* VNDDetailsReplies.m */; };
+		ACE433CA25F54043006CEAB1 /* VNDDetailsSocketOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433B025F5403F006CEAB1 /* VNDDetailsSocketOverrides.m */; };
+		ACE433CB25F54043006CEAB1 /* VNDDetailsCurrencies.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433B125F54040006CEAB1 /* VNDDetailsCurrencies.m */; };
+		ACE433CC25F54043006CEAB1 /* VNDDetailsBungieNetEngineContractDestinyWorldDefinitionsIDestinyDisplayDefinitionDisplayProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433B525F54040006CEAB1 /* VNDDetailsBungieNetEngineContractDestinyWorldDefinitionsIDestinyDisplayDefinitionDisplayProperties.m */; };
+		ACE433CD25F54043006CEAB1 /* VNDDetailsLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433B925F54041006CEAB1 /* VNDDetailsLocations.m */; };
+		ACE433CE25F54043006CEAB1 /* VNDDetailsHeaderDisplayProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433BB25F54042006CEAB1 /* VNDDetailsHeaderDisplayProperties.m */; };
+		ACE433CF25F54043006CEAB1 /* VNDDetailsOriginalCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433BF25F54043006CEAB1 /* VNDDetailsOriginalCategories.m */; };
+		ACE433D025F54043006CEAB1 /* VNDDetailsDisplayCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE433C025F54043006CEAB1 /* VNDDetailsDisplayCategories.m */; };
+		ACE433E425F6EA0F006CEAB1 /* DestinyInventoryBucketDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = ACE433E325F6EA0F006CEAB1 /* DestinyInventoryBucketDefinition.json */; };
 		ACF3C2D0252BCA1C00C41679 /* LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACF3C2CF252BCA1C00C41679 /* LaunchViewController.m */; };
 		ACF3C2DD252E273D00C41679 /* NetworkAPISingleClient.m in Sources */ = {isa = PBXBuildFile; fileRef = ACF3C2DC252E273D00C41679 /* NetworkAPISingleClient.m */; };
 		ACF3C2F5252E27B700C41679 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = ACF3C2E4252E27B700C41679 /* AFImageRequestOperation.m */; };
@@ -190,6 +309,31 @@
 		AC00AFD22537721900922C2B /* GuardianCellTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GuardianCellTableView.h; sourceTree = "<group>"; };
 		AC00AFD32537721900922C2B /* GuardianCellTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GuardianCellTableView.m; sourceTree = "<group>"; };
 		AC00AFD42537721900922C2B /* GuardianCellTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GuardianCellTableView.xib; sourceTree = "<group>"; };
+		AC03956126056FF9009951D3 /* WeaponsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeaponsTableViewController.h; sourceTree = "<group>"; };
+		AC03956226056FF9009951D3 /* WeaponsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeaponsTableViewController.m; sourceTree = "<group>"; };
+		AC03956F260667E2009951D3 /* ArmorTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArmorTableViewController.h; sourceTree = "<group>"; };
+		AC039570260667F0009951D3 /* ArmorTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArmorTableViewController.m; sourceTree = "<group>"; };
+		AC243A8E25F82B3D005DC7B6 /* BCKBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCKBaseClass.h; sourceTree = "<group>"; };
+		AC243A8F25F82B3D005DC7B6 /* BCKDisplayProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCKDisplayProperties.m; sourceTree = "<group>"; };
+		AC243A9025F82B3E005DC7B6 /* DestinyInventoryBucketDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinyInventoryBucketDefinition.m; sourceTree = "<group>"; };
+		AC243A9125F82B3E005DC7B6 /* DestinyInventoryBucketDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinyInventoryBucketDefinition.h; sourceTree = "<group>"; };
+		AC243A9225F82B3E005DC7B6 /* BCKDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCKDataModels.h; sourceTree = "<group>"; };
+		AC243A9325F82B3E005DC7B6 /* BCKDisplayProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCKDisplayProperties.h; sourceTree = "<group>"; };
+		AC243A9425F82B3E005DC7B6 /* BCKBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCKBaseClass.m; sourceTree = "<group>"; };
+		AC243A9A25F93651005DC7B6 /* DestinyItemCategoryDefinition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DestinyItemCategoryDefinition.json; sourceTree = "<group>"; };
+		AC2C7917255742950060AD98 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		AC2C7918255742A40060AD98 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		AC2C7924255896490060AD98 /* Vanguard_1X.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Vanguard_1X.jpeg; sourceTree = "<group>"; };
+		AC2C7927255896AF0060AD98 /* Vanguard_2X.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Vanguard_2X.jpeg; sourceTree = "<group>"; };
+		AC2C792A255896CF0060AD98 /* Vanguard_3X.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Vanguard_3X.jpeg; sourceTree = "<group>"; };
+		AC2C792F2558A62E0060AD98 /* MembershipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MembershipViewController.h; sourceTree = "<group>"; };
+		AC2C79302558A6390060AD98 /* MembershipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MembershipViewController.m; sourceTree = "<group>"; };
+		AC7942A825FDB06E00B30F2A /* TRXBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRXBaseClass.m; sourceTree = "<group>"; };
+		AC7942A925FDB06F00B30F2A /* TRXBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRXBaseClass.h; sourceTree = "<group>"; };
+		AC7942AA25FDB06F00B30F2A /* TRXDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRXDataModels.h; sourceTree = "<group>"; };
+		AC7942AE25FE970500B30F2A /* LCKBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LCKBaseClass.h; path = Models/TransferItem/LCKBaseClass.h; sourceTree = SOURCE_ROOT; };
+		AC7942AF25FE971D00B30F2A /* LCKBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LCKBaseClass.m; path = Models/TransferItem/LCKBaseClass.m; sourceTree = SOURCE_ROOT; };
+		AC7942B225FE972900B30F2A /* LCKDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LCKDataModels.h; path = Models/TransferItem/LCKDataModels.h; sourceTree = SOURCE_ROOT; };
 		ACA059D125320FEA008CB2BD /* MNFBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MNFBaseClass.h; sourceTree = "<group>"; };
 		ACA059D225320FEA008CB2BD /* Es.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Es.m; sourceTree = "<group>"; };
 		ACA059D325320FEA008CB2BD /* MNFMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MNFMessageData.h; sourceTree = "<group>"; };
@@ -250,7 +394,7 @@
 		ACA05A3825336A4E008CB2BD /* WarlockClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WarlockClass.m; sourceTree = "<group>"; };
 		ACA05A3925336A4E008CB2BD /* HunterClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HunterClass.m; sourceTree = "<group>"; };
 		ACA05A3A25336A4E008CB2BD /* GenderedClassNamesByGenderHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenderedClassNamesByGenderHash.m; sourceTree = "<group>"; };
-		ACA05A3B25336A4E008CB2BD /* DisplayProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayProperties.m; sourceTree = "<group>"; };
+		ACA05A3B25336A4E008CB2BD /* BCKDisplayProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCKDisplayProperties.m; sourceTree = "<group>"; };
 		ACA05A3C25336A4F008CB2BD /* DCDDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCDDataModels.h; sourceTree = "<group>"; };
 		ACA05A3D25336A4F008CB2BD /* GenderedClassNamesByGenderHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenderedClassNamesByGenderHash.h; sourceTree = "<group>"; };
 		ACA05A3E25336A4F008CB2BD /* DisplayProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayProperties.h; sourceTree = "<group>"; };
@@ -267,13 +411,109 @@
 		ACA05A6A2533B7E4008CB2BD /* DestinyAchievementDefinition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DestinyAchievementDefinition.json; sourceTree = "<group>"; };
 		ACA05A6D2533B976008CB2BD /* Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		ACA05A6E2533B976008CB2BD /* Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
+		ACB6981225EAFF7800EF7FD6 /* ItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemsViewController.h; sourceTree = "<group>"; };
+		ACB6981325EAFF8400EF7FD6 /* ItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemsViewController.m; sourceTree = "<group>"; };
+		ACBDC66125F950E90098B6BB /* ITMCATBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITMCATBaseClass.h; sourceTree = "<group>"; };
+		ACBDC66225F950E90098B6BB /* ITMCATBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITMCATBaseClass.m; sourceTree = "<group>"; };
+		ACBDC66325F950EA0098B6BB /* DestinyItemCategoryDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinyItemCategoryDefinition.m; sourceTree = "<group>"; };
+		ACBDC66425F950EA0098B6BB /* ITMCATDisplayProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITMCATDisplayProperties.h; sourceTree = "<group>"; };
+		ACBDC66525F950EA0098B6BB /* ITMCATDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITMCATDataModels.h; sourceTree = "<group>"; };
+		ACBDC66625F950EA0098B6BB /* DestinyItemCategoryDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinyItemCategoryDefinition.h; sourceTree = "<group>"; };
+		ACBDC66725F950EA0098B6BB /* ITMCATDisplayProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITMCATDisplayProperties.m; sourceTree = "<group>"; };
+		ACBDC66D25F954C60098B6BB /* DestinyItemTierTypeDefinition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DestinyItemTierTypeDefinition.json; sourceTree = "<group>"; };
+		ACBDC67125F955B50098B6BB /* DestinyItemTierTypeDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinyItemTierTypeDefinition.m; sourceTree = "<group>"; };
+		ACBDC67225F955B50098B6BB /* ITMTBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITMTBaseClass.m; sourceTree = "<group>"; };
+		ACBDC67325F955B50098B6BB /* ITMTBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITMTBaseClass.h; sourceTree = "<group>"; };
+		ACBDC67425F955B50098B6BB /* DestinyItemTierTypeDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinyItemTierTypeDefinition.h; sourceTree = "<group>"; };
+		ACBDC67525F955B60098B6BB /* ITMTDisplayProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITMTDisplayProperties.h; sourceTree = "<group>"; };
+		ACBDC67625F955B60098B6BB /* ITMTDisplayProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITMTDisplayProperties.m; sourceTree = "<group>"; };
+		ACBDC67725F955B60098B6BB /* ITMTInfusionProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITMTInfusionProcess.h; sourceTree = "<group>"; };
+		ACBDC67825F955B70098B6BB /* ITMTInfusionProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITMTInfusionProcess.m; sourceTree = "<group>"; };
+		ACBDC67925F955B70098B6BB /* ITMTDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITMTDataModels.h; sourceTree = "<group>"; };
+		ACBDC68125F95B0B0098B6BB /* ItemCellTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemCellTableView.h; sourceTree = "<group>"; };
+		ACBDC68225F95B180098B6BB /* ItemCellTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemCellTableView.m; sourceTree = "<group>"; };
+		ACBDC68525F95B250098B6BB /* ItemCellTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemCellTableView.xib; sourceTree = "<group>"; };
+		ACBDC73325F99A370098B6BB /* ITMEItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITMEItems.h; sourceTree = "<group>"; };
+		ACBDC73425F99A370098B6BB /* ITMEDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITMEDataModels.h; sourceTree = "<group>"; };
+		ACBDC73525F99A380098B6BB /* ITMEItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITMEItems.m; sourceTree = "<group>"; };
+		ACBDC73625F99A380098B6BB /* ITMEBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITMEBaseClass.m; sourceTree = "<group>"; };
+		ACBDC73725F99A380098B6BB /* ITMEBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITMEBaseClass.h; sourceTree = "<group>"; };
+		ACBDC77E25FA9B480098B6BB /* INVDDestinyInventoryBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDDestinyInventoryBaseClass.m; sourceTree = "<group>"; };
+		ACBDC77F25FA9B480098B6BB /* INVDDestinyInventoryBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDDestinyInventoryBaseClass.h; sourceTree = "<group>"; };
+		ACBDC78225FA9B8A0098B6BB /* INVDResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDResponse.m; sourceTree = "<group>"; };
+		ACBDC78325FA9B8B0098B6BB /* INVDResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDResponse.h; sourceTree = "<group>"; };
+		ACBDC78625FA9C2C0098B6BB /* INVDMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDMessageData.h; sourceTree = "<group>"; };
+		ACBDC78725FA9C870098B6BB /* INVDMessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDMessageData.m; sourceTree = "<group>"; };
+		ACBDC78A25FA9DEC0098B6BB /* INVDDisplayProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDDisplayProperties.h; sourceTree = "<group>"; };
+		ACBDC78B25FA9DEC0098B6BB /* INVDDisplayProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDDisplayProperties.m; sourceTree = "<group>"; };
+		ACBDC78E25FA9E8D0098B6BB /* INVDPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDPreview.h; sourceTree = "<group>"; };
+		ACBDC78F25FA9E8D0098B6BB /* INVDPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDPreview.m; sourceTree = "<group>"; };
+		ACBDC79325FA9F6E0098B6BB /* INVDQuality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDQuality.m; sourceTree = "<group>"; };
+		ACBDC79425FA9F6E0098B6BB /* INVDQuality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDQuality.h; sourceTree = "<group>"; };
+		ACBDC79725FAA3310098B6BB /* INVDInvestmentStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDInvestmentStats.m; sourceTree = "<group>"; };
+		ACBDC79825FAA3310098B6BB /* INVDInvestmentStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDInvestmentStats.h; sourceTree = "<group>"; };
+		ACBDC79B25FAA4240098B6BB /* INVDSockets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDSockets.m; sourceTree = "<group>"; };
+		ACBDC79C25FAA4240098B6BB /* INVDSockets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDSockets.h; sourceTree = "<group>"; };
+		ACBDC79F25FAA49E0098B6BB /* INVDBackgroundColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDBackgroundColor.h; sourceTree = "<group>"; };
+		ACBDC7A025FAA49E0098B6BB /* INVDBackgroundColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDBackgroundColor.m; sourceTree = "<group>"; };
+		ACBDC7A325FAA52A0098B6BB /* INVDSocketCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDSocketCategories.h; sourceTree = "<group>"; };
+		ACBDC7A425FAA52A0098B6BB /* INVDSocketCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDSocketCategories.m; sourceTree = "<group>"; };
+		ACBDC7A725FAA6070098B6BB /* INVDSocketEntries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDSocketEntries.h; sourceTree = "<group>"; };
+		ACBDC7A825FAA6070098B6BB /* INVDSocketEntries.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDSocketEntries.m; sourceTree = "<group>"; };
+		ACBDC7AB25FAA66E0098B6BB /* INVDInventory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVDInventory.m; sourceTree = "<group>"; };
+		ACBDC7AC25FAA66E0098B6BB /* INVDInventory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVDInventory.h; sourceTree = "<group>"; };
+		ACBDC7B325FAD3420098B6BB /* INSTInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSTInstance.h; sourceTree = "<group>"; };
+		ACBDC7B425FAD3420098B6BB /* INSTBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSTBaseClass.m; sourceTree = "<group>"; };
+		ACBDC7B525FAD3430098B6BB /* INSTDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSTDataModels.h; sourceTree = "<group>"; };
+		ACBDC7B625FAD3430098B6BB /* INSTData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSTData.h; sourceTree = "<group>"; };
+		ACBDC7B725FAD3430098B6BB /* INSTMessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSTMessageData.m; sourceTree = "<group>"; };
+		ACBDC7B825FAD3430098B6BB /* INSTPrimaryStat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSTPrimaryStat.m; sourceTree = "<group>"; };
+		ACBDC7B925FAD3440098B6BB /* INSTMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSTMessageData.h; sourceTree = "<group>"; };
+		ACBDC7BA25FAD3440098B6BB /* INSTPrimaryStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSTPrimaryStat.h; sourceTree = "<group>"; };
+		ACBDC7BB25FAD3440098B6BB /* INSTResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSTResponse.h; sourceTree = "<group>"; };
+		ACBDC7BC25FAD3440098B6BB /* INSTBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INSTBaseClass.h; sourceTree = "<group>"; };
+		ACBDC7BD25FAD3450098B6BB /* INSTInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSTInstance.m; sourceTree = "<group>"; };
+		ACBDC7BE25FAD3450098B6BB /* INSTResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSTResponse.m; sourceTree = "<group>"; };
+		ACBDC7BF25FAD3450098B6BB /* INSTData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INSTData.m; sourceTree = "<group>"; };
+		ACBDC7C725FC3BA10098B6BB /* DestinyVendorDefinition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DestinyVendorDefinition.json; sourceTree = "<group>"; };
+		ACBDC7CA25FD486C0098B6BB /* DestinyVendorGroupDefinition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DestinyVendorGroupDefinition.json; sourceTree = "<group>"; };
+		ACBDC7D025FD9A990098B6BB /* INVCBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVCBaseClass.m; sourceTree = "<group>"; };
+		ACBDC7D125FD9A9A0098B6BB /* INVCData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVCData.h; sourceTree = "<group>"; };
+		ACBDC7D225FD9A9A0098B6BB /* INVCData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVCData.m; sourceTree = "<group>"; };
+		ACBDC7D325FD9A9A0098B6BB /* INVCDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVCDataModels.h; sourceTree = "<group>"; };
+		ACBDC7D425FD9A9B0098B6BB /* INVCMessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVCMessageData.m; sourceTree = "<group>"; };
+		ACBDC7D525FD9A9B0098B6BB /* INVCResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVCResponse.h; sourceTree = "<group>"; };
+		ACBDC7D625FD9A9C0098B6BB /* INVCItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVCItems.h; sourceTree = "<group>"; };
+		ACBDC7D725FD9A9C0098B6BB /* INVCBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVCBaseClass.h; sourceTree = "<group>"; };
+		ACBDC7D825FD9A9C0098B6BB /* INVCResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVCResponse.m; sourceTree = "<group>"; };
+		ACBDC7D925FD9A9D0098B6BB /* INVCMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVCMessageData.h; sourceTree = "<group>"; };
+		ACBDC7DA25FD9A9D0098B6BB /* INVCInventory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVCInventory.h; sourceTree = "<group>"; };
+		ACBDC7DB25FD9A9E0098B6BB /* INVCItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVCItems.m; sourceTree = "<group>"; };
+		ACBDC7DC25FD9A9E0098B6BB /* INVCInventory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVCInventory.m; sourceTree = "<group>"; };
+		ACBDC7E425FDA9680098B6BB /* DestinyInventoryItemDefinition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DestinyInventoryItemDefinition.json; sourceTree = "<group>"; };
+		ACCE04C6260A428400C389B2 /* ItemCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemCollectionView.h; sourceTree = "<group>"; };
+		ACCE04C7260A428400C389B2 /* ItemCollectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ItemCollectionView.m; sourceTree = "<group>"; };
+		ACCE04CE260BFC2E00C389B2 /* ItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemTableViewCell.h; sourceTree = "<group>"; };
+		ACCE04CF260BFC3D00C389B2 /* ItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemTableViewCell.m; sourceTree = "<group>"; };
+		ACCE04D4260D09AE00C389B2 /* ItemTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemTableViewCell.xib; sourceTree = "<group>"; };
+		ACCE04D8260D0B6500C389B2 /* heavyAmmo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heavyAmmo.png; sourceTree = "<group>"; };
+		ACCE04DD260D4A9400C389B2 /* ItemCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemCollectionViewCell.h; sourceTree = "<group>"; };
+		ACCE04DE260D4A9400C389B2 /* ItemCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ItemCollectionViewCell.m; sourceTree = "<group>"; };
+		ACCE04DF260D4A9400C389B2 /* ItemCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemCollectionViewCell.xib; sourceTree = "<group>"; };
+		ACCE04E4260D619B00C389B2 /* primaryAmmo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = primaryAmmo.png; sourceTree = "<group>"; };
+		ACCE04E5260D619B00C389B2 /* energyAmmo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = energyAmmo.png; sourceTree = "<group>"; };
+		ACCE04EB260F894000C389B2 /* damage_kinetic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = damage_kinetic.png; sourceTree = "<group>"; };
+		ACCE04EE260F8A0E00C389B2 /* damage_solar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = damage_solar.png; sourceTree = "<group>"; };
+		ACCE04F4260F8AC000C389B2 /* damage_void.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = damage_void.png; sourceTree = "<group>"; };
+		ACCE04F5260F8AC000C389B2 /* damage_arc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = damage_arc.png; sourceTree = "<group>"; };
+		ACCE04FF260FC99400C389B2 /* weaponFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weaponFrame.png; sourceTree = "<group>"; };
 		ACE2D18B25225C1700FF095A /* DestinyHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DestinyHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE2D18E25225C1700FF095A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		ACE2D18F25225C1700FF095A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		ACE2D19125225C1700FF095A /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		ACE2D19225225C1700FF095A /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		ACE2D19425225C1700FF095A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		ACE2D19525225C1700FF095A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		ACE2D19425225C1700FF095A /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		ACE2D19525225C1700FF095A /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		ACE2D19825225C1700FF095A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ACE2D19A25225C1A00FF095A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ACE2D19D25225C1A00FF095A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -294,7 +534,7 @@
 		ACE2D1B825225DC200FF095A /* MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageData.h; sourceTree = "<group>"; };
 		ACE2D1B925225DC200FF095A /* Response.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Response.m; sourceTree = "<group>"; };
 		ACE2D1BA25225DC200FF095A /* BaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseClass.h; sourceTree = "<group>"; };
-		ACE2D1BB25225DC200FF095A /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageData.m; sourceTree = "<group>"; };
+		ACE2D1BB25225DC200FF095A /* VNDMessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDMessageData.m; sourceTree = "<group>"; };
 		ACE2D1BC25225DC200FF095A /* AccessToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessToken.m; sourceTree = "<group>"; };
 		ACE2D1BD25225DC200FF095A /* RefreshToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RefreshToken.m; sourceTree = "<group>"; };
 		ACE2D1C425225DDF00FF095A /* GLSBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLSBaseClass.h; sourceTree = "<group>"; };
@@ -407,6 +647,115 @@
 		ACE2D23925225DE900FF095A /* MBRMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBRMessageData.h; sourceTree = "<group>"; };
 		ACE2D23A25225DE900FF095A /* MBRBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRBaseClass.m; sourceTree = "<group>"; };
 		ACE2D23B25225DE900FF095A /* MBRBungieNetUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRBungieNetUser.m; sourceTree = "<group>"; };
+		ACE4327225EC1940006CEAB1 /* VNDVendors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDVendors.m; sourceTree = "<group>"; };
+		ACE4327A25EC1941006CEAB1 /* VNDCurrencyLookups.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDCurrencyLookups.m; sourceTree = "<group>"; };
+		ACE4327C25EC1941006CEAB1 /* VNDDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDataModels.h; sourceTree = "<group>"; };
+		ACE4327D25EC1941006CEAB1 /* VNDResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDResponse.h; sourceTree = "<group>"; };
+		ACE4327F25EC1941006CEAB1 /* VNDCurrencyLookups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDCurrencyLookups.h; sourceTree = "<group>"; };
+		ACE4328025EC1941006CEAB1 /* VNDVendorGroups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDVendorGroups.h; sourceTree = "<group>"; };
+		ACE4328225EC1942006CEAB1 /* VNDVendors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDVendors.h; sourceTree = "<group>"; };
+		ACE4328625EC1942006CEAB1 /* VNDSales.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDSales.m; sourceTree = "<group>"; };
+		ACE4328825EC1942006CEAB1 /* Progression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Progression.m; sourceTree = "<group>"; };
+		ACE4329325EC1944006CEAB1 /* VNDMessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDMessageData.m; sourceTree = "<group>"; };
+		ACE4329425EC1944006CEAB1 /* VNDBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDBaseClass.m; sourceTree = "<group>"; };
+		ACE4329625EC1944006CEAB1 /* VNDData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDData.h; sourceTree = "<group>"; };
+		ACE4329A25EC1944006CEAB1 /* VNDCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDCategories.m; sourceTree = "<group>"; };
+		ACE4329C25EC1945006CEAB1 /* VNDMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDMessageData.h; sourceTree = "<group>"; };
+		ACE4329F25EC1945006CEAB1 /* VNDData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDData.m; sourceTree = "<group>"; };
+		ACE432A025EC1945006CEAB1 /* VNDBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDBaseClass.h; sourceTree = "<group>"; };
+		ACE432A525EC1946006CEAB1 /* VNDSales.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDSales.h; sourceTree = "<group>"; };
+		ACE432AA25EC1947006CEAB1 /* VNDGroups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDGroups.h; sourceTree = "<group>"; };
+		ACE432B225EC1948006CEAB1 /* Progression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Progression.h; sourceTree = "<group>"; };
+		ACE432BB25EC1949006CEAB1 /* VNDGroups.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDGroups.m; sourceTree = "<group>"; };
+		ACE432BC25EC1949006CEAB1 /* VNDVendorGroups.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDVendorGroups.m; sourceTree = "<group>"; };
+		ACE432BD25EC1949006CEAB1 /* VNDResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDResponse.m; sourceTree = "<group>"; };
+		ACE432C325EC194A006CEAB1 /* VNDCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDCategories.h; sourceTree = "<group>"; };
+		ACE4331325EEE161006CEAB1 /* VGDDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGDDataModels.h; sourceTree = "<group>"; };
+		ACE4331425EEE161006CEAB1 /* VGDBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGDBaseClass.m; sourceTree = "<group>"; };
+		ACE4331525EEE161006CEAB1 /* VGDBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGDBaseClass.h; sourceTree = "<group>"; };
+		ACE4331625EEE161006CEAB1 /* VendorGroupDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VendorGroupDefinition.m; sourceTree = "<group>"; };
+		ACE4331725EEE161006CEAB1 /* VendorGroupDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VendorGroupDefinition.h; sourceTree = "<group>"; };
+		ACE4331C25EEE2F4006CEAB1 /* DestinyRaceDefinition.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DestinyRaceDefinition.json; sourceTree = "<group>"; };
+		ACE4332025F15348006CEAB1 /* NetworkAPISingleClient+Clan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NetworkAPISingleClient+Clan.h"; sourceTree = "<group>"; };
+		ACE4332125F15355006CEAB1 /* NetworkAPISingleClient+Clan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NetworkAPISingleClient+Clan.m"; sourceTree = "<group>"; };
+		ACE4334F25F15706006CEAB1 /* ProgressionHashKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressionHashKey.h; sourceTree = "<group>"; };
+		ACE4335025F15706006CEAB1 /* Founder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Founder.m; sourceTree = "<group>"; };
+		ACE4335125F15707006CEAB1 /* CurrentUserMemberMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentUserMemberMap.h; sourceTree = "<group>"; };
+		ACE4335225F15707006CEAB1 /* ClanBannerData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClanBannerData.h; sourceTree = "<group>"; };
+		ACE4335325F15707006CEAB1 /* CurrentUserMemberMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentUserMemberMap.m; sourceTree = "<group>"; };
+		ACE4335425F15707006CEAB1 /* ClanInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClanInfo.m; sourceTree = "<group>"; };
+		ACE4335525F15707006CEAB1 /* D2ClanProgressions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = D2ClanProgressions.m; sourceTree = "<group>"; };
+		ACE4335625F15707006CEAB1 /* CLNMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNMessageData.h; sourceTree = "<group>"; };
+		ACE4335725F15708006CEAB1 /* CLNDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNDataModels.h; sourceTree = "<group>"; };
+		ACE4335825F15708006CEAB1 /* CLNResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNResponse.h; sourceTree = "<group>"; };
+		ACE4335925F15708006CEAB1 /* CLNDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNDetail.m; sourceTree = "<group>"; };
+		ACE4335A25F15708006CEAB1 /* CLNResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNResponse.m; sourceTree = "<group>"; };
+		ACE4335B25F15708006CEAB1 /* D2ClanProgressions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = D2ClanProgressions.h; sourceTree = "<group>"; };
+		ACE4335C25F15708006CEAB1 /* CLNMessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNMessageData.m; sourceTree = "<group>"; };
+		ACE4335D25F15709006CEAB1 /* Features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Features.h; sourceTree = "<group>"; };
+		ACE4335E25F15709006CEAB1 /* CLNBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNBaseClass.h; sourceTree = "<group>"; };
+		ACE4335F25F15709006CEAB1 /* Features.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Features.m; sourceTree = "<group>"; };
+		ACE4336025F15709006CEAB1 /* ClanBannerData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClanBannerData.m; sourceTree = "<group>"; };
+		ACE4336125F15709006CEAB1 /* CLNBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNBaseClass.m; sourceTree = "<group>"; };
+		ACE4336225F15709006CEAB1 /* DestinyUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinyUserInfo.m; sourceTree = "<group>"; };
+		ACE4336325F1570A006CEAB1 /* ProgressionHashKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressionHashKey.m; sourceTree = "<group>"; };
+		ACE4336425F1570A006CEAB1 /* CLNDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNDetail.h; sourceTree = "<group>"; };
+		ACE4336525F1570A006CEAB1 /* CurrentUserPotentialMemberMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentUserPotentialMemberMap.m; sourceTree = "<group>"; };
+		ACE4336625F1570A006CEAB1 /* CurrentUserPotentialMemberMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentUserPotentialMemberMap.h; sourceTree = "<group>"; };
+		ACE4336725F1570A006CEAB1 /* Founder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Founder.h; sourceTree = "<group>"; };
+		ACE4336825F1570A006CEAB1 /* ClanInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClanInfo.h; sourceTree = "<group>"; };
+		ACE4336925F1570B006CEAB1 /* DestinyUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinyUserInfo.h; sourceTree = "<group>"; };
+		ACE4337B25F15B67006CEAB1 /* Results.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Results.h; sourceTree = "<group>"; };
+		ACE4337C25F15B67006CEAB1 /* CLNMResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNMResponse.m; sourceTree = "<group>"; };
+		ACE4337D25F15B67006CEAB1 /* CLNMMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNMMessageData.h; sourceTree = "<group>"; };
+		ACE4337E25F15B67006CEAB1 /* Query.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Query.m; sourceTree = "<group>"; };
+		ACE4337F25F15B68006CEAB1 /* CLNMBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNMBaseClass.m; sourceTree = "<group>"; };
+		ACE4338025F15B68006CEAB1 /* Query.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Query.h; sourceTree = "<group>"; };
+		ACE4338125F15B68006CEAB1 /* CLNMMessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNMMessageData.m; sourceTree = "<group>"; };
+		ACE4338225F15B68006CEAB1 /* CLNMDestinyUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNMDestinyUserInfo.h; sourceTree = "<group>"; };
+		ACE4338325F15B68006CEAB1 /* CLNMBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNMBaseClass.h; sourceTree = "<group>"; };
+		ACE4338425F15B68006CEAB1 /* CLNMDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNMDataModels.h; sourceTree = "<group>"; };
+		ACE4338525F15B69006CEAB1 /* CLNMDestinyUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNMDestinyUserInfo.m; sourceTree = "<group>"; };
+		ACE4338625F15B69006CEAB1 /* Results.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Results.m; sourceTree = "<group>"; };
+		ACE4338725F15B69006CEAB1 /* CLNMBungieNetUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNMBungieNetUserInfo.h; sourceTree = "<group>"; };
+		ACE4338825F15B69006CEAB1 /* CLNMBungieNetUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLNMBungieNetUserInfo.m; sourceTree = "<group>"; };
+		ACE4338925F15B69006CEAB1 /* CLNMResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLNMResponse.h; sourceTree = "<group>"; };
+		ACE4339925F16263006CEAB1 /* GroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupViewController.h; sourceTree = "<group>"; };
+		ACE4339A25F1626D006CEAB1 /* GroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupViewController.m; sourceTree = "<group>"; };
+		ACE433A025F5403C006CEAB1 /* VNDDetailsAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsAction.m; sourceTree = "<group>"; };
+		ACE433A125F5403C006CEAB1 /* VNDDetailsCreationLevels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsCreationLevels.h; sourceTree = "<group>"; };
+		ACE433A225F5403C006CEAB1 /* VNDDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetails.m; sourceTree = "<group>"; };
+		ACE433A325F5403D006CEAB1 /* VNDDetailsGroups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsGroups.h; sourceTree = "<group>"; };
+		ACE433A425F5403D006CEAB1 /* VNDDetailsInteractions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsInteractions.m; sourceTree = "<group>"; };
+		ACE433A525F5403D006CEAB1 /* VNDDetailsInteractions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsInteractions.h; sourceTree = "<group>"; };
+		ACE433A625F5403D006CEAB1 /* VNDDetailsCreationLevels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsCreationLevels.m; sourceTree = "<group>"; };
+		ACE433A725F5403D006CEAB1 /* VNDDetailsCurrencies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsCurrencies.h; sourceTree = "<group>"; };
+		ACE433A825F5403E006CEAB1 /* VNDDetailsDisplayProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsDisplayProperties.m; sourceTree = "<group>"; };
+		ACE433A925F5403E006CEAB1 /* VNDDetailsItemList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsItemList.m; sourceTree = "<group>"; };
+		ACE433AA25F5403E006CEAB1 /* VNDDetailsItemList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsItemList.h; sourceTree = "<group>"; };
+		ACE433AB25F5403E006CEAB1 /* VNDDetailsReplies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsReplies.h; sourceTree = "<group>"; };
+		ACE433AC25F5403F006CEAB1 /* VNDDetailsGroups.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsGroups.m; sourceTree = "<group>"; };
+		ACE433AD25F5403F006CEAB1 /* VNDDetailsCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsCategories.m; sourceTree = "<group>"; };
+		ACE433AE25F5403F006CEAB1 /* VNDDetailsOriginalCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsOriginalCategories.h; sourceTree = "<group>"; };
+		ACE433AF25F5403F006CEAB1 /* VNDDetailsReplies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsReplies.m; sourceTree = "<group>"; };
+		ACE433B025F5403F006CEAB1 /* VNDDetailsSocketOverrides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsSocketOverrides.m; sourceTree = "<group>"; };
+		ACE433B125F54040006CEAB1 /* VNDDetailsCurrencies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsCurrencies.m; sourceTree = "<group>"; };
+		ACE433B225F54040006CEAB1 /* VNDDetailsSocketOverrides.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsSocketOverrides.h; sourceTree = "<group>"; };
+		ACE433B325F54040006CEAB1 /* VNDDetailsBungieNetEngineContractDestinyWorldDefinitionsIDestinyDisplayDefinitionDisplayProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsBungieNetEngineContractDestinyWorldDefinitionsIDestinyDisplayDefinitionDisplayProperties.h; sourceTree = "<group>"; };
+		ACE433B425F54040006CEAB1 /* VNDDetailsDisplayProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsDisplayProperties.h; sourceTree = "<group>"; };
+		ACE433B525F54040006CEAB1 /* VNDDetailsBungieNetEngineContractDestinyWorldDefinitionsIDestinyDisplayDefinitionDisplayProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsBungieNetEngineContractDestinyWorldDefinitionsIDestinyDisplayDefinitionDisplayProperties.m; sourceTree = "<group>"; };
+		ACE433B625F54040006CEAB1 /* VNDDetailsHeaderDisplayProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsHeaderDisplayProperties.h; sourceTree = "<group>"; };
+		ACE433B725F54041006CEAB1 /* VNDDetailsCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsCategories.h; sourceTree = "<group>"; };
+		ACE433B825F54041006CEAB1 /* VNDDetailsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsAction.h; sourceTree = "<group>"; };
+		ACE433B925F54041006CEAB1 /* VNDDetailsLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsLocations.m; sourceTree = "<group>"; };
+		ACE433BA25F54041006CEAB1 /* VNDDetailsDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsDataModels.h; sourceTree = "<group>"; };
+		ACE433BB25F54042006CEAB1 /* VNDDetailsHeaderDisplayProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsHeaderDisplayProperties.m; sourceTree = "<group>"; };
+		ACE433BC25F54042006CEAB1 /* VNDDetailsDisplayCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsDisplayCategories.h; sourceTree = "<group>"; };
+		ACE433BD25F54042006CEAB1 /* VNDDetailsLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetailsLocations.h; sourceTree = "<group>"; };
+		ACE433BE25F54042006CEAB1 /* VNDDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNDDetails.h; sourceTree = "<group>"; };
+		ACE433BF25F54043006CEAB1 /* VNDDetailsOriginalCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsOriginalCategories.m; sourceTree = "<group>"; };
+		ACE433C025F54043006CEAB1 /* VNDDetailsDisplayCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNDDetailsDisplayCategories.m; sourceTree = "<group>"; };
+		ACE433E325F6EA0F006CEAB1 /* DestinyInventoryBucketDefinition.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DestinyInventoryBucketDefinition.json; sourceTree = "<group>"; };
 		ACF3C2CE252BCA1C00C41679 /* LaunchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LaunchViewController.h; sourceTree = "<group>"; };
 		ACF3C2CF252BCA1C00C41679 /* LaunchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LaunchViewController.m; sourceTree = "<group>"; };
 		ACF3C2D9252E261600C41679 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -473,7 +822,7 @@
 		ACF3C371252FADF200C41679 /* tabProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabProfile.png; sourceTree = "<group>"; };
 		ACF3C374252FAE1E00C41679 /* tabGuardians.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabGuardians.png; sourceTree = "<group>"; };
 		ACF3C378252FAEDA00C41679 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
-		ACF3C379252FAEDA00C41679 /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		ACF3C379252FAEDA00C41679 /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; wrapsLines = 1; };
 		ACF3C3822530CA0B00C41679 /* NetworkAPISingleClient+LinkedProfiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NetworkAPISingleClient+LinkedProfiles.h"; sourceTree = "<group>"; };
 		ACF3C3832530CA2400C41679 /* NetworkAPISingleClient+LinkedProfiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NetworkAPISingleClient+LinkedProfiles.m"; sourceTree = "<group>"; };
 		ACF3C3872530CCB200C41679 /* GuardianViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuardianViewController.h; sourceTree = "<group>"; };
@@ -497,8 +846,53 @@
 				AC00AFD22537721900922C2B /* GuardianCellTableView.h */,
 				AC00AFD32537721900922C2B /* GuardianCellTableView.m */,
 				AC00AFD42537721900922C2B /* GuardianCellTableView.xib */,
+				ACBDC68125F95B0B0098B6BB /* ItemCellTableView.h */,
+				ACBDC68225F95B180098B6BB /* ItemCellTableView.m */,
+				ACBDC68525F95B250098B6BB /* ItemCellTableView.xib */,
+				ACCE04DD260D4A9400C389B2 /* ItemCollectionViewCell.h */,
+				ACCE04DE260D4A9400C389B2 /* ItemCollectionViewCell.m */,
+				ACCE04DF260D4A9400C389B2 /* ItemCollectionViewCell.xib */,
+				ACCE04C6260A428400C389B2 /* ItemCollectionView.h */,
+				ACCE04C7260A428400C389B2 /* ItemCollectionView.m */,
+				ACCE04CE260BFC2E00C389B2 /* ItemTableViewCell.h */,
+				ACCE04CF260BFC3D00C389B2 /* ItemTableViewCell.m */,
+				ACCE04D4260D09AE00C389B2 /* ItemTableViewCell.xib */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		AC243A8D25F82B24005DC7B6 /* ItemBucketDefinition */ = {
+			isa = PBXGroup;
+			children = (
+				AC243A8E25F82B3D005DC7B6 /* BCKBaseClass.h */,
+				AC243A9425F82B3E005DC7B6 /* BCKBaseClass.m */,
+				AC243A9225F82B3E005DC7B6 /* BCKDataModels.h */,
+				AC243A9125F82B3E005DC7B6 /* DestinyInventoryBucketDefinition.h */,
+				AC243A9025F82B3E005DC7B6 /* DestinyInventoryBucketDefinition.m */,
+				AC243A9325F82B3E005DC7B6 /* BCKDisplayProperties.h */,
+				AC243A8F25F82B3D005DC7B6 /* BCKDisplayProperties.m */,
+			);
+			path = ItemBucketDefinition;
+			sourceTree = "<group>";
+		};
+		AC7942A725FDB03B00B30F2A /* TransferItem */ = {
+			isa = PBXGroup;
+			children = (
+				AC7942A925FDB06F00B30F2A /* TRXBaseClass.h */,
+				AC7942A825FDB06E00B30F2A /* TRXBaseClass.m */,
+				AC7942AA25FDB06F00B30F2A /* TRXDataModels.h */,
+			);
+			path = TransferItem;
+			sourceTree = "<group>";
+		};
+		AC7942AD25FE96DD00B30F2A /* LockItem */ = {
+			isa = PBXGroup;
+			children = (
+				AC7942B225FE972900B30F2A /* LCKDataModels.h */,
+				AC7942AF25FE971D00B30F2A /* LCKBaseClass.m */,
+				AC7942AE25FE970500B30F2A /* LCKBaseClass.h */,
+			);
+			path = LockItem;
 			sourceTree = "<group>";
 		};
 		ACA059D025320FCD008CB2BD /* Manifest */ = {
@@ -572,10 +966,17 @@
 		ACA05A31253362BD008CB2BD /* Content */ = {
 			isa = PBXGroup;
 			children = (
+				ACBDC7E425FDA9680098B6BB /* DestinyInventoryItemDefinition.json */,
 				ACA05A6A2533B7E4008CB2BD /* DestinyAchievementDefinition.json */,
 				ACA05A672533B748008CB2BD /* DestinyGenderDefinition.json */,
 				ACA05A642533B6A7008CB2BD /* DestinyClassDefinition.json */,
 				ACA05A3225336394008CB2BD /* Manifest.json */,
+				ACE4331C25EEE2F4006CEAB1 /* DestinyRaceDefinition.json */,
+				ACE433E325F6EA0F006CEAB1 /* DestinyInventoryBucketDefinition.json */,
+				AC243A9A25F93651005DC7B6 /* DestinyItemCategoryDefinition.json */,
+				ACBDC7CA25FD486C0098B6BB /* DestinyVendorGroupDefinition.json */,
+				ACBDC66D25F954C60098B6BB /* DestinyItemTierTypeDefinition.json */,
+				ACBDC7C725FC3BA10098B6BB /* DestinyVendorDefinition.json */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -593,13 +994,141 @@
 				ACA05A4325336A4F008CB2BD /* DCDBaseClass.h */,
 				ACA05A4125336A4F008CB2BD /* DCDBaseClass.m */,
 				ACA05A3E25336A4F008CB2BD /* DisplayProperties.h */,
-				ACA05A3B25336A4E008CB2BD /* DisplayProperties.m */,
+				ACA05A3B25336A4E008CB2BD /* BCKDisplayProperties.m */,
 				ACA05A4025336A4F008CB2BD /* GenderedClassNames.h */,
 				ACA05A4425336A4F008CB2BD /* GenderedClassNames.m */,
 				ACA05A3D25336A4F008CB2BD /* GenderedClassNamesByGenderHash.h */,
 				ACA05A3A25336A4E008CB2BD /* GenderedClassNamesByGenderHash.m */,
 			);
 			path = DestinyClassDefinition;
+			sourceTree = "<group>";
+		};
+		ACBDC66025F950AF0098B6BB /* ItemCategoryDefinition */ = {
+			isa = PBXGroup;
+			children = (
+				ACBDC66125F950E90098B6BB /* ITMCATBaseClass.h */,
+				ACBDC66225F950E90098B6BB /* ITMCATBaseClass.m */,
+				ACBDC66525F950EA0098B6BB /* ITMCATDataModels.h */,
+				ACBDC66625F950EA0098B6BB /* DestinyItemCategoryDefinition.h */,
+				ACBDC66325F950EA0098B6BB /* DestinyItemCategoryDefinition.m */,
+				ACBDC66425F950EA0098B6BB /* ITMCATDisplayProperties.h */,
+				ACBDC66725F950EA0098B6BB /* ITMCATDisplayProperties.m */,
+			);
+			path = ItemCategoryDefinition;
+			sourceTree = "<group>";
+		};
+		ACBDC67025F954F80098B6BB /* ItemTierDefinition */ = {
+			isa = PBXGroup;
+			children = (
+				ACBDC67425F955B50098B6BB /* DestinyItemTierTypeDefinition.h */,
+				ACBDC67125F955B50098B6BB /* DestinyItemTierTypeDefinition.m */,
+				ACBDC67325F955B50098B6BB /* ITMTBaseClass.h */,
+				ACBDC67225F955B50098B6BB /* ITMTBaseClass.m */,
+				ACBDC67925F955B70098B6BB /* ITMTDataModels.h */,
+				ACBDC67525F955B60098B6BB /* ITMTDisplayProperties.h */,
+				ACBDC67625F955B60098B6BB /* ITMTDisplayProperties.m */,
+				ACBDC67725F955B60098B6BB /* ITMTInfusionProcess.h */,
+				ACBDC67825F955B70098B6BB /* ITMTInfusionProcess.m */,
+			);
+			path = ItemTierDefinition;
+			sourceTree = "<group>";
+		};
+		ACBDC68A25F978B10098B6BB /* InventoryEquipedItems */ = {
+			isa = PBXGroup;
+			children = (
+				ACBDC73425F99A370098B6BB /* ITMEDataModels.h */,
+				ACBDC73325F99A370098B6BB /* ITMEItems.h */,
+				ACBDC73525F99A380098B6BB /* ITMEItems.m */,
+				ACBDC73725F99A380098B6BB /* ITMEBaseClass.h */,
+				ACBDC73625F99A380098B6BB /* ITMEBaseClass.m */,
+			);
+			path = InventoryEquipedItems;
+			sourceTree = "<group>";
+		};
+		ACBDC73F25F9C0A90098B6BB /* InventoryItemDefinition */ = {
+			isa = PBXGroup;
+			children = (
+				ACBDC79F25FAA49E0098B6BB /* INVDBackgroundColor.h */,
+				ACBDC7A025FAA49E0098B6BB /* INVDBackgroundColor.m */,
+				ACBDC79C25FAA4240098B6BB /* INVDSockets.h */,
+				ACBDC79B25FAA4240098B6BB /* INVDSockets.m */,
+				ACBDC7A725FAA6070098B6BB /* INVDSocketEntries.h */,
+				ACBDC7A825FAA6070098B6BB /* INVDSocketEntries.m */,
+				ACBDC7A325FAA52A0098B6BB /* INVDSocketCategories.h */,
+				ACBDC7A425FAA52A0098B6BB /* INVDSocketCategories.m */,
+				ACBDC79425FA9F6E0098B6BB /* INVDQuality.h */,
+				ACBDC79325FA9F6E0098B6BB /* INVDQuality.m */,
+				ACBDC78E25FA9E8D0098B6BB /* INVDPreview.h */,
+				ACBDC78F25FA9E8D0098B6BB /* INVDPreview.m */,
+				ACBDC78A25FA9DEC0098B6BB /* INVDDisplayProperties.h */,
+				ACBDC78B25FA9DEC0098B6BB /* INVDDisplayProperties.m */,
+				ACBDC79825FAA3310098B6BB /* INVDInvestmentStats.h */,
+				ACBDC79725FAA3310098B6BB /* INVDInvestmentStats.m */,
+				ACBDC7AC25FAA66E0098B6BB /* INVDInventory.h */,
+				ACBDC7AB25FAA66E0098B6BB /* INVDInventory.m */,
+				ACBDC78625FA9C2C0098B6BB /* INVDMessageData.h */,
+				ACBDC78725FA9C870098B6BB /* INVDMessageData.m */,
+				ACBDC78325FA9B8B0098B6BB /* INVDResponse.h */,
+				ACBDC78225FA9B8A0098B6BB /* INVDResponse.m */,
+				ACBDC77F25FA9B480098B6BB /* INVDDestinyInventoryBaseClass.h */,
+				ACBDC77E25FA9B480098B6BB /* INVDDestinyInventoryBaseClass.m */,
+			);
+			path = InventoryItemDefinition;
+			sourceTree = "<group>";
+		};
+		ACBDC7B225FAD2FF0098B6BB /* InstanceItemDefinition */ = {
+			isa = PBXGroup;
+			children = (
+				ACBDC7BC25FAD3440098B6BB /* INSTBaseClass.h */,
+				ACBDC7B425FAD3420098B6BB /* INSTBaseClass.m */,
+				ACBDC7B625FAD3430098B6BB /* INSTData.h */,
+				ACBDC7BF25FAD3450098B6BB /* INSTData.m */,
+				ACBDC7B525FAD3430098B6BB /* INSTDataModels.h */,
+				ACBDC7B325FAD3420098B6BB /* INSTInstance.h */,
+				ACBDC7BD25FAD3450098B6BB /* INSTInstance.m */,
+				ACBDC7B925FAD3440098B6BB /* INSTMessageData.h */,
+				ACBDC7B725FAD3430098B6BB /* INSTMessageData.m */,
+				ACBDC7BA25FAD3440098B6BB /* INSTPrimaryStat.h */,
+				ACBDC7B825FAD3430098B6BB /* INSTPrimaryStat.m */,
+				ACBDC7BB25FAD3440098B6BB /* INSTResponse.h */,
+				ACBDC7BE25FAD3450098B6BB /* INSTResponse.m */,
+			);
+			path = InstanceItemDefinition;
+			sourceTree = "<group>";
+		};
+		ACBDC7CF25FD9A7D0098B6BB /* InventoryItems */ = {
+			isa = PBXGroup;
+			children = (
+				ACBDC7D725FD9A9C0098B6BB /* INVCBaseClass.h */,
+				ACBDC7D025FD9A990098B6BB /* INVCBaseClass.m */,
+				ACBDC7D125FD9A9A0098B6BB /* INVCData.h */,
+				ACBDC7D225FD9A9A0098B6BB /* INVCData.m */,
+				ACBDC7D325FD9A9A0098B6BB /* INVCDataModels.h */,
+				ACBDC7DA25FD9A9D0098B6BB /* INVCInventory.h */,
+				ACBDC7DC25FD9A9E0098B6BB /* INVCInventory.m */,
+				ACBDC7D625FD9A9C0098B6BB /* INVCItems.h */,
+				ACBDC7DB25FD9A9E0098B6BB /* INVCItems.m */,
+				ACBDC7D925FD9A9D0098B6BB /* INVCMessageData.h */,
+				ACBDC7D425FD9A9B0098B6BB /* INVCMessageData.m */,
+				ACBDC7D525FD9A9B0098B6BB /* INVCResponse.h */,
+				ACBDC7D825FD9A9C0098B6BB /* INVCResponse.m */,
+			);
+			path = InventoryItems;
+			sourceTree = "<group>";
+		};
+		ACCE04EA260F892800C389B2 /* Weapons */ = {
+			isa = PBXGroup;
+			children = (
+				ACCE04FF260FC99400C389B2 /* weaponFrame.png */,
+				ACCE04F5260F8AC000C389B2 /* damage_arc.png */,
+				ACCE04F4260F8AC000C389B2 /* damage_void.png */,
+				ACCE04EE260F8A0E00C389B2 /* damage_solar.png */,
+				ACCE04EB260F894000C389B2 /* damage_kinetic.png */,
+				ACCE04E5260D619B00C389B2 /* energyAmmo.png */,
+				ACCE04E4260D619B00C389B2 /* primaryAmmo.png */,
+				ACCE04D8260D0B6500C389B2 /* heavyAmmo.png */,
+			);
+			path = Weapons;
 			sourceTree = "<group>";
 		};
 		ACE2D18225225C1700FF095A = {
@@ -666,7 +1195,7 @@
 				ACE2D1B825225DC200FF095A /* MessageData.h */,
 				ACE2D1B925225DC200FF095A /* Response.m */,
 				ACE2D1BA25225DC200FF095A /* BaseClass.h */,
-				ACE2D1BB25225DC200FF095A /* MessageData.m */,
+				ACE2D1BB25225DC200FF095A /* VNDMessageData.m */,
 				ACE2D1BC25225DC200FF095A /* AccessToken.m */,
 				ACE2D1BD25225DC200FF095A /* RefreshToken.m */,
 			);
@@ -680,13 +1209,13 @@
 				ACE2D1C425225DDF00FF095A /* GLSBaseClass.h */,
 				ACE2D1C525225DDF00FF095A /* GLSMessageData.m */,
 				ACE2D1C625225DDF00FF095A /* GLSDataModels.h */,
-				ACE2D1C725225DDF00FF095A /* GLSResponse.m */,
 				ACE2D1C825225DDF00FF095A /* GLSClassDefinition.m */,
 				ACE2D1C925225DDF00FF095A /* GLSData.h */,
+				ACE2D1CD25225DDF00FF095A /* GLSData.m */,
 				ACE2D1CA25225DDF00FF095A /* GLSMessageData.h */,
 				ACE2D1CB25225DDF00FF095A /* GLSBaseClass.m */,
 				ACE2D1CC25225DDF00FF095A /* GLSResponse.h */,
-				ACE2D1CD25225DDF00FF095A /* GLSData.m */,
+				ACE2D1C725225DDF00FF095A /* GLSResponse.m */,
 				ACE2D1CE25225DDF00FF095A /* GLSClassDefinition.h */,
 			);
 			path = GuardianClass;
@@ -711,51 +1240,51 @@
 			children = (
 				ACE2D1DD25225DE900FF095A /* GRDSTATINTELLECT.m */,
 				ACE2D1DE25225DE900FF095A /* GRDSTATARMOR.m */,
+				ACE2D1F925225DE900FF095A /* GRDPeerView.h */,
 				ACE2D1DF25225DE900FF095A /* GRDPeerView.m */,
+				ACE2D1F725225DE900FF095A /* GRDCharacterBase.h */,
 				ACE2D1E025225DE900FF095A /* GRDCharacterBase.m */,
+				ACE2D1F625225DE900FF095A /* GRDMessageData.h */,
 				ACE2D1E125225DE900FF095A /* GRDMessageData.m */,
+				ACE2D1F525225DE900FF095A /* GRDCharacters.h */,
 				ACE2D1E225225DE900FF095A /* GRDCharacters.m */,
 				ACE2D1E325225DE900FF095A /* GRDDyes.m */,
 				ACE2D1E425225DE900FF095A /* GRDSTATSTRENGTH.m */,
 				ACE2D1E525225DE900FF095A /* GRDSTATDISCIPLINE.h */,
 				ACE2D1E625225DE900FF095A /* GRDDataModels.h */,
+				ACE2D1FD25225DE900FF095A /* GRDEquipment.h */,
 				ACE2D1E725225DE900FF095A /* GRDEquipment.m */,
 				ACE2D1E825225DE900FF095A /* GRDCurrencies.m */,
 				ACE2D1E925225DE900FF095A /* GRDBaseClass.h */,
+				ACE2D1FB25225DE900FF095A /* GRDBaseClass.m */,
+				ACE2D20625225DE900FF095A /* GRDData.h */,
 				ACE2D1EA25225DE900FF095A /* GRDData.m */,
 				ACE2D1EB25225DE900FF095A /* GRDResponse.h */,
+				ACE2D20425225DE900FF095A /* GRDResponse.m */,
 				ACE2D1EC25225DE900FF095A /* GRDSTATDEFENSE.m */,
 				ACE2D1ED25225DE900FF095A /* GRDSTATRECOVERY.m */,
 				ACE2D1EE25225DE900FF095A /* GRDSTATOPTICS.m */,
 				ACE2D1EF25225DE900FF095A /* GRDSTATLIGHT.h */,
 				ACE2D1F025225DE900FF095A /* GRDInventory.h */,
+				ACE2D20B25225DE900FF095A /* GRDInventory.m */,
 				ACE2D1F125225DE900FF095A /* GRDSTATAGILITY.m */,
 				ACE2D1F225225DE900FF095A /* GRDCustomization.m */,
 				ACE2D1F325225DE900FF095A /* GRDStats.h */,
+				ACE2D20825225DE900FF095A /* GRDStats.m */,
 				ACE2D1F425225DE900FF095A /* GRDLevelProgression.m */,
-				ACE2D1F525225DE900FF095A /* GRDCharacters.h */,
-				ACE2D1F625225DE900FF095A /* GRDMessageData.h */,
-				ACE2D1F725225DE900FF095A /* GRDCharacterBase.h */,
 				ACE2D1F825225DE900FF095A /* GRDSTATARMOR.h */,
-				ACE2D1F925225DE900FF095A /* GRDPeerView.h */,
 				ACE2D1FA25225DE900FF095A /* GRDSTATINTELLECT.h */,
-				ACE2D1FB25225DE900FF095A /* GRDBaseClass.m */,
 				ACE2D1FC25225DE900FF095A /* GRDCurrencies.h */,
-				ACE2D1FD25225DE900FF095A /* GRDEquipment.h */,
 				ACE2D1FE25225DE900FF095A /* GRDSTATDISCIPLINE.m */,
 				ACE2D1FF25225DE900FF095A /* GRDSTATSTRENGTH.h */,
 				ACE2D20025225DE900FF095A /* GRDDyes.h */,
 				ACE2D20125225DE900FF095A /* GRDSTATLIGHT.m */,
 				ACE2D20225225DE900FF095A /* GRDSTATRECOVERY.h */,
 				ACE2D20325225DE900FF095A /* GRDSTATOPTICS.h */,
-				ACE2D20425225DE900FF095A /* GRDResponse.m */,
 				ACE2D20525225DE900FF095A /* GRDSTATDEFENSE.h */,
-				ACE2D20625225DE900FF095A /* GRDData.h */,
 				ACE2D20725225DE900FF095A /* GRDLevelProgression.h */,
-				ACE2D20825225DE900FF095A /* GRDStats.m */,
 				ACE2D20925225DE900FF095A /* GRDCustomization.h */,
 				ACE2D20A25225DE900FF095A /* GRDSTATAGILITY.h */,
-				ACE2D20B25225DE900FF095A /* GRDInventory.m */,
 			);
 			path = Guardians;
 			sourceTree = "<group>";
@@ -763,6 +1292,10 @@
 		ACE2D20C25225DE900FF095A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				ACCE04EA260F892800C389B2 /* Weapons */,
+				AC2C792A255896CF0060AD98 /* Vanguard_3X.jpeg */,
+				AC2C7927255896AF0060AD98 /* Vanguard_2X.jpeg */,
+				AC2C7924255896490060AD98 /* Vanguard_1X.jpeg */,
 				ACA05A1525322258008CB2BD /* Languages */,
 				ACF3C341252FAA5300C41679 /* Icons */,
 				ACE2D20D25225DE900FF095A /* FWC.jpg */,
@@ -828,15 +1361,165 @@
 			path = Memberships;
 			sourceTree = "<group>";
 		};
+		ACE4327125EC17C6006CEAB1 /* Vendors */ = {
+			isa = PBXGroup;
+			children = (
+				ACE432C325EC194A006CEAB1 /* VNDCategories.h */,
+				ACE4329A25EC1944006CEAB1 /* VNDCategories.m */,
+				ACE4327F25EC1941006CEAB1 /* VNDCurrencyLookups.h */,
+				ACE4327A25EC1941006CEAB1 /* VNDCurrencyLookups.m */,
+				ACE4329625EC1944006CEAB1 /* VNDData.h */,
+				ACE4329F25EC1945006CEAB1 /* VNDData.m */,
+				ACE4327C25EC1941006CEAB1 /* VNDDataModels.h */,
+				ACE432AA25EC1947006CEAB1 /* VNDGroups.h */,
+				ACE432BB25EC1949006CEAB1 /* VNDGroups.m */,
+				ACE4329C25EC1945006CEAB1 /* VNDMessageData.h */,
+				ACE4329325EC1944006CEAB1 /* VNDMessageData.m */,
+				ACE432B225EC1948006CEAB1 /* Progression.h */,
+				ACE4328825EC1942006CEAB1 /* Progression.m */,
+				ACE4327D25EC1941006CEAB1 /* VNDResponse.h */,
+				ACE432BD25EC1949006CEAB1 /* VNDResponse.m */,
+				ACE432A525EC1946006CEAB1 /* VNDSales.h */,
+				ACE4328625EC1942006CEAB1 /* VNDSales.m */,
+				ACE4328025EC1941006CEAB1 /* VNDVendorGroups.h */,
+				ACE432BC25EC1949006CEAB1 /* VNDVendorGroups.m */,
+				ACE4328225EC1942006CEAB1 /* VNDVendors.h */,
+				ACE4327225EC1940006CEAB1 /* VNDVendors.m */,
+				ACE432A025EC1945006CEAB1 /* VNDBaseClass.h */,
+				ACE4329425EC1944006CEAB1 /* VNDBaseClass.m */,
+			);
+			path = Vendors;
+			sourceTree = "<group>";
+		};
+		ACE4330425EEDFB8006CEAB1 /* VendorGroupDefinition */ = {
+			isa = PBXGroup;
+			children = (
+				ACE4331325EEE161006CEAB1 /* VGDDataModels.h */,
+				ACE4331725EEE161006CEAB1 /* VendorGroupDefinition.h */,
+				ACE4331625EEE161006CEAB1 /* VendorGroupDefinition.m */,
+				ACE4331525EEE161006CEAB1 /* VGDBaseClass.h */,
+				ACE4331425EEE161006CEAB1 /* VGDBaseClass.m */,
+			);
+			path = VendorGroupDefinition;
+			sourceTree = "<group>";
+		};
+		ACE4332425F1560B006CEAB1 /* ClanDefinition */ = {
+			isa = PBXGroup;
+			children = (
+				ACE4335225F15707006CEAB1 /* ClanBannerData.h */,
+				ACE4336025F15709006CEAB1 /* ClanBannerData.m */,
+				ACE4336825F1570A006CEAB1 /* ClanInfo.h */,
+				ACE4335425F15707006CEAB1 /* ClanInfo.m */,
+				ACE4335E25F15709006CEAB1 /* CLNBaseClass.h */,
+				ACE4336125F15709006CEAB1 /* CLNBaseClass.m */,
+				ACE4335125F15707006CEAB1 /* CurrentUserMemberMap.h */,
+				ACE4335325F15707006CEAB1 /* CurrentUserMemberMap.m */,
+				ACE4336625F1570A006CEAB1 /* CurrentUserPotentialMemberMap.h */,
+				ACE4336525F1570A006CEAB1 /* CurrentUserPotentialMemberMap.m */,
+				ACE4335B25F15708006CEAB1 /* D2ClanProgressions.h */,
+				ACE4335525F15707006CEAB1 /* D2ClanProgressions.m */,
+				ACE4335725F15708006CEAB1 /* CLNDataModels.h */,
+				ACE4336925F1570B006CEAB1 /* DestinyUserInfo.h */,
+				ACE4336225F15709006CEAB1 /* DestinyUserInfo.m */,
+				ACE4336425F1570A006CEAB1 /* CLNDetail.h */,
+				ACE4335925F15708006CEAB1 /* CLNDetail.m */,
+				ACE4335D25F15709006CEAB1 /* Features.h */,
+				ACE4335F25F15709006CEAB1 /* Features.m */,
+				ACE4336725F1570A006CEAB1 /* Founder.h */,
+				ACE4335025F15706006CEAB1 /* Founder.m */,
+				ACE4335625F15707006CEAB1 /* CLNMessageData.h */,
+				ACE4335C25F15708006CEAB1 /* CLNMessageData.m */,
+				ACE4334F25F15706006CEAB1 /* ProgressionHashKey.h */,
+				ACE4336325F1570A006CEAB1 /* ProgressionHashKey.m */,
+				ACE4335825F15708006CEAB1 /* CLNResponse.h */,
+				ACE4335A25F15708006CEAB1 /* CLNResponse.m */,
+			);
+			path = ClanDefinition;
+			sourceTree = "<group>";
+		};
+		ACE4337A25F15B4D006CEAB1 /* ClanMembers */ = {
+			isa = PBXGroup;
+			children = (
+				ACE4338725F15B69006CEAB1 /* CLNMBungieNetUserInfo.h */,
+				ACE4338825F15B69006CEAB1 /* CLNMBungieNetUserInfo.m */,
+				ACE4338325F15B68006CEAB1 /* CLNMBaseClass.h */,
+				ACE4337F25F15B68006CEAB1 /* CLNMBaseClass.m */,
+				ACE4338425F15B68006CEAB1 /* CLNMDataModels.h */,
+				ACE4338225F15B68006CEAB1 /* CLNMDestinyUserInfo.h */,
+				ACE4338525F15B69006CEAB1 /* CLNMDestinyUserInfo.m */,
+				ACE4337D25F15B67006CEAB1 /* CLNMMessageData.h */,
+				ACE4338125F15B68006CEAB1 /* CLNMMessageData.m */,
+				ACE4338025F15B68006CEAB1 /* Query.h */,
+				ACE4337E25F15B67006CEAB1 /* Query.m */,
+				ACE4338925F15B69006CEAB1 /* CLNMResponse.h */,
+				ACE4337C25F15B67006CEAB1 /* CLNMResponse.m */,
+				ACE4337B25F15B67006CEAB1 /* Results.h */,
+				ACE4338625F15B69006CEAB1 /* Results.m */,
+			);
+			path = ClanMembers;
+			sourceTree = "<group>";
+		};
+		ACE4339F25F54018006CEAB1 /* VendorDetails */ = {
+			isa = PBXGroup;
+			children = (
+				ACE433B825F54041006CEAB1 /* VNDDetailsAction.h */,
+				ACE433A025F5403C006CEAB1 /* VNDDetailsAction.m */,
+				ACE433B325F54040006CEAB1 /* VNDDetailsBungieNetEngineContractDestinyWorldDefinitionsIDestinyDisplayDefinitionDisplayProperties.h */,
+				ACE433B525F54040006CEAB1 /* VNDDetailsBungieNetEngineContractDestinyWorldDefinitionsIDestinyDisplayDefinitionDisplayProperties.m */,
+				ACE433B725F54041006CEAB1 /* VNDDetailsCategories.h */,
+				ACE433AD25F5403F006CEAB1 /* VNDDetailsCategories.m */,
+				ACE433A125F5403C006CEAB1 /* VNDDetailsCreationLevels.h */,
+				ACE433A625F5403D006CEAB1 /* VNDDetailsCreationLevels.m */,
+				ACE433A725F5403D006CEAB1 /* VNDDetailsCurrencies.h */,
+				ACE433B125F54040006CEAB1 /* VNDDetailsCurrencies.m */,
+				ACE433BA25F54041006CEAB1 /* VNDDetailsDataModels.h */,
+				ACE433BC25F54042006CEAB1 /* VNDDetailsDisplayCategories.h */,
+				ACE433C025F54043006CEAB1 /* VNDDetailsDisplayCategories.m */,
+				ACE433B425F54040006CEAB1 /* VNDDetailsDisplayProperties.h */,
+				ACE433A825F5403E006CEAB1 /* VNDDetailsDisplayProperties.m */,
+				ACE433A325F5403D006CEAB1 /* VNDDetailsGroups.h */,
+				ACE433AC25F5403F006CEAB1 /* VNDDetailsGroups.m */,
+				ACE433B625F54040006CEAB1 /* VNDDetailsHeaderDisplayProperties.h */,
+				ACE433BB25F54042006CEAB1 /* VNDDetailsHeaderDisplayProperties.m */,
+				ACE433A525F5403D006CEAB1 /* VNDDetailsInteractions.h */,
+				ACE433A425F5403D006CEAB1 /* VNDDetailsInteractions.m */,
+				ACE433AA25F5403E006CEAB1 /* VNDDetailsItemList.h */,
+				ACE433A925F5403E006CEAB1 /* VNDDetailsItemList.m */,
+				ACE433BD25F54042006CEAB1 /* VNDDetailsLocations.h */,
+				ACE433B925F54041006CEAB1 /* VNDDetailsLocations.m */,
+				ACE433AE25F5403F006CEAB1 /* VNDDetailsOriginalCategories.h */,
+				ACE433BF25F54043006CEAB1 /* VNDDetailsOriginalCategories.m */,
+				ACE433AB25F5403E006CEAB1 /* VNDDetailsReplies.h */,
+				ACE433AF25F5403F006CEAB1 /* VNDDetailsReplies.m */,
+				ACE433B225F54040006CEAB1 /* VNDDetailsSocketOverrides.h */,
+				ACE433B025F5403F006CEAB1 /* VNDDetailsSocketOverrides.m */,
+				ACE433BE25F54042006CEAB1 /* VNDDetails.h */,
+				ACE433A225F5403C006CEAB1 /* VNDDetails.m */,
+			);
+			path = VendorDetails;
+			sourceTree = "<group>";
+		};
 		ACF3C2D2252E1EB000C41679 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				ACE2D19425225C1700FF095A /* ViewController.h */,
-				ACE2D19525225C1700FF095A /* ViewController.m */,
+				ACE2D19425225C1700FF095A /* HomeViewController.h */,
+				ACE2D19525225C1700FF095A /* HomeViewController.m */,
 				ACF3C378252FAEDA00C41679 /* ProfileViewController.h */,
 				ACF3C379252FAEDA00C41679 /* ProfileViewController.m */,
+				ACE4339925F16263006CEAB1 /* GroupViewController.h */,
+				ACE4339A25F1626D006CEAB1 /* GroupViewController.m */,
+				AC2C792F2558A62E0060AD98 /* MembershipViewController.h */,
+				AC2C79302558A6390060AD98 /* MembershipViewController.m */,
+				AC2C7917255742950060AD98 /* LoginViewController.h */,
+				AC2C7918255742A40060AD98 /* LoginViewController.m */,
 				ACF3C3872530CCB200C41679 /* GuardianViewController.h */,
 				ACF3C3882530CCBF00C41679 /* GuardianViewController.m */,
+				ACB6981225EAFF7800EF7FD6 /* ItemsViewController.h */,
+				ACB6981325EAFF8400EF7FD6 /* ItemsViewController.m */,
+				AC03956F260667E2009951D3 /* ArmorTableViewController.h */,
+				AC039570260667F0009951D3 /* ArmorTableViewController.m */,
+				AC03956126056FF9009951D3 /* WeaponsTableViewController.h */,
+				AC03956226056FF9009951D3 /* WeaponsTableViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -869,6 +1552,8 @@
 				ACA05A54253372FD008CB2BD /* NetworkAPISingleClient+Definition.m */,
 				ACF3C33D252E3CF600C41679 /* NetworkAPISingleClient+SearchUser.h */,
 				ACF3C33E252E3CF600C41679 /* NetworkAPISingleClient+SearchUser.m */,
+				ACE4332025F15348006CEAB1 /* NetworkAPISingleClient+Clan.h */,
+				ACE4332125F15355006CEAB1 /* NetworkAPISingleClient+Clan.m */,
 				ACF3C3822530CA0B00C41679 /* NetworkAPISingleClient+LinkedProfiles.h */,
 				ACF3C3832530CA2400C41679 /* NetworkAPISingleClient+LinkedProfiles.m */,
 				ACF3C339252E39F600C41679 /* NetworkAPISingleClient+Auth.h */,
@@ -927,6 +1612,20 @@
 		ACF3C31F252E2EF200C41679 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				AC7942AD25FE96DD00B30F2A /* LockItem */,
+				AC7942A725FDB03B00B30F2A /* TransferItem */,
+				ACBDC7CF25FD9A7D0098B6BB /* InventoryItems */,
+				ACBDC7B225FAD2FF0098B6BB /* InstanceItemDefinition */,
+				ACBDC73F25F9C0A90098B6BB /* InventoryItemDefinition */,
+				ACBDC68A25F978B10098B6BB /* InventoryEquipedItems */,
+				ACBDC67025F954F80098B6BB /* ItemTierDefinition */,
+				ACBDC66025F950AF0098B6BB /* ItemCategoryDefinition */,
+				AC243A8D25F82B24005DC7B6 /* ItemBucketDefinition */,
+				ACE4339F25F54018006CEAB1 /* VendorDetails */,
+				ACE4337A25F15B4D006CEAB1 /* ClanMembers */,
+				ACE4332425F1560B006CEAB1 /* ClanDefinition */,
+				ACE4330425EEDFB8006CEAB1 /* VendorGroupDefinition */,
+				ACE4327125EC17C6006CEAB1 /* Vendors */,
 				ACA05A3525336A38008CB2BD /* DestinyClassDefinition */,
 				ACA05A31253362BD008CB2BD /* Content */,
 				ACA059D025320FCD008CB2BD /* Manifest */,
@@ -1032,19 +1731,24 @@
 			files = (
 				ACF3C35A252FAA8400C41679 /* BEHEPA.png in Resources */,
 				ACA05A2C2532235B008CB2BD /* RUSSIAN.png in Resources */,
+				ACCE04EC260F894000C389B2 /* damage_kinetic.png in Resources */,
 				ACA05A292532235B008CB2BD /* Korean.png in Resources */,
 				ACA05A272532235B008CB2BD /* FRENCH.png in Resources */,
 				ACE2D27425225DE900FF095A /* ICONS.jpg in Resources */,
 				ACF3C375252FAE1E00C41679 /* tabGuardians.png in Resources */,
 				ACA05A242532235B008CB2BD /* English.png in Resources */,
+				ACCE04E6260D619B00C389B2 /* primaryAmmo.png in Resources */,
 				ACE2D25D25225DE900FF095A /* Factions.jpg in Resources */,
 				ACA05A652533B6A8008CB2BD /* DestinyClassDefinition.json in Resources */,
 				ACE2D27725225DE900FF095A /* amsLogo.png in Resources */,
 				ACF3C357252FAA8400C41679 /* POBA.png in Resources */,
 				ACE2D26225225DE900FF095A /* PlaceHolder.jpg in Resources */,
+				ACBDC68625F95B250098B6BB /* ItemCellTableView.xib in Resources */,
+				ACCE04EF260F8A0E00C389B2 /* damage_solar.png in Resources */,
 				ACE2D19E25225C1A00FF095A /* LaunchScreen.storyboard in Resources */,
 				ACE2D25925225DE900FF095A /* DefaultEmblem.png in Resources */,
 				ACE2D19B25225C1A00FF095A /* Assets.xcassets in Resources */,
+				ACE433E425F6EA0F006CEAB1 /* DestinyInventoryBucketDefinition.json in Resources */,
 				ACF3C35F252FAA8400C41679 /* Bird.png in Resources */,
 				ACE2D27225225DE900FF095A /* Dreadnaught.jpg in Resources */,
 				ACE2D26A25225DE900FF095A /* GuardianLootHall.jpg in Resources */,
@@ -1060,16 +1764,24 @@
 				ACE2D25725225DE900FF095A /* Queen.jpg in Resources */,
 				ACE2D26125225DE900FF095A /* DOrbit.jpg in Resources */,
 				ACA05A6B2533B7E4008CB2BD /* DestinyAchievementDefinition.json in Resources */,
+				ACCE04E7260D619B00C389B2 /* energyAmmo.png in Resources */,
 				ACE2D26825225DE900FF095A /* Haaken.jpg in Resources */,
 				ACF3C360252FAA8400C41679 /* Horn.png in Resources */,
 				ACA05A232532235B008CB2BD /* ROMANSH.png in Resources */,
 				ACE2D26C25225DE900FF095A /* ExoGuardian.jpg in Resources */,
+				ACBDC7C825FC3BA10098B6BB /* DestinyVendorDefinition.json in Resources */,
 				ACF3C363252FAA8400C41679 /* H2Q.png in Resources */,
 				ACE2D25B25225DE900FF095A /* Vanguard.png in Resources */,
 				ACE2D26B25225DE900FF095A /* City.jpg in Resources */,
 				ACF3C35B252FAA8400C41679 /* BirdShield.png in Resources */,
+				AC2C792B255896CF0060AD98 /* Vanguard_3X.jpeg in Resources */,
+				ACBDC7E525FDA9680098B6BB /* DestinyInventoryItemDefinition.json in Resources */,
 				ACE2D26D25225DE900FF095A /* Cabal.jpg in Resources */,
+				ACCE04D9260D0B6500C389B2 /* heavyAmmo.png in Resources */,
+				AC2C7928255896AF0060AD98 /* Vanguard_2X.jpeg in Resources */,
 				ACF3C358252FAA8400C41679 /* IB.png in Resources */,
+				AC243A9B25F93651005DC7B6 /* DestinyItemCategoryDefinition.json in Resources */,
+				ACCE04F7260F8AC000C389B2 /* damage_arc.png in Resources */,
 				ACA05A3325336394008CB2BD /* Manifest.json in Resources */,
 				ACF3C366252FAA8400C41679 /* Deer.png in Resources */,
 				ACE2D25F25225DE900FF095A /* QueenBanner.jpg in Resources */,
@@ -1087,23 +1799,31 @@
 				ACE2D19925225C1700FF095A /* Main.storyboard in Resources */,
 				ACF3C372252FADF200C41679 /* tabProfile.png in Resources */,
 				ACA05A2D2532235B008CB2BD /* Spanish.png in Resources */,
+				AC2C7925255896490060AD98 /* Vanguard_1X.jpeg in Resources */,
 				ACE2D26725225DE900FF095A /* Ship.jpg in Resources */,
 				ACF3C35C252FAA8400C41679 /* Lunar.png in Resources */,
 				ACE2D26E25225DE900FF095A /* Ketch.jpg in Resources */,
 				ACF3C368252FAA8400C41679 /* NorthS.png in Resources */,
 				ACE2D26525225DE900FF095A /* Dreadnaught1.jpg in Resources */,
 				ACF3C362252FAA8400C41679 /* HAKKE.png in Resources */,
+				ACCE04F6260F8AC000C389B2 /* damage_void.png in Resources */,
 				ACE2D26925225DE900FF095A /* Mars.jpg in Resources */,
+				ACBDC66E25F954C60098B6BB /* DestinyItemTierTypeDefinition.json in Resources */,
 				ACA05A252532235B008CB2BD /* DUTCH.png in Resources */,
+				ACBDC7CB25FD486C0098B6BB /* DestinyVendorGroupDefinition.json in Resources */,
 				ACF3C35E252FAA8400C41679 /* RedCross.png in Resources */,
 				ACF3C369252FAA8400C41679 /* Wolf.png in Resources */,
+				ACE4331D25EEE2F4006CEAB1 /* DestinyRaceDefinition.json in Resources */,
 				ACE2D25825225DE900FF095A /* Skull.png in Resources */,
 				ACF3C35D252FAA8400C41679 /* Arc.png in Resources */,
+				ACCE04D5260D09AE00C389B2 /* ItemTableViewCell.xib in Resources */,
 				ACE2D27025225DE900FF095A /* Mercury.jpg in Resources */,
 				ACE2D26025225DE900FF095A /* BladeDancer.jpg in Resources */,
 				ACE2D27325225DE900FF095A /* ICONS.png in Resources */,
 				ACE2D26F25225DE900FF095A /* MercurySun.jpg in Resources */,
+				ACCE0500260FC99400C389B2 /* weaponFrame.png in Resources */,
 				ACE2D27625225DE900FF095A /* Patrol.png in Resources */,
+				ACCE04E1260D4A9400C389B2 /* ItemCollectionViewCell.xib in Resources */,
 				ACF3C367252FAA8400C41679 /* Warlock.png in Resources */,
 				ACA05A222532235B008CB2BD /* CROATIAN.png in Resources */,
 			);
@@ -1124,54 +1844,115 @@
 				ACE2D24425225DE900FF095A /* GRDCharacters.m in Sources */,
 				ACE2D27A25225DE900FF095A /* MBRResponse.m in Sources */,
 				ACA05A0325320FEE008CB2BD /* De.m in Sources */,
+				AC7942B025FE971D00B30F2A /* LCKBaseClass.m in Sources */,
+				ACE4331925EEE161006CEAB1 /* VendorGroupDefinition.m in Sources */,
+				ACE4337225F1570B006CEAB1 /* ClanBannerData.m in Sources */,
 				ACF3C31C252E2D9300C41679 /* JTDateMappings.m in Sources */,
+				ACBDC66A25F950EA0098B6BB /* ITMCATDisplayProperties.m in Sources */,
+				ACBDC7E025FD9A9E0098B6BB /* INVCResponse.m in Sources */,
 				ACE2D1D325225DDF00FF095A /* GLSData.m in Sources */,
+				ACE4338A25F15B69006CEAB1 /* CLNMResponse.m in Sources */,
+				ACCE04E0260D4A9400C389B2 /* ItemCollectionViewCell.m in Sources */,
+				ACE432ED25EC194B006CEAB1 /* VNDVendorGroups.m in Sources */,
+				ACE433CA25F54043006CEAB1 /* VNDDetailsSocketOverrides.m in Sources */,
 				ACE2D25025225DE900FF095A /* GRDBaseClass.m in Sources */,
+				ACE4338F25F15B69006CEAB1 /* Results.m in Sources */,
 				ACF3C31A252E2D9300C41679 /* JTSetMappings.m in Sources */,
 				ACA05A0B25320FEE008CB2BD /* Pl.m in Sources */,
 				ACF3C2F8252E27B700C41679 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				ACE433CF25F54043006CEAB1 /* VNDDetailsOriginalCategories.m in Sources */,
+				ACBDC79525FA9F6E0098B6BB /* INVDQuality.m in Sources */,
+				ACE4338D25F15B69006CEAB1 /* CLNMMessageData.m in Sources */,
+				ACBDC78C25FA9DEC0098B6BB /* INVDDisplayProperties.m in Sources */,
+				ACE4336A25F1570B006CEAB1 /* Founder.m in Sources */,
 				ACA05A6F2533B976008CB2BD /* Utilities.m in Sources */,
+				AC039571260667F0009951D3 /* ArmorTableViewController.m in Sources */,
 				ACE2D24C25225DE900FF095A /* GRDSTATOPTICS.m in Sources */,
+				ACBDC73925F99A380098B6BB /* ITMEBaseClass.m in Sources */,
+				ACE432EC25EC194B006CEAB1 /* VNDGroups.m in Sources */,
 				ACE2D1B025225DB800FF095A /* USRBaseClass.m in Sources */,
+				ACE433D025F54043006CEAB1 /* VNDDetailsDisplayCategories.m in Sources */,
 				ACA05A4625336A4F008CB2BD /* WarlockClass.m in Sources */,
-				ACA05A4925336A4F008CB2BD /* DisplayProperties.m in Sources */,
+				ACBDC67B25F955B70098B6BB /* ITMTBaseClass.m in Sources */,
+				ACA05A4925336A4F008CB2BD /* BCKDisplayProperties.m in Sources */,
 				ACE2D24F25225DE900FF095A /* GRDLevelProgression.m in Sources */,
+				ACE432D925EC194B006CEAB1 /* VNDBaseClass.m in Sources */,
 				ACF3C33F252E3CF600C41679 /* NetworkAPISingleClient+SearchUser.m in Sources */,
 				ACE2D25125225DE900FF095A /* GRDSTATDISCIPLINE.m in Sources */,
-				ACE2D19625225C1700FF095A /* ViewController.m in Sources */,
+				ACBDC7E225FD9A9E0098B6BB /* INVCInventory.m in Sources */,
+				ACE2D19625225C1700FF095A /* HomeViewController.m in Sources */,
+				ACE4337325F1570B006CEAB1 /* CLNBaseClass.m in Sources */,
 				ACE2D23D25225DE900FF095A /* SRCBaseClass.m in Sources */,
+				ACE4339B25F1626D006CEAB1 /* GroupViewController.m in Sources */,
+				ACE4336E25F1570B006CEAB1 /* CLNDetail.m in Sources */,
+				ACE433C925F54043006CEAB1 /* VNDDetailsReplies.m in Sources */,
+				ACBDC78825FA9C870098B6BB /* INVDMessageData.m in Sources */,
 				ACA05A0125320FEE008CB2BD /* Ru.m in Sources */,
+				ACE433C125F54043006CEAB1 /* VNDDetailsAction.m in Sources */,
 				ACE2D24725225DE900FF095A /* GRDEquipment.m in Sources */,
 				ACF3C2FD252E27B700C41679 /* AFJSONRequestOperation.m in Sources */,
 				ACA05A0825320FEE008CB2BD /* MobileGearAssetDataBases.m in Sources */,
+				AC03956326056FF9009951D3 /* WeaponsTableViewController.m in Sources */,
+				ACE433CE25F54043006CEAB1 /* VNDDetailsHeaderDisplayProperties.m in Sources */,
 				ACF3C3842530CA2500C41679 /* NetworkAPISingleClient+LinkedProfiles.m in Sources */,
 				ACE2D27C25225DE900FF095A /* MBRBungieNetUser.m in Sources */,
+				ACB6981425EAFF8400EF7FD6 /* ItemsViewController.m in Sources */,
+				ACBDC79D25FAA4240098B6BB /* INVDSockets.m in Sources */,
+				ACE432DD25EC194B006CEAB1 /* VNDCategories.m in Sources */,
+				ACBDC7A925FAA6070098B6BB /* INVDSocketEntries.m in Sources */,
 				ACE2D19025225C1700FF095A /* AppDelegate.m in Sources */,
+				ACE433C225F54043006CEAB1 /* VNDDetails.m in Sources */,
+				ACBDC7C325FAD3450098B6BB /* INSTInstance.m in Sources */,
+				ACBDC73825F99A380098B6BB /* ITMEItems.m in Sources */,
 				ACA05A0525320FEE008CB2BD /* PtBr.m in Sources */,
+				ACBDC78025FA9B480098B6BB /* INVDDestinyInventoryBaseClass.m in Sources */,
 				ACF3C2FC252E27B700C41679 /* AFXMLRequestOperation.m in Sources */,
 				ACF3C318252E2D9300C41679 /* JTMappings.m in Sources */,
 				ACE2D24E25225DE900FF095A /* GRDCustomization.m in Sources */,
+				ACE432D325EC194B006CEAB1 /* Progression.m in Sources */,
 				ACE2D23E25225DE900FF095A /* SRCMessageData.m in Sources */,
+				ACBDC7C225FAD3450098B6BB /* INSTPrimaryStat.m in Sources */,
 				ACA05A0E25320FEE008CB2BD /* En.m in Sources */,
+				ACE4336C25F1570B006CEAB1 /* ClanInfo.m in Sources */,
+				ACE433C625F54043006CEAB1 /* VNDDetailsItemList.m in Sources */,
 				ACA05A0725320FEE008CB2BD /* ZhChs.m in Sources */,
 				ACF3C37A252FAEDA00C41679 /* ProfileViewController.m in Sources */,
 				ACF3C2FA252E27B700C41679 /* AFHTTPRequestOperation.m in Sources */,
+				ACE4338B25F15B69006CEAB1 /* Query.m in Sources */,
 				ACA05A1025320FEE008CB2BD /* Fr.m in Sources */,
+				ACBDC66825F950EA0098B6BB /* ITMCATBaseClass.m in Sources */,
+				ACBDC7DD25FD9A9E0098B6BB /* INVCBaseClass.m in Sources */,
 				ACF3C31B252E2D9300C41679 /* NSObject+JTObjectMapping.m in Sources */,
 				ACE2D27B25225DE900FF095A /* MBRBaseClass.m in Sources */,
 				ACA05A0225320FEE008CB2BD /* MobileGearCDN.m in Sources */,
 				ACE2D24125225DE900FF095A /* GRDPeerView.m in Sources */,
 				ACE2D25425225DE900FF095A /* GRDStats.m in Sources */,
+				ACE433C525F54043006CEAB1 /* VNDDetailsDisplayProperties.m in Sources */,
 				ACA05A4825336A4F008CB2BD /* GenderedClassNamesByGenderHash.m in Sources */,
-				ACE2D1C025225DC200FF095A /* MessageData.m in Sources */,
+				ACBDC78425FA9B8B0098B6BB /* INVDResponse.m in Sources */,
+				ACE2D1C025225DC200FF095A /* VNDMessageData.m in Sources */,
+				ACE4337025F1570B006CEAB1 /* CLNMessageData.m in Sources */,
 				ACE2D1A125225C1A00FF095A /* main.m in Sources */,
+				ACBDC7DE25FD9A9E0098B6BB /* INVCData.m in Sources */,
+				ACE4336B25F1570B006CEAB1 /* CurrentUserMemberMap.m in Sources */,
+				ACBDC7DF25FD9A9E0098B6BB /* INVCMessageData.m in Sources */,
+				ACBDC68325F95B180098B6BB /* ItemCellTableView.m in Sources */,
+				ACE433CD25F54043006CEAB1 /* VNDDetailsLocations.m in Sources */,
 				ACE2D23C25225DE900FF095A /* SRCResponse.m in Sources */,
 				ACF3C2D0252BCA1C00C41679 /* LaunchViewController.m in Sources */,
 				ACF3C3892530CCBF00C41679 /* GuardianViewController.m in Sources */,
 				ACF3C2FB252E27B700C41679 /* UIImageView+AFNetworking.m in Sources */,
+				ACE4338C25F15B69006CEAB1 /* CLNMBaseClass.m in Sources */,
 				ACA059FD25320FEE008CB2BD /* JsonWorldContentPaths.m in Sources */,
+				ACE4337625F1570B006CEAB1 /* CurrentUserPotentialMemberMap.m in Sources */,
+				ACBDC7E125FD9A9E0098B6BB /* INVCItems.m in Sources */,
 				ACA05A0F25320FEE008CB2BD /* MobileWorldContentPaths.m in Sources */,
+				ACE432D825EC194B006CEAB1 /* VNDMessageData.m in Sources */,
+				ACBDC66925F950EA0098B6BB /* DestinyItemCategoryDefinition.m in Sources */,
+				ACE433C725F54043006CEAB1 /* VNDDetailsGroups.m in Sources */,
+				ACCE04C9260A428400C389B2 /* ItemCollectionView.m in Sources */,
 				ACA05A4A25336A4F008CB2BD /* DCDBaseClass.m in Sources */,
+				ACE432EE25EC194B006CEAB1 /* VNDResponse.m in Sources */,
 				ACE2D1D125225DDF00FF095A /* GLSClassDefinition.m in Sources */,
 				ACE2D27825225DE900FF095A /* MBRDestinyMemberships.m in Sources */,
 				ACE2D19325225C1700FF095A /* SceneDelegate.m in Sources */,
@@ -1182,40 +1963,77 @@
 				ACE2D25325225DE900FF095A /* GRDResponse.m in Sources */,
 				ACA05A4725336A4F008CB2BD /* HunterClass.m in Sources */,
 				ACE2D25525225DE900FF095A /* GRDInventory.m in Sources */,
+				ACCE04D0260BFC3D00C389B2 /* ItemTableViewCell.m in Sources */,
+				ACE4339025F15B69006CEAB1 /* CLNMBungieNetUserInfo.m in Sources */,
+				AC243A9525F82B3E005DC7B6 /* BCKDisplayProperties.m in Sources */,
+				ACE4338E25F15B69006CEAB1 /* CLNMDestinyUserInfo.m in Sources */,
 				ACE2D1D025225DDF00FF095A /* GLSResponse.m in Sources */,
+				ACBDC7AD25FAA66E0098B6BB /* INVDInventory.m in Sources */,
 				ACA059FC25320FEE008CB2BD /* Es.m in Sources */,
 				ACE2D1BF25225DC200FF095A /* Response.m in Sources */,
 				ACE2D27925225DE900FF095A /* MBRMessageData.m in Sources */,
+				ACE433C825F54043006CEAB1 /* VNDDetailsCategories.m in Sources */,
 				ACE2D25225225DE900FF095A /* GRDSTATLIGHT.m in Sources */,
+				ACBDC67A25F955B70098B6BB /* DestinyItemTierTypeDefinition.m in Sources */,
 				ACE2D1C125225DC200FF095A /* AccessToken.m in Sources */,
+				ACE432D225EC194B006CEAB1 /* VNDSales.m in Sources */,
+				ACE433C325F54043006CEAB1 /* VNDDetailsInteractions.m in Sources */,
+				ACE4336D25F1570B006CEAB1 /* D2ClanProgressions.m in Sources */,
 				AC00AFD52537721900922C2B /* GuardianCellTableView.m in Sources */,
+				ACBDC7C425FAD3450098B6BB /* INSTResponse.m in Sources */,
+				ACBDC7C025FAD3450098B6BB /* INSTBaseClass.m in Sources */,
 				ACF3C2F6252E27B700C41679 /* AFPropertyListRequestOperation.m in Sources */,
+				ACE433C425F54043006CEAB1 /* VNDDetailsCreationLevels.m in Sources */,
+				ACBDC79025FA9E8D0098B6BB /* INVDPreview.m in Sources */,
+				ACE432E025EC194B006CEAB1 /* VNDData.m in Sources */,
 				ACE2D24225225DE900FF095A /* GRDCharacterBase.m in Sources */,
 				ACA05A4B25336A4F008CB2BD /* GenderedClassNames.m in Sources */,
 				ACF3C33B252E39F600C41679 /* NetworkAPISingleClient+Auth.m in Sources */,
 				ACA05A0025320FEE008CB2BD /* MNFResponse.m in Sources */,
+				ACE432CE25EC194B006CEAB1 /* VNDCurrencyLookups.m in Sources */,
+				ACE4337125F1570B006CEAB1 /* Features.m in Sources */,
+				ACBDC7C125FAD3450098B6BB /* INSTMessageData.m in Sources */,
 				ACF3C2F5252E27B700C41679 /* AFImageRequestOperation.m in Sources */,
 				ACE2D24825225DE900FF095A /* GRDCurrencies.m in Sources */,
+				ACE4331825EEE161006CEAB1 /* VGDBaseClass.m in Sources */,
 				ACF3C2F9252E27B700C41679 /* AFURLConnectionOperation.m in Sources */,
 				ACA05A0A25320FEE008CB2BD /* JsonWorldComponentContentPaths.m in Sources */,
+				ACE4336F25F1570B006CEAB1 /* CLNResponse.m in Sources */,
+				ACE4337525F1570B006CEAB1 /* ProgressionHashKey.m in Sources */,
 				ACA059FF25320FEE008CB2BD /* Ja.m in Sources */,
 				ACE2D24D25225DE900FF095A /* GRDSTATAGILITY.m in Sources */,
 				ACE2D1C225225DC200FF095A /* RefreshToken.m in Sources */,
+				ACBDC7C525FAD3450098B6BB /* INSTData.m in Sources */,
 				ACA059FE25320FEE008CB2BD /* ZhCht.m in Sources */,
 				ACE2D1CF25225DDF00FF095A /* GLSMessageData.m in Sources */,
 				ACE2D24025225DE900FF095A /* GRDSTATARMOR.m in Sources */,
 				ACE2D1AF25225DB800FF095A /* USRResponse.m in Sources */,
 				ACA05A0625320FEE008CB2BD /* MNFMessageData.m in Sources */,
+				ACBDC7A525FAA52A0098B6BB /* INVDSocketCategories.m in Sources */,
+				ACE4337425F1570B006CEAB1 /* DestinyUserInfo.m in Sources */,
+				AC243A9625F82B3E005DC7B6 /* DestinyInventoryBucketDefinition.m in Sources */,
+				ACE433CC25F54043006CEAB1 /* VNDDetailsBungieNetEngineContractDestinyWorldDefinitionsIDestinyDisplayDefinitionDisplayProperties.m in Sources */,
 				ACF3C317252E2D9300C41679 /* JTDataMappings.m in Sources */,
+				ACBDC79925FAA3310098B6BB /* INVDInvestmentStats.m in Sources */,
+				ACE432C925EC194B006CEAB1 /* VNDVendors.m in Sources */,
 				ACE2D24B25225DE900FF095A /* GRDSTATRECOVERY.m in Sources */,
+				AC2C7919255742A40060AD98 /* LoginViewController.m in Sources */,
 				ACF3C319252E2D9300C41679 /* JTValidMappingKey.m in Sources */,
+				ACBDC67D25F955B70098B6BB /* ITMTInfusionProcess.m in Sources */,
 				ACA05A55253372FD008CB2BD /* NetworkAPISingleClient+Definition.m in Sources */,
 				ACE2D1BE25225DC200FF095A /* BaseClass.m in Sources */,
+				ACBDC7A125FAA49E0098B6BB /* INVDBackgroundColor.m in Sources */,
+				AC2C79312558A6390060AD98 /* MembershipViewController.m in Sources */,
 				ACE2D24325225DE900FF095A /* GRDMessageData.m in Sources */,
+				AC243A9725F82B3E005DC7B6 /* BCKBaseClass.m in Sources */,
+				ACE4332225F15355006CEAB1 /* NetworkAPISingleClient+Clan.m in Sources */,
+				AC7942AB25FDB06F00B30F2A /* TRXBaseClass.m in Sources */,
 				ACA05A4525336A4F008CB2BD /* TitanClass.m in Sources */,
 				ACA05A0925320FEE008CB2BD /* It.m in Sources */,
+				ACBDC67C25F955B70098B6BB /* ITMTDisplayProperties.m in Sources */,
 				ACE2D24A25225DE900FF095A /* GRDSTATDEFENSE.m in Sources */,
 				ACE2D24525225DE900FF095A /* GRDDyes.m in Sources */,
+				ACE433CB25F54043006CEAB1 /* VNDDetailsCurrencies.m in Sources */,
 				ACA05A0425320FEE008CB2BD /* MNFBaseClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1379,7 +2197,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ams.DestinyHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1396,7 +2214,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ams.DestinyHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

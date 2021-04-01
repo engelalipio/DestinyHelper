@@ -23,6 +23,7 @@
 @property (nonatomic, assign) double membershipType;
 @property (nonatomic, assign) double classHash;
 @property (nonatomic, assign) double classType;
+@property (nonatomic, assign) double raceType;
 @property (nonatomic, strong) NSString *dateLastPlayed;
 @property (nonatomic, assign) double powerLevel;
 @property (nonatomic, assign) double raceHash;

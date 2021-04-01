@@ -12,7 +12,7 @@
 
 NSString *const kMBRResponseDestinyMemberships = @"destinyMemberships";
 NSString *const kMBRResponseBungieNetUser = @"bungieNetUser";
-
+NSString *const kMBRResponsePrimaryMembershipId = @"primaryMembershipId";
 
 @interface MBRResponse ()
 
@@ -24,7 +24,23 @@ NSString *const kMBRResponseBungieNetUser = @"bungieNetUser";
 
 @synthesize destinyMemberships = _destinyMemberships;
 @synthesize bungieNetUser = _bungieNetUser;
+@synthesize primaryMembershipId = _primaryMembershipId;
 
++ (NSDictionary *)mapping{
+    
+    
+    NSDictionary *map = [[NSDictionary alloc] initWithObjectsAndKeys:
+                         kMBRResponseDestinyMemberships,@"destinyMemberships",
+                         kMBRResponseBungieNetUser,@"bungieNetUser",
+                         kMBRResponsePrimaryMembershipId , @"primaryMembershipId",
+                         nil];
+    
+    return map;
+}
+
++ (NSString *)key{
+    return nil;
+}
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
@@ -39,6 +55,7 @@ NSString *const kMBRResponseBungieNetUser = @"bungieNetUser";
     // passed into the model class doesn't break the parsing.
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
     NSObject *receivedMBRDestinyMemberships = [dict objectForKey:kMBRResponseDestinyMemberships];
+    
     NSMutableArray *parsedMBRDestinyMemberships = [NSMutableArray array];
     if ([receivedMBRDestinyMemberships isKindOfClass:[NSArray class]]) {
         for (NSDictionary *item in (NSArray *)receivedMBRDestinyMemberships) {
@@ -51,7 +68,8 @@ NSString *const kMBRResponseBungieNetUser = @"bungieNetUser";
     }
 
     self.destinyMemberships = [NSArray arrayWithArray:parsedMBRDestinyMemberships];
-            self.bungieNetUser = [MBRBungieNetUser modelObjectWithDictionary:[dict objectForKey:kMBRResponseBungieNetUser]];
+    self.bungieNetUser = [MBRBungieNetUser modelObjectWithDictionary:[dict objectForKey:kMBRResponseBungieNetUser]];
+    self.primaryMembershipId = [self objectOrNilForKey:kMBRResponsePrimaryMembershipId fromDictionary:dict];
 
     }
     
@@ -74,7 +92,7 @@ NSString *const kMBRResponseBungieNetUser = @"bungieNetUser";
     }
     [mutableDict setValue:[NSArray arrayWithArray:tempArrayForDestinyMemberships] forKey:kMBRResponseDestinyMemberships];
     [mutableDict setValue:[self.bungieNetUser dictionaryRepresentation] forKey:kMBRResponseBungieNetUser];
-
+    [mutableDict setValue:self.primaryMembershipId forKey:kMBRResponsePrimaryMembershipId];
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
 
@@ -99,6 +117,7 @@ NSString *const kMBRResponseBungieNetUser = @"bungieNetUser";
 
     self.destinyMemberships = [aDecoder decodeObjectForKey:kMBRResponseDestinyMemberships];
     self.bungieNetUser = [aDecoder decodeObjectForKey:kMBRResponseBungieNetUser];
+    self.primaryMembershipId = [aDecoder decodeObjectForKey:kMBRResponsePrimaryMembershipId];
     return self;
 }
 
@@ -107,6 +126,7 @@ NSString *const kMBRResponseBungieNetUser = @"bungieNetUser";
 
     [aCoder encodeObject:_destinyMemberships forKey:kMBRResponseDestinyMemberships];
     [aCoder encodeObject:_bungieNetUser forKey:kMBRResponseBungieNetUser];
+    [aCoder encodeObject:_primaryMembershipId forKey:kMBRResponsePrimaryMembershipId];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -117,6 +137,7 @@ NSString *const kMBRResponseBungieNetUser = @"bungieNetUser";
 
         copy.destinyMemberships = [self.destinyMemberships copyWithZone:zone];
         copy.bungieNetUser = [self.bungieNetUser copyWithZone:zone];
+        copy.primaryMembershipId = [self.primaryMembershipId copyWithZone:zone];
     }
     
     return copy;

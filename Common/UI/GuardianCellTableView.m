@@ -7,14 +7,18 @@
 //
 
 #import "GuardianCellTableView.h"
+#import "Utilities.h"
 
 @implementation GuardianCellTableView
 
+@synthesize imgEmblem = _imgEmblem;
 @synthesize imgBackground = _imgBackground;
 @synthesize lblGuardianClass = _lblGuardianClass;
 @synthesize lblGuardianGender = _lblGuardianGender;
 @synthesize lblLightLevel = _lblLightLevel;
-
+@synthesize lblGuardianRace = _lblGuardianRace;
+@synthesize lblGuardianCareer = _lblGuardianCareer;
+@synthesize imgCareer = _imgCareer;
 + (id)instanceFromNib
 {
     NSString *className = @"GuardianCellTableView";
@@ -38,7 +42,18 @@
         
         CGSize size = self.contentView.frame.size;
         
-        
+        if (! self.imgEmblem){
+              UIImage *defaultImage = [UIImage imageNamed:@"PlaceHolder.png"];
+            
+              defaultImage = [Utilities imageResize:defaultImage andResizeTo:CGSizeMake(75, 75)];
+              
+              self.imgEmblem = [[UIImageView alloc] initWithImage:defaultImage];
+              
+              //[self.imgEmblem setFrame:cFrame];
+              
+              [self.contentView addSubview:self.imgEmblem];
+          }
+          
         
       if (! self.imgBackground){
             UIImage *defaultImage = [UIImage imageNamed:@"DefaultEmblem.png"];
@@ -50,6 +65,18 @@
             [self.contentView addSubview:self.imgBackground];
         }
         
+        if (! self.imgCareer){
+              UIImage *defaultImage = [UIImage imageNamed:@"Factions.png"];
+            
+              defaultImage = [Utilities imageResize:defaultImage andResizeTo:CGSizeMake(35,size.height)];
+            
+              self.imgCareer = [[UIImageView alloc] initWithImage:defaultImage];
+              
+              //[self.imgCareer setFrame:cFrame];
+              
+              [self.contentView addSubview:self.imgCareer];
+          }
+        
         if (! self.lblGuardianClass){
             
             self.lblGuardianClass = [[UILabel alloc] init];
@@ -57,6 +84,15 @@
             [self.lblGuardianClass setText:@""];
             
             [self.contentView addSubview:self.lblGuardianClass];
+        }
+        
+        if (! self.lblGuardianRace){
+            
+            self.lblGuardianRace = [[UILabel alloc] init];
+            [self.lblGuardianRace setTextColor:[UIColor darkGrayColor]];
+            [self.lblGuardianRace setText:@""];
+            
+            [self.contentView addSubview:self.lblGuardianRace];
         }
         
         if (! self.lblGuardianGender){
@@ -76,6 +112,15 @@
             [self.lblLightLevel setText:@""];
             
             [self.contentView addSubview:self.lblLightLevel];
+        }
+        
+        if (! self.lblGuardianCareer){
+            
+            self.lblGuardianCareer = [[UILabel alloc] init];
+            [self.lblGuardianCareer setTextColor:[UIColor whiteColor]];
+            [self.lblGuardianCareer setText:@""];
+            
+            [self.contentView addSubview:self.lblGuardianCareer];
         }
         
         
