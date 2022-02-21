@@ -370,14 +370,28 @@
         
         NSArray       *membership = (NSArray*) [note object];
         
+        MBRResponse *memberResponse = nil;
+        
         if (userInfo){
-            for (int iUserData; iUserData < userInfo.allKeys.count; iUserData++) {
+            
+            
+            
+            for (int iUserData = 0; iUserData < userInfo.allKeys.count; iUserData++) {
                 NSString *keyName = [userInfo.allKeys objectAtIndex:iUserData],
                          *valueName = [userInfo objectForKey:keyName];
                 
-                NSLog(@"AppDelegate:kDestinyLoadedMembership:PostedInfo:%d->[%@]:[%@]",iUserData,keyName,valueName);
+                if ([keyName isEqualToString:@"CurrentMemberShipResponse"]){
+                    memberResponse = (MBRResponse*) valueName;
+                    
+                    if (memberResponse){
+                        [self setCurrentMembership: memberResponse];
+                    }
+                }
+                //NSLog(@"AppDelegate:kDestinyLoadedMembership:PostedInfo:%d->[%@]:[%@]",iUserData,keyName,valueName);
             }
         }
+        
+        
         
         if (membership){
             [self setDestinyMemberships:membership];
@@ -1013,7 +1027,9 @@
        
                 NSDictionary *callerInfo = [[NSDictionary alloc]
                                             initWithObjectsAndKeys:@"AppDelegate",@"ClassName",
-                                                                    @"loadMembership",@"MethodName",nil];
+                                                                    @"loadMembership",@"MethodName",
+                                                                    memberResponse, @"CurrentMemberShipResponse",
+                                                                    nil];
                 
         
                     if (membershipData){

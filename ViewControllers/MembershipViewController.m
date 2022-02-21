@@ -42,15 +42,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //if (! appDelegate){
+    if (! appDelegate){
         appDelegate = [AppDelegate currentDelegate];
-    //}
+    }
    
     if (appDelegate != nil){
         if (! self.memberships){
             self.memberships = (NSArray *) appDelegate.destinyMemberships;
         }
+        
+        MBRResponse *mResponse =  [appDelegate currentMembership];
+        
+        if (mResponse){
+            [self loadProfile:mResponse];
+        }
     }
+    
+    
+    
    // [self registerNotifications];
     [self initTableView];
     
@@ -264,7 +273,7 @@
         
         if (! cell){
             
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"imgCell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"imgCell"];
         }
         
         placeholderImg = [UIImage imageNamed:@"PlaceHolder.jpg"];
@@ -284,12 +293,12 @@
                 if ([membership.membershipId isEqualToString:primaryMembership]){
                     [cell.layer setMasksToBounds:YES];
                     [cell.layer setCornerRadius:5];
-                    [cell.layer setBorderWidth:2];
-                    [cell.layer setShadowOffset: CGSizeMake(-1, 1)];
+                    [cell.layer setBorderWidth:1];
+                    [cell.layer setShadowOffset: CGSizeMake(0, 0)];
                     [cell.layer setBorderColor:[UIColor systemOrangeColor].CGColor];
                       
                     [cell setHighlighted:YES];
-                    
+                    [cell.detailTextLabel setTextColor:[UIColor whiteColor]];
                     [cell.detailTextLabel setText:@"Primary Membership"];
                 }
             }
@@ -326,7 +335,7 @@
             [cell.textLabel setTextColor:[UIColor whiteColor]];
             
             [cell.textLabel setText:membership.displayName];
-            [cell.detailTextLabel setText:membership.membershipId];
+           // [cell.detailTextLabel setText:membership.membershipId];
             
             [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
            
@@ -389,7 +398,7 @@
     
 }
 
--(void)loadProfile: (USRResponse *) anyProfile{
+-(void)loadProfile: (MBRResponse *) anyProfile{
     
     NSString *message = nil,
              *baseURL = nil,
@@ -397,7 +406,7 @@
              *strFirst  = nil,
              *strLast   = nil;
     
-    USRResponse *profile = nil;
+    MBRResponse *profile = nil;
     
     NSURL *imgURL = nil;
     
@@ -415,16 +424,19 @@
         
             
         if (anyProfile){
+            MBRBungieNetUser *bungieUser = nil;
             
-            
-            profile = (USRResponse*) anyProfile;
+            profile = (MBRResponse*) anyProfile;
             
             if (profile){
                 
+                bungieUser = [profile bungieNetUser];
                 
-                baseURL = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,profile.profilePicturePath];
+                if (bungieUser){
                 
-                bgURL =  [NSString stringWithFormat:@"%@%@/header.jpg", kBungieThemeURL,profile.profileThemeName];
+                baseURL = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,bungieUser.profilePicturePath];
+                
+                bgURL =  [NSString stringWithFormat:@"%@%@/header.jpg", kBungieThemeURL,bungieUser.profileThemeName];
                 
                 imgURL = [[NSURL alloc] initWithString:baseURL];
                 
@@ -432,14 +444,14 @@
                 
                 [self.imgPlayerLogo setImageWithURL:imgURL];
                 
-                [self.lblMembershipId setText:profile.membershipId];
+                [self.lblMembershipId setText:bungieUser.membershipId];
                 
-                [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:profile.locale]];
+                [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:bungieUser.locale]];
                 
                 [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
                
-                dteFirst  = [dateFormatter dateFromString:profile.firstAccess];
-                dteLast   = [dateFormatter dateFromString:profile.lastUpdate];
+                dteFirst  = [dateFormatter dateFromString:bungieUser.firstAccess];
+                dteLast   = [dateFormatter dateFromString:bungieUser.lastUpdate];
                 
                 dateFormatter.timeStyle = NSDateFormatterShortStyle;
                 dateFormatter.dateStyle = NSDateIntervalFormatterMediumStyle;
@@ -451,18 +463,20 @@
                 [self.lblFirstAccessed setText:strFirst];
                 [self.lblLastAccessed setText:strLast];
                 
-                [self.lblPlayerMotto setText:profile.statusText];
-                [self->_lblPlayerName setText:profile.displayName];
+                [self.lblPlayerMotto setText:bungieUser.statusText];
+                [self->_lblPlayerName setText:bungieUser.displayName];
                 
                 enum Destiny2MembershipType mType = Xbox;
                
                 //xbox = 1
-                message = [NSString stringWithFormat:@"%@/%@",profile.membershipId,@"1" ];
+                message = [NSString stringWithFormat:@"%@/%@",bungieUser.membershipId,@"1" ];
                 
-                [appDelegate setCurrentLocale:profile.locale];
-                [appDelegate setCurrentProfile:profile];
+              /*  [appDelegate setCurrentLocale:profile.locale];
+                [appDelegate setCurrentProfile:profile];*/
+                    
+                }
                 
-                [self.tblMemberships reloadData];
+               // [self.tblMemberships reloadData];
                 
                 //[self loadMembership:message];
                 //[self endTimer];

@@ -1290,8 +1290,8 @@
         
         if(selectedCell && (selectedCell.layer.borderColor != [UIColor systemOrangeColor].CGColor) ){
             
-            [selectedCell.layer setMasksToBounds:YES];
-            [selectedCell.layer setCornerRadius:5];
+           /* [selectedCell.layer setMasksToBounds:YES];
+            [selectedCell.layer setCornerRadius:5];*/
             [selectedCell.layer setBorderWidth:3];
             [selectedCell.layer setShadowOffset: CGSizeMake(-1, 1)];
             [selectedCell.layer setBorderColor:[UIColor systemOrangeColor].CGColor];

@@ -23,7 +23,8 @@
 
 #define kDestinyOAuthSFNotification @"Destiny2.SFOAuth"
 
-#define kamsDHRedirect @"amsdh://oauth/callback"
+//#define kamsDHRedirect @"amsdh://oauth/callback"
+#define kamsDHRedirect @"amsdh"
 
 #define kDestinyOriginHeader @"AMSDestinyHelper"
 

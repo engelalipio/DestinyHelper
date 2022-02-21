@@ -196,7 +196,6 @@
 		ACE2D27125225DE900FF095A /* Loot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = ACE2D22925225DE900FF095A /* Loot.jpg */; };
 		ACE2D27225225DE900FF095A /* Dreadnaught.jpg in Resources */ = {isa = PBXBuildFile; fileRef = ACE2D22A25225DE900FF095A /* Dreadnaught.jpg */; };
 		ACE2D27325225DE900FF095A /* ICONS.png in Resources */ = {isa = PBXBuildFile; fileRef = ACE2D22B25225DE900FF095A /* ICONS.png */; };
-		ACE2D27425225DE900FF095A /* ICONS.jpg in Resources */ = {isa = PBXBuildFile; fileRef = ACE2D22C25225DE900FF095A /* ICONS.jpg */; };
 		ACE2D27525225DE900FF095A /* DestinyHelperLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = ACE2D22D25225DE900FF095A /* DestinyHelperLogo.png */; };
 		ACE2D27625225DE900FF095A /* Patrol.png in Resources */ = {isa = PBXBuildFile; fileRef = ACE2D22E25225DE900FF095A /* Patrol.png */; };
 		ACE2D27725225DE900FF095A /* amsLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = ACE2D22F25225DE900FF095A /* amsLogo.png */; };
@@ -632,7 +631,6 @@
 		ACE2D22925225DE900FF095A /* Loot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Loot.jpg; sourceTree = "<group>"; };
 		ACE2D22A25225DE900FF095A /* Dreadnaught.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Dreadnaught.jpg; sourceTree = "<group>"; };
 		ACE2D22B25225DE900FF095A /* ICONS.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ICONS.png; sourceTree = "<group>"; };
-		ACE2D22C25225DE900FF095A /* ICONS.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ICONS.jpg; sourceTree = "<group>"; };
 		ACE2D22D25225DE900FF095A /* DestinyHelperLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DestinyHelperLogo.png; sourceTree = "<group>"; };
 		ACE2D22E25225DE900FF095A /* Patrol.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Patrol.png; sourceTree = "<group>"; };
 		ACE2D22F25225DE900FF095A /* amsLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = amsLogo.png; sourceTree = "<group>"; };
@@ -1313,7 +1311,6 @@
 				ACE2D21925225DE900FF095A /* PlaceHolder.jpg */,
 				ACE2D21A25225DE900FF095A /* DestinyHelperLogo.psd */,
 				ACE2D21B25225DE900FF095A /* Backgrounds */,
-				ACE2D22C25225DE900FF095A /* ICONS.jpg */,
 				ACE2D22D25225DE900FF095A /* DestinyHelperLogo.png */,
 				ACE2D22E25225DE900FF095A /* Patrol.png */,
 				ACE2D22F25225DE900FF095A /* amsLogo.png */,
@@ -1734,7 +1731,6 @@
 				ACCE04EC260F894000C389B2 /* damage_kinetic.png in Resources */,
 				ACA05A292532235B008CB2BD /* Korean.png in Resources */,
 				ACA05A272532235B008CB2BD /* FRENCH.png in Resources */,
-				ACE2D27425225DE900FF095A /* ICONS.jpg in Resources */,
 				ACF3C375252FAE1E00C41679 /* tabGuardians.png in Resources */,
 				ACA05A242532235B008CB2BD /* English.png in Resources */,
 				ACCE04E6260D619B00C389B2 /* primaryAmmo.png in Resources */,
@@ -2116,7 +2112,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2175,7 +2171,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_CFLAGS = "";
@@ -2188,6 +2184,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B7QMBU3EE6;
 				INFOPLIST_FILE = DestinyHelper/Info.plist;
@@ -2197,6 +2194,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ams.DestinyHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -2205,6 +2203,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B7QMBU3EE6;
 				INFOPLIST_FILE = DestinyHelper/Info.plist;
@@ -2214,6 +2213,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ams.DestinyHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
