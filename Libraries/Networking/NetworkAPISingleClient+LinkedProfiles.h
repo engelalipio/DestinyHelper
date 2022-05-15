@@ -63,6 +63,12 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
 
++ (AFJSONRequestOperation *)getCharacterUniqueWeaponsStats:(NSString *)anyCharId
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
+
+
+
 + (AFJSONRequestOperation *)getVendors:(NSString *)anyComponents
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
@@ -89,6 +95,8 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 + (AFJSONRequestOperation *)lockStateItem:(NSObject *)anyInstancedItem
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
+
+
 
 @end
 

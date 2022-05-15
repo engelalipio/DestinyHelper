@@ -506,6 +506,84 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
     
 }
 
+
+#pragma mark -> Path {membershiptypeid}/Account/{membershipid}/Character/{characterid}/Stats/UniqueWeapons/
++ (AFJSONRequestOperation *)getCharacterUniqueWeaponsStats:(NSString *)anyCharId
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
+   
+    NSString    *message         = @"",
+                *servicePath     = @"",
+                *charID          = @"",
+                *strMembership   = @"",
+                *urlPath         = @"",
+                *tokenValue      = @"";
+    
+    NSURL       *url  = nil;
+    
+    AFJSONRequestOperation *request = nil;
+    
+    NetworkAPISingleClient *api = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+ 
+    @try {
+
+    
+        appDelegate = [AppDelegate currentDelegate];
+        
+        charID = anyCharId;
+        
+        if ( appDelegate){
+            strMembership = appDelegate.currentMembershipID;
+ 
+        }
+        
+        urlPath = [NSString stringWithFormat:@"%@/1/Account/%@/Character/%@/Stats/UniqueWeapons",kBungieAPIBaseD2URL,strMembership,charID];
+        
+       // servicePath = [NSString stringWithFormat:@"%@?components=%u", urlPath,cType];
+        
+        servicePath = urlPath;
+ 
+        NSLog(@"NetworkAPISingleClient(LinkedProfiles):getCharacterUniqueWeaponsStats=%@",servicePath);
+        
+        url = [[NSURL alloc] initWithString:kBungieAPIBaseURL];
+        
+        api = [[NetworkAPISingleClient sharedClient] initWithBaseURL:url];
+        
+        tokenValue = [NetworkAPISingleClient getAuthorizationTokenHeaderValue];
+        
+        if (tokenValue ){
+            [api setDefaultHeader:@"Authorization" value:tokenValue];
+        }
+        
+        request = [api makeGetOperationWithObjecModel:[VNDBaseClass class]
+                                               atPath:servicePath
+                                      completionBlock:completionBlock
+                                        andErrorBlock:errorBlock];
+        
+        message = servicePath;
+        
+        NSLog(@"Completed::%@",message);
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+        NSLog(@"Error::%@",message);
+    }
+    @finally {
+        message = @"";
+        api = nil;
+        servicePath = nil;
+        appDelegate = nil;
+    }
+    return request;
+    
+    
+    
+    
+}
+
 #pragma mark-> Path: MembershipType/Profile/{destinyMembershipId}/Character/{characterId}/
 + (AFJSONRequestOperation *)getCharacterSummary:(NSString *)anyCharId
                              completionBlock:(void(^) (NSArray * values))

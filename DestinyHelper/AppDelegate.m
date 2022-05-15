@@ -47,6 +47,7 @@
 @synthesize  destinyItemVendorsDetailDefinitions = _destinyItemVendorsDetailDefinitions;
 @synthesize  destinyVendorGroupDefinitions = _destinyVendorGroupDefinitions;
 @synthesize  destinyInventoryItemDefinitions = _destinyInventoryItemDefinitions;
+@synthesize  destinyActivityModeDefinitions = _destinyActivityModeDefinitions;
 @synthesize  userSettings = _userSettings;
 
 +(AppDelegate *) currentDelegate{
@@ -536,6 +537,67 @@
                                 }
                             }
                             
+                            
+                            if ([defKeyName isEqualToString:@"DestinyActivityModeDefinition"]){
+                             
+                                jsonPath = [Utilities retrieveDataFromJSONFile:defKeyName
+                                                                  andExtension:@"json"];
+                                
+                                if (jsonPath){
+                                    
+                                    NSMutableDictionary *modes = [[NSMutableDictionary alloc] initWithCapacity:jsonPath.allKeys.count];
+                                    
+                                    for (int iCat = 0; iCat < jsonPath.allKeys.count; iCat++) {
+                                        
+                                        NSString *vKey = nil;
+                                        
+                                        NSDictionary *currentMode = nil;
+                                        
+                                        ActivityModeHash *modeDetail = nil;
+                                     
+                                        @autoreleasepool{
+                                            
+                                            @try {
+                                                
+                                                vKey   = (NSString*) [jsonPath.allKeys objectAtIndex:iCat];
+                                                
+                                                currentMode= [jsonPath objectForKey:vKey];
+                                                
+                                                if (currentMode){
+                                                    
+                                                    modeDetail = [[ActivityModeHash alloc] initWithDictionary:currentMode];
+                                                    
+                                                    if (modeDetail){
+                                                        if (![modes.allKeys containsObject:vKey]){
+                                                            [modes setValue:modeDetail forKey:vKey];
+                                                        }
+                                                        
+                                                    }
+                                                }
+                                                
+                                            }
+                                            @finally {
+                                                
+                                                vKey = nil;
+                                                
+                                                currentMode = nil;
+                                                
+                                                modeDetail = nil;
+                                            }
+                                        }
+                                 
+                                        
+                                }
+                                    
+                                    
+                                           if (! _destinyActivityModeDefinitions){
+                                               self.destinyActivityModeDefinitions =
+                                               [[NSDictionary alloc] initWithDictionary:modes];
+                                               NSLog(@"AppDelegate:DestinyActivityModeDefinition:Load Completed:[%d]->Total Activity Modes.",modes.count);
+                                           }
+                                
+                              }
+                            }
                             
                             //Has  @autoreleasepool
                             if ([defKeyName isEqualToString:@"DestinyVendorDefinition"]){

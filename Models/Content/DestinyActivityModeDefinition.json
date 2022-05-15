@@ -1,0 +1,1690 @@
+{
+  "4033000329" : {
+    "hash" : 4033000329,
+    "index" : 55,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "breakthrough",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 65,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "",
+      "name" : "Breakthrough"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3024701316" : {
+    "hash" : 3024701316,
+    "index" : 41,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "private-matches-control",
+    "display" : false,
+    "tier" : 0,
+    "modeType" : 52,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1901,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_922ae83203f6134bae00937d12eab3a2.png",
+      "hasIcon" : true,
+      "description" : "Welcome to Private Matches Control, where everything's made up and the points don't matter.",
+      "name" : "Private Matches Control"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2913538899" : {
+    "hash" : 2913538899,
+    "index" : 61,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "momentum",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 81,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats for Momentum.",
+      "name" : "Momentum"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1264443021" : {
+    "hash" : 1264443021,
+    "index" : 37,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "allMayhem",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 25,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1377,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats for all variants of Mayhem in Crucible.",
+      "name" : "Mayhem"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2263766091" : {
+    "hash" : 2263766091,
+    "index" : 31,
+    "parentHashes" : [
+      1370326378
+    ],
+    "friendlyName" : "trialsCountdown",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 41,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1377,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_f4b12d402bb36270cd911f4e1fa8bb0c.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Trials of the Nine Countdown PVP mode",
+      "name" : "Trials of the Nine Countdown"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "547513715" : {
+    "hash" : 547513715,
+    "index" : 12,
+    "parentHashes" : [
+      2394616003
+    ],
+    "friendlyName" : "scored_nightfall",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 46,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 3210,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_234e7e18549d5eae2ddb012f2bcb203a.png",
+      "hasIcon" : true,
+      "description" : "Just how many times did we wipe in last week's Nightfall while trying to hit a new high score?  (Hint, no more than once)",
+      "name" : "Scored Nightfall Strikes"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_strikes_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3894474826" : {
+    "hash" : 3894474826,
+    "index" : 54,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "reckoning",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 76,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_e74b3385c5269da226372df8ae7f500d.png",
+      "hasIcon" : true,
+      "description" : "Stats for The Reckoning",
+      "name" : "The Reckoning"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/destiny_content\/pgcr\/reckoning.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3821502017" : {
+    "hash" : 3821502017,
+    "index" : 35,
+    "parentHashes" : [
+      1703282980
+    ],
+    "friendlyName" : "doubles",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 50,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1377,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_f9d1438e0536f36e868e691eb0acfc4d.png",
+      "hasIcon" : true,
+      "description" : "Stats for your Doubles Crucible experiences.",
+      "name" : "Doubles"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "157639802" : {
+    "hash" : 157639802,
+    "index" : 38,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "rumble",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 48,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1377,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_5b371fef4ecafe733ad487a8fae3b9f5.png",
+      "hasIcon" : true,
+      "description" : "It's every Guardian for themselves.",
+      "name" : "Rumble"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1372032677" : {
+    "hash" : 1372032677,
+    "index" : 51,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "scorchedTeam",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 62,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "If it were any hotter, you would like and subscribe for future updates.",
+      "name" : "Team Scorched"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1418469392" : {
+    "hash" : 1418469392,
+    "index" : 53,
+    "parentHashes" : [
+      2449176354
+    ],
+    "friendlyName" : "gambit-prime",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 75,
+    "activityModeCategory" : 3,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_1e392d102336226d85cc12bc5dbe1ff0.png",
+      "hasIcon" : true,
+      "description" : "Kill enemies, bank motes, and disrupt the opposing team.",
+      "name" : "Gambit Prime"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "608898761" : {
+    "hash" : 608898761,
+    "index" : 62,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "dungeon",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 82,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_f20ebb76bee675ca429e470cec58cc7b.png",
+      "hasIcon" : true,
+      "description" : "Stats for Dungeons.",
+      "name" : "Dungeon"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/destiny_content\/pgcr\/dungeon_pit_of_heresy.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1703282980" : {
+    "hash" : 1703282980,
+    "index" : 34,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "allDoubles",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 49,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1377,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_f9d1438e0536f36e868e691eb0acfc4d.png",
+      "hasIcon" : true,
+      "description" : "An aggregation of all Doubles crucible modes.",
+      "name" : "All Doubles"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "332181804" : {
+    "hash" : 332181804,
+    "index" : 59,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "nightmare-hunt",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 79,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_48ad57129cd0c46a355ef8bcaa1acd04.png",
+      "hasIcon" : true,
+      "description" : "Stats for Nightmare Hunts.",
+      "name" : "Nightmare Hunt"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/destiny_content\/pgcr\/nightmare_hunt_fear.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "803838459" : {
+    "hash" : 803838459,
+    "index" : 56,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "blackArmoryRun",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 66,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 3300,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_d08435f6d51f7ff593c92e7f1394e933.png",
+      "hasIcon" : true,
+      "description" : "Stats related to Black Armory Forge activities.",
+      "name" : "Forge"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_strikes_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1963485238" : {
+    "hash" : 1963485238,
+    "index" : 58,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "vex-offensive",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 78,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_aff433243d91cbbfa53a1c181fb2ee47.png",
+      "hasIcon" : true,
+      "description" : "Enter a portal to the Black Garden and fight on the frontlines of an ongoing battle against the Vex.",
+      "name" : "Vex Offensive"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/destiny_content\/pgcr\/vex_offensive.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3425110680" : {
+    "hash" : 3425110680,
+    "index" : 6,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "pvpQuickplay",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 70,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats related to quickplay playlist activities.",
+      "name" : "Quickplay PvP"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "244324567" : {
+    "hash" : 244324567,
+    "index" : 20,
+    "parentHashes" : [
+      1585787840
+    ],
+    "friendlyName" : "clashQuickplay",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 71,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1100,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats for Clash, when specifically played in Quickplay mode.",
+      "name" : "Clash: Quickplay"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3479216388" : {
+    "hash" : 3479216388,
+    "index" : 27,
+    "parentHashes" : [
+      1826469369
+    ],
+    "friendlyName" : "iron-banner-clash",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 44,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1400,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fe57052d7cf971f7502daa75a2ca2437.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Iron Banner Clash PVP mode",
+      "name" : "Iron Banner Clash"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1350109474" : {
+    "hash" : 1350109474,
+    "index" : 11,
+    "parentHashes" : [
+      2394616003
+    ],
+    "friendlyName" : "heroicNightfall",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 17,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 3300,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_abf5e799b91b9a4dea7f8a7e00106d41.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Prestige Nightfall PVE mode",
+      "name" : "Prestige Nightfall"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_strikes_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "116827562" : {
+    "hash" : 116827562,
+    "index" : 45,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "private-matches-mayhem",
+    "display" : false,
+    "tier" : 0,
+    "modeType" : 56,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1905,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_52f64830161b33289d36edc03f6d2ea6.png",
+      "hasIcon" : true,
+      "description" : "Welcome to Private Matches Mayhem, where everything's made up and the points don't matter.",
+      "name" : "Private Matches Mayhem"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1668923154" : {
+    "hash" : 1668923154,
+    "index" : 50,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "scorched",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 61,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Hotter than an Arizona sidewalk in July.",
+      "name" : "Scorched"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "152599670" : {
+    "hash" : 152599670,
+    "index" : 42,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "private-matches-countdown",
+    "display" : false,
+    "tier" : 0,
+    "modeType" : 54,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1902,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Welcome to Private Matches Countdown, where everything's made up and the points don't matter.",
+      "name" : "Private Matches Countdown"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "400075666" : {
+    "hash" : 400075666,
+    "index" : 57,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "menagerie",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 77,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_1cdc631c83cebd284aa692800b375544.png",
+      "hasIcon" : true,
+      "description" : "Pleasure and delight await you.",
+      "name" : "The Menagerie"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/destiny_content\/pgcr\/menagerie.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2449176354" : {
+    "hash" : 2449176354,
+    "index" : 2,
+    "friendlyName" : "pveCompetitive",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 64,
+    "activityModeCategory" : 3,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 99999,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_5f8a923a0d0ac1e4289ae3be03f94aa2.png",
+      "hasIcon" : true,
+      "description" : "A category that encompasses any mode where you fight both PC and NPC enemies.",
+      "name" : "Competitive Co-Op"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_story_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "4078439804" : {
+    "hash" : 4078439804,
+    "index" : 60,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "elimination",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 80,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats aggregated across all Elimination Crucible modes.",
+      "name" : "Elimination"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2294590554" : {
+    "hash" : 2294590554,
+    "index" : 65,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "dares",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 85,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_97b3f044ae55f744afa0148aa7b6ca21.png",
+      "hasIcon" : true,
+      "description" : "Become a contestant in the Dares of Eternity and compete in challenges from across the paraverse.",
+      "name" : "Dares of Eternity"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_story_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1673724806" : {
+    "hash" : 1673724806,
+    "index" : 64,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "trials_of_osiris",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 84,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_e35792b49b249ca5dcdb1e7657ca42b6.png",
+      "hasIcon" : true,
+      "description" : "Compete in a fireteam-required event version of Elimination. Earn as many wins on a ticket as you can. Three losses and you're out.",
+      "name" : "Trials of Osiris"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "103143560" : {
+    "hash" : 103143560,
+    "index" : 67,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "lost_sector",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 87,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5002,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_7d11acd7d5a3daebc0a0c906452932d6.png",
+      "hasIcon" : true,
+      "description" : "Stats for Lost Sectors.",
+      "name" : "Lost Sector"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_story_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1505888634" : {
+    "hash" : 1505888634,
+    "index" : 24,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "countdown",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 38,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1377,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Countdown PVP mode",
+      "name" : "Countdown"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1317961215" : {
+    "hash" : 1317961215,
+    "index" : 29,
+    "parentHashes" : [
+      1826469369
+    ],
+    "friendlyName" : "iron-banner-salvage",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 68,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1400,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fe57052d7cf971f7502daa75a2ca2437.png",
+      "hasIcon" : true,
+      "description" : "Stats related to Salvage in Iron Banner.",
+      "name" : "Iron Banner Salvage"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1585787840" : {
+    "hash" : 1585787840,
+    "index" : 19,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "clash",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 12,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1100,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Clash PVP mode",
+      "name" : "Clash"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3904624892" : {
+    "hash" : 3904624892,
+    "index" : 22,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "salvage",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 67,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1376,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats related to Salvage in Crucible.",
+      "name" : "Salvage"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1340118533" : {
+    "hash" : 1340118533,
+    "index" : 18,
+    "parentHashes" : [
+      3199098480
+    ],
+    "friendlyName" : "controlCompetitive",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 74,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1150,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_922ae83203f6134bae00937d12eab3a2.png",
+      "hasIcon" : true,
+      "description" : "Stats for Control, when specifically played in Competitive mode.",
+      "name" : "Control: Competitive"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "532484583" : {
+    "hash" : 532484583,
+    "index" : 13,
+    "parentHashes" : [
+      2394616003
+    ],
+    "friendlyName" : "scored_heroicNightfall",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 47,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 3310,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_abf5e799b91b9a4dea7f8a7e00106d41.png",
+      "hasIcon" : true,
+      "description" : "Guardians face challenges of their own making in the scored Prestige Nightfall.",
+      "name" : "Scored Prestige Nightfall"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_strikes_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1164760504" : {
+    "hash" : 1164760504,
+    "index" : 4,
+    "friendlyName" : "crucible",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 5,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "All of your Crucible stats rolled into one.",
+      "name" : "Crucible"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3673334631" : {
+    "hash" : 3673334631,
+    "index" : 17,
+    "parentHashes" : [
+      3199098480
+    ],
+    "friendlyName" : "controlQuickplay",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 73,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1150,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_922ae83203f6134bae00937d12eab3a2.png",
+      "hasIcon" : true,
+      "description" : "Stats for Control, when specifically played in Quickplay mode.",
+      "name" : "Control: Quickplay"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2319502047" : {
+    "hash" : 2319502047,
+    "index" : 63,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "sundial",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 83,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_23c0b4b8e73c2412819cc2db3d9a0c67.png",
+      "hasIcon" : true,
+      "description" : "Stop the Cabal from rewriting history and laying claim to the future.",
+      "name" : "The Sundial"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/destiny_content\/pgcr\/dungeon_pit_of_heresy.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3780759439" : {
+    "hash" : 3780759439,
+    "index" : 44,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "private-matches-survival",
+    "display" : false,
+    "tier" : 0,
+    "modeType" : 55,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1904,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Welcome to Private Matches Survival, where everything's made up and the points don't matter.",
+      "name" : "Private Matches Survival"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "122250361" : {
+    "hash" : 122250361,
+    "activityModeMappings" : {
+
+    },
+    "index" : 39,
+    "friendlyName" : "private-matches",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 32,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1899,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Welcome to Private Matches, where everything's made up and the points don't matter.",
+      "name" : "Private Matches"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "4110605575" : {
+    "hash" : 4110605575,
+    "index" : 9,
+    "parentHashes" : [
+      2394616003
+    ],
+    "friendlyName" : "strikes-normal",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 3,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 3000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_38e26baf417d26bb3548d97bf4872b54.png",
+      "hasIcon" : true,
+      "description" : "Stats for strikes.",
+      "name" : "Strike"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_strikes_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "992499158" : {
+    "hash" : 992499158,
+    "index" : 66,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "offensive",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 86,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5001,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_f6de6d95f600f199c9a674c73cbefbcc.png",
+      "hasIcon" : true,
+      "description" : "Stats for Offensives.",
+      "name" : "Offensive"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_story_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2096553452" : {
+    "hash" : 2096553452,
+    "index" : 49,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "lockdown",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 60,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats related to Lockdown in Crucible.",
+      "name" : "Lockdown"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1686739444" : {
+    "hash" : 1686739444,
+    "index" : 8,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "story",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 2,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 4000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_5f8a923a0d0ac1e4289ae3be03f94aa2.png",
+      "hasIcon" : true,
+      "description" : "Just how many Vex did I shoot while they didn't have time to explain?",
+      "name" : "Story"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_story_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "910991990" : {
+    "hash" : 910991990,
+    "index" : 25,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "supremacy",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 31,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1400,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_ca750af7ed2f0ec3c8e2f019c85f7bab.png",
+      "hasIcon" : true,
+      "description" : "Defeated Guardians drop their Crests. Collect them to win.",
+      "name" : "Supremacy"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1164760493" : {
+    "hash" : 1164760493,
+    "index" : 1,
+    "friendlyName" : "pve",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 7,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 99999,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_5f8a923a0d0ac1e4289ae3be03f94aa2.png",
+      "hasIcon" : true,
+      "description" : "For all your alien-shooting needs.",
+      "name" : "PvE"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_story_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2239249083" : {
+    "hash" : 2239249083,
+    "index" : 23,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "survival",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 37,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1376,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Survival PVP mode",
+      "name" : "Survival"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2394616003" : {
+    "hash" : 2394616003,
+    "index" : 14,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "strikes",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 18,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 3100,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_38e26baf417d26bb3548d97bf4872b54.png",
+      "hasIcon" : true,
+      "description" : "Stats that roll both regular strikes and special strike modes (such as Nightfall and Heroic Strike) into one.",
+      "name" : "Strikes"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_strikes_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2553544158" : {
+    "hash" : 2553544158,
+    "index" : 46,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "private-matches-rumble",
+    "display" : false,
+    "tier" : 0,
+    "modeType" : 57,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1906,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_5b371fef4ecafe733ad487a8fae3b9f5.png",
+      "hasIcon" : true,
+      "description" : "Welcome to Private Matches Rumble, where everything's made up and the points don't matter.",
+      "name" : "Private Matches Rumble"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "575409284" : {
+    "hash" : 575409284,
+    "index" : 40,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "private-matches-clash",
+    "display" : false,
+    "tier" : 0,
+    "modeType" : 51,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1900,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_cf348b63307220263eff699dc56bd081.png",
+      "hasIcon" : true,
+      "description" : "Welcome to Private Matches Clash, where everything's made up and the points don't matter.",
+      "name" : "Private Matches Clash"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2843684868" : {
+    "hash" : 2843684868,
+    "index" : 28,
+    "parentHashes" : [
+      1826469369
+    ],
+    "friendlyName" : "iron-banner-control",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 43,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1400,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fe57052d7cf971f7502daa75a2ca2437.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Iron Banner Control PVP mode",
+      "name" : "Iron Banner Control"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3497767639" : {
+    "hash" : 3497767639,
+    "index" : 3,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "patrol",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 6,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_0aa1d7b0e0ac2c6820036b6b3dde3e5b.png",
+      "hasIcon" : true,
+      "description" : "Stats for those times when you wander around the map looking for love.  I mean Patrols.  Or Adventures.  Or whatever the kids call it these days.",
+      "name" : "Explore"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_patrol_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "946648766" : {
+    "hash" : 946648766,
+    "index" : 36,
+    "parentHashes" : [
+      1703282980
+    ],
+    "friendlyName" : "crimsonDoubles",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 15,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1377,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_f9d1438e0536f36e868e691eb0acfc4d.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Crimson Doubles PvP mode.",
+      "name" : "Crimson Doubles"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "4052075509" : {
+    "hash" : 4052075509,
+    "index" : 21,
+    "parentHashes" : [
+      1585787840
+    ],
+    "friendlyName" : "clashCompetitive",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 72,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1100,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats for Clash, when specifically played in Competitive mode.",
+      "name" : "Clash: Competitive"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2043403989" : {
+    "hash" : 2043403989,
+    "index" : 7,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "raid",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 4,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 2000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_bfe80e3dafe6686a9dc42df0606bdc9b.png",
+      "hasIcon" : true,
+      "description" : "All of your Raid stats rolled into one.",
+      "name" : "Raid"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_raid_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2486723318" : {
+    "hash" : 2486723318,
+    "index" : 5,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "pvpCompetitive",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 69,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "Stats related to competitive playlist activities.",
+      "name" : "Competitive PvP"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "748895195" : {
+    "hash" : 748895195,
+    "index" : 0,
+    "friendlyName" : "all",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 0,
+    "activityModeCategory" : 0,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 0,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_f6de6d95f600f199c9a674c73cbefbcc.png",
+      "hasIcon" : true,
+      "description" : "All game types wrapped into one.",
+      "name" : "All"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_allmodes.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1826469369" : {
+    "hash" : 1826469369,
+    "index" : 15,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "iron-banner",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 19,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1020,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fe57052d7cf971f7502daa75a2ca2437.png",
+      "hasIcon" : true,
+      "description" : "Even the strongest iron spear can be worn to a filing.",
+      "name" : "Iron Banner"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "470484296" : {
+    "hash" : 470484296,
+    "index" : 32,
+    "parentHashes" : [
+      1370326378
+    ],
+    "friendlyName" : "trialsSurvival",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 42,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1377,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_f4b12d402bb36270cd911f4e1fa8bb0c.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Trials of the Nine Survival PVP mode",
+      "name" : "Trials of the Nine Survival"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3862044762" : {
+    "hash" : 3862044762,
+    "index" : 43,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "private-matches-supremacy",
+    "display" : false,
+    "tier" : 0,
+    "modeType" : 53,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1903,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_ca750af7ed2f0ec3c8e2f019c85f7bab.png",
+      "hasIcon" : true,
+      "description" : "Welcome to Private Matches Supremacy, where everything's made up and the points don't matter.",
+      "name" : "Private Matches Supremacy"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1848252830" : {
+    "hash" : 1848252830,
+    "index" : 52,
+    "parentHashes" : [
+      2449176354
+    ],
+    "friendlyName" : "pvecomp_gambit",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 63,
+    "activityModeCategory" : 3,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_96f7e9009d4f26e30cfd60564021925e.png",
+      "hasIcon" : true,
+      "description" : "Kill enemies, bank motes, and disrupt the opposing team.",
+      "name" : "Gambit"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "4212882650" : {
+    "hash" : 4212882650,
+    "index" : 26,
+    "parentHashes" : [
+      1826469369
+    ],
+    "friendlyName" : "iron-banner-supremacy",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 45,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1400,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fe57052d7cf971f7502daa75a2ca2437.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Iron Banner Supremacy PVP mode",
+      "name" : "Iron Banner Supremacy"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3199098480" : {
+    "hash" : 3199098480,
+    "index" : 16,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "control",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 10,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1150,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_922ae83203f6134bae00937d12eab3a2.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Control PvP mode.",
+      "name" : "Control"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1589650888" : {
+    "hash" : 1589650888,
+    "index" : 33,
+    "parentHashes" : [
+
+    ],
+    "friendlyName" : "social",
+    "display" : false,
+    "tier" : 0,
+    "modeType" : 40,
+    "activityModeCategory" : 0,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1377,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_f6de6d95f600f199c9a674c73cbefbcc.png",
+      "hasIcon" : true,
+      "description" : "",
+      "name" : "Social"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "1370326378" : {
+    "hash" : 1370326378,
+    "index" : 30,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "trialsofthenine",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 39,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : true,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 1377,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_f4b12d402bb36270cd911f4e1fa8bb0c.png",
+      "hasIcon" : true,
+      "description" : "Stats related to the Trials of the Nine PVP mode",
+      "name" : "Trials of the Nine"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "3789021730" : {
+    "hash" : 3789021730,
+    "index" : 10,
+    "parentHashes" : [
+      2394616003
+    ],
+    "friendlyName" : "nightfall",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 16,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 3200,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_234e7e18549d5eae2ddb012f2bcb203a.png",
+      "hasIcon" : true,
+      "description" : "Just how many times did we wipe in last week's Nightfall?  (Hint, no more than once)",
+      "name" : "Nightfall Strikes"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_strikes_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "175275639" : {
+    "hash" : 175275639,
+    "index" : 47,
+    "parentHashes" : [
+      1164760493
+    ],
+    "friendlyName" : "heroicAdventure",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 58,
+    "activityModeCategory" : 1,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 3310,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_abf5e799b91b9a4dea7f8a7e00106d41.png",
+      "hasIcon" : true,
+      "description" : "As opposed to an unheroic adventure, such as organizing your sock drawer.",
+      "name" : "Heroic Adventure"
+    },
+    "isTeamBased" : false,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_story_1.jpg",
+    "supportsFeedFiltering" : false
+  },
+  "2546784302" : {
+    "hash" : 2546784302,
+    "index" : 48,
+    "parentHashes" : [
+      1164760504
+    ],
+    "friendlyName" : "showdown",
+    "display" : true,
+    "tier" : 0,
+    "modeType" : 59,
+    "activityModeCategory" : 2,
+    "isAggregateMode" : false,
+    "redacted" : false,
+    "blacklisted" : false,
+    "order" : 5000,
+    "displayProperties" : {
+      "icon" : "\/common\/destiny2_content\/icons\/DestinyActivityModeDefinition_fb3e9149c43f7a2e8f8b66cbea7845fe.png",
+      "hasIcon" : true,
+      "description" : "",
+      "name" : "Showdown"
+    },
+    "isTeamBased" : true,
+    "pgcrImage" : "\/img\/theme\/destiny\/bgs\/stats\/banner_crucible_1.jpg",
+    "supportsFeedFiltering" : false
+  }
+}

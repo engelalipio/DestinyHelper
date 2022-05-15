@@ -33,7 +33,7 @@ enum Destiny2GenderType{
 enum Destiny2TierType{
     TierUnknown = 0,
     TierCurrency = 1,
-    Basic = 2,
+    TierBasic = 2,
     Common =3,
     Rare = 4,
     Superior = 5,
@@ -308,6 +308,8 @@ enum Destiny2ItemSortType{
 @property (nonatomic,strong) NSDictionary *destinyVendorGroupDefinitions;
 
 @property (nonatomic,strong) NSDictionary *destinyItemVendorsDetailDefinitions;
+
+@property (nonatomic,strong) NSDictionary *destinyActivityModeDefinitions;
 
 @property (nonatomic,strong) NSString *currentLocale;
 
