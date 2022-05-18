@@ -300,6 +300,7 @@
         
         selectedCell = (ItemCellTableView*) [self.parentTableView cellForRowAtIndexPath:indexPath];
         
+       
         if(selectedCell){
             
             selectedTitle = selectedCell.lblItemName.text;
@@ -310,6 +311,7 @@
             
             selectedCharacter  = [selectedCell.lblCharacterId text];
             
+  
             if (selectedItemHash){
                 
                 
@@ -335,6 +337,7 @@
                             NSString *respStatus = [respData objectForKey:@"ErrorStatus"];
                             
                             if (respStatus){
+                                //SendToVault Action was Successfull!
                                 if ([respStatus isEqualToString:@"Success"]){
                                     
                                     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Send to Vault Action"
@@ -345,7 +348,32 @@
                                        handler:^(UIAlertAction * action) {
                                         NSLog(@"%@-",respStatus);
                                         
-                                        
+                                    
+                                        if (destinyItemsParentVC){
+                                            
+                                            if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
+                                                [destinyItemsParentVC refreshItems];
+                                            }
+                                            
+                                            if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
+                                                WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
+                                                if (destinyWeaponsParentVC){
+                                                
+                                                    [destinyWeaponsParentVC removeWeaponAction:selectedItemHash];
+                                                }
+                                            }
+                                                
+                                                
+                                            
+                                            if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
+                                                ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
+                                                if (destinyArmorParentVC){
+                                                    [destinyArmorParentVC loadArmor];
+                                                }
+                                            }
+                                            
+                                          
+                                        }
                                          
                                     }];
                                     
@@ -355,15 +383,15 @@
                                     if ( destinyItemsParentVC){
                                         [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
                                     }
-                                    
-                                     
-                                    
-                                     
-                                }else{
+                                   
+                                }
+                                //SendToVault Action Issue
+                                else{
                                     
                                     NSString *errorCode = [respData objectForKey:@"ErrorCode"],
                                              *errorStatus = [respData objectForKey:@"ErrorStatus"],
                                              *errorMessage = [respData objectForKey:@"Message"];
+                                    
                                     /* ErrorCode = 1656;
                                      ErrorStatus = DestinyCannotPerformActionOnEquippedItem;
                                      Message = "You cannot perform this action on an equipped item.";
@@ -424,6 +452,7 @@
                             
                             if (values){
                                 //Not used
+                                NSLog(@"sendItemToVault:Completion=%@",values);
                             }
                             
                             

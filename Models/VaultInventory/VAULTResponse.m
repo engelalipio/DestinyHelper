@@ -1,32 +1,33 @@
 //
-//  UWHBaseClass.m
+//  VAULTResponse.m
 //
-//  Created by Engel Alipio on 5/15/22
+//  Created by Engel Alipio on 5/17/22
 //  Copyright (c) 2022 Citi. All rights reserved.
 //
 
-#import "UWHBaseClass.h"
-#import "UWHResponse.h"
+#import "VAULTResponse.h"
+#import "ProfileInventory.h"
 
 
-NSString *const kUWHBaseClassResponse = @"Response";
+NSString *const kResponseProfileInventory = @"profileInventory";
 
 
-@interface UWHBaseClass ()
+@interface VAULTResponse ()
 
 - (id)objectOrNilForKey:(id)aKey fromDictionary:(NSDictionary *)dict;
 
 @end
 
-@implementation UWHBaseClass
+@implementation VAULTResponse
 
-@synthesize response = _response;
+@synthesize profileInventory = _profileInventory;
+
 
 + (NSDictionary *)mapping{
     
     
     NSDictionary *map = [[NSDictionary alloc] initWithObjectsAndKeys:
-                         kUWHBaseClassResponse,@"Response",
+                         kResponseProfileInventory,@"profileInventory",
                          nil];
     
     return map;
@@ -35,9 +36,6 @@ NSString *const kUWHBaseClassResponse = @"Response";
 + (NSString *)key{
     return nil;
 }
-
-
-
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
@@ -51,7 +49,7 @@ NSString *const kUWHBaseClassResponse = @"Response";
     // This check serves to make sure that a non-NSDictionary object
     // passed into the model class doesn't break the parsing.
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
-            self.response = [UWHResponse modelObjectWithDictionary:[dict objectForKey:kUWHBaseClassResponse]];
+            self.profileInventory = [ProfileInventory modelObjectWithDictionary:[dict objectForKey:kResponseProfileInventory]];
 
     }
     
@@ -62,7 +60,7 @@ NSString *const kUWHBaseClassResponse = @"Response";
 - (NSDictionary *)dictionaryRepresentation
 {
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
-    [mutableDict setValue:[self.response dictionaryRepresentation] forKey:kUWHBaseClassResponse];
+    [mutableDict setValue:[self.profileInventory dictionaryRepresentation] forKey:kResponseProfileInventory];
 
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
@@ -86,23 +84,23 @@ NSString *const kUWHBaseClassResponse = @"Response";
 {
     self = [super init];
 
-    self.response = [aDecoder decodeObjectForKey:kUWHBaseClassResponse];
+    self.profileInventory = [aDecoder decodeObjectForKey:kResponseProfileInventory];
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
 
-    [aCoder encodeObject:_response forKey:kUWHBaseClassResponse];
+    [aCoder encodeObject:_profileInventory forKey:kResponseProfileInventory];
 }
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    UWHBaseClass *copy = [[UWHBaseClass alloc] init];
+    VAULTResponse *copy = [[VAULTResponse alloc] init];
     
     if (copy) {
 
-        copy.response = [self.response copyWithZone:zone];
+        copy.profileInventory = [self.profileInventory copyWithZone:zone];
     }
     
     return copy;

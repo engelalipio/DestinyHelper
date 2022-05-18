@@ -44,11 +44,14 @@
 
 #define kDestinyLoadedCharacterInventoryNotification @"Destiny2.CharacterInventory"
 #define kDestinyLoadedCharacterEquipmentNotification @"Destiny2.CharacterEquipment"
+#define kDestinyLoadedProfileVaultNotification @"Destiny2.Vault"
 
 #define kDestinyLoadedPublicVendorsNotification @"Destiny2.PublicVendors"
 #define kDestinyLoadedPublicVendorsDetailsNotification @"Destiny2.PublicVendorsDetail"
 #define kDestinyLoadedVendorsNotification @"Destiny2.Vendors"
 #define kDestinyLoadedVendorNotification @"Destiny2.Vendor"
+
+#define kDestinyLoadedUniqueWeaponsStatsNotification @"Destiny2.UniqueWeaponsStats"
 
 #define kDestinyLoadedStaticItemNotification @"Destiny2.StaticItem"
 #define kDestinyLoadedInstancedItemNotification @"Destiny2.InstancedItem"

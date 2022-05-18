@@ -159,6 +159,13 @@
 		ACCE04F6260F8AC000C389B2 /* damage_void.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04F4260F8AC000C389B2 /* damage_void.png */; };
 		ACCE04F7260F8AC000C389B2 /* damage_arc.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04F5260F8AC000C389B2 /* damage_arc.png */; };
 		ACCE0500260FC99400C389B2 /* weaponFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCE04FF260FC99400C389B2 /* weaponFrame.png */; };
+		ACD26C822834040800E7724E /* damage_stasis.png in Resources */ = {isa = PBXBuildFile; fileRef = ACD26C812834040800E7724E /* damage_stasis.png */; };
+		ACD26C91283438E800E7724E /* VAULTMessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD26C84283438E500E7724E /* VAULTMessageData.m */; };
+		ACD26C92283438E800E7724E /* VAULTBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD26C88283438E600E7724E /* VAULTBaseClass.m */; };
+		ACD26C93283438E800E7724E /* VAULTResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD26C89283438E600E7724E /* VAULTResponse.m */; };
+		ACD26C94283438E800E7724E /* VAULTItems.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD26C8B283438E700E7724E /* VAULTItems.m */; };
+		ACD26C95283438E800E7724E /* ProfileInventory.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD26C8D283438E700E7724E /* ProfileInventory.m */; };
+		ACD26C96283438E800E7724E /* VAULTData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD26C8F283438E800E7724E /* VAULTData.m */; };
 		ACE2D19025225C1700FF095A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D18F25225C1700FF095A /* AppDelegate.m */; };
 		ACE2D19325225C1700FF095A /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D19225225C1700FF095A /* SceneDelegate.m */; };
 		ACE2D19625225C1700FF095A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE2D19525225C1700FF095A /* HomeViewController.m */; };
@@ -625,6 +632,20 @@
 		ACCE04F4260F8AC000C389B2 /* damage_void.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = damage_void.png; sourceTree = "<group>"; };
 		ACCE04F5260F8AC000C389B2 /* damage_arc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = damage_arc.png; sourceTree = "<group>"; };
 		ACCE04FF260FC99400C389B2 /* weaponFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weaponFrame.png; sourceTree = "<group>"; };
+		ACD26C812834040800E7724E /* damage_stasis.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = damage_stasis.png; sourceTree = "<group>"; };
+		ACD26C84283438E500E7724E /* VAULTMessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAULTMessageData.m; sourceTree = "<group>"; };
+		ACD26C85283438E500E7724E /* VAULTBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAULTBaseClass.h; sourceTree = "<group>"; };
+		ACD26C86283438E600E7724E /* VAULTData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAULTData.h; sourceTree = "<group>"; };
+		ACD26C87283438E600E7724E /* VAULTMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAULTMessageData.h; sourceTree = "<group>"; };
+		ACD26C88283438E600E7724E /* VAULTBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAULTBaseClass.m; sourceTree = "<group>"; };
+		ACD26C89283438E600E7724E /* VAULTResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAULTResponse.m; sourceTree = "<group>"; };
+		ACD26C8A283438E700E7724E /* VAULTDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAULTDataModels.h; sourceTree = "<group>"; };
+		ACD26C8B283438E700E7724E /* VAULTItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAULTItems.m; sourceTree = "<group>"; };
+		ACD26C8C283438E700E7724E /* ProfileInventory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileInventory.h; sourceTree = "<group>"; };
+		ACD26C8D283438E700E7724E /* ProfileInventory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileInventory.m; sourceTree = "<group>"; };
+		ACD26C8E283438E800E7724E /* VAULTItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAULTItems.h; sourceTree = "<group>"; };
+		ACD26C8F283438E800E7724E /* VAULTData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAULTData.m; sourceTree = "<group>"; };
+		ACD26C90283438E800E7724E /* VAULTResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAULTResponse.h; sourceTree = "<group>"; };
 		ACE2D18B25225C1700FF095A /* DestinyHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DestinyHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE2D18E25225C1700FF095A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		ACE2D18F25225C1700FF095A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1337,6 +1358,7 @@
 		ACCE04EA260F892800C389B2 /* Weapons */ = {
 			isa = PBXGroup;
 			children = (
+				ACD26C812834040800E7724E /* damage_stasis.png */,
 				ACCE04FF260FC99400C389B2 /* weaponFrame.png */,
 				ACCE04F5260F8AC000C389B2 /* damage_arc.png */,
 				ACCE04F4260F8AC000C389B2 /* damage_void.png */,
@@ -1347,6 +1369,26 @@
 				ACCE04D8260D0B6500C389B2 /* heavyAmmo.png */,
 			);
 			path = Weapons;
+			sourceTree = "<group>";
+		};
+		ACD26C83283438C300E7724E /* VaultInventory */ = {
+			isa = PBXGroup;
+			children = (
+				ACD26C8C283438E700E7724E /* ProfileInventory.h */,
+				ACD26C8D283438E700E7724E /* ProfileInventory.m */,
+				ACD26C85283438E500E7724E /* VAULTBaseClass.h */,
+				ACD26C88283438E600E7724E /* VAULTBaseClass.m */,
+				ACD26C86283438E600E7724E /* VAULTData.h */,
+				ACD26C8F283438E800E7724E /* VAULTData.m */,
+				ACD26C8A283438E700E7724E /* VAULTDataModels.h */,
+				ACD26C8E283438E800E7724E /* VAULTItems.h */,
+				ACD26C8B283438E700E7724E /* VAULTItems.m */,
+				ACD26C87283438E600E7724E /* VAULTMessageData.h */,
+				ACD26C84283438E500E7724E /* VAULTMessageData.m */,
+				ACD26C90283438E800E7724E /* VAULTResponse.h */,
+				ACD26C89283438E600E7724E /* VAULTResponse.m */,
+			);
+			path = VaultInventory;
 			sourceTree = "<group>";
 		};
 		ACE2D18225225C1700FF095A = {
@@ -1829,6 +1871,7 @@
 		ACF3C31F252E2EF200C41679 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				ACD26C83283438C300E7724E /* VaultInventory */,
 				ACCCB17828317A9500AF9ADA /* UniqueWeaponsHistory */,
 				ACCCB12E28316F9000AF9ADA /* ActivityHistory */,
 				AC56F229282B06C200F25324 /* ActivityModeDefinition */,
@@ -2042,6 +2085,7 @@
 				ACE2D27325225DE900FF095A /* ICONS.png in Resources */,
 				ACE2D26F25225DE900FF095A /* MercurySun.jpg in Resources */,
 				ACCE0500260FC99400C389B2 /* weaponFrame.png in Resources */,
+				ACD26C822834040800E7724E /* damage_stasis.png in Resources */,
 				ACE2D27625225DE900FF095A /* Patrol.png in Resources */,
 				ACCE04E1260D4A9400C389B2 /* ItemCollectionViewCell.xib in Resources */,
 				ACF3C367252FAA8400C41679 /* Warlock.png in Resources */,
@@ -2068,6 +2112,7 @@
 				ACE2D27A25225DE900FF095A /* MBRResponse.m in Sources */,
 				ACA05A0325320FEE008CB2BD /* De.m in Sources */,
 				AC7942B025FE971D00B30F2A /* LCKBaseClass.m in Sources */,
+				ACD26C96283438E800E7724E /* VAULTData.m in Sources */,
 				ACE4331925EEE161006CEAB1 /* VendorGroupDefinition.m in Sources */,
 				ACE4337225F1570B006CEAB1 /* ClanBannerData.m in Sources */,
 				ACF3C31C252E2D9300C41679 /* JTDateMappings.m in Sources */,
@@ -2078,6 +2123,7 @@
 				ACCE04E0260D4A9400C389B2 /* ItemCollectionViewCell.m in Sources */,
 				ACCCB16628316FC200AF9ADA /* Kills.m in Sources */,
 				ACE432ED25EC194B006CEAB1 /* VNDVendorGroups.m in Sources */,
+				ACD26C94283438E800E7724E /* VAULTItems.m in Sources */,
 				ACE433CA25F54043006CEAB1 /* VNDDetailsSocketOverrides.m in Sources */,
 				ACE2D25025225DE900FF095A /* GRDBaseClass.m in Sources */,
 				ACE4338F25F15B69006CEAB1 /* Results.m in Sources */,
@@ -2171,6 +2217,7 @@
 				ACA05A4825336A4F008CB2BD /* GenderedClassNamesByGenderHash.m in Sources */,
 				ACBDC78425FA9B8B0098B6BB /* INVDResponse.m in Sources */,
 				ACE2D1C025225DC200FF095A /* VNDMessageData.m in Sources */,
+				ACD26C92283438E800E7724E /* VAULTBaseClass.m in Sources */,
 				ACE4337025F1570B006CEAB1 /* CLNMessageData.m in Sources */,
 				ACE2D1A125225C1A00FF095A /* main.m in Sources */,
 				ACBDC7DE25FD9A9E0098B6BB /* INVCData.m in Sources */,
@@ -2220,10 +2267,12 @@
 				ACCCB16B28316FC200AF9ADA /* KillsDeathsRatio.m in Sources */,
 				ACBDC7AD25FAA66E0098B6BB /* INVDInventory.m in Sources */,
 				ACA059FC25320FEE008CB2BD /* Es.m in Sources */,
+				ACD26C93283438E800E7724E /* VAULTResponse.m in Sources */,
 				ACE2D1BF25225DC200FF095A /* Response.m in Sources */,
 				ACE2D27925225DE900FF095A /* MBRMessageData.m in Sources */,
 				ACE433C825F54043006CEAB1 /* VNDDetailsCategories.m in Sources */,
 				ACE2D25225225DE900FF095A /* GRDSTATLIGHT.m in Sources */,
+				ACD26C91283438E800E7724E /* VAULTMessageData.m in Sources */,
 				ACBDC67A25F955B70098B6BB /* DestinyItemTierTypeDefinition.m in Sources */,
 				ACE2D1C125225DC200FF095A /* AccessToken.m in Sources */,
 				ACE432D225EC194B006CEAB1 /* VNDSales.m in Sources */,
@@ -2268,6 +2317,7 @@
 				ACCCB17228316FC200AF9ADA /* StartSeconds.m in Sources */,
 				ACE4337425F1570B006CEAB1 /* DestinyUserInfo.m in Sources */,
 				AC243A9625F82B3E005DC7B6 /* DestinyInventoryBucketDefinition.m in Sources */,
+				ACD26C95283438E800E7724E /* ProfileInventory.m in Sources */,
 				ACE433CC25F54043006CEAB1 /* VNDDetailsBungieNetEngineContractDestinyWorldDefinitionsIDestinyDisplayDefinitionDisplayProperties.m in Sources */,
 				ACF3C317252E2D9300C41679 /* JTDataMappings.m in Sources */,
 				ACBDC79925FAA3310098B6BB /* INVDInvestmentStats.m in Sources */,

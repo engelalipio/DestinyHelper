@@ -24,13 +24,15 @@
     NSMutableDictionary *destCharData,
                         *destPVendorData,
                         *destCharWeaponsData,
-                        *destCharArmorData;
+                        *destCharArmorData,
+                        *destVaultData;
     
     NSString *currentMembership,
              *selectedCharacter;
     
     NSArray *weaponsArray,
-            *armorArray;
+            *armorArray,
+            *vaultArray;
     
 }
 @end
@@ -61,8 +63,9 @@
     
     [self loadCharacters];
     [self loadPublicVendors];
+  //  [self loadCharacterWeaponsStats];
     [self loadCharacterInventories];
-
+    [self loadVaultItems];
   
 }
  
@@ -75,7 +78,9 @@
     if (! self->destCharArmorData){
         self->destCharArmorData   = [[NSMutableDictionary alloc] init];
     }
-    
+    if (! self->destVaultData){
+        self->destVaultData   = [[NSMutableDictionary alloc] init];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedCharacterEquipmentNotification
         object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
@@ -89,11 +94,18 @@
                  *currentstrCharIndex = nil;
         
         if (!self->weaponsArray){
-             self->weaponsArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",nil];
+             self->weaponsArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",@"4023194814",@"1506418338",nil];
         }
         if (! self->armorArray){
              self->armorArray   = [[NSArray alloc] initWithObjects:@"3448274439",@"3551918588",@"14239492",@"20886954",@"1585787867", nil];
         }
+        
+        if (!self->vaultArray){
+             self->vaultArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",@"3448274439",
+                                 @"3551918588",@"14239492",@"20886954",@"1585787867",@"375726501",@"215593132",@"1469714392",
+                                 @"3313201758",@"3683254069",@"4274335291",@"284967655",@"2025709351",nil];
+        }
+        
         
         if (userInfo){
             
@@ -145,6 +157,21 @@
                                        if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
                                            [self->destCharWeaponsData setValue:item forKey:strFullKey];
                                            NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Heavy Weapon...",strFullKey);
+                                       }
+                                       
+                                       break;
+                                   case 4023194814://Ghost
+                                       if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
+                                           [self->destCharWeaponsData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Ghost...",strFullKey);
+                                       }
+                                       
+                                       break;
+                                       
+                                   case 1506418338://Seasonal Artifact
+                                       if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
+                                           [self->destCharWeaponsData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Artifact...",strFullKey);
                                        }
                                        
                                        break;
@@ -214,7 +241,7 @@
                  *currentstrCharIndex = nil;
         
         if (!self->weaponsArray){
-             self->weaponsArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",nil];
+             self->weaponsArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",@"4023194814",@"1506418338",nil];
         }
         if (! self->armorArray){
              self->armorArray   = [[NSArray alloc] initWithObjects:@"3448274439",@"3551918588",@"14239492",@"20886954",@"1585787867", nil];
@@ -274,7 +301,20 @@
                                        }
                                        
                                        break;
+                                   case 4023194814://Ghost
+                                       if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
+                                           [self->destCharWeaponsData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Ghost Weapon...",strFullKey);
+                                       }
                                        
+                                       break;
+                                   case 1506418338://Seasonal Artifact
+                                       if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
+                                           [self->destCharWeaponsData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Artifact...",strFullKey);
+                                       }
+                                       
+                                       break;
                                    case 3448274439://Helmet
                                        if (![self->destCharArmorData.allKeys containsObject:strFullKey]){
                                            [self->destCharArmorData setValue:item forKey:strFullKey];
@@ -310,6 +350,7 @@
                                            NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Class Armor...",strFullKey);
                                        }
                                        break;
+                                
                                        
                                }
                                
@@ -752,7 +793,144 @@
             
     }];
  
-  
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedProfileVaultNotification
+            object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+            
+            NSLog(@"GuardianViewController:kDestinyLoadedProfileVaultNotification:Invoked...");
+            
+        NSDictionary  *userInfo = (NSDictionary*) [note userInfo];
+              
+        VAULTBaseClass *vaultBase = (VAULTBaseClass *) [note object];
+        
+        VAULTResponse *vResponse = nil;
+        ProfileInventory *profInv = nil;
+        VAULTData *vData = nil;
+         
+        NSArray *vItems;
+        
+        if (!self->vaultArray){
+             self->vaultArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",@"3448274439",
+                                 @"3551918588",@"14239492",@"20886954",@"1585787867",@"375726501",@"215593132",@"1469714392",
+                                 @"3313201758",@"3683254069",@"4274335291",@"284967655",@"2025709351",nil];
+        }
+        
+            
+            NSString *className =  [userInfo objectForKey:@"ClassName"],
+                     *methodName =  [userInfo objectForKey:@"MethodName"];
+            
+                if (vaultBase){
+                     
+                    vResponse = (VAULTResponse*) [VAULTResponse modelObjectWithDictionary:vaultBase.response];
+                    
+                    if (vResponse){
+                    
+                        profInv = (NSDictionary *) [vResponse profileInventory];
+                        
+                        if (profInv){
+                            vData = (VAULTData *) [profInv data];
+                            
+                            if (vData){
+                                vItems = (NSArray*) [vData items] ;
+                                if (vItems){
+                                NSLog(@"GuardianViewController:kDestinyLoadedProfileVaultNotification:Vault Items Count = %d",vItems.count);
+                                    
+                                  
+                                    for(int vIDX = 0; vIDX < vItems.count; vIDX++){
+                                        
+                                        VAULTItems *vaultItem = (VAULTItems*) [vItems objectAtIndex:vIDX];
+                                        
+                                        if (vaultItem){
+                                            
+                                            
+                                            NSNumber *objItemBucket = [NSNumber numberWithDouble:vaultItem.bucketHash],
+                                                     *objItemHash   = [NSNumber numberWithDouble:vaultItem.itemHash];
+                                            
+                                            NSInteger iItemBucket = [objItemBucket integerValue];
+                                            
+                                            
+                                            NSString *strItemHash = [NSString stringWithFormat:@"%@",objItemHash],
+                                                     *strBucketHash = [NSString stringWithFormat:@"%@",objItemBucket],
+                                                     *strInstanceId = vaultItem.itemInstanceId;
+                                         
+                                            if (strInstanceId){
+                                           
+                                            if (![self->destVaultData.allKeys containsObject:strInstanceId]){
+                                                [self->destVaultData setValue:vaultItem forKey:strInstanceId];
+                                                NSLog(@"GuardianViewController:VaultNotification:%@Vault Item ...",strInstanceId);
+                                            }
+                                            }
+                                            
+                                            
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                            }
+                        }
+                         
+                    }
+                }
+                
+        }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedUniqueWeaponsStatsNotification
+            object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+            
+            NSLog(@"GuardianViewController:kDestinyLoadedUniqueWeaponsStatsNotification:Invoked...");
+            
+            NSDictionary  *userInfo = (NSDictionary*) [note userInfo],
+                          *wResponse = nil,
+                          *wData = nil,
+                          *weapons = nil;
+            
+            
+            NSArray *vGroups = nil,
+                    *vHashs = nil;
+                
+            
+          UWHBaseClass *uniqueWeapons = (UWHBaseClass *) [note object];
+   
+            
+            NSString *className =  [userInfo objectForKey:@"ClassName"],
+                     *methodName =  [userInfo objectForKey:@"MethodName"];
+            
+                if (uniqueWeapons){
+                    
+                     
+                    wResponse = (NSDictionary*) [uniqueWeapons response];
+                    
+                
+                    if (wResponse){
+                        
+                        NSArray *weapons =  (NSArray*)[wResponse objectForKey:@"weapons"];
+                        
+                        for(int iW = 0; iW < weapons.count; iW++){
+                            
+                            NSDictionary *weaponData = (NSDictionary *)[weapons objectAtIndex:iW];
+                            
+                            if (weaponData){
+                                
+                                UWHValues *wValues = (UWHValues*) [weaponData objectForKey:@"values"];
+                                
+                                if (wValues){
+                                    
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                }
+                
+        }];
+    
+    
+    
 }
 
 -(void) loadPublicVendorsDetails{
@@ -847,6 +1025,135 @@
     
 }
 
+
+-(void) loadCharacterWeaponsStats{
+ 
+    
+    NSString *message   = @"2:GuardianViewController:loadCharacterWeaponsStats called...";
+    
+    MBRDestinyMemberships *membership = nil;
+    
+    UWHBaseClass *uweaponsBase = nil;
+    
+    NSString *selectedChar = [self->_destChars firstObject];
+    
+    if (!appDelegate){
+        appDelegate = [AppDelegate currentDelegate];
+    }
+    
+    
+    if (appDelegate){
+        
+        [NetworkAPISingleClient getCharacterUniqueWeaponsStats:selectedChar completionBlock:^(NSArray *values) {
+        
+            
+                 if (values){
+                     
+                     UWHBaseClass *baseClass = (UWHBaseClass*) [values firstObject];
+                     
+                     NSDictionary *callerInfo = [[NSDictionary alloc]
+                                  initWithObjectsAndKeys:@"GuardianViewController",@"ClassName",
+                                                         @"loadCharacterWeaponsStats",@"MethodName",
+                                                         selectedChar,@"SelectedCharacter",
+                                                         self.destChars,@"DestChars",
+                                                         self.memberships,@"DestMemberships",
+                                                         nil];
+                 
+                     //Raise the notification that characters is ready
+                      [[NSNotificationCenter defaultCenter]
+                            postNotificationName:kDestinyLoadedUniqueWeaponsStatsNotification
+                          object:baseClass userInfo:callerInfo];
+                         
+                  
+                 }
+            
+            
+        }andErrorBlock:^(NSError *exception) {
+            NSLog(@"loadCharacters:NetworkAPISingleClient:getCharacter:Exception->%@",exception.description);
+        }];
+        
+         
+         
+ 
+    }
+    
+    
+}
+
+-(void) loadVaultItems{
+    
+    NSString *message   = @"1:GuardianViewController:loadVaultItems called...";
+    
+    MBRDestinyMemberships *membership = nil;
+    
+    @try {
+        NSLog(@"%@",message);
+        if (! self.memberships){
+            message   = @"2:GuardianViewController:loadVaultItems:Getting Membership Detail from Delegate...";
+            NSLog(@"%@",message);
+            self.memberships = (NSArray *) [appDelegate destinyMemberships];
+        }
+        
+        membership = (MBRDestinyMemberships *) [self.memberships objectAtIndex:0];
+        
+        if (! self->currentMembership){
+            self->currentMembership  = membership.membershipId;
+        }
+      
+        
+        enum Destiny2MembershipType mType = [appDelegate currentMembershipType];
+     
+        NSString *strURL = @"%d/Profile/%@",
+                 *strMID = self->currentMembership;
+        
+        strURL = [NSString stringWithFormat:strURL,mType,strMID];
+        
+        NSLog(@"GuardianViewController:loadVaultItems:[%@]",strURL);
+        
+
+        [NetworkAPISingleClient getVaultItems:strURL completionBlock:^(NSArray *values){
+            
+           if (values){
+                
+                    VAULTBaseClass *baseClass = (VAULTBaseClass*) [values firstObject];
+                    
+                    if (baseClass){
+                        
+                             NSString *charKey       =  strMID;
+                                        
+                             NSDictionary *callerInfo = [[NSDictionary alloc]
+                                    initWithObjectsAndKeys:@"GuardianViewController",@"ClassName",
+                                                          @"getVaultItems",@"MethodName",
+                                                   charKey,@"CurrentMembership",nil];
+                                     
+                                  [[NSNotificationCenter defaultCenter]
+                                           postNotificationName:kDestinyLoadedProfileVaultNotification
+                                                         object:baseClass
+                                                         userInfo:callerInfo];
+                                        
+                           
+                    }
+                }
+          
+        }
+        andErrorBlock:^(NSError *exception) {
+            NSLog(@"loadCharacters:NetworkAPISingleClient:loadVaultItems:Exception->%@",exception.description);
+        }];
+        
+     
+      
+        
+    } @catch (NSException *exception) {
+        message = [exception description];
+    } @finally {
+        if ([message length] > 0){
+            NSLog(@"%@",message);
+        }
+    }
+    
+    
+}
+
 -(void) loadPublicVendors{
     
     
@@ -888,32 +1195,7 @@
  
     }
     
-    
-  /*  [NetworkAPISingleClient getVendors:selectedChar completionBlock:^(NSArray *values){
-        
-        if (values){
-            
-            NSDictionary *callerInfo = [[NSDictionary alloc]
-                         initWithObjectsAndKeys:@"GuardianViewController",@"ClassName",
-                                                @"getVendors",@"MethodName",
-                                                selectedChar,@"SelectedCharacter",
-                                                self.destChars,@"DestChars",
-                                                self.memberships,@"DestMemberships",
-                                                nil];
-                
-        
-            //Raise the notification that characters is ready
-             [[NSNotificationCenter defaultCenter]
-                   postNotificationName:kDestinyLoadedVendorsNotification
-                 object:values userInfo:callerInfo];
-                
-         
-        }
-        
-    } andErrorBlock:^(NSError *exception){
-        
-        NSLog(@"Error->%@",exception.description);
-    }];*/
+
     
 }
 
@@ -1417,7 +1699,7 @@
                 [header setText:@"Characters"];
                 break;
             case 1:
-                [header setText:@"Public Vendors"];
+                [header setText:@"Activities and Weapons Details"];
                 break;
             }
         return header;
@@ -1918,7 +2200,10 @@
                     [aVC setDestArmorBuckets:self->armorArray];
                     [aVC setSelectedChar:self->selectedCharacter];
                     [aVC loadArmor];
-                    [self presentViewController:aVC
+                    
+                    navVC = [[UINavigationController alloc] initWithRootViewController:aVC];
+                    
+                    [self presentViewController:navVC
                                        animated:YES completion:^{
                         
                         [sender setSelectedSegmentIndex:-1];

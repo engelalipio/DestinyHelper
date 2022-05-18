@@ -256,7 +256,7 @@
 
 -(void) startTimer{
     
-    return;
+   // return;
 
     double interval = [appDelegate interval];
        
@@ -280,7 +280,8 @@
              *message         = @"",
              *title           = @"";
     
-    UIImage  *image           = nil;
+    UIImage  *image           = nil,
+             *cImage          = nil;
     
     NSInteger randomImage     = -1;
     
@@ -293,11 +294,17 @@
             newImageName = [backgroundImages objectAtIndex:randomImage];
         
              
-        if (! [newImageName isEqualToString:currentImageName]){
+        if (![newImageName isEqualToString:currentImageName]){
             
-          //  NSLog(message,currentImageName,newImageName);
+            NSLog(message,currentImageName,newImageName);
             
             image =  [UIImage imageNamed:newImageName];
+            
+            cImage = _imgBackView.image;
+            
+            if (cImage){
+                imageSize = cImage.size;
+            }
             
             title = newImageName;
             
@@ -311,7 +318,15 @@
             if (image != nil){
                 image =   [Utilities imageResize:image andResizeTo:imageSize];
                 
-                [_imgBackView setImage:image];
+                
+                
+                 [_imgBackView.layer setMasksToBounds:YES];
+                 [_imgBackView.layer setCornerRadius:15];
+                 [_imgBackView.layer setBorderWidth:1];
+                 [_imgBackView.layer setShadowOffset: CGSizeMake(0, 0)];
+                 [_imgBackView.layer setBorderColor:[UIColor darkGrayColor].CGColor];
+                 [_imgBackView setImage:image];
+                
                 [_lblTitle setText:title];
                 currentImageName = newImageName;
             }
@@ -357,11 +372,18 @@
                                             @"Mercury.jpg", @"Loot.jpg", @"Dreadnaught.jpg", nil];
         
         NSLog(@"HomeViewController:setupImages:backgroundImages-> %lu",(unsigned long)backgroundImages.count);
-            
         
         }
          
         if(isFirstLaunch){
+            
+            
+             [_imgBackView.layer setMasksToBounds:YES];
+             [_imgBackView.layer setCornerRadius:15];
+             [_imgBackView.layer setBorderWidth:1];
+             [_imgBackView.layer setShadowOffset: CGSizeMake(0, 0)];
+             [_imgBackView.layer setBorderColor:[UIColor systemOrangeColor].CGColor];
+            
             img =  [UIImage imageNamed:currentImageName];
             
             title = currentImageName;
@@ -375,8 +397,10 @@
             imageSize = img.size;
            
             if (img != nil){
+                
+                //[_lblTitle setText:title];
+
                 [_imgBackView setImage:img];
-                [_lblTitle setText:title];
             }
             
             self->isFirstLaunch = NO;

@@ -91,6 +91,47 @@
     
 }
 
+
+- (void)removeWeaponAction:(NSString *) weaponHash{
+    
+    @try {
+        
+        if (self.destWeapons){
+            
+            if ([self.destWeapons.allKeys containsObject:weaponHash]){
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon->%@ to destWeapons...",weaponHash);
+                [self.destWeapons removeObjectForKey:weaponHash];
+                
+                
+            }
+        }
+        
+        if (self->instanceData){
+            
+            if ([self->instanceData.allKeys containsObject:weaponHash]){
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon->%@ to instanceData...",weaponHash);
+                [self->instanceData removeObjectForKey:weaponHash];
+             
+                
+            }
+        }
+         
+        [self.tableView reloadData];
+       
+        if (! [self.tableView.refreshControl isRefreshing]){
+            [self.tableView.refreshControl beginRefreshing];
+        }
+       
+        [self.tableView.refreshControl endRefreshing];
+        
+        
+    } @catch (NSException *exception) {
+        NSLog(@"WeaponsViewController:kDestinyLoadedStaticItemNotification:Exception->%@",exception.description);
+    } @finally {
+        
+    }
+}
+
 -(void) registerNotifications{
 
     NSLog(@"1:WeaponsViewController:registerNotifications...");
@@ -859,14 +900,14 @@
                                     case 0:
                                         [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"] forState:UIControlStateNormal];
                                         
-                                        [cCell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"] forState:UIControlStateNormal];
                                         break;
                                     case 1:
                                         [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
                                                             forState:UIControlStateNormal];
-                                        
-                                        [cCell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
-                                                            forState:UIControlStateNormal];
+                                     
+                                        break;
+                                    case 8:
+                                        [cCell.btnSendVault setImage:[UIImage systemImageNamed:@"archivebox.circle"] forState:UIControlStateNormal];
                                         break;
                                 }
                             }
@@ -877,11 +918,6 @@
                                 NSLog(@"updateStaticItemData:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,cIndexPath.section, cIndexPath.row);
                             }
                             
-                            if (cCell.lblHash.text.length == 0){
-                                strHashKey = [objHash stringValue];
-                                [cCell.lblHash setText:strHashKey];
-                                NSLog(@"updateStaticItemData:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,cIndexPath.section, cIndexPath.row);
-                            }
                             
                             itemTypeName   =  [invResponse itemTypeDisplayName];
                             
@@ -928,6 +964,7 @@
                                     }
                                     if ([cell.lblDamageType.text isEqualToString:@"Stasis"]){
                                        // [cell.lblDamageType setTextColor:[UIColor systemBlueColor]];
+                                        [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_stasis.png"]];
                                         [cell.lblDamageType setText:@"Damage"];
                                     }
                                     
@@ -1112,7 +1149,7 @@
               sRows = 0,
               hRows = 0;
     
-    NSArray *weaponsArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",nil];
+    NSArray *weaponsArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",@"4023194814",nil];
     
     NSString *strLookupKey = @"%@_%@";
     
@@ -1551,6 +1588,7 @@
                                 }
                                 if ([cell.lblDamageType.text isEqualToString:@"Stasis"]){
                                     [cell.lblDamageType setTextColor:[UIColor systemBlueColor]];
+                                    [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_stasis.png"]];
                                 }
                                 
                                 if ([cell.lblDamageType.text isEqualToString:@"Kinetic"]){
@@ -1777,7 +1815,6 @@
                 [cell setParentViewController:self];
         
         
-        
        
                 if (! self->primaryWeapons || (! self->energyWeapons) || (! self->powerWeapons) ){
                     
@@ -1939,6 +1976,7 @@
                                             }
                                             if ([cell.lblDamageType.text isEqualToString:@"Stasis"]){
                                                // [cell.lblDamageType setTextColor:[UIColor systemBlueColor]];
+                                                [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_stasis.png"]];
                                                 [cell.lblDamageType setText:@"Damage"];
                                             }
                                             

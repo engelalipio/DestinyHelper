@@ -36,4 +36,5 @@
 #import "ACMDataModels.h"
 #import "ACTHDataModels.h"
 #import "UWHDataModels.h"
+#import "VAULTDataModels.h"
 

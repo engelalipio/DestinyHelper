@@ -1,42 +1,19 @@
 //
-//  UWHBaseClass.m
+//  VAULTMessageData.m
 //
-//  Created by Engel Alipio on 5/15/22
+//  Created by Engel Alipio on 5/17/22
 //  Copyright (c) 2022 Citi. All rights reserved.
 //
 
-#import "UWHBaseClass.h"
-#import "UWHResponse.h"
+#import "VAULTMessageData.h"
 
-
-NSString *const kUWHBaseClassResponse = @"Response";
-
-
-@interface UWHBaseClass ()
+@interface VAULTMessageData ()
 
 - (id)objectOrNilForKey:(id)aKey fromDictionary:(NSDictionary *)dict;
 
 @end
 
-@implementation UWHBaseClass
-
-@synthesize response = _response;
-
-+ (NSDictionary *)mapping{
-    
-    
-    NSDictionary *map = [[NSDictionary alloc] initWithObjectsAndKeys:
-                         kUWHBaseClassResponse,@"Response",
-                         nil];
-    
-    return map;
-}
-
-+ (NSString *)key{
-    return nil;
-}
-
-
+@implementation VAULTMessageData
 
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
@@ -51,7 +28,6 @@ NSString *const kUWHBaseClassResponse = @"Response";
     // This check serves to make sure that a non-NSDictionary object
     // passed into the model class doesn't break the parsing.
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
-            self.response = [UWHResponse modelObjectWithDictionary:[dict objectForKey:kUWHBaseClassResponse]];
 
     }
     
@@ -62,7 +38,6 @@ NSString *const kUWHBaseClassResponse = @"Response";
 - (NSDictionary *)dictionaryRepresentation
 {
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
-    [mutableDict setValue:[self.response dictionaryRepresentation] forKey:kUWHBaseClassResponse];
 
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
@@ -86,23 +61,20 @@ NSString *const kUWHBaseClassResponse = @"Response";
 {
     self = [super init];
 
-    self.response = [aDecoder decodeObjectForKey:kUWHBaseClassResponse];
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
 
-    [aCoder encodeObject:_response forKey:kUWHBaseClassResponse];
 }
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    UWHBaseClass *copy = [[UWHBaseClass alloc] init];
+    VAULTMessageData *copy = [[VAULTMessageData alloc] init];
     
     if (copy) {
 
-        copy.response = [self.response copyWithZone:zone];
     }
     
     return copy;

@@ -43,8 +43,19 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
+    UIBarButtonItem *btnClose =  [[UIBarButtonItem alloc] init];
+    
+    
+    if (btnClose){
+        [btnClose setTitle:@"Close"];
+        [btnClose setTarget:self];
+        [btnClose setAction:@selector(closeAction)];
+    }
+
+    self.navigationItem.rightBarButtonItem = btnClose;
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     self->appDelegate = [AppDelegate currentDelegate];
     
@@ -265,6 +276,8 @@
     BOOL loadData = NO;
     @try {
         
+        [self.tableView.refreshControl beginRefreshing];
+        
         if (! self->appDelegate){
             self->appDelegate = [AppDelegate currentDelegate];
         }
@@ -272,7 +285,7 @@
         if (self.selectedChar){
             selectedCharacter = self.selectedChar;
             
-            [self setTitle:selectedCharacter];
+            //[self setTitle:selectedCharacter];
             NSLog(@"2:ArmorTableViewController:loadWeapons:Selected Character->[%d]",selectedCharacter);
         }
         
@@ -291,6 +304,12 @@
             
             if (! self->instanceData){
                 self->instanceData = [[NSMutableDictionary alloc] initWithCapacity:charArmor.count];
+            }
+            
+            [self.tableView reloadData];
+            
+            if ([self.tableView.refreshControl isRefreshing]){
+                [self.tableView.refreshControl endRefreshing];
             }
             
             return;
@@ -389,6 +408,18 @@
     
 }
 
+
+- (void)closeAction {
+    
+    NSLog(@"ArmorViewController:closeAction:Invoked...");
+    
+    [self dismissViewControllerAnimated:NO completion:^{
+        NSLog(@"ArmorViewController:closeAction:Completed...");
+    }];
+        
+    
+}
+
 -(void) initTableView{
     
     NSString *message =  @"2:ArmorTableViewController:initTableView...";
@@ -411,9 +442,8 @@
         [self.tableView setDelegate:self];
         [self.tableView setDataSource:self];
         
-
-        
-      //  [self.tableView registerClass:[ItemCellTableView class] forCellReuseIdentifier:@"ItemCellTableView"];
+        [self.refreshControl addTarget:self action:@selector(loadArmor)
+                      forControlEvents:UIControlEventValueChanged];
          
         
 
@@ -802,6 +832,7 @@
     NSString *title = nil,
              *bucketHash = nil;
     
+    [tableView refreshControl];
     
     int TotalArmor  = 10,
        CurrentArmor = 0;

@@ -17,7 +17,7 @@
 @property (nonatomic,strong) NSString  *selectedChar;
 @property (nonatomic,strong) NSString  *selectedMembership;
 
-
+-(void)closeAction;
 -(void) loadArmor;
 
 @end

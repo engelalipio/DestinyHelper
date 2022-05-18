@@ -280,6 +280,62 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
 }
 
 
+#pragma mark-> Path: MembershipType/Profile/{destinyMembershipId}/?components
++ (AFJSONRequestOperation *)getVaultItems:(NSString *)anyMembershipType
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
+    
+    NSString    *message         = @"",
+                *servicePath     = @"",
+                *tokenValue      = @"";
+    
+    NSURL       *url  = nil;
+    
+    AFJSONRequestOperation *request = nil;
+    
+    NetworkAPISingleClient *api = nil;
+    
+    enum Destiny2ComponentType cType = PROFILEINVENTORIES;
+ 
+    @try {
+        
+        servicePath = [NSString stringWithFormat:@"%@/%@/?components=%d", kBungieAPIBaseD2URL,anyMembershipType,cType];
+ 
+        NSLog(@"NetworkAPISingleClient(LinkedProfiles):getVaultItems->%@",servicePath);
+        
+        url = [[NSURL alloc] initWithString:kBungieAPIBaseD2URL];
+        
+        api = [[NetworkAPISingleClient sharedClient] initWithBaseURL:url];
+        
+        tokenValue = [NetworkAPISingleClient getAuthorizationTokenHeaderValue];
+        
+        if (tokenValue ){
+            [api setDefaultHeader:@"Authorization" value:tokenValue];
+        }
+         
+        
+        request = [api makeGetOperationWithObjecModel:[VAULTBaseClass class]
+                                               atPath:servicePath
+                                      completionBlock:completionBlock
+                                        andErrorBlock:errorBlock];
+        
+       
+        message = servicePath;
+        
+        NSLog(@"Completed::%@",message);
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+        NSLog(@"Error::%@",message);
+    }
+    @finally {
+        message = @"";
+        api = nil;
+        servicePath = nil;
+    }
+    return request;
+}
+
 #pragma mark-> MembershipType/Profile/{MembershipId}/?components=100
 + (AFJSONRequestOperation *)getCharacters:(NSString *)anyComponents
                              completionBlock:(void(^) (NSArray * values))
@@ -558,7 +614,7 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
             [api setDefaultHeader:@"Authorization" value:tokenValue];
         }
         
-        request = [api makeGetOperationWithObjecModel:[VNDBaseClass class]
+        request = [api makeGetOperationWithObjecModel:[UWHBaseClass class]
                                                atPath:servicePath
                                       completionBlock:completionBlock
                                         andErrorBlock:errorBlock];

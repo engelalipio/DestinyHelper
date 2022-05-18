@@ -22,7 +22,8 @@ UICollectionViewDataSource, UICollectionViewDelegate>
 @property (nonatomic,strong) NSString  *selectedMembership;
 
 - (void)closeAction;
--(void) loadWeapons;
+- (void)loadWeapons;
+- (void)removeWeaponAction:(NSString *) weaponHash;
 - (IBAction)toggleTableAction:(UISegmentedControl *)sender;
 
 @end

@@ -67,6 +67,9 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
++ (AFJSONRequestOperation *)getVaultItems:(NSString *)anyComponents
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
 
 + (AFJSONRequestOperation *)getVendors:(NSString *)anyComponents
