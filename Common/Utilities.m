@@ -79,6 +79,9 @@
     
     enum Destiny2RaceType rType = Awoken;
     
+    BOOL spewDebug = NO,
+         spewException = YES;
+    
     @try {
          
         rType = (int)  [anyHash integerValue];
@@ -98,12 +101,19 @@
                 raceDesc = @"Unknown";
                 break;
         }
-         
-        NSLog(@"Utilities:decodeRaceHash:Result->[%@]=[%@]",anyHash,raceDesc);
+        if (spewDebug){
+            NSLog(@"Utilities:decodeRaceHash:Result->[%@]=[%@]",anyHash,raceDesc);
+        }
         
     }
     @catch (NSException *exception) {
-        NSLog(@"Utilities:decodeRaceHash:Exception->%@",exception.description);
+        if (spewException){
+            NSLog(@"Utilities:decodeRaceHash:Exception->%@",exception.description);
+        }
+    }
+    @finally{
+        spewDebug = NO;
+        spewException = NO;
     }
     
     return raceDesc;
@@ -121,6 +131,8 @@
              *strWKey = nil,
              *strText = nil;
     
+    BOOL spewDebug = NO,
+         spewException = YES;
     @try {
         
         appDelegate = [AppDelegate currentDelegate];
@@ -160,14 +172,16 @@
                     strText  = [NSString stringWithFormat:@"%@", warlock.className];
                 }
             }
-            
+            if (spewDebug){
             NSLog(@"Utilities:decodeClassHash:Result->[%@]=[%@]",anyHash,strText);
-            
+            }
         }
         
     }
     @catch (NSException *exception) {
-        NSLog(@"Utilities:decodeClassHash:Exception->%@",exception.description);
+        if (spewException){
+            NSLog(@"Utilities:decodeClassHash:Exception->%@",exception.description);
+        }
     }
     @finally {
         
@@ -190,6 +204,9 @@
     NSString *strDamageTypeDesc = nil;
     
     enum Destiny2DamageType dType = DamageNone;
+    
+    BOOL spewDebug = NO,
+         spewException = YES;
     
     @try {
         
@@ -231,11 +248,14 @@
                 strDamageTypeDesc = @"Stasis";
                 break;
         }
-        
-        NSLog(@"Utilities:decodeDamageType:Result->[%ld]=[%@]",(long)anyDamage,strDamageTypeDesc);
+        if (spewDebug){
+            NSLog(@"Utilities:decodeDamageType:Result->[%ld]=[%@]",(long)anyDamage,strDamageTypeDesc);
+        }
         
     } @catch (NSException *exception) {
-        NSLog(@"Utilities:decodeDamageType:Exception->%@",exception.description);
+        if (spewException){
+            NSLog(@"Utilities:decodeDamageType:Exception->%@",exception.description);
+        }
     } @finally {
         
     }
@@ -257,6 +277,9 @@
     
     GenderedClassNamesByGenderHash *male   = nil,
                                    *female = nil;
+    
+    BOOL spewDebug = NO,
+         spewException = YES;
     
     @try {
         
@@ -293,14 +316,17 @@
                     strGender =  [[GenderedClassNames class] maleKey];
                 }
             }
-            
-          NSLog(@"Utilities:decodeGenderHash:Result->[%@]=[%@]",anyHash,strGender);
+            if (spewDebug){
+                NSLog(@"Utilities:decodeGenderHash:Result->[%@]=[%@]",anyHash,strGender);
+            }
             
         }
         
     }
     @catch (NSException *exception) {
-        NSLog(@"Utilities:decodeGenderHash:Exception->%@",exception.description);
+        if (spewException){
+            NSLog(@"Utilities:decodeGenderHash:Exception->%@",exception.description);
+        }
     }
     @finally {
         

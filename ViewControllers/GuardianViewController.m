@@ -25,13 +25,17 @@
                         *destPVendorData,
                         *destCharWeaponsData,
                         *destCharArmorData,
+                        *destCharEquippedData,
                         *destVaultData;
     
     NSString *currentMembership,
              *selectedCharacter;
     
+    UIImageView *selectedCharEmblem;
+    
     NSArray *weaponsArray,
             *armorArray,
+            *equippedArray,
             *vaultArray;
     
 }
@@ -78,6 +82,9 @@
     if (! self->destCharArmorData){
         self->destCharArmorData   = [[NSMutableDictionary alloc] init];
     }
+    if (! self->destCharEquippedData){
+        self->destCharEquippedData   = [[NSMutableDictionary alloc] init];
+    }
     if (! self->destVaultData){
         self->destVaultData   = [[NSMutableDictionary alloc] init];
     }
@@ -98,6 +105,11 @@
         }
         if (! self->armorArray){
              self->armorArray   = [[NSArray alloc] initWithObjects:@"3448274439",@"3551918588",@"14239492",@"20886954",@"1585787867", nil];
+        }
+        
+        if (!self->equippedArray){
+             self->equippedArray = [[NSArray alloc] initWithObjects:@"375726501",@"215593132",@"1469714392",@"3313201758",@"3683254069",
+                                    @"4274335291",@"284967655",@"2025709351",nil];
         }
         
         if (!self->vaultArray){
@@ -211,6 +223,57 @@
                                            NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Class Armor...",strFullKey);
                                        }
                                        break;
+                                    //Equipped Inventory
+                                       
+                                   case 375726501://Engrams
+                                       if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                           [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Engrams...",strFullKey);
+                                       }
+                                       break;
+                                   case 215593132://Lost Items
+                                       if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                           [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->LostItems...",strFullKey);
+                                       }
+                                       break;
+                                   case 1469714392://Consumables
+                                       if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                           [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Consumables...",strFullKey);
+                                       }
+                                       break;
+                                   case 3313201758://Modifications
+                                       if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                           [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Mods...",strFullKey);
+                                       }
+                                       break;
+                                   case 3683254069://Finishers
+                                       if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                           [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Finishers...",strFullKey);
+                                       }
+                                       break;
+                                   case 4274335291://Emblems
+                                       if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                           [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Emblems...",strFullKey);
+                                       }
+                                       break;
+                                   case 284967655://Ships
+                                       if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                           [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Ships...",strFullKey);
+                                       }
+                                       break;
+                                   case 2025709351://Vehicles
+                                       if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                           [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Vehicles...",strFullKey);
+                                       }
+                                       
+                                       break;
                                        
                                }
                                
@@ -245,6 +308,11 @@
         }
         if (! self->armorArray){
              self->armorArray   = [[NSArray alloc] initWithObjects:@"3448274439",@"3551918588",@"14239492",@"20886954",@"1585787867", nil];
+        }
+        
+        if (!self->equippedArray){
+             self->equippedArray = [[NSArray alloc] initWithObjects:@"375726501",@"215593132",@"1469714392",@"3313201758",@"3683254069",
+                                    @"4274335291",@"284967655",@"2025709351",nil];
         }
         
         if (userInfo){
@@ -351,6 +419,56 @@
                                        }
                                        break;
                                 
+                                       //Equipped Inventory
+                                          
+                                      case 375726501://Engrams
+                                          if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                              [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->Engrams...",strFullKey);
+                                          }
+                                          break;
+                                      case 215593132://Lost Items
+                                          if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                              [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->LostItems...",strFullKey);
+                                          }
+                                          break;
+                                      case 1469714392://Consumables
+                                          if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                              [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->Consumables...",strFullKey);
+                                          }
+                                          break;
+                                      case 3313201758://Modifications
+                                          if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                              [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->Mods...",strFullKey);
+                                          }
+                                          break;
+                                      case 3683254069://Finishers
+                                          if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                              [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->Finishers...",strFullKey);
+                                          }
+                                          break;
+                                      case 4274335291://Emblems
+                                          if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                              [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->Emblems...",strFullKey);
+                                          }
+                                          break;
+                                      case 284967655://Ships
+                                          if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                              [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->Ships...",strFullKey);
+                                          }
+                                          break;
+                                       
+                                   case 2025709351://Vehicles
+                                       if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
+                                           [self->destCharEquippedData setValue:item forKey:strFullKey];
+                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Vehicles...",strFullKey);
+                                       }
                                        
                                }
                                
@@ -811,6 +929,11 @@
          
         NSArray *vItems;
         
+        if (!self->equippedArray){
+             self->equippedArray = [[NSArray alloc] initWithObjects:@"375726501",@"215593132",@"1469714392",@"3313201758",@"3683254069",
+                                    @"4274335291",@"284967655",@"2025709351",nil];
+        }
+        
         if (!self->vaultArray){
              self->vaultArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",@"3448274439",
                                  @"3551918588",@"14239492",@"20886954",@"1585787867",@"375726501",@"215593132",@"1469714392",
@@ -845,24 +968,41 @@
                                         if (vaultItem){
                                             
                                             
-                                            NSNumber *objItemBucket = [NSNumber numberWithDouble:vaultItem.bucketHash],
-                                                     *objItemHash   = [NSNumber numberWithDouble:vaultItem.itemHash];
+                                            NSNumber *objItemBucket     = [NSNumber numberWithDouble:vaultItem.bucketHash],
+                                                     *objItemLocation   = [NSNumber numberWithDouble:vaultItem.location],
+                                                     *objItemHash       = [NSNumber numberWithDouble:vaultItem.itemHash];
                                             
-                                            NSInteger iItemBucket = [objItemBucket integerValue];
+                                            NSInteger iItemBucket   = [objItemBucket integerValue],
+                                                      iItemLocation = [objItemLocation integerValue];
                                             
                                             
                                             NSString *strItemHash = [NSString stringWithFormat:@"%@",objItemHash],
+                                                     *strItemLocation = [NSString stringWithFormat:@"%@",objItemLocation],
                                                      *strBucketHash = [NSString stringWithFormat:@"%@",objItemBucket],
                                                      *strInstanceId = vaultItem.itemInstanceId;
                                          
-                                            if (strInstanceId){
+                                            if (strItemHash){
                                            
-                                            if (![self->destVaultData.allKeys containsObject:strInstanceId]){
-                                                [self->destVaultData setValue:vaultItem forKey:strInstanceId];
-                                                NSLog(@"GuardianViewController:VaultNotification:%@Vault Item ...",strInstanceId);
-                                            }
-                                            }
+                                                if (strItemLocation){
+                                             
+                                                    switch(iItemLocation){
+                                                        case 1://Equipped
+                                                            if (![self->destCharEquippedData.allKeys containsObject:strItemHash]){
+                                                                [self->destCharEquippedData setValue:vaultItem forKey:strItemHash];
+                                                                NSLog(@"GuardianViewController:VaultNotification:%@Equipped Item ",strItemHash);
+                                                            }
+                                                            break;
+                                                        case 2://Vault
+                                                            if (![self->destVaultData.allKeys containsObject:strItemHash]){
+                                                                [self->destVaultData setValue:vaultItem forKey:strItemHash];
+                                                                //NSLog(@"GuardianViewController:VaultNotification:%@Vault Item ",strItemHash);
+                                                            }
+                                                            break;
+                                                    }
                                             
+                                                  
+                                             }
+                                           }
                                             
                                         }
                                         
@@ -1542,14 +1682,27 @@
     
     NSArray<UITableViewCell*> *vCells =  [tableView visibleCells];
     
-    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    GuardianCellTableView *selectedCell = (GuardianCellTableView *) [tableView cellForRowAtIndexPath:indexPath];
     
     NSInteger iRow =  [indexPath row];
     
+    NSString *selCharKey = nil;
+    
+     
     @try {
         
-        self->selectedCharacter = [self.destChars objectAtIndex:iRow];
+        selCharKey = [self.destChars objectAtIndex:iRow];
         
+        self->selectedCharacter = selCharKey;
+         
+        UIImage *selCharImage = [UIImage imageWithData:UIImagePNGRepresentation(selectedCell.imgBackground.image)];
+        
+        UIImageView *selCharImageView =   [[UIImageView alloc] initWithImage:selCharImage];
+            
+            if (selCharImageView){
+                self->selectedCharEmblem = selCharImageView;
+            }
+            
         for (UITableViewCell *vCell in vCells) {
            
             if (![vCell isEqual:selectedCell] && (vCell.layer.borderColor == [UIColor systemOrangeColor].CGColor)){
@@ -2160,6 +2313,8 @@
     
     ArmorTableViewController   *aVC = nil;
     
+    ItemsViewController *iVC = nil;
+    
     @try {
         
         
@@ -2171,14 +2326,44 @@
                 
                 wVC =   [storyBoard instantiateViewControllerWithIdentifier:@"sbWeapons"];
                 
-             
                 
                 if (wVC){
                    
+                    
+                    NSDictionary *selectedCharData =   [self->destCharData objectForKey:self->selectedCharacter];
+                    
+                    NSString *charFilter = [NSString stringWithFormat:@"%@_",self->selectedCharacter];
                    
-                    [wVC setDestWeapons:self->destCharWeaponsData];
+                    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
+                    
+                    NSArray *filteredItems = [self->destCharWeaponsData.allKeys filteredArrayUsingPredicate:bPredicate];
+                    
+                    NSArray<NSDictionary *> *fItems =   [self->destCharWeaponsData objectsForKeys:filteredItems notFoundMarker:self->destCharWeaponsData];
+                    
+                    NSMutableDictionary *filteredCharWeaponsData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
+                    
+                    if (fItems){
+                        
+                        
+                        for(int wIdx = 0; wIdx < fItems.count; wIdx++){
+                            
+                            NSString *fWKey = [filteredItems objectAtIndex:wIdx];
+                            
+                            INVCItems *fWeapon = (INVCItems*)[fItems objectAtIndex:wIdx];
+                            
+                            if (fWeapon){
+                                [filteredCharWeaponsData setValue:fWeapon forKey:fWKey];
+                            }
+                        }
+                        
+                    }
+                    
+                    //Passing already filtered weapons for selected char
+                    [wVC setDestWeapons:filteredCharWeaponsData];
+                    [wVC setSelectedCharData:selectedCharData];
                     [wVC setDestWeaponBuckets:self->weaponsArray];
                     [wVC setSelectedChar:self->selectedCharacter];
+                    [wVC setSelectedCharEmblem:self->selectedCharEmblem];
                     [wVC loadWeapons];
                     
                     navVC = [[UINavigationController alloc] initWithRootViewController:wVC];
@@ -2195,10 +2380,41 @@
                 
                 aVC =   [storyBoard instantiateViewControllerWithIdentifier:@"sbArmor"];
                 
+                
                 if (aVC){
-                    [aVC setDestArmor:self->destCharArmorData];
+                    
+                    NSString *charFilter = [NSString stringWithFormat:@"%@_",self->selectedCharacter];
+                   
+                    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
+                    
+                    NSArray *filteredItems = [self->destCharArmorData.allKeys filteredArrayUsingPredicate:bPredicate];
+                    
+                    NSArray<NSDictionary *> *fItems =   [self->destCharArmorData objectsForKeys:filteredItems
+                                                                                 notFoundMarker:self->destCharArmorData];
+                    
+                    NSMutableDictionary *filteredCharArmorData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
+                    
+                    if (fItems){
+                        
+                        
+                        for(int wIdx = 0; wIdx < fItems.count; wIdx++){
+                            
+                            NSString *fWKey = [filteredItems objectAtIndex:wIdx];
+                            
+                            INVCItems *fWeapon = (INVCItems*)[fItems objectAtIndex:wIdx];
+                            
+                            if (fWeapon){
+                                [filteredCharArmorData setValue:fWeapon forKey:fWKey];
+                            }
+                        }
+                        
+                    }
+                    
+                    [aVC setDestArmor:filteredCharArmorData];
+                    //[aVC setDestArmor:self->destCharArmorData];
                     [aVC setDestArmorBuckets:self->armorArray];
                     [aVC setSelectedChar:self->selectedCharacter];
+                    [aVC setSelectedCharEmblem:self->selectedCharEmblem];
                     [aVC loadArmor];
                     
                     navVC = [[UINavigationController alloc] initWithRootViewController:aVC];
@@ -2213,6 +2429,59 @@
                 
                 break;
             case 2:
+                
+                iVC =   [storyBoard instantiateViewControllerWithIdentifier:@"sbVendors"];
+                
+                if (iVC){
+                   
+ 
+                    NSString *charFilter = [NSString stringWithFormat:@"%@_",self->selectedCharacter];
+                   
+                    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
+                    
+                    NSArray *filteredItems = [self->destCharEquippedData.allKeys filteredArrayUsingPredicate:bPredicate];
+                    
+                    NSArray<NSDictionary *> *fItems =   [self->destCharEquippedData objectsForKeys:filteredItems notFoundMarker:self->destCharEquippedData];
+                    
+                    NSMutableDictionary *filteredCharItemsData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
+                    
+                    if (fItems){
+                        
+                        
+                        for(int wIdx = 0; wIdx < fItems.count; wIdx++){
+                            
+                            NSString *fWKey = [filteredItems objectAtIndex:wIdx];
+                            
+                            INVCItems *fWeapon = (INVCItems*)[fItems objectAtIndex:wIdx];
+                            
+                            if (fWeapon){
+                                [filteredCharItemsData setValue:fWeapon forKey:fWKey];
+                            }
+                        }
+                        
+                    }
+                    
+                    [iVC setSelectedChar:self->selectedCharacter];
+                    [iVC setDestVaultItems:self->destVaultData];
+                    [iVC setDestVaultItemsBuckets:self->vaultArray];
+                    //[iVC setDestEquippedItems:self->destCharEquippedData];
+                    [iVC setDestEquippedItems:filteredCharItemsData];
+                    [iVC setDestEquippedItemsBuckets:self->equippedArray];
+                    [iVC setDestChars:self->destCharData];
+                    [iVC setSelectedCharEmblem:self->selectedCharEmblem];
+                    [iVC loadItems];
+                    
+                    navVC = [[UINavigationController alloc] initWithRootViewController:iVC];
+                    
+                    [self presentViewController:navVC
+                                       animated:YES completion:^{
+                        
+                        [sender setSelectedSegmentIndex:-1];
+                        
+                    }];
+                }
+                
+                
                 break;
             case 3:
                 break;

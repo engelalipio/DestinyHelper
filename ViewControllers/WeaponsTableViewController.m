@@ -24,7 +24,9 @@
     
     NSMutableArray *primaryWeapons,
                    *energyWeapons,
-                   *powerWeapons;
+                   *powerWeapons,
+                   *ghosts,
+                   *artifact;
     
     NSMutableDictionary *instanceData;
     
@@ -36,6 +38,8 @@
 @property (nonatomic, strong) NSMutableArray *primaryWeaponsArray;
 @property (nonatomic, strong) NSMutableArray *energyWeaponsArray;
 @property (nonatomic, strong) NSMutableArray *heavyWeaponsArray;
+@property (nonatomic, strong) NSMutableArray *ghostsArray;
+@property (nonatomic, strong) NSMutableArray *artifactArray;
 @property (nonatomic, strong) NSArray *colorArray;
 
 @property (nonatomic, strong) NSMutableDictionary *contentOffsetDictionary;
@@ -46,16 +50,31 @@
 
 @synthesize destWeapons = _destWeapons;
 @synthesize selectedChar = _selectedChar;
+@synthesize selectedCharEmblem = _selectedCharEmblem;
 @synthesize selectedMembership = _selectedMembership;
 @synthesize destWeaponBuckets = _destWeaponBuckets;
+@synthesize selectedCharData = _selectedCharData;
 
+ 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
-
+    if (self.selectedCharData){
+        
+    }
+ 
+    if (self.selectedCharEmblem){
+    
+        UIImageView *cImage = self.selectedCharEmblem;
+    
+        [cImage setFrame:CGRectMake(0, 10, self.tableView.frame.size.width, 150)];
+    
+        [self.navigationItem setTitleView:cImage];
+    }
+    
     
     UIBarButtonItem *btnClose =  [[UIBarButtonItem alloc] init];
     
@@ -64,6 +83,7 @@
         [btnClose setTitle:@"Close"];
         [btnClose setTarget:self];
         [btnClose setAction:@selector(closeAction)];
+        
     }
 
     self.navigationItem.rightBarButtonItem = btnClose;
@@ -85,6 +105,12 @@
     NSLog(@"WeaponsViewController:closeAction:Invoked...");
     
     [self dismissViewControllerAnimated:NO completion:^{
+        
+        if (![self.tableView hasUncommittedUpdates]){
+            [self.tableView reloadData];
+            NSLog(@"Refreshed weapons table");
+        }
+        
         NSLog(@"WeaponsViewController:closeAction:Completed...");
     }];
         
@@ -94,41 +120,48 @@
 
 - (void)removeWeaponAction:(NSString *) weaponHash{
     
+    NSArray<NSIndexPath*> *selectedRows  = nil;
     @try {
         
         if (self.destWeapons){
             
             if ([self.destWeapons.allKeys containsObject:weaponHash]){
-                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon->%@ to destWeapons...",weaponHash);
+            
                 [self.destWeapons removeObjectForKey:weaponHash];
                 
-                
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon->%@ to destWeapons...",weaponHash);
             }
         }
         
         if (self->instanceData){
             
             if ([self->instanceData.allKeys containsObject:weaponHash]){
-                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon->%@ to instanceData...",weaponHash);
+               
                 [self->instanceData removeObjectForKey:weaponHash];
              
-                
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon->%@ to instanceData...",weaponHash);
             }
         }
-         
-        [self.tableView reloadData];
-       
-        if (! [self.tableView.refreshControl isRefreshing]){
-            [self.tableView.refreshControl beginRefreshing];
+        
+        selectedRows =  [self.tableView indexPathsForVisibleRows];
+        
+        if (selectedRows){
+            
+         [self.tableView beginUpdates];
+         NSLog(@"WeaponsViewController:updateInstancedItemData:Removing Vaulted Weapon");
+            
+         [self.tableView deleteRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationAutomatic];
+          
+         [self.tableView endUpdates];
+          NSLog(@"WeaponsViewController:removeWeaponAction::finished!");
         }
-       
-        [self.tableView.refreshControl endRefreshing];
+        
         
         
     } @catch (NSException *exception) {
-        NSLog(@"WeaponsViewController:kDestinyLoadedStaticItemNotification:Exception->%@",exception.description);
+        NSLog(@"WeaponsViewController:removeWeaponAction:Exception->%@",exception.description);
     } @finally {
-        
+        selectedRows = nil;
     }
 }
 
@@ -402,8 +435,7 @@
             if (! self->instanceData){
                 self->instanceData = [[NSMutableDictionary alloc] initWithCapacity:charWeapons.count];
             }
-            
-            
+           
             [self.tableView reloadData];
             
             if ([self.tableView.refreshControl isRefreshing]){
@@ -514,7 +546,7 @@
         nOfWeaponBuckets = [self.destWeaponBuckets count];
     }
     
-    if ( self.primaryWeaponsArray && self.energyWeaponsArray && self.heavyWeaponsArray ){
+    if ( self.primaryWeaponsArray && self.energyWeaponsArray && self.heavyWeaponsArray && self.ghostsArray && self.artifactArray ){
         return;
     }
     
@@ -565,6 +597,38 @@
                         
                     }
                     self.heavyWeaponsArray = [NSMutableArray arrayWithArray:pWArray];
+                }
+                
+                break;
+            case 3:
+                
+                if (self->ghosts)
+                {
+                    NSMutableArray *gArray  = [NSMutableArray arrayWithCapacity:[self->ghosts count]];
+                    for (NSString *pKey in self->ghosts) {
+                        
+                        //if (![gArray containsObject:pKey]){
+                            [gArray addObject:pKey];
+                        //}
+                        
+                    }
+                    self.ghostsArray = [NSMutableArray arrayWithArray:gArray];
+                }
+                
+                break;
+            case 4:
+                
+                if (self->artifact)
+                {
+                    NSMutableArray *aArray  = [NSMutableArray arrayWithCapacity:[self->artifact count]];
+                    for (NSString *pKey in self->artifact) {
+                        
+                       // if (![aArray containsObject:pKey]){
+                            [aArray addObject:pKey];
+                       // }
+                        
+                    }
+                    self.artifactArray = [NSMutableArray arrayWithArray:aArray];
                 }
                 
                 break;
@@ -661,7 +725,6 @@
     @try {
         instanceBase = (INSTBaseClass *) anyInstancedItem ;
        
-       
         hasUncommitedChanges = [self.tableView hasUncommittedUpdates];
         
         visibleIndexPaths =  [self.tableView indexPathsForVisibleRows];
@@ -671,9 +734,7 @@
         if (!hasUncommitedChanges){
             
             //for (int idx = 0; idx < visibleIndexPaths.count ; idx++ ) {
-              
                 NSIndexPath *iPath = [NSIndexPath indexPathForRow:itemIndex inSection:itemSection];
-                
                 if (iPath){
                    // if (idx == itemIndex){
                         performUpdates = YES;
@@ -713,7 +774,8 @@
                     [cell setHidden:NO];
                 }
                 
-    NSLog(@"WeaponsViewController:updateInstancedItemData:For IndexPath Section->[%d],Row->[%d]",cIndexPath.section, cIndexPath.row);
+                NSLog(@"WeaponsViewController:updateInstancedItemData:For IndexPath Section->[%d],Row->[%d]",
+                      cIndexPath.section, cIndexPath.row);
                 
                 if (anyInstancedId){
                     [cell.lblInstanceId setText:anyInstancedId];
@@ -788,11 +850,18 @@
                 }
               
             }
+           
             [self.tableView endUpdates];
         }
         completion:^(BOOL finished) {
             if (finished){
-                NSLog( @"WeaponsViewController:updateInstancedItemData:performBatchUpdates:finished!");
+                
+                [self.tableView beginUpdates];
+                NSLog(@"WeaponsViewController:updateInstancedItemData:Reloading Indexes");
+                 [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView endUpdates];
+                NSLog(@"WeaponsViewController:updateInstancedItemData:performBatchUpdates:finished!");
+                 
             }
         }];
             
@@ -827,13 +896,10 @@
         visibleIndexPaths =  [self.tableView indexPathsForVisibleRows];
         
         NSIndexPath *cIndexPath = nil;
-        
        
         if (! hasUncommitedChanges){
-            
-           
+
            // for (int idx = 0; idx < visibleIndexPaths.count ; idx++ ) {
-              
                 NSIndexPath *iPath = [NSIndexPath indexPathForRow:itemIndex inSection:itemSection];
                 
                 if (iPath){
@@ -843,16 +909,11 @@
                     //    break;
                    // }
                 }
-                
             //}
             
-            if (hasUncommitedChanges){
-                performUpdates = NO;
-                NSLog(@"updateStaticItemData:For IndexPath Section->[%d],Row->[%d] returning due to hasUncommitedChanges",cIndexPath.section, cIndexPath.row);
-            }
- 
+            if (performUpdates){
             [self.tableView performBatchUpdates:^{
-               // [self.tblItems beginUpdates];
+              //  [self.tableView beginUpdates];
                 if (invItem){
                     
                     ItemCellTableView *cell = [self.tableView cellForRowAtIndexPath:cIndexPath];
@@ -1034,23 +1095,32 @@
                     
             
             }
-             //   [self.tblItems endUpdates];
+               // [self.tableView endUpdates];
+                
+               /* if (! hasUncommitedChanges){
+                    [self.tableView beginUpdates];
+                    NSLog(@"WeaponsViewController:updateStaticItemData:Reloading Indexes");
+                     [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                    [self.tableView endUpdates];
+                }*/
             
             }
               completion:^(BOOL finished) {
                     if (finished){
+                        
+                        [self.tableView beginUpdates];
+                        NSLog(@"WeaponsViewController:updateStaticItemData:Reloading Indexes");
+                         [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                        [self.tableView endUpdates];
                         NSLog(@"WeaponsViewController:updateStaticItemData:performBatchUpdates:finished!");
                     }
             }];
-    
-           /* if (! hasUncommitedChanges){
-                [self.tableView beginUpdates];
-                 [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
-                [self.tableView endUpdates];
-            }*/
+          }
+
             
-        }else{
-            NSLog(@"WeaponsViewController:updateStaticItemData has uncommited changes, waiting to be done...");
+        }
+        else{
+            NSLog(@"WeaponsViewController:UpdateStaticItemData:For IndexPath Section->[%d],Row->[%d] returning due to hasUncommitedChanges",cIndexPath.section, cIndexPath.row);
         }
             
       
@@ -1114,6 +1184,14 @@
                 case 2:
                     CurrentWeapons = [self->powerWeapons count];
                     break;
+                case 3:
+                    CurrentWeapons = [self->ghosts count];
+                    TotalWeapons = 4;
+                    break;
+                case 4:
+                    CurrentWeapons = [self->artifact count];
+                    TotalWeapons = 1;
+                    break;
             }
             
             bucketHash = [self.destWeaponBuckets objectAtIndex:section];
@@ -1143,13 +1221,37 @@
     
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"Weapons:tableView:didSelectRowAtIndexPath");
+    
+    ItemTableViewCell *cCell = nil;
+    @try {
+        
+         cCell = [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        if (cCell){
+            
+            NSString *strHashKey = [cCell.lblHash text];
+            NSLog(@"didSelectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,indexPath.section, indexPath.row);
+            
+        }
+        
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger rows = 0,
               pRows = 0,
               sRows = 0,
-              hRows = 0;
+              hRows = 0,
+              gRows = 0,
+              aRows = 0;
     
-    NSArray *weaponsArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",@"4023194814",nil];
+    NSArray *weaponsArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",@"4023194814",@"1506418338",nil];
     
     NSString *strLookupKey = @"%@_%@";
     
@@ -1215,12 +1317,45 @@
                 }
             }
             
+            if (! self->ghosts){
+                self->ghosts = [[NSMutableArray alloc] init];
+            }
+            else{
+                if (section == 3){
+                    if ([self->ghosts count] > 0){
+                        rows = [self->ghosts count];
+                        
+                        if (self->useCView){
+                            rows = 1;
+                        }
+                        
+                        return rows;
+                    }
+                }
+            }
+            
+            if (! self->artifact){
+                self->artifact = [[NSMutableArray alloc] init];
+            }
+            else{
+                if (section == 4){
+                    if ([self->artifact count] > 0){
+                        rows = [self->artifact count];
+                        
+                        if (self->useCView){
+                            rows = 1;
+                        }
+                        
+                        return rows;
+                    }
+                }
+            }
+            
             if (self.destWeaponBuckets){
                 weaponsArray = self.destWeaponBuckets;
             }
             
             strLookupKey = [NSString stringWithFormat:strLookupKey,self.selectedChar,[weaponsArray objectAtIndex:section]];
-            
             
             for (NSString *weaponKey in self.destWeapons.allKeys ) {
                  
@@ -1241,6 +1376,14 @@
                         case 2:
                             [self->powerWeapons addObject:weaponKey];
                             hRows +=1;
+                            break;
+                        case 3:
+                            [self->ghosts addObject:weaponKey];
+                            gRows +=1;
+                            break;
+                        case 4:
+                            [self->artifact addObject:weaponKey];
+                            aRows +=1;
                             break;
                     }
                     
@@ -1274,6 +1417,23 @@
                         rows = 1;
                     }
                     break;
+                case 3:
+                    
+                    rows = gRows;
+                    
+                    if (self->useCView){
+                        rows = 1;
+                    }
+                    break;
+                case 4:
+                    
+                    rows = aRows;
+                    
+                    if (self->useCView){
+                        rows = 1;
+                    }
+                    break;
+
             }
             
         }
@@ -1367,6 +1527,20 @@
             }
             
             break;
+        case 3:
+            
+            if (self.ghostsArray){
+                items = [self.ghostsArray count];
+            }
+            
+            break;
+        case 4:
+            
+            if (self.artifactArray){
+                items = [self.artifactArray count];
+            }
+            
+            break;
     }
     
    /* if (collectionViewArray){
@@ -1441,6 +1615,20 @@
                     }
                     strBucketKey = [self.destWeaponBuckets objectAtIndex:cSection];
                     break;
+                case 3:
+                    
+                    if (self->ghosts){
+                        strFullKey = [self->ghosts objectAtIndex:cRow];
+                    }
+                    strBucketKey = [self.destWeaponBuckets objectAtIndex:cSection];
+                    break;
+                case 4:
+                    
+                    if (self->artifact){
+                        strFullKey = [self->artifact objectAtIndex:cRow];
+                    }
+                    strBucketKey = [self.destWeaponBuckets objectAtIndex:cSection];
+                    break;
             }
             
         } @catch (NSException *exception) {
@@ -1489,15 +1677,28 @@
                         if (buckDef){
                             
                             if ([buckDef.displayProperties.name isEqualToString:@"Kinetic Weapons"]){
+                              
                                 [cell.imgBackground setImage:[UIImage imageNamed:@"primaryAmmo.png"]];
+                                [cell.imgBackground setHidden:NO];
                             }
                             
                             if ([buckDef.displayProperties.name isEqualToString:@"Energy Weapons"]){
                                 [cell.imgBackground setImage:[UIImage imageNamed:@"energyAmmo.png"]];
+                                [cell.imgBackground setHidden:NO];
                             }
                             
                             if ([buckDef.displayProperties.name isEqualToString:@"Power Weapons"]){
                                 [cell.imgBackground setImage:[UIImage imageNamed:@"heavyAmmo.png"]];
+                                [cell.imgBackground setHidden:NO];
+                            }
+                            
+                            
+                            if ([buckDef.displayProperties.name isEqualToString:@"Ghost"]){
+                                [cell.imgBackground setHidden:YES];
+                            }
+                            
+                            if ([buckDef.displayProperties.name isEqualToString:@"Seasonal Artifact"]){
+                                [cell.imgBackground setHidden:YES];
                             }
                             
                             
@@ -1729,7 +1930,7 @@
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-        NSInteger size = 120;
+        NSInteger size = 110;
     
     if (self->useCView){
         size = 220;
@@ -1789,7 +1990,7 @@
      
     @try {
         
-            NSLog(@"WeaponsTableViewController:cellForRowAtIndexPath:Section->%d,Row->%d,",indexPath.section,indexPath.row);
+            //NSLog(@"WeaponsTableViewController:cellForRowAtIndexPath:Section->%d,Row->%d,",indexPath.section,indexPath.row);
         
             //self->sharedSection = indexPath.section;
         
@@ -1816,7 +2017,7 @@
         
         
        
-                if (! self->primaryWeapons || (! self->energyWeapons) || (! self->powerWeapons) ){
+                if (! self->primaryWeapons || (! self->energyWeapons) || (! self->powerWeapons) || (! self->ghosts) || (! self->artifact)){
                     
                     strBucketKey = [self.destWeaponBuckets objectAtIndex:indexPath.section];
                       
@@ -1860,6 +2061,21 @@
                         }
                         
                         break;
+                    case 3:
+                        
+                        if (self->ghosts){
+                            strFullKey = [self->ghosts objectAtIndex:indexPath.row];
+                        }
+                        
+                        break;
+                    case 4:
+                        
+                        if (self->artifact){
+                            strFullKey = [self->artifact objectAtIndex:indexPath.row];
+                        }
+                        
+                        break;
+
                 }
                 
                 if (self.destWeapons){
@@ -1870,8 +2086,6 @@
                     
                     if (item){
                         
-                      
-                        
                         NSNumber *objHashId  = [[NSNumber alloc] initWithDouble:item.itemHash],
                                  *objBckId   = [[NSNumber alloc] initWithDouble:item.bucketHash];
                         
@@ -1881,6 +2095,7 @@
                         if (cell){
                             
                             [cell.lblCharacterId setText:self.selectedChar];
+                            [cell.imgBackground setHidden:YES];
                             
                             if (appDelegate.destinyInventoryBucketDefinitions){
                                 
@@ -1891,16 +2106,27 @@
                                         
                                         if ([buckDef.displayProperties.name isEqualToString:@"Kinetic Weapons"]){
                                             [cell.imgBackground setImage:[UIImage imageNamed:@"primaryAmmo.png"]];
+                                            [cell.imgBackground setHidden:NO];
                                         }
                                         
                                         if ([buckDef.displayProperties.name isEqualToString:@"Energy Weapons"]){
                                             [cell.imgBackground setImage:[UIImage imageNamed:@"energyAmmo.png"]];
+                                            [cell.imgBackground setHidden:NO];
                                         }
                                         
                                         if ([buckDef.displayProperties.name isEqualToString:@"Power Weapons"]){
                                             [cell.imgBackground setImage:[UIImage imageNamed:@"heavyAmmo.png"]];
+                                            [cell.imgBackground setHidden:NO];
                                         }
                                         
+                                        
+                                        if ([buckDef.displayProperties.name isEqualToString:@"Ghost"]){
+                                            [cell.imgBackground setHidden:YES];
+                                        }
+                                        
+                                        if ([buckDef.displayProperties.name isEqualToString:@"Seasonal Artifact"]){
+                                            [cell.imgBackground setHidden:YES];
+                                        }
                                     }
                                     
                                 }
@@ -1930,7 +2156,6 @@
                                     
                                     strHashKey = [objHash stringValue];
                                     [cell.lblHash setText:strHashKey];
-                                       
                                     
                                     itemTypeName   =  [itemDef itemTypeDisplayName];
                                     
@@ -1950,6 +2175,7 @@
                                     
                                     objDamageType =  [NSString stringWithFormat:@"%d",i];
                                     
+                                    [cell.imgItemBurn setHidden:YES];
                                     if (objDamageType){
                                     
                                         itemDamageType = [Utilities decodeDamageType:objDamageType.intValue];
@@ -1960,28 +2186,28 @@
                                             [cell.lblDamageType setText:itemDamageType];
                                             
                                             if ([itemDamageType isEqualToString:@"Arc"]){
-                                                //[cell.lblDamageType setTextColor:[UIColor cyanColor]];
+                                                [cell.imgItemBurn setHidden:NO];
                                                 [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_arc.png"]];
                                                 [cell.lblDamageType setText:@"Damage"];
                                             }
                                             if ([cell.lblDamageType.text isEqualToString:@"Solar"]){
-                                                //[cell.lblDamageType setTextColor:[UIColor systemYellowColor]];
+                                                [cell.imgItemBurn setHidden:NO];
                                                 [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_solar.png"]];
                                                 [cell.lblDamageType setText:@"Damage"];
                                             }
                                             if ([cell.lblDamageType.text isEqualToString:@"Void"]){
-                                                //[cell.lblDamageType setTextColor:[UIColor systemPurpleColor]];
+                                                [cell.imgItemBurn setHidden:NO];
                                                 [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_void.png"]];
                                                 [cell.lblDamageType setText:@"Damage"];
                                             }
                                             if ([cell.lblDamageType.text isEqualToString:@"Stasis"]){
-                                               // [cell.lblDamageType setTextColor:[UIColor systemBlueColor]];
+                                                [cell.imgItemBurn setHidden:NO];
                                                 [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_stasis.png"]];
                                                 [cell.lblDamageType setText:@"Damage"];
                                             }
                                             
                                             if ([cell.lblDamageType.text isEqualToString:@"Kinetic"]){
-                                               // [cell.lblDamageType setTextColor:[UIColor systemBlueColor]];
+                                                [cell.imgItemBurn setHidden:NO];
                                                 [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_kinetic.png"]];
                                                 [cell.lblDamageType setText:@"Damage"];
                                             }
@@ -2003,7 +2229,6 @@
                                             *emblemURL      = nil;
                                     
                                     if (invDisplayProps){
-                                        
                                         
                                         
                                         if (invDisplayProps.hasIcon){
@@ -2038,6 +2263,9 @@
                                         itemName = [invDisplayProps name];
                                         [cell.lblItemName setText:itemName];
                                         [cCell.lblItemName setText:itemName];
+                                        
+                                     NSLog(@"WeaponsTableViewController:cellForRowAtIndexPath:Name->%@,Section->%d,Row->%d,",
+                                          itemName, indexPath.section,indexPath.row);
                                     }
                                     
                                     if (self->instanceData){
@@ -2094,9 +2322,10 @@
                                                 }
                                             }
                                         }
-                                        else{
+                                     else
+                                       {
                                             
-                                                                                
+                                            //Need to get instance data
                                             [NetworkAPISingleClient getInstancedItem:item.itemInstanceId completionBlock:^(NSArray *values){
                                             
                                                 if (values){

@@ -36,6 +36,7 @@
 @synthesize selectedChar = _selectedChar;
 @synthesize selectedMembership = _selectedMembership;
 @synthesize destArmorBuckets = _destArmorBuckets;
+@synthesize selectedCharEmblem = _selectedCharEmblem;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -43,8 +44,17 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
-    UIBarButtonItem *btnClose =  [[UIBarButtonItem alloc] init];
+    if (self.selectedCharEmblem){
     
+        UIImageView *cImage = self.selectedCharEmblem;
+    
+        [cImage setFrame:CGRectMake(0, 10, self.tableView.frame.size.width, 150)];
+    
+        [self.navigationItem setTitleView:cImage];
+    }
+    
+    
+    UIBarButtonItem *btnClose =  [[UIBarButtonItem alloc] init];
     
     if (btnClose){
         [btnClose setTitle:@"Close"];
@@ -514,7 +524,7 @@
         
         [self.tableView performBatchUpdates:^{
             
-            [self.tableView beginUpdates];
+            //[self.tableView beginUpdates];
             
             
             if (instanceBase){
@@ -582,11 +592,17 @@
                 }
               
             }
-            [self.tableView endUpdates];
+           // [self.tableView endUpdates];
         }
         completion:^(BOOL finished) {
             if (finished){
-                NSLog( @"ArmorViewController:updateInstancedItemData:performBatchUpdates:finished!");
+                
+                [self.tableView beginUpdates];
+                NSLog(@"ArmorViewController:updateInstancedItemData:Reloading Indexes");
+                 [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView endUpdates];
+                NSLog(@"ArmorViewController:updateInstancedItemData:performBatchUpdates:finished!");
+ 
             }
         }];
             
@@ -650,6 +666,14 @@
                 if (invItem){
                     
                     ItemCellTableView *cell = [self.tableView cellForRowAtIndexPath:cIndexPath];
+                    static NSString *cellId = @"ItemCellTableView";
+                    
+                    if (! cell){
+                        cell = [[ItemCellTableView alloc] initWithStyle:UITableViewCellStyleDefault
+                                                            reuseIdentifier:cellId];
+                        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                     
+                    }
                     
                     if (cell){
                         
@@ -789,7 +813,14 @@
             }
               completion:^(BOOL finished) {
                     if (finished){
+                        
+                        [self.tableView beginUpdates];
+                        NSLog(@"ArmorViewController:updateStaticItemData:Reloading Indexes");
+                         [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                        [self.tableView endUpdates];
                         NSLog(@"ArmorViewController:updateStaticItemData:performBatchUpdates:finished!");
+                        
+                 
                     }
             }];
     
@@ -1045,7 +1076,7 @@
 
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-        NSInteger size = 120;
+        NSInteger size = 110;
      
     return size;
 }

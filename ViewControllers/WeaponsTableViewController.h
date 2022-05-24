@@ -15,10 +15,11 @@ UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segTableView;
 
-
+@property (nonatomic,strong) NSMutableDictionary  *selectedCharData;
 @property (nonatomic,strong) NSMutableDictionary  *destWeapons;
 @property (nonatomic,strong) NSArray   *destWeaponBuckets;
 @property (nonatomic,strong) NSString  *selectedChar;
+@property (nonatomic,strong) UIImageView  *selectedCharEmblem;
 @property (nonatomic,strong) NSString  *selectedMembership;
 
 - (void)closeAction;

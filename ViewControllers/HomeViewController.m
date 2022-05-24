@@ -14,7 +14,8 @@
 {
     BOOL isFirstLaunch,
          useTableView,
-         isLoggedIn;
+         isLoggedIn,
+         spewDebug;
     
     NSString *currentImageName;
     NSArray  *backgroundImages;
@@ -80,7 +81,9 @@
         message = [exception description];
     } @finally {
         if ([message length] > 0){
-            NSLog(@"%@",message);
+            if (self->spewDebug){
+                NSLog(@"%@",message);
+            }
         }
     }
     return cell;
@@ -142,6 +145,7 @@
     self->isFirstLaunch = YES;
     self->useTableView = NO;
     self->isLoggedIn = NO;
+    self->spewDebug  = NO;
     
     appDelegate = [AppDelegate currentDelegate];
     
@@ -222,7 +226,9 @@
         @finally {
             
             if ([message length] > 0){
-                NSLog(@"%@",message);
+                if (self->spewDebug){
+                    NSLog(@"%@",message);
+                }
             }
            
             message =  @"";
@@ -241,7 +247,9 @@
 
 - (IBAction)loginAction:(UIButton *)sender {
     
-    NSLog(@"HomeViewController:loginAction:Invoked...");
+    if (self->spewDebug){
+        NSLog(@"HomeViewController:loginAction:Invoked...");
+    }
     
     [self endTimer];
 }
@@ -250,7 +258,9 @@
     if (self.timer != nil){
         [self.timer invalidate];
     }
-    NSLog(@"HomeView Timer Stopped");
+    if (self->spewDebug){
+        NSLog(@"HomeView Timer Stopped");
+    }
     self.timer = nil;
 }
 
@@ -296,7 +306,9 @@
              
         if (![newImageName isEqualToString:currentImageName]){
             
-            NSLog(message,currentImageName,newImageName);
+            if (self->spewDebug){
+                NSLog(message,currentImageName,newImageName);
+            }
             
             image =  [UIImage imageNamed:newImageName];
             
@@ -371,7 +383,10 @@
                                             @"City.jpg", @"ExoGuardian.jpg", @"Cabal.jpg",@"Ketch.jpg", @"MercurySun.jpg",
                                             @"Mercury.jpg", @"Loot.jpg", @"Dreadnaught.jpg", nil];
         
-        NSLog(@"HomeViewController:setupImages:backgroundImages-> %lu",(unsigned long)backgroundImages.count);
+            if (self->spewDebug){
+                    NSLog(@"HomeViewController:setupImages:backgroundImages-> %lu",
+                          (unsigned long)backgroundImages.count);
+            }
         
         }
          
@@ -411,7 +426,9 @@
         }
         
     } @catch (NSException *exception) {
-        NSLog(@"HomeViewController:setupImages:Exception-> %@",exception.description);
+        if (self->spewDebug){
+            NSLog(@"HomeViewController:setupImages:Exception-> %@",exception.description);
+        }
     } @finally {
         img = nil;
     }
@@ -423,7 +440,9 @@
     
     NSString *sourceVCTitle = segue.sourceViewController.title;
     
-    NSLog(@"HomeViewController:prepareForUnwind:Invoked:For:%@",sourceVCTitle);
+    if (self->spewDebug){
+        NSLog(@"HomeViewController:prepareForUnwind:Invoked:For:%@",sourceVCTitle);
+    }
     
     if ([sourceVCTitle isEqualToString:@"Login"]){
         //Refresh UI

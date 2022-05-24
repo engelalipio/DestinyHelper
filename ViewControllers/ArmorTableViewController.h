@@ -16,6 +16,7 @@
 @property (nonatomic,strong) NSArray   *destArmorBuckets;
 @property (nonatomic,strong) NSString  *selectedChar;
 @property (nonatomic,strong) NSString  *selectedMembership;
+@property (nonatomic,strong) UIImageView  *selectedCharEmblem;
 
 -(void)closeAction;
 -(void) loadArmor;

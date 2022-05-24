@@ -46,6 +46,20 @@ NSString *const kVItemsVersionNumber = @"versionNumber";
 @synthesize versionNumber = _versionNumber;
 
 
++ (NSDictionary *)mapping{
+    
+    
+    NSDictionary *map = [[NSDictionary alloc] initWithObjectsAndKeys:
+                         kVItemsItemHash,@"itemHash",
+                         nil];
+    
+    return map;
+}
+
++ (NSString *)key{
+    return nil;
+}
+
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
     return [[self alloc] initWithDictionary:dict];

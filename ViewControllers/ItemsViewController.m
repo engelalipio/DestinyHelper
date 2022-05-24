@@ -21,11 +21,12 @@
     AppDelegate *appDelegate;
     
     NSMutableDictionary *destItemData,
+                        *destVaultData,
                         *instanceData,
                         *destCharData,
                         *bucketsData;
     
-    ITMEBaseClass *equipedItems;
+    VAULTItems *vaultItems;
     
     NSMutableArray *itemBuckets;
 }
@@ -42,10 +43,35 @@
 @synthesize destChars = _destChars;
 @synthesize selectedMembership = _selectedMembership;
 @synthesize selectedChar = _selectedChar;
+@synthesize destVaultItems = _destVaultItems;
+@synthesize destVaultItemsBuckets =_destVaultItemsBuckets;
+@synthesize selectedCharEmblem = _selectedCharEmblem;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    if (self.selectedCharEmblem){
+    
+        UIImageView *cImage = self.selectedCharEmblem;
+    
+        
+        [cImage setFrame:CGRectMake(0, 10, self.tblItems.frame.size.width, 150)];
+    
+        [self.navigationItem setTitleView:cImage];
+    }
+    
+    
+    UIBarButtonItem *btnClose =  [[UIBarButtonItem alloc] init];
+    
+    
+    if (btnClose){
+        [btnClose setTitle:@"Close"];
+        [btnClose setTarget:self];
+        [btnClose setAction:@selector(closeAction)];
+        
+    }
+
     
     appDelegate = [AppDelegate currentDelegate];
     
@@ -136,7 +162,7 @@
                                     NSObject *objValue =   [pStat objectForKey:@"value"];
                                     if (objValue){
                                         [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
-                                      
+                                        [cell.lblPowerLevel setHidden:NO];
                                     }
                                 }
                             }
@@ -149,7 +175,13 @@
         }
         completion:^(BOOL finished) {
             if (finished){
-                NSLog( @"ItemsViewController:updateInstancedItemData:tblItems:performBatchUpdates:finished!");
+                
+                
+                [self.tblItems beginUpdates];
+                NSLog(@"ItemsViewController:updateInstancedItemData:tblItems:performBatchUpdates:Reloading Indexes");
+                 [self.tblItems reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                [self.tblItems endUpdates];
+                NSLog(@"WItemsViewController:updateInstancedItemData:tblItems:performBatchUpdates:finished!");
             }
         }];
             
@@ -219,7 +251,7 @@
                               if (itemScreenShot){
                                   [cell.lblMisc setText:itemScreenShot];
                                   
-                                  if (cIndexPath.row == 0){
+                                  /*if (cIndexPath.row == 0){
                                       
                                       if (!self.imgItemScreenShot.image){
                                           
@@ -236,7 +268,7 @@
                                               }
                                           
                                       }
-                                  }
+                                  }*/
                               }
                               
                               t = [invResponse defaultDamageType];
@@ -465,7 +497,7 @@
                             if (itemScreenShot){
                                 [cell.lblMisc setText:itemScreenShot];
                                 
-                                if (cIndexPath.row == 0){
+                               /* if (cIndexPath.row == 0){
                                     
                                     if (!self.imgItemScreenShot.image){
                                         
@@ -482,7 +514,7 @@
                                             }
                                         
                                     }
-                                }
+                                }*/
                             }
                             
                             t = [invResponse defaultDamageType];
@@ -564,9 +596,17 @@
             
             }
               completion:^(BOOL finished) {
-                    if (finished){
-                        NSLog(@"ItemsViewController:updateStaticItemData:tblItems:performBatchUpdates:finished!");
-                    }
+                   
+                        if (finished){
+                            
+                            [self.tblItems beginUpdates];
+                            NSLog(@"ItemsViewController:updateStaticItemData:tblItems:performBatchUpdates:Reloading Indexes");
+                             [self.tblItems reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                            [self.tblItems endUpdates];
+                            NSLog(@"WItemsViewController:updateStaticItemData:tblItems:performBatchUpdates:finished!");
+                        }
+                        
+           
                }];
     
         }else{
@@ -783,7 +823,7 @@
 
 -(void) refreshItems{
  
-    self->equipedItems = nil;
+    self->vaultItems = nil;
     
     [self loadItems];
 }
@@ -797,9 +837,10 @@
     NSDictionary        *chars = nil,
                         *equip = nil,
                         *cChar = nil,
-                        *eData = nil;
+                        *vData = nil;
     
-    ITMEBaseClass *itemsBase = nil;
+    NSArray             *vArray = nil,
+                        *eArray = nil;
     
     @try {
         NSLog(@"%@",message);
@@ -812,141 +853,267 @@
         }
         
         chars = self.destChars;
-        if (chars){
+        
+        vData = self.destVaultItems;
+        
+        equip = self.destEquippedItems;
+        
+        vArray = self.destVaultItemsBuckets;
+        
+        eArray = self.destEquippedItemsBuckets;
+        
+        cChar = [chars objectForKey:strCharID];
+        
+        
+        if (strCharID){
             
-            cChar = [chars objectForKey:strCharID];
+            /*NSMutableArray *names = [@[@"Nick", @"Ben", @"Adam", @"Melissa"] mutableCopy];
+             
+            NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] 'b'"];
+            NSArray *beginWithB = [names filteredArrayUsingPredicate:bPredicate];
+            // beginWithB contains { @"Ben" }.
+             
+            NSPredicate *ePredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] 'e'"];
+            [names filterUsingPredicate:ePredicate];
+            // array now contains { @"Ben", @"Melissa"*/
             
-            if (cChar){
+            NSMutableDictionary *cBucket = [[NSMutableDictionary alloc] init];
+            
+            NSMutableArray *cBucketDef = [[NSMutableArray alloc] init];
+            
+            for(int idx = 0 ;idx < eArray.count; idx ++){
+             
+                NSString *sectionKey = [eArray objectAtIndex:idx];
                 
-                //try equipment first
-                equip = [cChar objectForKey:@"equipment"];
-                if (! equip){
-                    //check inventory next
-                    equip = [cChar objectForKey:@"inventory"];
-                }
+                NSString *bucketFilter = [NSString stringWithFormat:@"%@_%@",strCharID, sectionKey];
+               
+                NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",bucketFilter];
                 
-                if (equip){
+                NSArray *filteredItems = [equip.allKeys filteredArrayUsingPredicate:bPredicate];
+               
+                if (filteredItems){
                     
-                    eData = [equip objectForKey:@"data"];
-                    
-                    if (eData){
-                        
-                        itemsBase = [[ITMEBaseClass alloc] initWithDictionary:eData];
-                        
-                        if (itemsBase){
-                            
-                            if (! self->equipedItems){
-                                self->equipedItems = itemsBase;
-                                
-                                if (itemsBase.items){
-                                    if (! self->itemBuckets){
-                                        self->itemBuckets = [[NSMutableArray alloc] init];
-                                    }
-                                    
-                                    for (int idx = 0; idx < itemsBase.items.count; idx++) {
-                                        
-                                        ITMEItems *invItem = (ITMEItems*) [itemsBase.items objectAtIndex:idx];
-                                        
-                                        if (invItem){
-                                            NSNumber *bHash = [[NSNumber alloc] initWithDouble:invItem.bucketHash],
-                                                     *iHash = [[NSNumber alloc] initWithDouble:invItem.itemHash],
-                                                     *bLocked = [[NSNumber alloc] initWithDouble:invItem.state];
-                                            
-                                            NSString *strHash = [bHash stringValue],
-                                                     *strIHash = [iHash stringValue],
-                                                     *strInstanceId = [invItem itemInstanceId],
-                                                     *strIDX = [NSString stringWithFormat:@"%d",idx],
-                                                     *strLocked = [bLocked stringValue];
-                                            
-                                            if (![self->itemBuckets containsObject:strHash]){
-                                                [self->itemBuckets addObject:strHash];
-                                            }
-                                          
-                                          if (appDelegate.destinyInventoryBucketDefinitions){
-                                              
-                                                if (!self->bucketsData){
-                                                    self->bucketsData = [[NSMutableDictionary alloc] init];
-                                                }
-                                              
-                                                if (![self->bucketsData.allKeys containsObject:strHash]){
-                                                  
-                                                    DestinyInventoryBucketDefinition *bDef = [appDelegate.destinyInventoryBucketDefinitions objectForKey:strHash];
-                                                    
-                                                    if (bDef){
-                                                        [self->bucketsData setValue:bDef forKey:strHash];
-                                                    }
-                                                    
-                                                }
-                                            }
-                                            
-                                            [NetworkAPISingleClient retrieveStaticEntityDefinitionByManifestType:@"DestinyInventoryItemDefinition" staticHashId:strIHash completionBlock:^(NSArray *values) {
-                                                
-                                                if (values){
-                                                  
-                                                NSLog(@"ItemsViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Received->%@",strHash);
-                                                      
-                                                INVDDestinyInventoryBaseClass *invItem = (INVDDestinyInventoryBaseClass *) [values firstObject];
-                                                
-                                                NSDictionary *callerInfo = [[NSDictionary alloc]
-                                                                  initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
-                                                                  @"getStaticItem",@"MethodName",
-                                                                  strIDX,@"CurrentIndex",
-                                                                  strLocked, @"LockState",
-                                                                  strIHash, @"itemHashKey",nil];
-                                                      
-                                                [[NSNotificationCenter defaultCenter]
-                                                        postNotificationName:kDestinyLoadedStaticItemNotification
-                                                                      object:invItem
-                                                                        userInfo:callerInfo];
-                                                    
-                                                NSLog(@"ItemsViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Raised->%@",strIHash);
-                                                
-                                                }
-                                                
-                                            } andErrorBlock:^(NSError *exception) {
-                                             NSLog(@"ItemsViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Exception->%@",exception.description);
-                                            }];
-                                            
-                                            
-                                            [NetworkAPISingleClient getInstancedItem:strInstanceId completionBlock:^(NSArray *values){
-                                            
-                                                if (values){
-                                                
-                                                INSTBaseClass *instanceBase = (INSTBaseClass*) [values firstObject];
-                                                    
-                                                NSDictionary *callerInfo = [[NSDictionary alloc]
-                                                                initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
-                                                                                        @"getInstancedItem",@"MethodName",
-                                                                                        strIDX,@"CurrentIndex",
-                                                                                        strIHash, @"itemHashKey",
-                                                                                        strInstanceId, @"itemInstanceId",nil];
-                                                    
-                                                [[NSNotificationCenter defaultCenter]
-                                                        postNotificationName:kDestinyLoadedInstancedItemNotification
-                                                                        object:instanceBase
-                                                                        userInfo:callerInfo];
-                                                    
-                                                    NSLog(@"ItemsViewController:getInstancedItem:loadItems:Raised->%@",strIHash);
-                                                    
-                                                }
-                                                
-                                            }andErrorBlock:^(NSError *exception){
-                                                NSLog(@"ItemsViewController:getInstancedItem:loadItems:Exception->%@",exception.description);
-                                            }];
-                                            
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (! [cBucketDef containsObject:bucketFilter]){
+                          [cBucketDef addObject:bucketFilter];
                     }
                     
+                    for(int fIdx = 0 ; fIdx < filteredItems.count ; fIdx++){
+                       
+                        NSString *cFBucket = [filteredItems objectAtIndex:fIdx];
+                        
+                        INVCItems *cFItem = (INVCItems *) [equip objectForKey:cFBucket];
+                        
+                        if (![cBucket.allKeys containsObject:cFBucket]){
+                            [cBucket setValue:cFItem forKey:cFBucket];
+                        }
+                        
+                    }
+                    
+                    
                 }
-            
+                 
             }
+            
+            if (! self->destItemData){
+                self->destItemData = cBucket;
+            }
+            
+            if(! self->itemBuckets){
+                self->itemBuckets = cBucketDef;
+            }
+            
+        }
+        
+        return;
+        if (chars){
+            
+          NSDictionary *cChar =  [chars objectForKey:strCharID];
+            
+            if (cChar){
+                NSDictionary *cEquip = [cChar objectForKey:@"equipment"];
+                
+                if (cEquip){
+                    NSDictionary *cEquipData = [cEquip objectForKey:@"data"];
+                    
+                    if (cEquipData){
+                        NSArray *cEquipItems = (NSArray *) [cEquipData objectForKey:@"items"];
+                        
+                        if (cEquipItems){
+                            
+                            NSMutableDictionary *cBucket =  [[NSMutableDictionary alloc] init];
+                            
+                            NSMutableArray *cBucketDef =[[NSMutableArray alloc] init];
+                            
+                            
+                            for(int idx = 0 ;idx < eArray.count; idx ++){
+                             
+                                NSString *sectionKey = [eArray objectAtIndex:idx];
+                                
+                                NSString *bucketFilter = [NSString stringWithFormat:@"bucketHash=%@",sectionKey];
+                                
+                                NSPredicate *filter = [NSPredicate predicateWithFormat:bucketFilter];
+                                
+                                NSArray *filteredItems = [cEquipItems filteredArrayUsingPredicate:filter];
+                                
+                                if (filteredItems){
+                                    
+                                    if (![cBucket.allKeys containsObject:sectionKey]){
+                                        [cBucket setValue:filteredItems forKey:sectionKey];
+                                        [cBucketDef addObject:sectionKey];
+                                       
+                                    }
+                                    
+                                }
+                                
+                            }
+                            
+                            //Only Inventory items for Char
+                            self.destEquippedItems = cBucket;
+                            self.destEquippedItemsBuckets = cBucketDef;
+
+                            
+                            return;
+                            if (cBucketDef){
+                            
+                                for (int bIdx = 0; bIdx < cBucketDef.count ; bIdx++){
+                                  
+                                    INVCItems *cEquipItem = (INVCItems *) [cBucketDef objectAtIndex:bIdx];
+                                    NSString *cKey = [cBucketDef objectAtIndex:bIdx];
+                                    NSArray *bucketItems = (NSArray*) [cBucket objectForKey:cKey];
+                                    
+                                    if (bucketItems){
+                                        
+                                        INVCItems *eEquipItem = [[INVCItems alloc] initWithDictionary:bucketItems];
+                                        
+                                        NSNumber *bucketKeyNumber = [[NSNumber alloc] initWithDouble:eEquipItem.bucketHash];
+                                        
+                                        NSString *bucketKey = [NSString stringWithFormat:@"%@",[bucketKeyNumber stringValue]];
+                                        
+                                        /*
+                                         
+                                         @property (nonatomic, assign) double quantity;
+                                         @property (nonatomic, assign) double state;
+                                         @property (nonatomic, strong) NSArray *tooltipNotificationIndexes;
+                                         @property (nonatomic, assign) BOOL lockable;
+                                         @property (nonatomic, assign) BOOL isWrapper;
+                                         @property (nonatomic, assign) double itemHash;
+                                         @property (nonatomic, assign) double bindStatus;
+                                         @property (nonatomic, assign) double dismantlePermission;
+                                         @property (nonatomic, assign) double location;
+                                         @property (nonatomic, strong) NSString *itemInstanceId;
+                                         @property (nonatomic, assign) double bucketHash;
+                                         @property (nonatomic, assign) double transferStatus;
+                                         @property (nonatomic, assign) double versionNumber;
+                                         
+                                         */
+  
+                                        NSNumber *bHash = [[NSNumber alloc] initWithDouble:cEquipItem.bucketHash],
+                                                 *iHash = [[NSNumber alloc] initWithDouble:cEquipItem.itemHash],
+                                                 *quantity = [[NSNumber alloc] initWithDouble:cEquipItem.quantity],
+                                                 *bLocked = [[NSNumber alloc] initWithDouble:cEquipItem.state],
+                                                 *location = [[NSNumber alloc] initWithDouble:cEquipItem.location];
+                                                        
+                                        BOOL     isLockable = [[NSNumber alloc] initWithBool:cEquipItem.lockable],
+                                                 isWrapper  = [[NSNumber alloc] initWithBool:cEquipItem.isWrapper];
+                                                        
+                                        NSString *strHash = [bHash stringValue],
+                                                 *strIHash = [iHash stringValue],
+                                                 *strInstanceId = [cEquipItem itemInstanceId],
+                                                 *strIDX = [NSString stringWithFormat:@"%d",bIdx],
+                                                 *strLocked = [bLocked stringValue];
+                                                        
+                                        if (![self->itemBuckets containsObject:strHash]){
+                                            [self->itemBuckets addObject:strHash];
+                                        }
+                                                        
+                                        if (appDelegate.destinyInventoryBucketDefinitions){
+                                                            
+                                            if (!self->bucketsData){
+                                                self->bucketsData = [[NSMutableDictionary alloc] init];
+                                            }
+                                                            
+                                            if (![self->bucketsData.allKeys containsObject:strHash]){
+                                                                
+                                                DestinyInventoryBucketDefinition *bDef = [appDelegate.destinyInventoryBucketDefinitions objectForKey:strHash];
+                                                                
+                                                if (bDef){
+                                                    [self->bucketsData setValue:bDef forKey:strHash];
+                                                }
+                                                                
+                                             }
+                                        }
+                                                        
+                                        [NetworkAPISingleClient retrieveStaticEntityDefinitionByManifestType:@"DestinyInventoryItemDefinition" staticHashId:strIHash completionBlock:^(NSArray *values) {
+                                                        
+                                            if (values){
+                                                            
+                                             NSLog(@"ItemsViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Received->%@",strHash);
+                                                                
+                                             INVDDestinyInventoryBaseClass *invItem = (INVDDestinyInventoryBaseClass *) [values firstObject];
+                                                        
+                                             NSDictionary *callerInfo = [[NSDictionary alloc]
+                                                        initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
+                                                                               @"getStaticItem",@"MethodName",
+                                                                            strIDX,@"CurrentIndex",
+                                                                            strLocked, @"LockState",
+                                                                            strIHash, @"itemHashKey",nil];
+                                                                
+                                            [[NSNotificationCenter defaultCenter]
+                                                postNotificationName:kDestinyLoadedStaticItemNotification
+                                                                    object:invItem
+                                                                    userInfo:callerInfo];
+                                                            
+                                            NSLog(@"ItemsViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Raised->%@",strIHash);
+                                                        
+                                            }
+                                                        
+                                         } andErrorBlock:^(NSError *exception) {
+                                            NSLog(@"ItemsViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Exception->%@",exception.description);
+                                        }];
+                                                        
+                                         if (strInstanceId){
+                                            [NetworkAPISingleClient getInstancedItem:strInstanceId completionBlock:^(NSArray *values){
+                                                        
+                                            if (values){
+                                                INSTBaseClass *instanceBase = (INSTBaseClass*) [values firstObject];
+                                                                
+                                                NSDictionary *callerInfo = [[NSDictionary alloc]
+                                                                    initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
+                                                                                                    @"getInstancedItem",@"MethodName",
+                                                                                                    strIDX,@"CurrentIndex",
+                                                                                                    strIHash, @"itemHashKey",
+                                                                                                    strInstanceId, @"itemInstanceId",nil];
+                                                                
+                                              [[NSNotificationCenter defaultCenter]
+                                                                    postNotificationName:kDestinyLoadedInstancedItemNotification
+                                                                                    object:instanceBase
+                                                                                    userInfo:callerInfo];
+                                                                
+                                                                NSLog(@"ItemsViewController:getInstancedItem:loadItems:Raised->%@",strIHash);
+                                                                
+                                            }
+                                                            
+                                            }andErrorBlock:^(NSError *exception){
+                                             NSLog(@"ItemsViewController:getInstancedItem:loadItems:Exception->%@",exception.description);
+                                            }];
+                                          }
+                                                    
+                                        
+                                                
+                                       }
+                                    }
+                                    
+                            
+                          }
+                             
+                        }
+                    }
+                }
+            }
+            
         }
  
-   
+     
     }
     @catch (NSException *exception) {
         message = [exception description];
@@ -1032,7 +1199,7 @@
         if(selectedCell){
             selectedTitle = selectedCell.lblItemName.text;
             
-            [self setTitle:selectedTitle];
+            [self.navigationItem setTitle:selectedTitle];
             
             selectedScreenShot = [selectedCell.lblMisc text];
             
@@ -1069,7 +1236,7 @@
 
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-        NSInteger size = 120;
+        NSInteger size = 110;
      
     return size;
 }
@@ -1127,11 +1294,9 @@
 -(NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     NSString *title = @"Equipped Inventory";
   
-     
-    
-    /*if (self->itemBuckets){
+    if (self.destEquippedItemsBuckets){
         
-       NSString *sectionKey = [self->itemBuckets objectAtIndex:section];
+       NSString *sectionKey = [self.destEquippedItemsBuckets objectAtIndex:section];
         
         if (sectionKey){
             
@@ -1150,13 +1315,13 @@
            }
         
       }
-    }*/
+    }
     
     
     return title;
 }
  
-/*
+
 -(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
    
     NSString *message   = nil;
@@ -1173,8 +1338,11 @@
             
             if ([message isEqualToString:@"Item Name"]){
                 [gCell.lblPowerLevel setText:@""];
-                [gCell.lblItemName setText:@"Loading..."];
-                [gCell.lblDamageType setTextColor:[UIColor whiteColor]];
+                //[gCell.lblItemName setText:@"Loading..."];
+                //[gCell.lblDamageType setTextColor:[UIColor whiteColor]];
+                [gCell.lblDamageType setText:@""];
+                [gCell.imgItemBurn setHidden:YES];
+               
                 [gCell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
             }
            
@@ -1187,7 +1355,7 @@
         
     }
  
-}*/
+}
 
 
 
@@ -1199,7 +1367,7 @@
     
     static NSString *cellId = @"ItemCellTableView";
     
-    ITMEItems *invItem = nil;
+    INVCItems *invItem = nil;
     
     NSString *strKey = nil;
     
@@ -1227,272 +1395,301 @@
         NSLog(@"ItemsViewController:cellForRowAtIndexPath:Section->%d,Row->%d,",indexPath.section,indexPath.row);
         
         
-        if (self->itemBuckets){
-            strKey = [self->itemBuckets objectAtIndex:indexPath.section];
-        }
         
-        if (self->equipedItems){
+        NSString *sectionKey = [self->itemBuckets objectAtIndex:indexPath.section];
+        
+        if (sectionKey){
             
-            invItem = (ITMEItems*) [self->equipedItems.items objectAtIndex:indexPath.row];
-            if (invItem){
+            NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",sectionKey];
+            
+            NSArray *filteredItems = [self->destItemData.allKeys filteredArrayUsingPredicate:bPredicate];
+           
+           //Filtered items for all chars
+            if (filteredItems){
+               
+                NSString *itemKey = [filteredItems objectAtIndex:indexPath.row];
                 
-                NSNumber *objHashId  = [[NSNumber alloc] initWithDouble:invItem.itemHash];
+                if (itemKey){
+                    INVCItems *item = (INVCItems *) [self->destItemData objectForKey:itemKey];
                 
-                NSString *strHashKey = [objHashId stringValue];
-                
-                //Check if static item already been processe before making API call
-                if (self->destItemData){
-                    
-                    if ([self->destItemData.allKeys containsObject:strHashKey]){
+                    if (item){
+                      
+                        //[cell.lblItemName setText:item.itemInstanceId];
                         
-                        callStaticItemAPI = NO;
-                        NSLog(@"ItemsViewController:cellForRowAtIndexPath:Static Item for [%@] already retrieved...",strHashKey);
-                        
-                        staticBase = [self->destItemData objectForKey:strHashKey];
-                        
-                        if (cell){
+                        NSNumber *objHashId  = [[NSNumber alloc] initWithDouble:item.itemHash];
                             
-                            [cell.lblCharacterId setText:self.selectedChar];
+                        NSString *strHashKey = [objHashId stringValue];
                             
-                            INVDResponse *invResponse =  [[INVDResponse alloc] initWithDictionary: staticBase.response ];
+                            //Check if static item already been processe before making API call
+                        if (self->destItemData){
                             
-                            if (invResponse){
-                               
-                            
-                                NSString    *itemTypeName   = nil,
-                                            *itemName       = nil,
-                                            *itemDamageType = nil,
-                                            *itemScreenShot = nil,
-                                            *objDamageType  = nil,
-                                            *strHashKey     = nil;
+                            if ([self->destItemData.allKeys containsObject:strHashKey]){
                                 
-                                double t = 0;
-                                int    i = 0;
+                                callStaticItemAPI = NO;
+                                NSLog(@"ItemsViewController:cellForRowAtIndexPath:Static Item for [%@] already retrieved...",strHashKey);
                                 
-                                NSNumber *objHash = [NSNumber numberWithDouble:[invResponse hash]];
+                                staticBase = [self->destItemData objectForKey:strHashKey];
                                 
-                                strHashKey = [objHash stringValue];
-                                [cell.lblHash setText:strHashKey];
-                                   
-                                
-                                itemTypeName   =  [invResponse itemTypeDisplayName];
-                                
-                                itemScreenShot = [invResponse screenshot];
-                                
-                                if (itemTypeName){
-                                    [cell.lblItemType setText:itemTypeName];
-                                }
-                                
-                                if (itemScreenShot){
-                                    [cell.lblMisc setText:itemScreenShot];
+                                if (cell){
                                     
-                                    if (indexPath.row == 0){
+                                    [cell.lblCharacterId setText:self.selectedChar];
+                                    
+                                    INVDResponse *invResponse =  [[INVDResponse alloc] initWithDictionary: staticBase.response ];
+                                    
+                                    if (invResponse){
                                         
-                                        if (!self.imgItemScreenShot.image){
+                                    
+                                        NSString    *itemTypeName   = nil,
+                                                    *itemName       = nil,
+                                                    *itemDamageType = nil,
+                                                    *itemScreenShot = nil,
+                                                    *objDamageType  = nil,
+                                                    *strHashKey     = nil;
+                                        
+                                        double t = 0;
+                                        int    i = 0;
+                                        
+                                        NSNumber *objHash = [NSNumber numberWithDouble:[invResponse hash]];
+                                        
+                                        strHashKey = [objHash stringValue];
+                                        [cell.lblHash setText:strHashKey];
                                             
-                                            NSString *bURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,itemScreenShot];
-                                            NSURL *ssURL= [[NSURL alloc] initWithString:bURL];
+                                        
+                                        itemTypeName   =  [invResponse itemTypeDisplayName];
+                                        
+                                        itemScreenShot = [invResponse screenshot];
+                                        
+                                        if (itemTypeName){
+                                            [cell.lblItemType setText:itemTypeName];
+                                        }
+                                        
+                                        if (itemScreenShot){
+                                            [cell.lblMisc setText:itemScreenShot];
                                             
-                                                if (ssURL){
-                                                    [self.imgItemScreenShot setImageWithURL:ssURL];
+                                           /* if (indexPath.row == 0){
+                                                
+                                                if (!self.imgItemScreenShot.image){
                                                     
-                                            }
-                                        }
-                                    }
-                                }
-                                
-                                t = [invResponse defaultDamageType];
-                                i= (int) t;
-                                
-                                objDamageType =  [NSString stringWithFormat:@"%d",i];
-                                
-                                if (objDamageType){
-                                
-                                    itemDamageType = [Utilities decodeDamageType:objDamageType.intValue];
-                                
-                                    if (itemDamageType){
-                                        
-                                        
-                                        [cell.lblDamageType setText:itemDamageType];
-                                        
-                                        if ([cell.lblDamageType.text isEqualToString:@"Arc"]){
-                                            [cell.lblDamageType setTextColor:[UIColor cyanColor]];
-                                        }
-                                        if ([cell.lblDamageType.text isEqualToString:@"Solar"]){
-                                            [cell.lblDamageType setTextColor:[UIColor systemYellowColor]];
-                                        }
-                                        if ([cell.lblDamageType.text isEqualToString:@"Void"]){
-                                            [cell.lblDamageType setTextColor:[UIColor systemPurpleColor]];
-                                        }
-                                        if ([cell.lblDamageType.text isEqualToString:@"Stasis"]){
-                                            [cell.lblDamageType setTextColor:[UIColor systemBlueColor]];
+                                                    NSString *bURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,itemScreenShot];
+                                                    NSURL *ssURL= [[NSURL alloc] initWithString:bURL];
+                                                    
+                                                        if (ssURL){
+                                                            [self.imgItemScreenShot setImageWithURL:ssURL];
+                                                            
+                                                    }
+                                                }
+                                            }*/
                                         }
                                         
-                                        if ([itemDamageType isEqualToString:@"None"]){
-                                            [cell.lblDamageType setText:@""];
-                                        }
-                                    }
-                                }
-                                
-                                INVDDisplayProperties *invDisplayProps = (INVDDisplayProperties* )invResponse.displayProperties;
-                                
-                                NSString *imageName     = nil,
-                                        *baseURL       = nil,
-                                        *emblem        = nil;
-                                
-                                NSURL    *imageURL      = nil,
-                                        *emblemURL     = nil;
-                                
-                                if (invDisplayProps){
-                                    if (invDisplayProps.hasIcon){
+                                        t = [invResponse defaultDamageType];
+                                        i= (int) t;
                                         
-                                        emblem =  invDisplayProps.icon;
+                                        [cell.imgItemBurn setHidden:YES];
+                                        [cell.imgBackground setHidden:YES];
                                         
-                                        imageName = invResponse.iconWatermark;
+                                        objDamageType =  [NSString stringWithFormat:@"%d",i];
                                         
-                                        if (emblem){
-                                            baseURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,emblem];
-                                            emblemURL = [[NSURL alloc] initWithString:baseURL];
-                                            if (emblemURL){
-                                                [cell.imgItem setImageWithURL:emblemURL];
+                                        if (objDamageType){
+                                        
+                                            itemDamageType = [Utilities decodeDamageType:objDamageType.intValue];
+                                        
+                                            if (itemDamageType){
+                                                
+                                               
+                                                
+                                                [cell.lblDamageType setText:itemDamageType];
+                                                
+                                                if ([cell.lblDamageType.text isEqualToString:@"Arc"]){
+                                                    [cell.imgItemBurn setHidden:NO];
+                                                    [cell.lblDamageType setTextColor:[UIColor cyanColor]];
+                                                }
+                                                if ([cell.lblDamageType.text isEqualToString:@"Solar"]){
+                                                    [cell.imgItemBurn setHidden:NO];
+                                                    [cell.lblDamageType setTextColor:[UIColor systemYellowColor]];
+                                                }
+                                                if ([cell.lblDamageType.text isEqualToString:@"Void"]){
+                                                    [cell.imgItemBurn setHidden:NO];
+                                                    [cell.lblDamageType setTextColor:[UIColor systemPurpleColor]];
+                                                }
+                                                if ([cell.lblDamageType.text isEqualToString:@"Stasis"]){
+                                                    [cell.imgItemBurn setHidden:NO];
+                                                    [cell.lblDamageType setTextColor:[UIColor systemBlueColor]];
+                                                }
+                                                
+                                                if ([itemDamageType isEqualToString:@"None"]){
+                                                    [cell.lblDamageType setText:@""];
+                                                }
                                             }
                                         }
                                         
-                                        if (imageName){
-                                            baseURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,imageName];
-                                            imageURL = [[NSURL alloc] initWithString:baseURL];
-                                            if (imageURL){
-                                                [cell.imgCareer setImageWithURL:imageURL];
-                                                [cell.imgCareer setAlpha:0.7];
+                                        INVDDisplayProperties *invDisplayProps = (INVDDisplayProperties* )invResponse.displayProperties;
+                                        
+                                        NSString *imageName     = nil,
+                                                *baseURL       = nil,
+                                                *emblem        = nil;
+                                        
+                                        NSURL    *imageURL      = nil,
+                                                *emblemURL     = nil;
+                                        
+                                        if (invDisplayProps){
+                                            if (invDisplayProps.hasIcon){
+                                                
+                                                emblem =  invDisplayProps.icon;
+                                                
+                                                imageName = invResponse.iconWatermark;
+                                                
+                                                if (emblem){
+                                                    baseURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,emblem];
+                                                    emblemURL = [[NSURL alloc] initWithString:baseURL];
+                                                    if (emblemURL){
+                                                        [cell.imgItem setImageWithURL:emblemURL];
+                                                        
+                                                        if (cell.lblMisc.text.length == 0){
+                                                            [cell.lblMisc setText:invDisplayProps.icon];
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                if (imageName){
+                                                    baseURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,imageName];
+                                                    imageURL = [[NSURL alloc] initWithString:baseURL];
+                                                    if (imageURL){
+                                                        [cell.imgCareer setImageWithURL:imageURL];
+                                                        [cell.imgCareer setAlpha:0.7];
+                                                    }
+                                                }
+                                                
                                             }
+                                            
+                                            itemName = [invDisplayProps name];
+                                            [cell.lblItemName setText:itemName];
                                         }
                                         
                                     }
-                                    
-                                    itemName = [invDisplayProps name];
-                                    [cell.lblItemName setText:itemName];
                                 }
                                 
                             }
                         }
-                        
-                    }
-                }
-                
-                
-                //Check if instanced item already been processe before making API call
-                if (self->instanceData){
+                            
+                            
+                            //Check if instanced item already been processe before making API call
+                        if (self->instanceData){
+                            
+                            if ([self->instanceData.allKeys containsObject:strHashKey]){
+                                
+                                callInstancedItemAPI = NO;
+                                NSLog(@"ItemsViewController:cellForRowAtIndexPath:Instanced Item for [%@] already retrieved...",strHashKey);
+                                
+                                instanceBase = (INSTBaseClass*) [self->instanceData objectForKey:strHashKey];
+                                
+                                if (instanceBase){
+                                    
+                                    NSDictionary *response = (NSDictionary *)[instanceBase response];
+                                    
+                                    if (response){
+                                        
+                                        NSDictionary *instance = (NSDictionary*) [response objectForKey:@"instance"];
+                                        
+                                        if (instance){
+                                            NSDictionary *data = (NSDictionary*) [instance objectForKey:@"data"];
+                                            
+                                            if (data){
+                                                NSDictionary *pStat = (NSDictionary*) [data objectForKey:@"primaryStat"] ;
+                                                
+                                                if (pStat){
+                                                    NSObject *objValue =   [pStat objectForKey:@"value"];
+                                                    if (objValue){
+                                                        [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                
+                            }
+                        }
+                            
+                            //[cell.lblHash setHidden:NO];
+                            
+                            callStaticItemAPI = YES;
+                            callInstancedItemAPI = YES;
+                            
+                        if (callStaticItemAPI){
+                            [NetworkAPISingleClient retrieveStaticEntityDefinitionByManifestType:@"DestinyInventoryItemDefinition" staticHashId:strHashKey completionBlock:^(NSArray *values) {
+                                
+                                if (values){
+                                    
+                                NSLog(@"ItemsViewController:NetworkAPISingleClient:retrieveStaticEntityDefinitionByManifestType:Received->%@",strHashKey);
+                                        
+                                INVDDestinyInventoryBaseClass *invItem = (INVDDestinyInventoryBaseClass *) [values firstObject];
+                                    
+                                [cell.lblHash setText:strHashKey];
+                                    
+                                NSDictionary *callerInfo = [[NSDictionary alloc]
+                                                    initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
+                                                    @"getInstancedItem",@"MethodName",
+                                                    indexPath,@"CurrentIndexPath",
+                                                    cell,@"CurrentCell",
+                                                    strHashKey, @"itemHashKey",nil];
+                                        
+                                [[NSNotificationCenter defaultCenter]
+                                        postNotificationName:kDestinyLoadedStaticItemNotification
+                                                        object:invItem
+                                                        userInfo:callerInfo];
+                                    
+                                    NSLog(@"ItemsViewController:NetworkAPISingleClient:kDestinyLoadedStaticItemNotification:Raised->%@",strHashKey);
+                                
+                                }
+                                
+                            } andErrorBlock:^(NSError *exception) {
+                                NSLog(@"ItemsViewController:NetworkAPISingleClient:retrieveStaticEntityDefinitionByManifestType:Exception->%@",exception.description);
+                            }];
+                        }
+                            
+                        if (callInstancedItemAPI){
+                            if (invItem.itemInstanceId){
                     
-                    if ([self->instanceData.allKeys containsObject:strHashKey]){
-                        
-                        callInstancedItemAPI = NO;
-                        NSLog(@"ItemsViewController:cellForRowAtIndexPath:Instanced Item for [%@] already retrieved...",strHashKey);
-                        
-                        instanceBase = (INSTBaseClass*) [self->instanceData objectForKey:strHashKey];
-                        
-                        if (instanceBase){
-                           
-                            NSDictionary *response = (NSDictionary *)[instanceBase response];
-                            
-                            if (response){
+                                [NetworkAPISingleClient getInstancedItem:invItem.itemInstanceId completionBlock:^(NSArray *values){
                                 
-                                NSDictionary *instance = (NSDictionary*) [response objectForKey:@"instance"];
-                                
-                                if (instance){
-                                    NSDictionary *data = (NSDictionary*) [instance objectForKey:@"data"];
+                                    if (values){
                                     
-                                    if (data){
-                                        NSDictionary *pStat = (NSDictionary*) [data objectForKey:@"primaryStat"] ;
+                                    INSTBaseClass *instanceBase = (INSTBaseClass*) [values firstObject];
                                         
-                                        if (pStat){
-                                            NSObject *objValue =   [pStat objectForKey:@"value"];
-                                            if (objValue){
-                                                [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
-                                            }
-                                        }
+                                    [cell.lblHash setText:strHashKey];
+                                        
+                                    NSDictionary *callerInfo = [[NSDictionary alloc]
+                                                    initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
+                                                                            @"getInstancedItem",@"MethodName",
+                                                                            indexPath,@"CurrentIndexPath",
+                                                                            cell,@"CurrentCell",
+                                                                            strHashKey, @"itemHashKey",
+                                                                            invItem.itemInstanceId, @"itemInstanceId",nil];
+                                        
+                                    [[NSNotificationCenter defaultCenter]
+                                            postNotificationName:kDestinyLoadedInstancedItemNotification
+                                                            object:instanceBase
+                                                            userInfo:callerInfo];
+                                        
+                                        NSLog(@"ItemsViewController:NetworkAPISingleClient:kDestinyLoadedInstancedItemNotification:Raised->%@",strHashKey);
+                                        
                                     }
-                                }
+                                    
+                                }andErrorBlock:^(NSError *exception){
+                                    NSLog(@"ItemsViewController:NetworkAPISingleClient:getInstancedItem:Exception->%@",exception.description);
+                                }];
                             }
                         }
-                        
-                       
-                    }
-                }
-                
-                //[cell.lblHash setHidden:NO];
-                
-                callStaticItemAPI = NO;
-                callInstancedItemAPI = NO;
-                
-                if (callStaticItemAPI){
-                    [NetworkAPISingleClient retrieveStaticEntityDefinitionByManifestType:@"DestinyInventoryItemDefinition" staticHashId:strHashKey completionBlock:^(NSArray *values) {
-                        
-                        if (values){
-                          
-                        NSLog(@"ItemsViewController:NetworkAPISingleClient:retrieveStaticEntityDefinitionByManifestType:Received->%@",strHashKey);
-                              
-                        INVDDestinyInventoryBaseClass *invItem = (INVDDestinyInventoryBaseClass *) [values firstObject];
-                            
-                        [cell.lblHash setText:strHashKey];
-                            
-                        NSDictionary *callerInfo = [[NSDictionary alloc]
-                                          initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
-                                          @"getInstancedItem",@"MethodName",
-                                          indexPath,@"CurrentIndexPath",
-                                          cell,@"CurrentCell",
-                                          strHashKey, @"itemHashKey",nil];
-                              
-                        [[NSNotificationCenter defaultCenter]
-                                postNotificationName:kDestinyLoadedStaticItemNotification
-                                              object:invItem
-                                                userInfo:callerInfo];
-                            
-                            NSLog(@"ItemsViewController:NetworkAPISingleClient:kDestinyLoadedStaticItemNotification:Raised->%@",strHashKey);
-                        
-                        }
-                        
-                    } andErrorBlock:^(NSError *exception) {
-                     NSLog(@"ItemsViewController:NetworkAPISingleClient:retrieveStaticEntityDefinitionByManifestType:Exception->%@",exception.description);
-                    }];
-                }
-                
-                if (callInstancedItemAPI){
-                    if (invItem.itemInstanceId){
-            
-                        [NetworkAPISingleClient getInstancedItem:invItem.itemInstanceId completionBlock:^(NSArray *values){
-                        
-                            if (values){
-                            
-                            INSTBaseClass *instanceBase = (INSTBaseClass*) [values firstObject];
-                                
-                            [cell.lblHash setText:strHashKey];
-                                
-                            NSDictionary *callerInfo = [[NSDictionary alloc]
-                                            initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
-                                                                    @"getInstancedItem",@"MethodName",
-                                                                    indexPath,@"CurrentIndexPath",
-                                                                    cell,@"CurrentCell",
-                                                                    strHashKey, @"itemHashKey",
-                                                                    invItem.itemInstanceId, @"itemInstanceId",nil];
-                                
-                            [[NSNotificationCenter defaultCenter]
-                                    postNotificationName:kDestinyLoadedInstancedItemNotification
-                                                    object:instanceBase
-                                                    userInfo:callerInfo];
-                                
-                                NSLog(@"ItemsViewController:NetworkAPISingleClient:kDestinyLoadedInstancedItemNotification:Raised->%@",strHashKey);
-                                
-                            }
-                            
-                        }andErrorBlock:^(NSError *exception){
-                            NSLog(@"ItemsViewController:NetworkAPISingleClient:getInstancedItem:Exception->%@",exception.description);
-                        }];
+                      
+                    
                     }
                 }
             }
-            
+              
         }
         
+       
     } @catch (NSException *exception) {
         NSLog(@"%@",exception.description);
     } @finally {
@@ -1502,44 +1699,44 @@
 }
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
     NSInteger tRows = 0,
               iRows = 0;
     
-    if (self->equipedItems){
-        tRows = self->equipedItems.items.count;
-        iRows = tRows;
+    if (self->destItemData){
+        
+        tRows = self->destItemData.count;
+        
+        //iRows = tRows;
+        
         NSString *sectionKey = [self->itemBuckets objectAtIndex:section];
         
-       /* if (sectionKey){
+        if (sectionKey){
             
-            for (int iSection = 0 ; iSection < tRows; iSection++) {
-                
-                
-                ITMEItems *invItem = [self->equipedItems.items objectAtIndex:iSection];
-                
-                if (invItem){
-                    NSNumber *bHash = [[NSNumber alloc] initWithDouble:invItem.bucketHash ];
-                    
-                    NSString *strHash = [bHash stringValue];
-                    
-                    if ([strHash isEqualToString:sectionKey]){
-                        iRows+=1;
-                    }
+            NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",sectionKey];
+            
+            NSArray *filteredItems = [self->destItemData.allKeys filteredArrayUsingPredicate:bPredicate];
+           
+           //Filtered items for all chars
+            if (filteredItems){
+                iRows = filteredItems.count;
             }
-         }
-        
-      }*/
+              
+        }
+      
     }
     return iRows;
 }
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
     NSInteger iSections = 1;
-    
-  /*  if (self->itemBuckets){
-        iSections = self->itemBuckets.count;
+ 
+    if (self.destEquippedItemsBuckets){
+        iSections = self.destEquippedItemsBuckets.count;
     }
-    */
+    
+ 
+    
     return iSections;
     
 }

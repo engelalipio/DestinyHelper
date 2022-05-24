@@ -36,7 +36,12 @@
 
 @property (nonatomic,strong) NSTimer   *timer;
 @property (nonatomic,strong) NSRunLoop *loop;
-@property (nonatomic,strong) NSMutableDictionary  *destChars;
+@property (nonatomic,strong) NSMutableDictionary *destChars;
+@property (nonatomic,strong) NSMutableDictionary  *destVaultItems;
+@property (nonatomic,strong) NSMutableDictionary  *destEquippedItems;
+@property (nonatomic,strong) UIImageView  *selectedCharEmblem;
+@property (nonatomic,strong) NSArray   *destVaultItemsBuckets;
+@property (nonatomic,strong) NSArray   *destEquippedItemsBuckets;
 @property (nonatomic,strong) NSString  *selectedChar;
 @property (nonatomic,strong) NSString  *selectedMembership;
 
