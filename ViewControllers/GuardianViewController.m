@@ -1696,7 +1696,7 @@
         self->selectedCharacter = selCharKey;
          
         UIImage *selCharImage = [UIImage imageWithData:UIImagePNGRepresentation(selectedCell.imgBackground.image)];
-        
+         
         UIImageView *selCharImageView =   [[UIImageView alloc] initWithImage:selCharImage];
             
             if (selCharImageView){
@@ -2361,9 +2361,11 @@
                     //Passing already filtered weapons for selected char
                     [wVC setDestWeapons:filteredCharWeaponsData];
                     [wVC setSelectedCharData:selectedCharData];
+                    [wVC setDestChars:self->destCharData];
                     [wVC setDestWeaponBuckets:self->weaponsArray];
                     [wVC setSelectedChar:self->selectedCharacter];
                     [wVC setSelectedCharEmblem:self->selectedCharEmblem];
+                    
                     [wVC loadWeapons];
                     
                     navVC = [[UINavigationController alloc] initWithRootViewController:wVC];
@@ -2382,6 +2384,8 @@
                 
                 
                 if (aVC){
+                    
+                    NSDictionary *selectedCharData =   [self->destCharData objectForKey:self->selectedCharacter];
                     
                     NSString *charFilter = [NSString stringWithFormat:@"%@_",self->selectedCharacter];
                    
@@ -2411,7 +2415,7 @@
                     }
                     
                     [aVC setDestArmor:filteredCharArmorData];
-                    //[aVC setDestArmor:self->destCharArmorData];
+                    [aVC setDestChars:self->destCharData];
                     [aVC setDestArmorBuckets:self->armorArray];
                     [aVC setSelectedChar:self->selectedCharacter];
                     [aVC setSelectedCharEmblem:self->selectedCharEmblem];

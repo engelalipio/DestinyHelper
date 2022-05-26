@@ -31,7 +31,7 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *btnClose;
 
-- (IBAction)closeAction:(UIBarButtonItem *)sender;
+
 - (IBAction)categoryChangedAction:(UISegmentedControl *)sender;
 
 @property (nonatomic,strong) NSTimer   *timer;
@@ -45,13 +45,13 @@
 @property (nonatomic,strong) NSString  *selectedChar;
 @property (nonatomic,strong) NSString  *selectedMembership;
 
-
+ 
 
 -(void) startTimer;
 -(void) endTimer;
 -(void) loadItems;
 -(void) refreshItems;
-
+-(void)closeAction;
 @end
 
  

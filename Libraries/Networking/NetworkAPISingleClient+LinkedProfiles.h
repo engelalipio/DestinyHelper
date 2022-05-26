@@ -90,8 +90,15 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
++ (AFJSONRequestOperation *)pullFromPostMaster:(NSObject *)anyInstancedItem
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
 + (AFJSONRequestOperation *)sendItemToVault:(NSObject *)anyInstancedItem
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
+
++ (AFJSONRequestOperation *)equipItem:(NSObject *)anyInstancedItem
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 

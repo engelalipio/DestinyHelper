@@ -16,6 +16,7 @@
 #import "INVDDisplayProperties.h"
 #import "INVDResponse.h"
 #import "WeaponsTableViewController.h"
+
 @interface ItemsViewController ()
 {
     AppDelegate *appDelegate;
@@ -46,19 +47,62 @@
 @synthesize destVaultItems = _destVaultItems;
 @synthesize destVaultItemsBuckets =_destVaultItemsBuckets;
 @synthesize selectedCharEmblem = _selectedCharEmblem;
+@synthesize btnClose = _btnClose;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    NSString *strClass  = nil,
+             *strRace   = nil,
+             *strGender = nil,
+             *strLight  = nil;
+    
     if (self.selectedCharEmblem){
     
-        UIImageView *cImage = self.selectedCharEmblem;
-    
         
-        [cImage setFrame:CGRectMake(0, 10, self.tblItems.frame.size.width, 150)];
-    
+        if (self.destChars){
+            
+            self->destCharData = [self.destChars objectForKey:self.selectedChar];
+            
+            if (self->destCharData){
+                
+                NSDictionary *chData = [self->destCharData objectForKey:@"character"];
+                
+                if (chData){
+                    NSDictionary *cData = [chData objectForKey:@"data"];
+                
+                    if (cData){
+                        NSString *classHash = [cData objectForKey:@"classHash"],
+                                 *raceType = [cData objectForKey:@"raceType"],
+                                 *genderHash = [cData objectForKey:@"genderHash"];
+                                 
+                        
+                        strClass = [Utilities decodeClassHash:classHash];
+                        strRace  = [Utilities decodeRaceHash:raceType];
+                        strGender = [Utilities decodeGenderHash:genderHash];
+                        strLight  = [cData objectForKey:@"light"];
+                    }
+                }
+            }
+            
+            
+        }
+        UIImageView *cImage = self.selectedCharEmblem;
+        
+        [cImage setFrame:CGRectMake(0, 10, self.tblItems.frame.size.width, 100)];
+        
+        CGRect  lblFrame = CGRectMake(0, 10, self.tblItems.frame.size.width, 80);
+        UILabel *lblChar   = [[UILabel alloc] initWithFrame:lblFrame];
+        [lblChar setTextAlignment:NSTextAlignmentLeft];
+        [lblChar setFont:[UIFont italicSystemFontOfSize:20]];
+        [lblChar setTextColor:[UIColor systemOrangeColor]];
+        [lblChar setText:[NSString stringWithFormat:@"%@//%@//%@//%@",strLight,strClass,strRace,strGender]];
+        
+        [cImage addSubview:lblChar];
+        
         [self.navigationItem setTitleView:cImage];
+       
     }
     
     
@@ -72,6 +116,7 @@
         
     }
 
+    self.navigationItem.rightBarButtonItem = btnClose;
     
     appDelegate = [AppDelegate currentDelegate];
     
@@ -95,7 +140,6 @@
     
     @try {
         instanceBase = (INSTBaseClass *) anyInstancedItem ;
-       
        
         hasUncommitedChanges = [self.tblItems hasUncommittedUpdates];
         
@@ -1253,6 +1297,115 @@
     return size;
 }
 
+-(void) handleLongPress:(UILongPressGestureRecognizer *) recognize{
+    
+    NSLog(@"ItemsViewController:handleLongPress:Invoked...");
+    
+    ItemCellTableView *cCell = nil;
+    
+    BOOL processRequest = NO;
+    @try {
+        
+        
+        switch(recognize.state){
+            case UIGestureRecognizerStateEnded:
+                NSLog(@"ItemsViewController:UIGestureRecognizerStateEnded:Detected...");
+                break;
+            case UIGestureRecognizerStateBegan:
+                NSLog(@"ItemsViewController:UIGestureRecognizerStateBegan:Detected...");
+                processRequest = YES;
+                break;
+            case UIGestureRecognizerStateChanged:
+                NSLog(@"ItemsViewController:UIGestureRecognizerStateChanged:Detected...");
+                break;
+            case UIGestureRecognizerStateCancelled:
+                NSLog(@"ItemsViewController:UIGestureRecognizerStateCancelled:Detected...");
+                break;
+            case UIGestureRecognizerStatePossible:
+                NSLog(@"ItemsViewController:UIGestureRecognizerStatePossible:Detected...");
+                break;
+            case UIGestureRecognizerStateFailed:
+                NSLog(@"ItemsViewController:UIGestureRecognizerStateFailed:Detected...");
+                break;
+        }
+        
+       
+        
+        if (processRequest){
+            
+            NSIndexPath *selectedIndexPath = [self.tblItems indexPathForSelectedRow];
+            
+            if (selectedIndexPath){
+            
+                cCell = (ItemCellTableView*) [self.tblItems cellForRowAtIndexPath:selectedIndexPath];
+               
+                NSString
+                        *strCharKey  = [cCell.lblCharacterId text],
+                        *strStaticKey = [cCell.lblHash text],
+                        *strHashKey = [cCell.lblInstanceId text];
+                
+                if (cCell){
+                    
+
+                        
+                NSLog(@"handleLongPress:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,selectedIndexPath.section, selectedIndexPath.row);
+                
+                    if ([strHashKey length] > 0){
+                        [cCell pullFromPostMaster:cCell];
+                    }
+                    else
+                    {
+                        
+                        
+                        NSString *charFilter = [NSString stringWithFormat:@"%@", strStaticKey];
+                       
+                        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
+                         
+                        NSArray *filteredItems = [self.destEquippedItems.allKeys filteredArrayUsingPredicate:bPredicate];
+                        
+                        NSArray<NSDictionary *> *fItems =   [self.destEquippedItems objectsForKeys:filteredItems notFoundMarker:self.destEquippedItems];
+                        
+                        NSMutableDictionary *filteredCharArmorData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
+                        
+                        if (filteredItems.count == 1){
+                            
+                            filteredCharArmorData = (NSMutableDictionary*) [fItems firstObject];
+                            
+                            if (filteredCharArmorData){
+                             
+                                INVCItems* fObject  = (INVCItems*) filteredCharArmorData;
+                                
+                                if (fObject){
+                                
+                                    strHashKey = [fObject itemInstanceId];
+                                
+                                    if (strHashKey.length > 0){
+                                        [cCell.lblInstanceId setText:strHashKey];
+                                        [cCell pullFromPostMaster:cCell];
+                                       
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
+                    }
+               }
+               
+            }
+            
+        }
+        
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+    
+
+}
+
 -(void) initTableView{
     
     NSString *message =  @"2:ItemsViewController:initTableView...";
@@ -1275,6 +1428,12 @@
         
         [self.tblItems setDelegate:self];
         [self.tblItems setDataSource:self];
+        
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+        
+        longPress.minimumPressDuration = 2.0;
+        [self.tblItems addGestureRecognizer:longPress];
+        
       }
         @catch (NSException *exception) {
             message = [exception description];
@@ -1782,12 +1941,21 @@
     
 }
 
-- (IBAction)closeAction:(UIBarButtonItem *)sender {
+-(void) closeAction{
     
-    
-    [self dismissViewControllerAnimated:NO completion:nil];
     NSLog(@"ItemsViewController:closeAction:Invoked...");
-
+    
+    [self dismissViewControllerAnimated:NO completion:^{
+        
+        if (![self.tblItems hasUncommittedUpdates]){
+            [self.tblItems reloadData];
+            NSLog(@"Refreshed items table");
+        }
+        
+        NSLog(@"ItemsViewController:closeAction:Completed...");
+    }];
     
 }
+
+ 
 @end

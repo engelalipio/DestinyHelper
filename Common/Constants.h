@@ -56,6 +56,10 @@
 #define kDestinyLoadedStaticItemNotification @"Destiny2.StaticItem"
 #define kDestinyLoadedInstancedItemNotification @"Destiny2.InstancedItem"
 #define kDestinySendToVaultNotification @"Destiny2.SendToVault"
+#define kDestinyPullFromPostMasterNotification @"Destiny2.PullFromPostMaster"
+
+#define kDestinyEquipItemNotification @"Destiny2.EquipItem"
+
 #define kDestinyLockItemStateNotification @"Destiny2.LockItemState"
 
 #define kDestinyLoadedMembership @"Destiny2.Membership"

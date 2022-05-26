@@ -17,8 +17,9 @@
 @property (nonatomic,strong) NSString  *selectedChar;
 @property (nonatomic,strong) NSString  *selectedMembership;
 @property (nonatomic,strong) UIImageView  *selectedCharEmblem;
+@property (nonatomic,strong) NSMutableDictionary *destChars;
 
--(void)closeAction;
+-(void) closeAction;
 -(void) loadArmor;
 
 @end

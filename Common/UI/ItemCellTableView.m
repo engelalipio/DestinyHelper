@@ -189,7 +189,7 @@
             [self.lblHash setHidden:YES];
             [self.lblHash setText:@""];
             
-            [self.contentView addSubview:self.lblInstanceId];
+            [self.contentView addSubview:self.lblHash];
         }
         
         if (! self.lblInstanceId){
@@ -241,6 +241,508 @@
     self.frame    = CGRectIntegral(frame);
 }
 
+- (IBAction)pullFromPostMaster:(id)sender{
+    
+    NSString *selectedTitle        = @"",
+             *selectedItemHash     = @"",
+             *selectedItemInstance = @"",
+             *selectedCharacter    = @"",
+             *vaultAction          = @"Pull from PostMaster",
+             *strIdx               = @"";
+    
+    ItemCellTableView *selectedCell = nil;
+    
+    ItemsViewController *destinyItemsParentVC = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+    
+    UIImage *lockImage = [UIImage systemImageNamed:@"lock"];
+    
+    NSIndexPath *indexPath = nil;
+    @try {
+        
+        if (! self.parentTableView){
+            return;
+        }
+        
+        if ([self.parentTableView isKindOfClass:[UITableView class]]){
+            indexPath =  [self.parentTableView indexPathForSelectedRow];
+            
+                if (! indexPath){
+                    return;
+                }
+            
+            strIdx = [NSString stringWithFormat:@"%d",indexPath.row ];
+        }
+        
+        if (! self.parentViewController){
+            return;
+        }
+        
+        if ([self.parentViewController isKindOfClass:[ItemsViewController class]]){
+          destinyItemsParentVC = (ItemsViewController*) self.parentViewController;
+        }
+        
+        if ([self.parentViewController isKindOfClass:[WeaponsTableViewController class]]){
+          destinyItemsParentVC = (WeaponsTableViewController*) self.parentViewController;
+        }
+        
+        if ([self.parentViewController isKindOfClass:[ArmorTableViewController class]]){
+          destinyItemsParentVC = (ArmorTableViewController*) self.parentViewController;
+        }
+        
+        if (!appDelegate){
+            appDelegate = [AppDelegate currentDelegate];
+        }
+        
+        selectedCell = (ItemCellTableView*) [self.parentTableView cellForRowAtIndexPath:indexPath];
+       
+        if(selectedCell){
+            
+            selectedTitle = selectedCell.lblItemName.text;
+            
+            selectedItemHash = [selectedCell.lblHash text];
+            
+            selectedItemInstance = [selectedCell.lblInstanceId text];
+            
+            selectedCharacter  = [selectedCell.lblCharacterId text];
+            
+  
+            if (selectedItemHash){
+                
+                
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle:vaultAction
+                                               message:[NSString stringWithFormat:@"Pull %@ from PostMaster?",selectedTitle]
+                                               preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                   handler:^(UIAlertAction * action) {
+                    NSLog(vaultAction);
+                    
+                    
+                    [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyPullFromPostMasterNotification
+                        object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+                        
+                        
+                        NSDictionary *respData  = (NSDictionary*) [note object],
+                                     *userInfo  = [note userInfo];
+                        
+                        
+                        if (respData){
+                         
+                            NSString *respStatus = [respData objectForKey:@"ErrorStatus"];
+                            
+                            if (respStatus){
+                                //SendToVault Action was Successfull!
+                                if ([respStatus isEqualToString:@"Success"]){
+                                    
+                                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Pull from PostMaster Action"
+                                                                   message:@"Pull from PostMaster Action was Successfull!"
+                                                                   preferredStyle:UIAlertControllerStyleAlert];
+                                    
+                                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction * action) {
+                                        NSLog(@"%@-",respStatus);
+                                        
+                                    
+                                        if (destinyItemsParentVC){
+                                            
+                                            if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
+                                                [destinyItemsParentVC refreshItems];
+                                            }
+                                            
+                                            if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
+                                                WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
+                                                if (destinyWeaponsParentVC){
+                                                
+                                                    [destinyWeaponsParentVC removeWeaponAction:selectedItemHash];
+                                                }
+                                            }
+                                                
+                                                
+                                            
+                                            if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
+                                                ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
+                                                if (destinyArmorParentVC){
+                                                    [destinyArmorParentVC loadArmor];
+                                                }
+                                            }
+                                            
+                                          
+                                        }
+                                         
+                                    }];
+                                    
+                                  
+                                    
+                                    [alert addAction:defaultAction];
+                                    if ( destinyItemsParentVC){
+                                        [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
+                                    }
+                                   
+                                }
+                                //Pull from PostMaster Action Issue
+                                else{
+                                    
+                                    NSString *errorCode = [respData objectForKey:@"ErrorCode"],
+                                             *errorStatus = [respData objectForKey:@"ErrorStatus"],
+                                             *errorMessage = [respData objectForKey:@"Message"];
+                                    
+                                    
+                                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:errorStatus
+                                                                   message:errorMessage
+                                                                   preferredStyle:UIAlertControllerStyleAlert];
+                                    
+                                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction * action) {
+                                        NSLog(@"%@-%@",errorCode,errorStatus);
+                                         
+                                    }];
+                                    
+                                  
+                                    
+                                    [alert addAction:defaultAction];
+                                    if ( destinyItemsParentVC){
+                                        [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
+                                    }
+                                }
+                          }
+                        }
+                    }];
+                    
+                        
+                        TRXBaseClass *payload = [[TRXBaseClass alloc] init];
+                        [payload setCharacterId:selectedCharacter];
+                        [payload setStackSize:1];
+                        [payload setMembershipType:appDelegate.currentMembershipType];
+                        [payload setItemId:selectedItemInstance];
+                        [payload setItemReferenceHash:selectedItemHash];
+                        [payload setTransferToVault:NO];
+                       
+                        NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
+                        
+                        NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
+                        
+                        payload  = nil;
+                        
+                        NSError *writeError = nil;
+                    
+                        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData options:NSJSONReadingMutableContainers
+                                                                             error:&writeError];
+                        
+                        NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                                     encoding:NSUTF8StringEncoding];
+                        NSLog(@"JSON Output: %@", jsonString);
+                        
+                        [NetworkAPISingleClient pullFromPostMaster:jsonString
+                                                completionBlock:^(NSArray *values) {
+                            
+                            if (values){
+                                //Not used
+                                NSLog(@"pullFromPostMaster:Completion=%@",values);
+                            }
+                            
+                            
+                        } andErrorBlock:^(NSError *exception) {
+                            NSLog(@"ItemCellTableView:pullFromPostMaster:Exception->%@",exception.description);
+                        }];
+                        
+                     
+                }];
+                
+                UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                   handler:^(UIAlertAction * action) {
+                    NSLog(@"ItemCellTableView:pullFromPostMaster:Cancelled Clicked");
+                }];
+                
+                [alert addAction:defaultAction];
+                [alert addAction:cancelAction];
+                if ( destinyItemsParentVC){
+                    [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
+                }
+                
+            }
+            
+
+        }
+        
+        
+    } @catch (NSException *exception) {
+        NSLog(@"ItemCellTableView:pullFromPostMaster:Exception->%@",exception.description);
+    } @finally {
+        destinyItemsParentVC = nil;
+        
+        selectedTitle        = nil;
+        selectedItemHash     = nil;
+        selectedItemInstance = nil;
+        selectedCharacter    = nil;
+        
+        selectedCell = nil;
+        
+        destinyItemsParentVC = nil;
+        
+        appDelegate = nil;
+
+        lockImage = nil;
+        
+        indexPath = nil;
+    }
+    
+    
+}
+
+- (IBAction)equipItem:(id)sender{
+
+    NSString *selectedTitle        = @"",
+             *selectedItemHash     = @"",
+             *selectedItemInstance = @"",
+             *selectedCharacter    = @"",
+             *vaultAction          = @"Equip Item",
+             *strIdx               = @"";
+    
+    ItemCellTableView *selectedCell = nil;
+    
+    ItemsViewController *destinyItemsParentVC = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+    
+    UIImage *lockImage = [UIImage systemImageNamed:@"lock"];
+    
+    NSIndexPath *indexPath = nil;
+    @try {
+        
+        if (! self.parentTableView){
+            return;
+        }
+        
+        if ([self.parentTableView isKindOfClass:[UITableView class]]){
+            indexPath =  [self.parentTableView indexPathForSelectedRow];
+            
+                if (! indexPath){
+                    return;
+                }
+            
+            strIdx = [NSString stringWithFormat:@"%d",indexPath.row ];
+        }
+        
+        if (! self.parentViewController){
+            return;
+        }
+        
+        if ([self.parentViewController isKindOfClass:[ItemsViewController class]]){
+          destinyItemsParentVC = (ItemsViewController*) self.parentViewController;
+        }
+        
+        if ([self.parentViewController isKindOfClass:[WeaponsTableViewController class]]){
+          destinyItemsParentVC = (WeaponsTableViewController*) self.parentViewController;
+        }
+        
+        if ([self.parentViewController isKindOfClass:[ArmorTableViewController class]]){
+          destinyItemsParentVC = (ArmorTableViewController*) self.parentViewController;
+        }
+        
+        if (!appDelegate){
+            appDelegate = [AppDelegate currentDelegate];
+        }
+        
+        selectedCell = (ItemCellTableView*) [self.parentTableView cellForRowAtIndexPath:indexPath];
+        
+       
+        if(selectedCell){
+            
+            selectedTitle = selectedCell.lblItemName.text;
+            
+            selectedItemHash = [selectedCell.lblHash text];
+            
+            selectedItemInstance = [selectedCell.lblInstanceId text];
+            
+            selectedCharacter  = [selectedCell.lblCharacterId text];
+            
+  
+            if (selectedItemHash){
+                
+                
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle:vaultAction
+                                               message:[NSString stringWithFormat:@"Equip %@ ?",selectedTitle]
+                                               preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                   handler:^(UIAlertAction * action) {
+                    NSLog(vaultAction);
+                    
+                    
+                    [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyEquipItemNotification
+                        object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+                        
+                        
+                        NSDictionary *respData  = (NSDictionary*) [note object],
+                                     *userInfo  = [note userInfo];
+                        
+                        
+                        if (respData){
+                         
+                            NSString *respStatus = [respData objectForKey:@"ErrorStatus"];
+                            
+                            if (respStatus){
+                                //SendToVault Action was Successfull!
+                                if ([respStatus isEqualToString:@"Success"]){
+                                    
+                                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Equip Item Action"
+                                                                   message:@"Equip Item Action was Successfull!"
+                                                                   preferredStyle:UIAlertControllerStyleAlert];
+                                    
+                                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction * action) {
+                                        NSLog(@"%@-",respStatus);
+                                        
+                                    
+                                        if (destinyItemsParentVC){
+                                            
+                                            if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
+                                                [destinyItemsParentVC refreshItems];
+                                            }
+                                            
+                                            if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
+                                                WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
+                                                if (destinyWeaponsParentVC){
+                                                
+                                                    //TODO:Refresh Weapons Logic
+                                                }
+                                            }
+                                                
+                                                
+                                            
+                                            if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
+                                                ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
+                                                if (destinyArmorParentVC){
+                                                    //TODO:Refresh Armor Logic
+                                                }
+                                            }
+                                            
+                                          
+                                        }
+                                         
+                                    }];
+                                    
+                                  
+                                    
+                                    [alert addAction:defaultAction];
+                                    if ( destinyItemsParentVC){
+                                        [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
+                                    }
+                                   
+                                }
+                                //Equip Action Issue
+                                else{
+                                    
+                                    NSString *errorCode = [respData objectForKey:@"ErrorCode"],
+                                             *errorStatus = [respData objectForKey:@"ErrorStatus"],
+                                             *errorMessage = [respData objectForKey:@"Message"];
+                                    
+        
+                                    
+                                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:errorStatus
+                                                                   message:errorMessage
+                                                                   preferredStyle:UIAlertControllerStyleAlert];
+                                    
+                                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction * action) {
+                                        NSLog(@"%@-%@",errorCode,errorStatus);
+                                        
+                                        
+                                         
+                                    }];
+                                    
+                                  
+                                    
+                                    [alert addAction:defaultAction];
+                                    if ( destinyItemsParentVC){
+                                        [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
+                                    }
+                                }
+                          }
+                        }
+                    }];
+                    
+                       
+                        EQXBaseClass *payload = [[EQXBaseClass alloc] init];
+                        [payload setCharacterId:selectedCharacter];
+                        [payload setMembershipType:appDelegate.currentMembershipType];
+                        [payload setItemId:selectedItemInstance];
+                      
+                        NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
+                        
+                        NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
+                        
+                        payload  = nil;
+                        
+                        NSError *writeError = nil;
+                        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData options:NSJSONReadingMutableContainers
+                                                                             error:&writeError];
+                        
+                        NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                                     encoding:NSUTF8StringEncoding];
+                        NSLog(@"JSON Output: %@", jsonString);
+                        
+                        [NetworkAPISingleClient equipItem:jsonString
+                                                completionBlock:^(NSArray *values) {
+                            
+                            if (values){
+                                //Not used
+                                NSLog(@"equipItem:Completion=%@",values);
+                            }
+                            
+                            
+                        } andErrorBlock:^(NSError *exception) {
+                            NSLog(@"ItemCellTableView:equipItem:Exception->%@",exception.description);
+                        }];
+                        
+                     
+                }];
+                
+                UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                   handler:^(UIAlertAction * action) {
+                    NSLog(@"ItemCellTableView:equipItem:Cancelled Clicked");
+                }];
+                
+                [alert addAction:defaultAction];
+                [alert addAction:cancelAction];
+                if ( destinyItemsParentVC){
+                    [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
+                }
+                
+            }
+            
+
+        }
+        
+        
+    } @catch (NSException *exception) {
+        NSLog(@"ItemCellTableView:equipItem:Exception->%@",exception.description);
+    } @finally {
+        destinyItemsParentVC = nil;
+        
+        selectedTitle        = nil;
+        selectedItemHash     = nil;
+        selectedItemInstance = nil;
+        selectedCharacter    = nil;
+        
+        selectedCell = nil;
+        
+        destinyItemsParentVC = nil;
+        
+        appDelegate = nil;
+
+        lockImage = nil;
+        
+        indexPath = nil;
+    }
+    
+    
+    
+}
 
 - (IBAction)sendVaultAction:(id)sender {
     

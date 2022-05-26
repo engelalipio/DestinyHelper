@@ -26,7 +26,8 @@
                     *legArmor,
                     *classArmor;
     
-    NSMutableDictionary *instanceData;
+    NSMutableDictionary *instanceData,
+                        *destCharData;
 }
 @end
 
@@ -37,6 +38,7 @@
 @synthesize selectedMembership = _selectedMembership;
 @synthesize destArmorBuckets = _destArmorBuckets;
 @synthesize selectedCharEmblem = _selectedCharEmblem;
+@synthesize destChars = _destChars;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -44,13 +46,58 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
+    
+    NSString *strClass  = nil,
+             *strRace   = nil,
+             *strGender = nil,
+             *strLight  = nil;
+    
+        if (self.destChars){
+            
+            self->destCharData = [self.destChars objectForKey:self.selectedChar];
+            
+            if (self->destCharData){
+                
+                NSDictionary *chData = [self->destCharData objectForKey:@"character"];
+                
+                if (chData){
+                    NSDictionary *cData = [chData objectForKey:@"data"];
+                
+                    if (cData){
+                        NSString *classHash = [cData objectForKey:@"classHash"],
+                                 *raceType = [cData objectForKey:@"raceType"],
+                                 *genderHash = [cData objectForKey:@"genderHash"];
+                                 
+                        
+                        strClass = [Utilities decodeClassHash:classHash];
+                        strRace  = [Utilities decodeRaceHash:raceType];
+                        strGender = [Utilities decodeGenderHash:genderHash];
+                        strLight  = [cData objectForKey:@"light"];
+                    }
+                }
+            }
+            
+            
+        }
+    
     if (self.selectedCharEmblem){
     
         UIImageView *cImage = self.selectedCharEmblem;
     
-        [cImage setFrame:CGRectMake(0, 10, self.tableView.frame.size.width, 150)];
+        [cImage setFrame:CGRectMake(0, 10, self.tableView.frame.size.width, 100)];
     
+        CGRect  lblFrame = CGRectMake(0, 10, self.tableView.frame.size.width, 80);
+        UILabel *lblChar   = [[UILabel alloc] initWithFrame:lblFrame];
+        [lblChar setTextAlignment:NSTextAlignmentLeft];
+        [lblChar setFont:[UIFont italicSystemFontOfSize:20]];
+        [lblChar setTextColor:[UIColor systemOrangeColor]];
+        [lblChar setText:[NSString stringWithFormat:@"%@//%@//%@//%@",strLight,strClass,strRace,strGender]];
+        
+        [cImage addSubview:lblChar];
+        
         [self.navigationItem setTitleView:cImage];
+       
+     
     }
     
     
@@ -78,7 +125,7 @@
 
 -(void) registerNotifications{
 
-    NSLog(@"1:ArmorViewController:registerNotifications...");
+    NSLog(@"2:ArmorViewController:registerNotifications...");
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedStaticItemNotification
         object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
@@ -296,17 +343,17 @@
             selectedCharacter = self.selectedChar;
             
             //[self setTitle:selectedCharacter];
-            NSLog(@"2:ArmorTableViewController:loadWeapons:Selected Character->[%d]",selectedCharacter);
+            NSLog(@"3:ArmorTableViewController:loadWeapons:Selected Character->[%d]",selectedCharacter);
         }
         
        if (self.destArmorBuckets){
            armorBuckets = self.destArmorBuckets;
-           NSLog(@"1:ArmorTableViewController:loadWeapons:Armor Buckets Count->[%d]",armorBuckets.count);
+           NSLog(@"4:ArmorTableViewController:destArmorBuckets:Armor Buckets Count->[%d]",armorBuckets.count);
        }
        
         if (self.destArmor){
             charArmor = self.destArmor;
-            NSLog(@"2:ArmorTableViewController:loadWeapons:Character Weapons Count->[%d]",charArmor.count);
+            NSLog(@"5:ArmorTableViewController:destArmor:Character Weapons Count->[%d]",charArmor.count);
             loadData = YES;
         }
         
@@ -423,16 +470,133 @@
     
     NSLog(@"ArmorViewController:closeAction:Invoked...");
     
+    
     [self dismissViewControllerAnimated:NO completion:^{
+        
+        if (![self.tableView hasUncommittedUpdates]){
+            [self.tableView reloadData];
+            NSLog(@"Refreshed Armors table");
+        }
+        
         NSLog(@"ArmorViewController:closeAction:Completed...");
     }];
-        
     
+}
+
+
+
+-(void) handleLongPress:(UILongPressGestureRecognizer *) recognize{
+    
+    NSLog(@"ArmorViewController:handleLongPress:Invoked...");
+    
+    ItemCellTableView *cCell = nil;
+    
+    BOOL processRequest = NO;
+    @try {
+        
+        
+        switch(recognize.state){
+            case UIGestureRecognizerStateEnded:
+                NSLog(@"ArmorViewController:UIGestureRecognizerStateEnded:Detected...");
+                break;
+            case UIGestureRecognizerStateBegan:
+                NSLog(@"ArmorViewController:UIGestureRecognizerStateBegan:Detected...");
+                processRequest = YES;
+                break;
+            case UIGestureRecognizerStateChanged:
+                NSLog(@"ArmorViewController:UIGestureRecognizerStateChanged:Detected...");
+                break;
+            case UIGestureRecognizerStateCancelled:
+                NSLog(@"ArmorViewController:UIGestureRecognizerStateCancelled:Detected...");
+                break;
+            case UIGestureRecognizerStatePossible:
+                NSLog(@"ArmorViewController:UIGestureRecognizerStatePossible:Detected...");
+                break;
+            case UIGestureRecognizerStateFailed:
+                NSLog(@"ArmorViewController:UIGestureRecognizerStateFailed:Detected...");
+                break;
+        }
+        
+       
+        
+        if (processRequest){
+            
+            NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+            
+            if (selectedIndexPath){
+            
+                cCell = (ItemCellTableView*) [self.tableView cellForRowAtIndexPath:selectedIndexPath];
+               
+                NSString
+                        *strCharKey  = [cCell.lblCharacterId text],
+                        *strStaticKey = [cCell.lblHash text],
+                        *strHashKey = [cCell.lblInstanceId text];
+                
+                if (cCell){
+                    
+
+                        
+                NSLog(@"handleLongPress:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,selectedIndexPath.section, selectedIndexPath.row);
+                
+                    if ([strHashKey length] > 0){
+                        [cCell equipItem:cCell];
+                    }
+                    else
+                    {
+                        
+                        
+                        NSString *charFilter = [NSString stringWithFormat:@"%@", strStaticKey];
+                       
+                        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
+                        
+                        NSArray *filteredItems = [self.destArmor.allKeys filteredArrayUsingPredicate:bPredicate];
+                        
+                        NSArray<NSDictionary *> *fItems =   [self.destArmor objectsForKeys:filteredItems notFoundMarker:self.destArmor];
+                        
+                        NSMutableDictionary *filteredCharArmorData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
+                        
+                        if (filteredItems.count == 1){
+                            
+                            filteredCharArmorData = (NSMutableDictionary*) [fItems firstObject];
+                            
+                            if (filteredCharArmorData){
+                             
+                                INVCItems* fObject  = (INVCItems*) filteredCharArmorData;
+                                
+                                if (fObject){
+                                
+                                    strHashKey = [fObject itemInstanceId];
+                                
+                                    if (strHashKey.length > 0){
+                                        [cCell.lblInstanceId setText:strHashKey];
+                                    
+                                        [cCell equipItem:cCell];
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
+                    }
+               }
+               
+            }
+            
+        }
+        
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+    
+
 }
 
 -(void) initTableView{
     
-    NSString *message =  @"2:ArmorTableViewController:initTableView...";
+    NSString *message =  @"1:ArmorTableViewController:initTableView...";
     @try {
         
         
@@ -455,6 +619,11 @@
         [self.refreshControl addTarget:self action:@selector(loadArmor)
                       forControlEvents:UIControlEventValueChanged];
          
+        
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+        
+        longPress.minimumPressDuration = 2.0;
+        [self.tableView addGestureRecognizer:longPress];
         
 
       }
@@ -524,8 +693,7 @@
         
         [self.tableView performBatchUpdates:^{
             
-            //[self.tableView beginUpdates];
-            
+            [self.tableView beginUpdates];
             
             if (instanceBase){
                 
@@ -592,7 +760,7 @@
                 }
               
             }
-           // [self.tableView endUpdates];
+             [self.tableView endUpdates];
         }
         completion:^(BOOL finished) {
             if (finished){
@@ -847,6 +1015,103 @@
 
 
 #pragma mark - Table view data source
+
+
+-(void) tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"Armor:tableView:didSelectRowAtIndexPath");
+    
+    ItemCellTableView *cCell = nil;
+    @try {
+        
+         cCell = [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        if (cCell){
+            
+            NSString *strHashKey = [cCell.lblHash text];
+            NSLog(@"didDeselectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,indexPath.section, indexPath.row);
+            
+            
+            
+            [cCell.layer setMasksToBounds:NO];
+            [cCell.layer setCornerRadius:0];
+            [cCell.layer setBorderWidth:1];
+            [cCell.layer setShadowOffset: CGSizeMake(0, 0)];
+            [cCell.layer setBorderColor:[UIColor clearColor].CGColor];
+ 
+
+            
+        }
+        
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"Weapons:tableView:didSelectRowAtIndexPath");
+    
+    ItemCellTableView *cCell = nil;
+    @try {
+        
+         cCell = [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        if (cCell){
+            
+            NSString *strHashKey = [cCell.lblHash text],
+                     *strInstanceId = [cCell.lblInstanceId text];
+            
+            NSLog(@"didSelectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,indexPath.section, indexPath.row);
+            
+            
+            [cCell.layer setMasksToBounds:YES];
+            [cCell.layer setCornerRadius:5];
+            [cCell.layer setBorderWidth:3];
+            [cCell.layer setShadowOffset: CGSizeMake(-1, 1)];
+            [cCell.layer setBorderColor:[UIColor systemYellowColor].CGColor];
+            
+            
+            if (strInstanceId.length == 0){
+            NSString *charFilter = [NSString stringWithFormat:@"%@", strHashKey];
+           
+            NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
+            
+            NSArray *filteredItems = [self.destArmor.allKeys filteredArrayUsingPredicate:bPredicate];
+            
+            NSArray<NSDictionary *> *fItems =   [self.destArmor objectsForKeys:filteredItems notFoundMarker:self.destArmor];
+            
+            NSMutableDictionary *filteredCharArmorData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
+            
+                if (filteredItems.count == 1){
+                
+                    filteredCharArmorData = (NSMutableDictionary*) [fItems firstObject];
+                    INVCItems *filterArmorItem = [[INVCItems alloc] initWithDictionary:filteredCharArmorData];
+                    
+                    if (filterArmorItem){
+                     
+                        strInstanceId = [filterArmorItem itemInstanceId];
+                        
+                        if (strInstanceId.length > 0){
+                            [cCell.lblInstanceId setText:strInstanceId];
+                        }
+                    }
+                    
+                }
+            
+            }
+            
+        }
+        
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     NSInteger sections = 0;
@@ -1135,7 +1400,8 @@
         
         cell = (ItemCellTableView*) [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
         
-        //cell = (ItemCellTableView*) [tableView dequeueReusableCellWithIdentifier:cellId];
+    
+        
         
         if (! cell){
             cell = [[ItemCellTableView alloc] initWithStyle:UITableViewCellStyleDefault
@@ -1148,7 +1414,7 @@
         [cell setParentViewController:self];
         
      
-        NSLog(@"ArmorTableViewController:cellForRowAtIndexPath:Section->%d,Row->%d,",indexPath.section,indexPath.row);
+        NSLog(@"6:ArmorTableViewController:cellForRowAtIndexPath:Section->%d,Row->%d,",indexPath.section,indexPath.row);
 
         if (! self->helmets || (! self->gauntles) || (! self->chestArmor) || (! self->chestArmor) || (! self->legArmor) || (! self->classArmor)  ){
             

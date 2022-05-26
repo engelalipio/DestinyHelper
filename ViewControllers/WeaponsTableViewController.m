@@ -28,7 +28,8 @@
                    *ghosts,
                    *artifact;
     
-    NSMutableDictionary *instanceData;
+    NSMutableDictionary *instanceData,
+                        *destCharData;
     
     NSInteger sharedSection ;
     
@@ -54,26 +55,68 @@
 @synthesize selectedMembership = _selectedMembership;
 @synthesize destWeaponBuckets = _destWeaponBuckets;
 @synthesize selectedCharData = _selectedCharData;
-
+@synthesize destChars = _destChars;
  
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
-    
-    if (self.selectedCharData){
-        
-    }
  
+    NSString *strClass  = nil,
+             *strRace   = nil,
+             *strGender = nil,
+             *strLight  = nil;
+    
+        if (self.destChars){
+            
+            self->destCharData = [self.destChars objectForKey:self.selectedChar];
+            
+            if (self->destCharData){
+                
+                NSDictionary *chData = [self->destCharData objectForKey:@"character"];
+                
+                if (chData){
+                    NSDictionary *cData = [chData objectForKey:@"data"];
+                
+                    if (cData){
+                        NSString *classHash = [cData objectForKey:@"classHash"],
+                                 *raceType = [cData objectForKey:@"raceType"],
+                                 *genderHash = [cData objectForKey:@"genderHash"];
+                                 
+                        
+                        strClass = [Utilities decodeClassHash:classHash];
+                        strRace  = [Utilities decodeRaceHash:raceType];
+                        strGender = [Utilities decodeGenderHash:genderHash];
+                        strLight  = [cData objectForKey:@"light"];
+                    }
+                }
+            }
+            
+            
+        }
+   
+    
     if (self.selectedCharEmblem){
     
         UIImageView *cImage = self.selectedCharEmblem;
     
-        [cImage setFrame:CGRectMake(0, 10, self.tableView.frame.size.width, 150)];
+        [cImage setFrame:CGRectMake(0, 10, self.tableView.frame.size.width, 100)];
     
+        CGRect  lblFrame = CGRectMake(0, 10, self.tableView.frame.size.width, 80);
+        UILabel *lblChar   = [[UILabel alloc] initWithFrame:lblFrame];
+        [lblChar setTextAlignment:NSTextAlignmentLeft];
+        [lblChar setFont:[UIFont italicSystemFontOfSize:20]];
+        [lblChar setTextColor:[UIColor systemOrangeColor]];
+        [lblChar setText:[NSString stringWithFormat:@"%@//%@//%@//%@",strLight,strClass,strRace,strGender]];
+        
+        [cImage addSubview:lblChar];
+        
         [self.navigationItem setTitleView:cImage];
+       
+     
     }
+       
     
     
     UIBarButtonItem *btnClose =  [[UIBarButtonItem alloc] init];
@@ -658,7 +701,106 @@
     
 }
 
- 
+-(void) handleLongPress:(UILongPressGestureRecognizer *) recognize{
+    
+    NSLog(@"WeaponsTableViewController:handleLongPress:Invoked...");
+    
+    ItemCellTableView *cCell = nil;
+    
+    BOOL processRequest = NO;
+    @try {
+        
+        
+        switch(recognize.state){
+            case UIGestureRecognizerStateEnded:
+                NSLog(@"WeaponsTableViewController:UIGestureRecognizerStateEnded:Detected...");
+                break;
+            case UIGestureRecognizerStateBegan:
+                NSLog(@"WeaponsTableViewController:UIGestureRecognizerStateBegan:Detected...");
+                processRequest = YES;
+                break;
+            case UIGestureRecognizerStateChanged:
+                NSLog(@"WeaponsTableViewController:UIGestureRecognizerStateChanged:Detected...");
+                break;
+            case UIGestureRecognizerStateCancelled:
+                NSLog(@"WeaponsTableViewController:UIGestureRecognizerStateCancelled:Detected...");
+                break;
+            case UIGestureRecognizerStatePossible:
+                NSLog(@"WeaponsTableViewController:UIGestureRecognizerStatePossible:Detected...");
+                break;
+            case UIGestureRecognizerStateFailed:
+                NSLog(@"WeaponsTableViewController:UIGestureRecognizerStateFailed:Detected...");
+                break;
+        }
+        
+       
+        
+        if (processRequest){
+            
+            NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+            
+            if (selectedIndexPath){
+            
+                cCell = (ItemCellTableView*) [self.tableView cellForRowAtIndexPath:selectedIndexPath];
+                
+                if (cCell){
+                    
+                NSString *strHashKey = [cCell.lblInstanceId text],
+                         *strStaticKey = [cCell.lblHash text];
+                    
+                NSLog(@"handleLongPress:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,selectedIndexPath.section, selectedIndexPath.row);
+                
+                    if (strHashKey.length > 0){
+                        [cCell equipItem:cCell];
+                    }
+                    else{
+                        
+                        NSString *charFilter = [NSString stringWithFormat:@"%@", strStaticKey];
+                       
+                        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
+                      
+                        NSArray *filteredItems = [self.destWeapons.allKeys filteredArrayUsingPredicate:bPredicate];
+                        
+                        NSArray<NSDictionary *> *fItems =   [self.destWeapons objectsForKeys:filteredItems notFoundMarker:self.destWeapons];
+                        
+                        NSMutableDictionary *filteredCharWeaponsData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
+                        
+                        if (filteredItems.count == 1){
+                            
+                            filteredCharWeaponsData = (NSMutableDictionary*) [fItems firstObject];
+                            
+                            if (filteredCharWeaponsData){
+                             
+                                INVCItems* fObject  = (INVCItems*) filteredCharWeaponsData;
+                                
+                                if (fObject){
+                                
+                                    strHashKey = [fObject itemInstanceId];
+                                
+                                    if (strHashKey.length > 0){
+                                        [cCell.lblInstanceId setText:strHashKey];
+                                    
+                                        [cCell equipItem:cCell];
+                                    }
+                                }
+                            }
+                        }
+                    }
+               }
+               
+            }
+            
+        }
+        
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+    
+
+}
 
 -(void) initTableView{
     
@@ -684,6 +826,14 @@
                 forCellReuseIdentifier:@"CellIdentifier"];
             
             
+        }else{
+            
+            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+            
+            longPress.minimumPressDuration = 2.0;
+            [self.tableView addGestureRecognizer:longPress];
+             
+            
         }
         
         [self.tableView setDelegate:self];
@@ -693,6 +843,8 @@
                       forControlEvents:UIControlEventValueChanged];
         
 
+        
+        
       }
         @catch (NSException *exception) {
             message = [exception description];
@@ -1221,6 +1373,40 @@
     
 }
 
+-(void) tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"Weapons:tableView:didSelectRowAtIndexPath");
+    
+    ItemTableViewCell *cCell = nil;
+    @try {
+        
+         cCell = [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        if (cCell){
+            
+            NSString *strHashKey = [cCell.lblHash text];
+            NSLog(@"didDeselectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,indexPath.section, indexPath.row);
+            
+            
+            
+            [cCell.layer setMasksToBounds:NO];
+            [cCell.layer setCornerRadius:0];
+            [cCell.layer setBorderWidth:1];
+            [cCell.layer setShadowOffset: CGSizeMake(0, 0)];
+            [cCell.layer setBorderColor:[UIColor clearColor].CGColor];
+ 
+
+            
+        }
+        
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"Weapons:tableView:didSelectRowAtIndexPath");
     
@@ -1233,6 +1419,14 @@
             
             NSString *strHashKey = [cCell.lblHash text];
             NSLog(@"didSelectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,indexPath.section, indexPath.row);
+            
+            
+            [cCell.layer setMasksToBounds:YES];
+            [cCell.layer setCornerRadius:5];
+            [cCell.layer setBorderWidth:3];
+            [cCell.layer setShadowOffset: CGSizeMake(-1, 1)];
+            [cCell.layer setBorderColor:[UIColor systemYellowColor].CGColor];
+
             
         }
         

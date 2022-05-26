@@ -32,6 +32,7 @@
 #import "VGDDataModels.h"
 #import "INVCDataModels.h"
 #import "TRXDataModels.h"
+#import "EQXDataModels.h"
 #import "LCKDataModels.h"
 #import "ACMDataModels.h"
 #import "ACTHDataModels.h"

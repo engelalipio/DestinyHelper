@@ -819,6 +819,244 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
     return request;
 }
 
++ (AFJSONRequestOperation *)pullFromPostMaster:(NSObject *)anyInstancedItem
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
+    
+    NSString    *message         = nil,
+                *servicePath     = nil,
+                *tokenValue      = nil,
+                *payload         = nil;
+    
+    NSURL       *url  = nil;
+    
+    AFJSONRequestOperation *request = nil;
+    
+    NetworkAPISingleClient *api = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+    NSData *postData = nil;
+    
+    @try {
+
+        
+        if (anyInstancedItem){
+            payload = anyInstancedItem;
+            payload = [payload stringByReplacingOccurrencesOfString:@"[" withString:@""];
+            payload = [payload stringByReplacingOccurrencesOfString:@"]" withString:@""];
+        }
+        
+        postData = [payload dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
+        
+        appDelegate = [AppDelegate currentDelegate];
+        
+        servicePath =  [NSString stringWithFormat:@"%@/Actions/Items/PullFromPostMaster/",kBungieAPIBaseD2URL];
+ 
+        NSLog(@"Invoking::pullFromPostMaster=%@",servicePath);
+        
+        url = [[NSURL alloc] initWithString:servicePath];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                           timeoutInterval:60.0];
+        [request setHTTPMethod:@"POST"];
+        
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setValue:kDestinyOriginHeader forHTTPHeaderField:@"Origin"];
+        [request setValue:@"www.bungie.net" forHTTPHeaderField:@"Authority" ];
+        [request setValue:kBungieAPIKey forHTTPHeaderField:@"X-API-Key"];
+        
+        tokenValue = [NetworkAPISingleClient getAuthorizationTokenHeaderValue];
+        
+        if (tokenValue ){
+            [request setValue:tokenValue forHTTPHeaderField:@"Authorization"];
+        }
+    
+        [request setHTTPBody:postData];
+        
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                              delegate:nil
+                                                         delegateQueue:[NSOperationQueue mainQueue]];
+        
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData * _Nullable data,
+                                                                    NSURLResponse * _Nullable response,
+                                                                    NSError * _Nullable error) {
+                NSLog(@"NetworkAPISingleClient(LinkedProfiles):pullFromPostMaster:completionHandler...");
+
+                NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+            
+                NSLog(@"The Response: %@", asHTTPResponse);
+                // set a breakpoint on the last NSLog and investigate the response in the debugger
+
+                // if you get data, you can inspect that, too. If it's JSON, do one of these:
+                NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                            options:kNilOptions
+                                                                                error:nil];
+                // or
+                NSArray *forJSONArray = [NSJSONSerialization JSONObjectWithData:data
+                                                                        options:kNilOptions
+                                                                          error:nil];
+
+                NSLog(@"One of these might exist - object: %@ \n array: %@", forJSONObject, forJSONArray);
+            
+            
+            NSDictionary *callerInfo = [[NSDictionary alloc]
+                            initWithObjectsAndKeys:@"NetworkAPISingleClient",@"ClassName",
+                                                    @"pullFromPostMaster",@"MethodName", nil];
+                
+            [[NSNotificationCenter defaultCenter]
+                    postNotificationName:kDestinyPullFromPostMasterNotification
+                                    object:forJSONObject
+                                    userInfo:callerInfo];
+                
+            NSLog(@"NetworkAPISingleClient(LinkedProfiles):pullFromPostMaster:completionHandler:Raised->%@",kDestinyPullFromPostMasterNotification);
+            
+             
+                
+        }];
+       
+        [task resume];
+         
+        NSLog(@"Completed::pullFromPostMaster=%@",servicePath);
+    
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+        NSLog(@"Error::%@",message);
+    }
+    @finally {
+        message = @"";
+        api = nil;
+        servicePath = nil;
+    }
+    return request;
+}
+
+
++ (AFJSONRequestOperation *)equipItem:(NSObject *)anyInstancedItem
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
+    
+    NSString    *message         = nil,
+                *servicePath     = nil,
+                *tokenValue      = nil,
+                *payload         = nil;
+    
+    NSURL       *url  = nil;
+    
+    AFJSONRequestOperation *request = nil;
+    
+    NetworkAPISingleClient *api = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+    NSData *postData = nil;
+    
+    @try {
+
+        
+        if (anyInstancedItem){
+            payload = anyInstancedItem;
+            payload = [payload stringByReplacingOccurrencesOfString:@"[" withString:@""];
+            payload = [payload stringByReplacingOccurrencesOfString:@"]" withString:@""];
+        }
+        
+        postData = [payload dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
+        
+        appDelegate = [AppDelegate currentDelegate];
+        
+        servicePath =  [NSString stringWithFormat:@"%@/Actions/Items/EquipItem/",kBungieAPIBaseD2URL];
+ 
+        NSLog(@"Invoking::EquipItem=%@",servicePath);
+        
+        url = [[NSURL alloc] initWithString:servicePath];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                           timeoutInterval:60.0];
+        [request setHTTPMethod:@"POST"];
+        
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setValue:kDestinyOriginHeader forHTTPHeaderField:@"Origin"];
+        [request setValue:@"www.bungie.net" forHTTPHeaderField:@"Authority" ];
+        [request setValue:kBungieAPIKey forHTTPHeaderField:@"X-API-Key"];
+        
+        tokenValue = [NetworkAPISingleClient getAuthorizationTokenHeaderValue];
+        
+        if (tokenValue ){
+            [request setValue:tokenValue forHTTPHeaderField:@"Authorization"];
+        }
+    
+        [request setHTTPBody:postData];
+        
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                              delegate:nil
+                                                         delegateQueue:[NSOperationQueue mainQueue]];
+        
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData * _Nullable data,
+                                                                    NSURLResponse * _Nullable response,
+                                                                    NSError * _Nullable error) {
+                NSLog(@"NetworkAPISingleClient(LinkedProfiles):equipItem:completionHandler...");
+
+                NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+            
+                NSLog(@"The Response: %@", asHTTPResponse);
+                // set a breakpoint on the last NSLog and investigate the response in the debugger
+
+                // if you get data, you can inspect that, too. If it's JSON, do one of these:
+                NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                            options:kNilOptions
+                                                                                error:nil];
+                // or
+                NSArray *forJSONArray = [NSJSONSerialization JSONObjectWithData:data
+                                                                        options:kNilOptions
+                                                                          error:nil];
+
+                NSLog(@"One of these might exist - object: %@ \n array: %@", forJSONObject, forJSONArray);
+            
+            
+            NSDictionary *callerInfo = [[NSDictionary alloc]
+                            initWithObjectsAndKeys:@"NetworkAPISingleClient",@"ClassName",
+                                                    @"EquipItem",@"MethodName", nil];
+                
+            [[NSNotificationCenter defaultCenter]
+                    postNotificationName:kDestinyEquipItemNotification
+                                    object:forJSONObject
+                                    userInfo:callerInfo];
+                
+            NSLog(@"NetworkAPISingleClient(LinkedProfiles):EquipItem:completionHandler:Raised->%@",kDestinyEquipItemNotification);
+            
+             
+                
+        }];
+       
+        [task resume];
+         
+        NSLog(@"Completed::EquipItem=%@",servicePath);
+    
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+        NSLog(@"Error::%@",message);
+    }
+    @finally {
+        message = @"";
+        api = nil;
+        servicePath = nil;
+    }
+    return request;
+}
+
+
 + (AFJSONRequestOperation *)sendItemToVault:(NSObject *)anyInstancedItem
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{

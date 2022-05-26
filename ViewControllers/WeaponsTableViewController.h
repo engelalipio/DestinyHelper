@@ -17,6 +17,7 @@ UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic,strong) NSMutableDictionary  *selectedCharData;
 @property (nonatomic,strong) NSMutableDictionary  *destWeapons;
+@property (nonatomic,strong) NSMutableDictionary *destChars;
 @property (nonatomic,strong) NSArray   *destWeaponBuckets;
 @property (nonatomic,strong) NSString  *selectedChar;
 @property (nonatomic,strong) UIImageView  *selectedCharEmblem;

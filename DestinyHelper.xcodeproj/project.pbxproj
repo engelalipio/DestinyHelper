@@ -26,6 +26,7 @@
 		AC56F235282B09BD00F25324 /* DestinyActivityModeDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = AC56F234282B09BD00F25324 /* DestinyActivityModeDefinition.json */; };
 		AC7942AB25FDB06F00B30F2A /* TRXBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7942A825FDB06E00B30F2A /* TRXBaseClass.m */; };
 		AC7942B025FE971D00B30F2A /* LCKBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7942AF25FE971D00B30F2A /* LCKBaseClass.m */; };
+		AC7D5145283E8ADC0063B44B /* EQXBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7D5143283E86B90063B44B /* EQXBaseClass.m */; };
 		ACA059FC25320FEE008CB2BD /* Es.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA059D225320FEA008CB2BD /* Es.m */; };
 		ACA059FD25320FEE008CB2BD /* JsonWorldContentPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA059D425320FEA008CB2BD /* JsonWorldContentPaths.m */; };
 		ACA059FE25320FEE008CB2BD /* ZhCht.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA059D625320FEA008CB2BD /* ZhCht.m */; };
@@ -387,6 +388,9 @@
 		AC7942AE25FE970500B30F2A /* LCKBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LCKBaseClass.h; path = Models/TransferItem/LCKBaseClass.h; sourceTree = SOURCE_ROOT; };
 		AC7942AF25FE971D00B30F2A /* LCKBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LCKBaseClass.m; path = Models/TransferItem/LCKBaseClass.m; sourceTree = SOURCE_ROOT; };
 		AC7942B225FE972900B30F2A /* LCKDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LCKDataModels.h; path = Models/TransferItem/LCKDataModels.h; sourceTree = SOURCE_ROOT; };
+		AC7D5142283E86A50063B44B /* EQXBaseClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EQXBaseClass.h; sourceTree = "<group>"; };
+		AC7D5143283E86B90063B44B /* EQXBaseClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EQXBaseClass.m; sourceTree = "<group>"; };
+		AC7D5144283E86CE0063B44B /* EQXDataModels.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EQXDataModels.h; sourceTree = "<group>"; };
 		ACA059D125320FEA008CB2BD /* MNFBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MNFBaseClass.h; sourceTree = "<group>"; };
 		ACA059D225320FEA008CB2BD /* Es.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Es.m; sourceTree = "<group>"; };
 		ACA059D325320FEA008CB2BD /* MNFMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MNFMessageData.h; sourceTree = "<group>"; };
@@ -1045,6 +1049,16 @@
 				AC7942AE25FE970500B30F2A /* LCKBaseClass.h */,
 			);
 			path = LockItem;
+			sourceTree = "<group>";
+		};
+		AC7D5141283E86700063B44B /* EquipItem */ = {
+			isa = PBXGroup;
+			children = (
+				AC7D5144283E86CE0063B44B /* EQXDataModels.h */,
+				AC7D5143283E86B90063B44B /* EQXBaseClass.m */,
+				AC7D5142283E86A50063B44B /* EQXBaseClass.h */,
+			);
+			path = EquipItem;
 			sourceTree = "<group>";
 		};
 		ACA059D025320FCD008CB2BD /* Manifest */ = {
@@ -1871,6 +1885,7 @@
 		ACF3C31F252E2EF200C41679 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				AC7D5141283E86700063B44B /* EquipItem */,
 				ACD26C83283438C300E7724E /* VaultInventory */,
 				ACCCB17828317A9500AF9ADA /* UniqueWeaponsHistory */,
 				ACCCB12E28316F9000AF9ADA /* ActivityHistory */,
@@ -2168,6 +2183,7 @@
 				ACA05A0125320FEE008CB2BD /* Ru.m in Sources */,
 				ACCCB16428316FC200AF9ADA /* ActivityDurationSeconds.m in Sources */,
 				ACE433C125F54043006CEAB1 /* VNDDetailsAction.m in Sources */,
+				AC7D5145283E8ADC0063B44B /* EQXBaseClass.m in Sources */,
 				ACE2D24725225DE900FF095A /* GRDEquipment.m in Sources */,
 				ACF3C2FD252E27B700C41679 /* AFJSONRequestOperation.m in Sources */,
 				ACCCB19428317AC300AF9ADA /* UniqueWeaponKillsPrecisionKills.m in Sources */,
