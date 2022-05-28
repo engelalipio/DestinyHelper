@@ -56,6 +56,12 @@
 #define kDestinyLoadedStaticItemNotification @"Destiny2.StaticItem"
 #define kDestinyLoadedInstancedItemNotification @"Destiny2.InstancedItem"
 #define kDestinySendToVaultNotification @"Destiny2.SendToVault"
+
+#define kDestinyTransferItemNotification @"Destiny2.TransferItem"
+#define kDestinyTransferToWarlockNotification @"Destiny2.TransferItemWarlock"
+#define kDestinyTransferToTitanNotification @"Destiny2.TransferItemTitan"
+#define kDestinyTransferToHunterNotification @"Destiny2.TransferItemHunter"
+
 #define kDestinyPullFromPostMasterNotification @"Destiny2.PullFromPostMaster"
 
 #define kDestinyEquipItemNotification @"Destiny2.EquipItem"

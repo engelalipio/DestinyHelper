@@ -37,6 +37,8 @@
 
 - (IBAction)sendVaultAction:(id)sender;
 
+- (IBAction)transferItemAction:(id)sender;
+
 - (IBAction)equipItem:(id)sender;
 
 - (IBAction)pullFromPostMaster:(id)sender;

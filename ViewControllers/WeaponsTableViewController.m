@@ -29,7 +29,8 @@
                    *artifact;
     
     NSMutableDictionary *instanceData,
-                        *destCharData;
+                        *destCharData,
+                        *allCharsData;
     
     NSInteger sharedSection ;
     
@@ -63,12 +64,16 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
+    [self.segTableView setHidden:YES];
+    
     NSString *strClass  = nil,
              *strRace   = nil,
              *strGender = nil,
              *strLight  = nil;
     
         if (self.destChars){
+            
+            self->allCharsData = [[NSMutableDictionary alloc] initWithDictionary:self.destChars copyItems:YES];
             
             self->destCharData = [self.destChars objectForKey:self.selectedChar];
             
@@ -146,13 +151,11 @@
 - (void)closeAction {
     
     NSLog(@"WeaponsViewController:closeAction:Invoked...");
-    
-    [self dismissViewControllerAnimated:NO completion:^{
+     
+    [self.navigationController dismissViewControllerAnimated:NO completion:^{
         
-        if (![self.tableView hasUncommittedUpdates]){
-            [self.tableView reloadData];
-            NSLog(@"Refreshed weapons table");
-        }
+         
+        [self.tableView reloadData];
         
         NSLog(@"WeaponsViewController:closeAction:Completed...");
     }];
@@ -211,6 +214,163 @@
 -(void) registerNotifications{
 
     NSLog(@"1:WeaponsViewController:registerNotifications...");
+    
+    
+    //BEGIN Transfer Item Notification
+    [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyTransferItemNotification
+                      object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+                                               
+                                               
+    NSDictionary *respData  = (NSDictionary*) [note object],
+                 *userInfo  = [note userInfo];
+    
+    TRXBaseClass *payload  = nil;
+        if (userInfo){
+            
+            payload = (TRXBaseClass *) [userInfo objectForKey:@"TransferObject"];
+        }
+            
+       
+       if (respData){
+                      
+           NSString *respStatus     = [respData objectForKey:@"ErrorStatus"],
+                    *transferAction = @"Transfer Item";
+                                                  
+           if (respStatus){
+               //Transfer Item Action was Successfull!
+               if ([respStatus isEqualToString:@"Success"]){
+                                       
+                NSString *strMessage = @"Item was successfull Transferred!";
+                   
+                //TODO determine which character was the item sent
+                   
+                   
+                if (payload){
+                       
+                    NSString *targetCharKey = payload.targetCharacterId,
+                             *itemReference = payload.itemReferenceHash,
+                             *itemId        = payload.itemId;
+                    
+                    if (itemReference){
+                        
+                        if([self->instanceData.allKeys containsObject:itemReference]){
+                          [self->instanceData removeObjectForKey:itemReference];
+                            NSLog(@"WeaponsController:kDestinyTransferItemNotification:Removed Item->%@",itemReference);
+                        }
+                        
+                    }
+                    
+                    if (itemId){
+                        
+                        if([self.destWeapons.allKeys containsObject:itemId]){
+                          [self.destWeapons removeObjectForKey:itemId];
+                            NSLog(@"WeaponsController:kDestinyTransferItemNotification:Removed Item->%@",itemId);
+                        }
+                        
+                    }
+                    
+                    if (targetCharKey){
+                        
+                        NSDictionary *targetCharData = [self->allCharsData objectForKey:targetCharKey];
+                        
+                        if (targetCharData){
+                            
+                             NSDictionary *chData = [targetCharData objectForKey:@"character"];
+                                
+                                if (chData){
+                                    NSDictionary *cData = [chData objectForKey:@"data"];
+                                
+                                    if (cData){
+                                        NSString *classHash = [cData objectForKey:@"classHash"],
+                                                 *strClass = [Utilities decodeClassHash:classHash],
+                                                 *strNotication = @"",
+                                                 *strMessage     = @"Item was successfully sent to %@!";
+                                       
+                                        
+                                        if(strClass){
+                                            
+                                            if ([strClass isEqualToString:@"Warlock"]){
+                                                strNotication = kDestinyTransferToWarlockNotification;
+                                            }
+                                            
+                                            if ([strClass isEqualToString:@"Titan"]){
+                                                strNotication = kDestinyTransferToTitanNotification;
+                                            }
+                                            
+                                            if ([strClass isEqualToString:@"Hunter"]){
+                                                strNotication = kDestinyTransferToHunterNotification;
+                                            }
+                                            
+                                            
+                                            if (strNotication.length > 0){
+                                                
+                                            strMessage = [NSString stringWithFormat:strMessage,strClass ];
+                                                
+                                            [[NSNotificationCenter defaultCenter]
+                                                    postNotificationName:strNotication
+                                                                    object:respData
+                                                                    userInfo:userInfo];
+                                                
+                                                NSLog(@"WeaponsTableViewController:PostingNotication->%@",strNotication);
+                                                
+                                                UIAlertController* alertOk = [UIAlertController alertControllerWithTitle:@"Transfer Weapon Notification"
+                                                                    message:strMessage
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+                                                                    
+                                                UIAlertAction* actionOk = [UIAlertAction actionWithTitle:@"OK"
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * action) {
+                                                    NSLog(@"Transfer Weapon Notification:Action Ok:Clicked");
+                                                    [self closeAction];
+                                                }];
+                                                                        
+                                                [alertOk addAction:actionOk];
+                                            
+                                                [self presentViewController:alertOk animated:NO completion:nil];
+                                                
+                                            }
+                                        }
+                                     
+                                    }
+                                }
+                       
+                        }
+                        
+                    }
+                }
+                                       
+               }
+               //BEGIN Transfer Item Action Issue
+               else{
+                                       
+               NSString *errorCode    = [respData objectForKey:@"ErrorCode"],
+                        *errorStatus  = [respData objectForKey:@"ErrorStatus"],
+                        *errorMessage = [respData objectForKey:@"Message"];
+               //Display Error Details
+                           
+               UIAlertController* alertError = [UIAlertController alertControllerWithTitle:errorStatus
+                                   message:errorMessage
+                            preferredStyle:UIAlertControllerStyleAlert];
+                                       
+               UIAlertAction* transferItemErrorAction = [UIAlertAction actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action) {
+                       NSLog(@"ItemCellTableView:transferItemErrorAction=[%@-%@]",errorCode,errorStatus);
+                                           
+               }];
+                                       
+                [alertError addAction: transferItemErrorAction];
+                 
+                   //Display  Transfer Item Error
+                [self presentViewController:alertError animated:NO completion:nil];
+                  
+                }
+               //END Transfer Item Action Issue
+             }
+       }
+                        
+    }];
+     //END Transfer Item Notification
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedStaticItemNotification
         object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
@@ -701,6 +861,110 @@
     
 }
 
+
+-(void) handleDoubleTap:(UITapGestureRecognizer *) recognize{
+    
+    NSLog(@"WeaponsTableViewController:handleDoubleTap:Invoked...");
+    
+    ItemCellTableView *cCell = nil;
+    
+    BOOL processRequest = NO;
+    @try {
+        
+        
+        switch(recognize.state){
+            case UIGestureRecognizerStateEnded:
+                NSLog(@"WeaponsTableViewController:handleDoubleTap:UIGestureRecognizerStateEnded:Detected...");
+                break;
+            case UIGestureRecognizerStateBegan:
+                NSLog(@"WeaponsTableViewController:handleDoubleTap:UIGestureRecognizerStateBegan:Detected...");
+                processRequest = YES;
+                break;
+            case UIGestureRecognizerStateChanged:
+                NSLog(@"WeaponsTableViewController:handleDoubleTap:UIGestureRecognizerStateChanged:Detected...");
+                break;
+            case UIGestureRecognizerStateCancelled:
+                NSLog(@"WeaponsTableViewController:handleDoubleTap:UIGestureRecognizerStateCancelled:Detected...");
+                break;
+            case UIGestureRecognizerStatePossible:
+                NSLog(@"WeaponsTableViewController:handleDoubleTap:UIGestureRecognizerStatePossible:Detected...");
+                break;
+            case UIGestureRecognizerStateFailed:
+                NSLog(@"WeaponsTableViewController:handleDoubleTap:UIGestureRecognizerStateFailed:Detected...");
+                break;
+        }
+        
+       
+        
+        if (processRequest){
+            
+            NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+            
+            if (selectedIndexPath){
+            
+                cCell = (ItemCellTableView*) [self.tableView cellForRowAtIndexPath:selectedIndexPath];
+                
+                if (cCell){
+                    
+                NSString *strHashKey = [cCell.lblInstanceId text],
+                         *strStaticKey = [cCell.lblHash text];
+                    
+                NSLog(@"handleDoubleTap:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,selectedIndexPath.section, selectedIndexPath.row);
+                
+                    if (strHashKey.length > 0){
+                        
+                        [cCell transferItemAction:self->allCharsData];
+                    }
+                    else{
+                        
+                        NSString *charFilter = [NSString stringWithFormat:@"%@", strStaticKey];
+                       
+                        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
+                      
+                        NSArray *filteredItems = [self.destWeapons.allKeys filteredArrayUsingPredicate:bPredicate];
+                        
+                        NSArray<NSDictionary *> *fItems =   [self.destWeapons objectsForKeys:filteredItems notFoundMarker:self.destWeapons];
+                        
+                        NSMutableDictionary *filteredCharWeaponsData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
+                        
+                        if (filteredItems.count == 1){
+                            
+                            filteredCharWeaponsData = (NSMutableDictionary*) [fItems firstObject];
+                            
+                            if (filteredCharWeaponsData){
+                             
+                                INVCItems* fObject  = (INVCItems*) filteredCharWeaponsData;
+                                
+                                if (fObject){
+                                
+                                    strHashKey = [fObject itemInstanceId];
+                                
+                                    if (strHashKey.length > 0){
+                                        [cCell.lblInstanceId setText:strHashKey];
+                                        [cCell transferItemAction:self->allCharsData];
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+               }
+               
+            }
+            
+        }
+        
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+    
+   
+    
+}
+
 -(void) handleLongPress:(UILongPressGestureRecognizer *) recognize{
     
     NSLog(@"WeaponsTableViewController:handleLongPress:Invoked...");
@@ -828,9 +1092,20 @@
             
         }else{
             
+            UILongPressGestureRecognizer *doubleTap = [[UILongPressGestureRecognizer alloc]
+                                                 initWithTarget:self action:@selector(handleDoubleTap:)];
+            
+            
+            doubleTap.minimumPressDuration = 3.0;
+            doubleTap.numberOfTouchesRequired = 2.0;
+            [self.tableView addGestureRecognizer:doubleTap];
+            
+            
             UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
             
+            
             longPress.minimumPressDuration = 2.0;
+            longPress.numberOfTouchesRequired = 1.0;
             [self.tableView addGestureRecognizer:longPress];
              
             

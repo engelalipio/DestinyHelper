@@ -321,6 +321,7 @@ enum Destiny2ItemSortType{
 
 +(AppDelegate *) currentDelegate;
 
+-(void) loadCharacters: (NSNotification *) anyMembership;
 
 @end
 

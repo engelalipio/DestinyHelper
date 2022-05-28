@@ -14,6 +14,7 @@ NSString *const kBaseClassMembershipType = @"membershipType";
 NSString *const kBaseClassItemReferenceHash = @"itemReferenceHash";
 NSString *const kBaseClassStackSize = @"stackSize";
 NSString *const kBaseClassCharacterId = @"characterId";
+NSString *const kBaseClassTargetCharacterId = @"targetCharacterId";
 
 
 @interface TRXBaseClass ()
@@ -30,7 +31,7 @@ NSString *const kBaseClassCharacterId = @"characterId";
 @synthesize itemReferenceHash = _itemReferenceHash;
 @synthesize stackSize = _stackSize;
 @synthesize characterId = _characterId;
-
+@synthesize targetCharacterId = _targetCharacterId;
 
 
 + (NSDictionary *)mapping{
@@ -66,6 +67,8 @@ NSString *const kBaseClassCharacterId = @"characterId";
             self.itemReferenceHash = [self objectOrNilForKey:kBaseClassItemReferenceHash fromDictionary:dict];
             self.stackSize = [[self objectOrNilForKey:kBaseClassStackSize fromDictionary:dict] doubleValue];
             self.characterId = [self objectOrNilForKey:kBaseClassCharacterId fromDictionary:dict];
+            self.targetCharacterId =[self objectOrNilForKey:kBaseClassTargetCharacterId fromDictionary:dict];
+        
 
     }
     
@@ -82,7 +85,7 @@ NSString *const kBaseClassCharacterId = @"characterId";
     [mutableDict setValue:self.itemReferenceHash forKey:kBaseClassItemReferenceHash];
     [mutableDict setValue:[NSNumber numberWithDouble:self.stackSize] forKey:kBaseClassStackSize];
     [mutableDict setValue:self.characterId forKey:kBaseClassCharacterId];
-
+    [mutableDict setValue:self.targetCharacterId forKey:kBaseClassTargetCharacterId];
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
 
@@ -111,6 +114,7 @@ NSString *const kBaseClassCharacterId = @"characterId";
     self.itemReferenceHash = [aDecoder decodeObjectForKey:kBaseClassItemReferenceHash];
     self.stackSize = [aDecoder decodeDoubleForKey:kBaseClassStackSize];
     self.characterId = [aDecoder decodeObjectForKey:kBaseClassCharacterId];
+    self.targetCharacterId = [aDecoder decodeObjectForKey:kBaseClassTargetCharacterId];
     return self;
 }
 
@@ -123,6 +127,7 @@ NSString *const kBaseClassCharacterId = @"characterId";
     [aCoder encodeObject:_itemReferenceHash forKey:kBaseClassItemReferenceHash];
     [aCoder encodeDouble:_stackSize forKey:kBaseClassStackSize];
     [aCoder encodeObject:_characterId forKey:kBaseClassCharacterId];
+    [aCoder encodeObject:_targetCharacterId forKey:kBaseClassTargetCharacterId];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -137,6 +142,7 @@ NSString *const kBaseClassCharacterId = @"characterId";
         copy.itemReferenceHash = [self.itemReferenceHash copyWithZone:zone];
         copy.stackSize = self.stackSize;
         copy.characterId = [self.characterId copyWithZone:zone];
+        copy.targetCharacterId = [self.targetCharacterId copyWithZone:zone];
     }
     
     return copy;

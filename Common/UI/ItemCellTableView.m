@@ -410,44 +410,39 @@
                           }
                         }
                     }];
-                    
-                        
-                        TRXBaseClass *payload = [[TRXBaseClass alloc] init];
-                        [payload setCharacterId:selectedCharacter];
-                        [payload setStackSize:1];
-                        [payload setMembershipType:appDelegate.currentMembershipType];
-                        [payload setItemId:selectedItemInstance];
-                        [payload setItemReferenceHash:selectedItemHash];
-                        [payload setTransferToVault:NO];
+                     
+                    TRXBaseClass *payload = [[TRXBaseClass alloc] init];
+                    [payload setCharacterId:selectedCharacter];
+                    [payload setStackSize:1];
+                    [payload setMembershipType:appDelegate.currentMembershipType];
+                    [payload setItemId:selectedItemInstance];
+                    [payload setItemReferenceHash:selectedItemHash];
+                    [payload setTransferToVault:NO];
                        
-                        NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
-                        
-                        NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
-                        
-                        payload  = nil;
-                        
-                        NSError *writeError = nil;
+                    NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
+                    NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
+                    payload  = nil;
+                    NSError *writeError = nil;
                     
-                        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData options:NSJSONReadingMutableContainers
+                    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData options:NSJSONReadingMutableContainers
                                                                              error:&writeError];
                         
-                        NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                    NSString *jsonString = [[NSString alloc] initWithData:jsonData
                                                                      encoding:NSUTF8StringEncoding];
-                        NSLog(@"JSON Output: %@", jsonString);
+                    NSLog(@"JSON Output: %@", jsonString);
                         
-                        [NetworkAPISingleClient pullFromPostMaster:jsonString
-                                                completionBlock:^(NSArray *values) {
-                            
-                            if (values){
-                                //Not used
-                                NSLog(@"pullFromPostMaster:Completion=%@",values);
-                            }
-                            
-                            
-                        } andErrorBlock:^(NSError *exception) {
-                            NSLog(@"ItemCellTableView:pullFromPostMaster:Exception->%@",exception.description);
-                        }];
+                    [NetworkAPISingleClient pullFromPostMaster:jsonString
+                                            completionBlock:^(NSArray *values) {
                         
+                        if (values){
+                            //Not used
+                            NSLog(@"pullFromPostMaster:Completion=%@",values);
+                        }
+                        
+                        
+                    } andErrorBlock:^(NSError *exception) {
+                        NSLog(@"ItemCellTableView:pullFromPostMaster:Exception->%@",exception.description);
+                    }];
                      
                 }];
                 
@@ -572,7 +567,6 @@
                    handler:^(UIAlertAction * action) {
                     NSLog(vaultAction);
                     
-                    
                     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyEquipItemNotification
                         object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
                         
@@ -626,8 +620,6 @@
                                          
                                     }];
                                     
-                                  
-                                    
                                     [alert addAction:defaultAction];
                                     if ( destinyItemsParentVC){
                                         [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
@@ -665,40 +657,37 @@
                           }
                         }
                     }];
-                    
-                       
-                        EQXBaseClass *payload = [[EQXBaseClass alloc] init];
-                        [payload setCharacterId:selectedCharacter];
-                        [payload setMembershipType:appDelegate.currentMembershipType];
-                        [payload setItemId:selectedItemInstance];
                       
-                        NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
+                    EQXBaseClass *payload = [[EQXBaseClass alloc] init];
+                    [payload setCharacterId:selectedCharacter];
+                    [payload setMembershipType:appDelegate.currentMembershipType];
+                    [payload setItemId:selectedItemInstance];
+                      
+                    NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
                         
-                        NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
+                    NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
                         
-                        payload  = nil;
+                    payload  = nil;
                         
-                        NSError *writeError = nil;
-                        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData options:NSJSONReadingMutableContainers
+                    NSError *writeError = nil;
+                    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData options:NSJSONReadingMutableContainers
                                                                              error:&writeError];
                         
-                        NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                    NSString *jsonString = [[NSString alloc] initWithData:jsonData
                                                                      encoding:NSUTF8StringEncoding];
-                        NSLog(@"JSON Output: %@", jsonString);
+                    NSLog(@"JSON Output: %@", jsonString);
                         
-                        [NetworkAPISingleClient equipItem:jsonString
-                                                completionBlock:^(NSArray *values) {
-                            
-                            if (values){
-                                //Not used
-                                NSLog(@"equipItem:Completion=%@",values);
-                            }
-                            
-                            
-                        } andErrorBlock:^(NSError *exception) {
-                            NSLog(@"ItemCellTableView:equipItem:Exception->%@",exception.description);
-                        }];
+                    [NetworkAPISingleClient equipItem:jsonString
+                                            completionBlock:^(NSArray *values) {
                         
+                     if (values){
+                        //Not used
+                        NSLog(@"equipItem:Completion=%@",values);
+                     }
+                        
+                    } andErrorBlock:^(NSError *exception) {
+                        NSLog(@"ItemCellTableView:equipItem:Exception->%@",exception.description);
+                    }];
                      
                 }];
                 
@@ -741,6 +730,592 @@
     }
     
     
+    
+}
+
+- (IBAction)transferItemAction:(id)sender{
+    
+    NSString *selectedTitle        = @"",
+             *selectedItemHash     = @"",
+             *selectedItemInstance = @"",
+             *selectedCharacter    = @"",
+             *vaultAction          = @"Transfer Item",
+             *strIdx               = @"",
+             *strMessage           = @"";
+    
+    ItemCellTableView *selectedCell = nil;
+    
+    ItemsViewController *destinyItemsParentVC = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+    UIImage *lockImage = [UIImage systemImageNamed:@"lock"];
+    
+    NSIndexPath *indexPath = nil;
+    
+    NSMutableDictionary *charData = nil,
+                        *wData    = nil,
+                        *tData    = nil,
+                        *hData    = nil;
+    @try {
+        
+        if (! self.parentTableView){
+            return;
+        }
+        
+        if ([self.parentTableView isKindOfClass:[UITableView class]]){
+            indexPath =  [self.parentTableView indexPathForSelectedRow];
+            
+                if (! indexPath){
+                    return;
+                }
+            
+            strIdx = [NSString stringWithFormat:@"%d",indexPath.row ];
+        }
+        
+        if (! self.parentViewController){
+            return;
+        }
+        
+        if ([self.parentViewController isKindOfClass:[ItemsViewController class]]){
+          destinyItemsParentVC = (ItemsViewController*) self.parentViewController;
+        }
+        
+        if ([self.parentViewController isKindOfClass:[WeaponsTableViewController class]]){
+          destinyItemsParentVC = (WeaponsTableViewController*) self.parentViewController;
+        }
+        
+        if ([self.parentViewController isKindOfClass:[ArmorTableViewController class]]){
+          destinyItemsParentVC = (ArmorTableViewController*) self.parentViewController;
+        }
+        
+        if (!appDelegate){
+            appDelegate = [AppDelegate currentDelegate];
+        }
+        
+        if (sender){
+            //Determine Characters
+            charData  = (NSMutableDictionary*) sender;
+            if (charData){
+                
+                NSArray *charKeys = [charData allKeys];
+                
+                wData = [[NSMutableDictionary alloc] init];
+                tData = [[NSMutableDictionary alloc] init];
+                hData = [[NSMutableDictionary alloc] init];
+                
+                for(int cIdx = 0 ; cIdx < charKeys.count ; cIdx++){
+                
+                NSString *currentCKey = [charKeys objectAtIndex:cIdx];
+                    
+                NSDictionary *currentChar = [charData objectForKey:currentCKey],
+                             *chData      = [currentChar objectForKey:@"character"];
+                    
+                    if (chData){
+                        NSDictionary *cData = [chData objectForKey:@"data"];
+                        //Determine all of the character classes
+                        if (cData){
+                            NSString *classHash = [cData objectForKey:@"classHash"],
+                                     *strClass = [Utilities decodeClassHash:classHash];
+                            
+                            if ([strClass isEqualToString:@"Warlock"]){
+                                if (![wData.allKeys containsObject:currentCKey]){
+                                  [wData setValue:strClass forKey:currentCKey];
+                                }
+                            }
+                            
+                            if ([strClass isEqualToString:@"Titan"]){
+                                if (![tData.allKeys containsObject:currentCKey]){
+                                   [tData setValue:strClass forKey:currentCKey];
+                                }
+                            }
+                            
+                            if ([strClass isEqualToString:@"Hunter"]){
+                                if (![hData.allKeys containsObject:currentCKey]){
+                                    [hData setValue:strClass forKey:currentCKey];
+                                }
+                            }
+                            
+                            
+                        }
+                    }
+             
+                }
+            }
+        }
+     
+        selectedCell = (ItemCellTableView*) [self.parentTableView cellForRowAtIndexPath:indexPath];
+        
+        if(selectedCell){
+            
+            selectedTitle = selectedCell.lblItemName.text;
+            
+            selectedItemHash = [selectedCell.lblHash text];
+            
+            selectedItemInstance = [selectedCell.lblInstanceId text];
+            
+            selectedCharacter  = [selectedCell.lblCharacterId text];
+            
+            if (selectedItemHash){
+                
+                strMessage = [NSString stringWithFormat:@"Transfer %@ Item?",selectedTitle];
+                
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle:vaultAction
+                                               message:strMessage
+                                               preferredStyle:UIAlertControllerStyleAlert];
+                
+                //BEGIN SEND TO WARLOCK
+                UIAlertAction* warlockAction = [UIAlertAction actionWithTitle:@"Send to Warlock?"
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {
+                NSLog(vaultAction);
+                 
+                NSString* targetCharacter = (NSString *) [wData.allKeys firstObject];
+                    
+                 //BEGIN Warlock Notification
+                 [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyTransferToWarlockNotification
+                                   object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+                                                            
+                                                            
+                 NSDictionary *respData  = (NSDictionary*) [note object],
+                              *userInfo  = [note userInfo];
+                                                            
+                    if (respData){
+                                   
+                        NSString *respStatus = [respData objectForKey:@"ErrorStatus"];
+                                                               
+                        if (respStatus){
+                            //Transfer to Warlock Action was Successfull!
+                            if ([respStatus isEqualToString:@"Success"]){
+                                                    
+                                NSString *strMessage = @"Item was successfull sent to Warlock!";
+                                
+                                UIAlertController* alertWarlockOk = [UIAlertController alertControllerWithTitle:vaultAction
+                                                    message:strMessage
+                                                    preferredStyle:UIAlertControllerStyleAlert];
+                                                    
+                                UIAlertAction* warlockActionOk = [UIAlertAction actionWithTitle:@"OK"
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction * action) {
+                                    NSLog(@"%@-",respStatus);
+                                    
+                                    if (destinyItemsParentVC){
+                                                   
+                                       if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
+                                           //TODO inventory refresh logic
+                                       }
+                                                   
+                                       if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
+                                           //TODO weapons refresh logic
+                                           
+
+                                       }
+                                               
+                                       if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
+                                           //TODO armor refresh logic
+                                       }
+                                         
+                                   }
+                                                        
+                                }];
+                                                        
+                                [alertWarlockOk addAction:warlockActionOk];
+                                 if ( destinyItemsParentVC){
+                                    //Display Warlock Transfer Item Ok
+                                     [destinyItemsParentVC presentViewController:alertWarlockOk animated:YES completion:nil];
+                                 }
+                                                    
+                            }
+                            //BEGIN Transfer to Warlock Action Issue
+                            else{
+                                                    
+                            NSString *errorCode    = [respData objectForKey:@"ErrorCode"],
+                                     *errorStatus  = [respData objectForKey:@"ErrorStatus"],
+                                     *errorMessage = [respData objectForKey:@"Message"];
+                            //Display Error Details
+                                        
+                            UIAlertController* alertWarlockError = [UIAlertController alertControllerWithTitle:errorStatus
+                                                message:errorMessage
+                                         preferredStyle:UIAlertControllerStyleAlert];
+                                                    
+                            UIAlertAction* warlockErrorAction = [UIAlertAction actionWithTitle:@"OK"
+                                                style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction * action) {
+                                    NSLog(@"ItemCellTableView:warlockErrorAction=[%@-%@]",errorCode,errorStatus);
+                                                        
+                            }];
+                                                    
+                             [alertWarlockError addAction:warlockErrorAction];
+                             if ( destinyItemsParentVC){
+                                //Display Warlock Transfer Item Error
+                                [destinyItemsParentVC presentViewController:alertWarlockError animated:YES completion:nil];
+                                }
+                             }
+                            //END Transfer to Warlock Action Issue
+                          }
+                    }
+                                     
+                 }];
+                 //END Warlock Notification
+                    
+                TRXBaseClass *payload = [[TRXBaseClass alloc] init];
+                [payload setCharacterId:selectedCharacter];
+                [payload setTargetCharacterId:targetCharacter];
+                [payload setStackSize:1];
+                [payload setMembershipType:appDelegate.currentMembershipType];
+                [payload setItemId:selectedItemInstance];
+                [payload setItemReferenceHash:selectedItemHash];
+                [payload setTransferToVault:NO];
+                           
+               /* NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
+                            
+                NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
+                            
+                payload  = nil;
+                           
+                NSError *writeError = nil;
+                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData
+                                                                   options:NSJSONReadingMutableContainers
+                                                                     error:&writeError];
+                            
+                NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                                     encoding:NSUTF8StringEncoding];
+                NSLog(@"JSON Output: %@", jsonString);*/
+ 
+                //BEGIN NetworkAPISingleClient transferItem API Call
+                [NetworkAPISingleClient transferItem:payload
+                                     completionBlock:^(NSArray *values) {
+                 //Json Response
+                  if (values){
+                     //Not used
+                     NSLog(@"transferItem:Completion=%@",values);
+                  }
+                                    
+                 }
+                 andErrorBlock:^(NSError *exception) {
+                    NSLog(@"ItemCellTableView:transferItem:Exception->%@",exception.description);
+                 }];
+                //END NetworkAPISingleClient transferItem API Call
+ 
+                    
+                }];
+                //END SEND TO WARLOCK
+                
+                //BEGIN SEND TO TITAN
+                UIAlertAction* titanAction = [UIAlertAction actionWithTitle:@"Send to Titan?"
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {
+                NSLog(vaultAction);
+                 
+                NSString* targetCharacter = (NSString *) [tData.allKeys firstObject];
+                    
+                 //BEGIN TITAN Notification
+                 [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyTransferToTitanNotification
+                                   object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+                                                            
+                                                            
+                 NSDictionary *respData  = (NSDictionary*) [note object],
+                              *userInfo  = [note userInfo];
+                                                            
+                    if (respData){
+                                   
+                        NSString *respStatus = [respData objectForKey:@"ErrorStatus"];
+                                                               
+                        if (respStatus){
+                            //Transfer to TITAN Action was Successfull!
+                            if ([respStatus isEqualToString:@"Success"]){
+                                                    
+                                NSString *strMessage = @"Item was successfull sent to Titan!";
+                                
+                                UIAlertController* alertTitanOk = [UIAlertController alertControllerWithTitle:vaultAction
+                                                    message:strMessage
+                                                    preferredStyle:UIAlertControllerStyleAlert];
+                                                    
+                                UIAlertAction* titanActionOk = [UIAlertAction actionWithTitle:@"OK"
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction * action) {
+                                    NSLog(@"%@-",respStatus);
+                                                    
+                                 if (destinyItemsParentVC){
+                                                
+                                    if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
+                                        //TODO inventory refresh logic
+                                    }
+                                                
+                                    if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
+                                        //TODO weapons refresh logic
+                                    }
+                                            
+                                    if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
+                                        //TODO armor refresh logic
+                                    }
+                                     
+ 
+                                }
+                                                        
+                                }];
+                                                        
+                                [alertTitanOk addAction:titanActionOk];
+                                 if ( destinyItemsParentVC){
+                                    //Display TITAN Transfer Item Ok
+                                     [destinyItemsParentVC presentViewController:alertTitanOk animated:YES completion:nil];
+                                    }
+                                                    
+                            }
+                            //BEGIN Transfer to TITAN Action Issue
+                            else{
+                                                    
+                            NSString *errorCode    = [respData objectForKey:@"ErrorCode"],
+                                     *errorStatus  = [respData objectForKey:@"ErrorStatus"],
+                                     *errorMessage = [respData objectForKey:@"Message"];
+                            //Display Error Details
+                                        
+                            UIAlertController* alertTitanError = [UIAlertController alertControllerWithTitle:errorStatus
+                                                message:errorMessage
+                                         preferredStyle:UIAlertControllerStyleAlert];
+                                                    
+                            UIAlertAction* titanErrorAction = [UIAlertAction actionWithTitle:@"OK"
+                                                style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction * action) {
+                                    NSLog(@"ItemCellTableView:TITANErrorAction=[%@-%@]",errorCode,errorStatus);
+                                                        
+                            }];
+                                                    
+                             [alertTitanError addAction:titanErrorAction];
+                             if ( destinyItemsParentVC){
+                                //Display TITAN Transfer Item Error
+                                [destinyItemsParentVC presentViewController:alertTitanError animated:YES completion:nil];
+                                }
+                             }
+                            //END Transfer to TITAN Action Issue
+                          }
+                    }
+                                     
+                 }];
+                 //END TITAN Notification
+                
+                TRXBaseClass *payload = [[TRXBaseClass alloc] init];
+                [payload setCharacterId:selectedCharacter];
+                [payload setTargetCharacterId:targetCharacter];
+                [payload setStackSize:1];
+                [payload setMembershipType:appDelegate.currentMembershipType];
+                [payload setItemId:selectedItemInstance];
+                [payload setItemReferenceHash:selectedItemHash];
+                [payload setTransferToVault:NO];
+                           
+               /* NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
+                            
+                NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
+                            
+                payload  = nil;
+                            
+                NSError *writeError = nil;
+                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData
+                                                                   options:NSJSONReadingMutableContainers
+                                                                     error:&writeError];
+                            
+                NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                                     encoding:NSUTF8StringEncoding];
+                NSLog(@"JSON Output: %@", jsonString);*/
+ 
+                //BEGIN NetworkAPISingleClient transferItem API Call
+                    
+                [NetworkAPISingleClient transferItem:payload
+                                     completionBlock:^(NSArray *values) {
+                 //Json Response
+                  if (values){
+                     //Not used
+                     NSLog(@"transferItem:Completion=%@",values);
+                  }
+                                    
+                 }
+                 andErrorBlock:^(NSError *exception) {
+                    NSLog(@"ItemCellTableView:transferItem:Exception->%@",exception.description);
+                 }];
+                //END NetworkAPISingleClient transferItem API Call
+ 
+                    
+                }];
+                //END SEND TO TITAN
+                
+                
+                //BEGIN SEND TO HUNTER
+                UIAlertAction* hunterAction = [UIAlertAction actionWithTitle:@"Send to Hunter?"
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {
+                NSLog(vaultAction);
+                 
+                NSString* targetCharacter = (NSString *) [hData.allKeys firstObject];
+                    
+                 //BEGIN HUNTER Notification
+                 [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyTransferToHunterNotification
+                                   object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+                                                            
+                                                            
+                 NSDictionary *respData  = (NSDictionary*) [note object],
+                              *userInfo  = [note userInfo];
+                                                            
+                    if (respData){
+                                   
+                        NSString *respStatus = [respData objectForKey:@"ErrorStatus"];
+                                                               
+                        if (respStatus){
+                            //Transfer to HUNTER Action was Successfull!
+                            if ([respStatus isEqualToString:@"Success"]){
+                                                    
+                                NSString *strMessage = @"Item was successfull sent to Hunter";
+                                
+                                UIAlertController* alertHunterOk = [UIAlertController alertControllerWithTitle:vaultAction
+                                                    message:strMessage
+                                                    preferredStyle:UIAlertControllerStyleAlert];
+                                                    
+                                UIAlertAction* hunterActionOk = [UIAlertAction actionWithTitle:@"OK"
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction * action) {
+                                    NSLog(@"%@-",respStatus);
+                                                
+                                 if (destinyItemsParentVC){
+                                                
+                                    if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
+                                        //TODO inventory refresh logic
+                                    }
+                                                
+                                    if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
+                                        //TODO weapons refresh logic
+                                        
+                                    }
+                                            
+                                    if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
+                                        //TODO armor refresh logic
+                                    }
+                                     
+                                     
+ 
+                                }
+                                                        
+                                }];
+                                                        
+                                [alertHunterOk addAction:hunterActionOk];
+                                 if ( destinyItemsParentVC){
+                                    //Display HUNTER Transfer Item Ok
+                                     [destinyItemsParentVC presentViewController:alertHunterOk animated:YES completion:nil];
+                                    }
+                                                    
+                            }
+                            //BEGIN Transfer to HUNTER Action Issue
+                            else{
+                                                    
+                            NSString *errorCode    = [respData objectForKey:@"ErrorCode"],
+                                     *errorStatus  = [respData objectForKey:@"ErrorStatus"],
+                                     *errorMessage = [respData objectForKey:@"Message"];
+                            //Display Error Details
+                                        
+                            UIAlertController* alertHunterError = [UIAlertController alertControllerWithTitle:errorStatus
+                                                message:errorMessage
+                                         preferredStyle:UIAlertControllerStyleAlert];
+                                                    
+                            UIAlertAction* hunterErrorAction = [UIAlertAction actionWithTitle:@"OK"
+                                                style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction * action) {
+                                    NSLog(@"ItemCellTableView:HUNTERErrorAction=[%@-%@]",errorCode,errorStatus);
+                                                        
+                            }];
+                                                    
+                             [alertHunterError addAction:hunterErrorAction];
+                             if ( destinyItemsParentVC){
+                                //Display HUNTER Transfer Item Error
+                                 [destinyItemsParentVC presentViewController:alertHunterError animated:YES completion:nil];
+                                }
+                             }
+                            //END Transfer to HUNTER Action Issue
+                          }
+                    }
+                                     
+                 }];
+                 //END HUNTER Notification
+                    
+                TRXBaseClass *payload = [[TRXBaseClass alloc] init];
+                [payload setCharacterId:selectedCharacter];
+                [payload setTargetCharacterId:targetCharacter];
+                [payload setStackSize:1];
+                [payload setMembershipType:appDelegate.currentMembershipType];
+                [payload setItemId:selectedItemInstance];
+                [payload setItemReferenceHash:selectedItemHash];
+                [payload setTransferToVault:NO];
+                           
+               /* NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
+                            
+                NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
+                            
+                payload  = nil;
+                            
+                NSError *writeError = nil;
+                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData
+                                                                   options:NSJSONReadingMutableContainers
+                                                                     error:&writeError];
+                            
+                NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                                     encoding:NSUTF8StringEncoding];
+                NSLog(@"JSON Output: %@", jsonString);*/
+ 
+                //BEGIN NetworkAPISingleClient transferItem API Call
+                [NetworkAPISingleClient transferItem:payload
+                                     completionBlock:^(NSArray *values) {
+                 //Json Response
+                  if (values){
+                     //Not used
+                     NSLog(@"transferItem:Completion=%@",values);
+                  }
+                                    
+                 }
+                 andErrorBlock:^(NSError *exception) {
+                    NSLog(@"ItemCellTableView:transferItem:Exception->%@",exception.description);
+                 }];
+                //END NetworkAPISingleClient transferItem API Call
+ 
+                    
+                }];
+                //END SEND TO HUNTER
+                    
+                UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                                       style:UIAlertActionStyleCancel
+                   handler:^(UIAlertAction * action) {
+                    NSLog(@"ItemCellTableView:transferItem:Cancelled Clicked");
+                 }];
+                 
+                [alert addAction:warlockAction];
+                [alert addAction:titanAction];
+                [alert addAction:hunterAction];
+                [alert addAction:cancelAction];
+                
+                if ( destinyItemsParentVC){
+                    [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
+                }
+                
+             
+           }
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"ItemCellTableView:transferItem:Exception->%@",exception.description);
+    } @finally {
+        destinyItemsParentVC = nil;
+        
+        selectedTitle        = nil;
+        selectedItemHash     = nil;
+        selectedItemInstance = nil;
+        selectedCharacter    = nil;
+        
+        selectedCell = nil;
+        
+        destinyItemsParentVC = nil;
+        
+        appDelegate = nil;
+
+        lockImage = nil;
+        
+        indexPath = nil;
+    }
     
 }
 

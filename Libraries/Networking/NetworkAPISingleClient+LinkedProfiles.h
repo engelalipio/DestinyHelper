@@ -98,6 +98,14 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
++ (AFJSONRequestOperation *)pullItemFromVault:(NSObject *)anyInstancedItem
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
+
++ (AFJSONRequestOperation *)transferItem:(NSObject *)anyInstancedItem
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
+
 + (AFJSONRequestOperation *)equipItem:(NSObject *)anyInstancedItem
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;

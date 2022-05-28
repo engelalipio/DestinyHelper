@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSString *itemReferenceHash;
 @property (nonatomic, assign) double stackSize;
 @property (nonatomic, strong) NSString *characterId;
+@property (nonatomic, strong) NSString *targetCharacterId;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

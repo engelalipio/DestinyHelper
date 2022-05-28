@@ -1056,6 +1056,311 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
     return request;
 }
 
++ (AFJSONRequestOperation *)transferItem:(NSObject *)anyInstancedItem
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
+    NSString    *message         = nil,
+                *servicePath     = nil,
+                *tokenValue      = nil,
+                *payload         = nil,
+                *vaultPayLoad    = nil,
+                *jsonVaultString = nil,
+                *jsonString      = nil;
+    
+    NSURL       *url  = nil;
+    
+    AFJSONRequestOperation *request = nil;
+    
+    NetworkAPISingleClient *api = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+    NSData *postData = nil;
+    
+    TRXBaseClass *trxObject = nil,
+                 *trxVaultObject = nil;
+    
+    @try {
+
+        
+        if (anyInstancedItem){
+            
+            trxObject = (TRXBaseClass *) [anyInstancedItem copy];
+            trxVaultObject = (TRXBaseClass *) [anyInstancedItem copy];
+
+            if( trxVaultObject){
+                trxVaultObject.transferToVault = YES;
+            }
+            
+            if( trxObject){
+                trxObject.characterId = trxObject.targetCharacterId;
+            }
+            
+            //BEGIN SENT TO VAULT FIRST
+            if (trxVaultObject){
+                
+                NSDictionary *dictVaultData = [trxVaultObject dictionaryRepresentation];
+                            
+                NSArray *arrayVaultData = [NSArray arrayWithObject:trxVaultObject.dictionaryRepresentation];
+                            
+                trxVaultObject  = nil;
+                            
+                NSError *writeVaultError = nil;
+                NSData *jsonVaultData = [NSJSONSerialization dataWithJSONObject:arrayVaultData
+                                                                   options:NSJSONReadingMutableContainers
+                                                                     error:&writeVaultError];
+                            
+                NSString *jsonVaultString = [[NSString alloc] initWithData:jsonVaultData
+                                                                     encoding:NSUTF8StringEncoding];
+                
+                jsonVaultString = [jsonVaultString stringByReplacingOccurrencesOfString:@"[" withString:@""];
+                jsonVaultString = [jsonVaultString stringByReplacingOccurrencesOfString:@"]" withString:@""];
+                
+                NSLog(@"JSON Vault Output: %@", jsonVaultString);
+                
+                postData = [jsonVaultString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
+                
+                appDelegate = [AppDelegate currentDelegate];
+                
+                servicePath =  [NSString stringWithFormat:@"%@/Actions/Items/TransferItem/",kBungieAPIBaseD2URL];
+         
+                NSLog(@"Invoking::transferItem to Vault =%@",servicePath);
+                
+                url = [[NSURL alloc] initWithString:servicePath];
+                
+                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                                   timeoutInterval:60.0];
+                [request setHTTPMethod:@"POST"];
+                
+                [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+                [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+                [request setValue:kDestinyOriginHeader forHTTPHeaderField:@"Origin"];
+                [request setValue:@"www.bungie.net" forHTTPHeaderField:@"Authority" ];
+                [request setValue:kBungieAPIKey forHTTPHeaderField:@"X-API-Key"];
+                
+                tokenValue = [NetworkAPISingleClient getAuthorizationTokenHeaderValue];
+                
+                if (tokenValue ){
+                    [request setValue:tokenValue forHTTPHeaderField:@"Authorization"];
+                }
+            
+                [request setHTTPBody:postData];
+                
+                NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+                
+                NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                                      delegate:nil
+                                                                 delegateQueue:[NSOperationQueue mainQueue]];
+                
+                NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                        completionHandler:^(NSData * _Nullable data,
+                                                                            NSURLResponse * _Nullable response,
+                                                                            NSError * _Nullable error) {
+                NSLog(@"NetworkAPISingleClient(LinkedProfiles):transferItem to Vault First:completionHandler...");
+
+                NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+                    
+                NSLog(@"The Response: %@", asHTTPResponse);
+                // set a breakpoint on the last NSLog and investigate the response in the debugger
+
+                // if you get data, you can inspect that, too. If it's JSON, do one of these:
+                NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                              options:kNilOptions
+                                                                                error:nil];
+                // or
+                NSArray *forJSONArray = [NSJSONSerialization JSONObjectWithData:data
+                                                                        options:kNilOptions
+                                                                          error:nil];
+
+                NSLog(@"One of these might exist - object: %@ \n array: %@", forJSONObject, forJSONArray);
+                    
+                        
+                NSLog(@"NetworkAPISingleClient(LinkedProfiles):TransferItem To Vault :Completed->%@",kDestinyTransferItemNotification);
+                    
+                
+                if (asHTTPResponse.statusCode == 200){
+                    
+                    //BEGIN SENT TO CHAR FROM VAULT SECOND
+                    if (trxObject){
+                        
+                       [self pullItemFromVault:trxObject
+                               completionBlock:^(NSArray *values){
+                           NSLog(@"BEGIN SENT TO CHAR FROM VAULT SECOND:%@",@"Completed");
+                       } andErrorBlock:^(NSError *anyError) {
+                           NSLog(@"BEGIN SENT TO CHAR FROM VAULT SECOND Error:%@",anyError.description);
+                       }];
+                    }
+                    //END SENT TO CHAR FROM VAULT SECOND
+                    
+                }
+                }];
+                 
+                [task resume];
+            }
+            //END SENT TO VAULT FIRST
+            
+        }
+         
+        NSLog(@"Completed::TransferItem=%@",servicePath);
+    
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+        NSLog(@"Error::%@",message);
+    }
+    @finally {
+        message = @"";
+        api = nil;
+        servicePath = nil;
+    }
+    return request;
+}
+
++ (AFJSONRequestOperation *)pullItemFromVault:(NSObject *)anyInstancedItem
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
+    
+    NSString    *message         = nil,
+                *servicePath     = nil,
+                *tokenValue      = nil;
+    
+    NSURL       *url  = nil;
+    
+    AFJSONRequestOperation *request = nil;
+    
+    NetworkAPISingleClient *api = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+    NSData *postData = nil;
+    
+    TRXBaseClass *trxObject = nil;
+    
+    @try {
+
+        
+        if (anyInstancedItem){
+            
+            trxObject = (TRXBaseClass *) [anyInstancedItem copy];
+            
+            //BEGIN SENT TO CHAR FROM VAULT SECOND
+            if (trxObject){
+                
+                NSDictionary *dictData = [trxObject dictionaryRepresentation];
+                            
+                NSArray *arrayData = [NSArray arrayWithObject:trxObject.dictionaryRepresentation];
+                            
+                trxObject  = nil;
+                            
+                NSError *writeError = nil;
+                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData
+                                                                   options:NSJSONReadingMutableContainers
+                                                                     error:&writeError];
+                            
+                NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                                     encoding:NSUTF8StringEncoding];
+                
+                jsonString = [jsonString stringByReplacingOccurrencesOfString:@"[" withString:@""];
+                jsonString = [jsonString stringByReplacingOccurrencesOfString:@"]" withString:@""];
+                
+                NSLog(@"JSON From Vault Output: %@", jsonString);
+                
+                postData = [jsonString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
+                
+                appDelegate = [AppDelegate currentDelegate];
+                
+                servicePath =  [NSString stringWithFormat:@"%@/Actions/Items/TransferItem/",kBungieAPIBaseD2URL];
+         
+                NSLog(@"Invoking::transferItem from Vault =%@",servicePath);
+                
+                url = [[NSURL alloc] initWithString:servicePath];
+                
+                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                                   timeoutInterval:60.0];
+                [request setHTTPMethod:@"POST"];
+                
+                [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+                [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+                [request setValue:kDestinyOriginHeader forHTTPHeaderField:@"Origin"];
+                [request setValue:@"www.bungie.net" forHTTPHeaderField:@"Authority" ];
+                [request setValue:kBungieAPIKey forHTTPHeaderField:@"X-API-Key"];
+                
+                tokenValue = [NetworkAPISingleClient getAuthorizationTokenHeaderValue];
+                
+                if (tokenValue ){
+                    [request setValue:tokenValue forHTTPHeaderField:@"Authorization"];
+                }
+            
+                [request setHTTPBody:postData];
+                
+                NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+                
+                NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                                      delegate:nil
+                                                                 delegateQueue:[NSOperationQueue mainQueue]];
+                
+                NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                        completionHandler:^(NSData * _Nullable data,
+                                                                            NSURLResponse * _Nullable response,
+                                                                            NSError * _Nullable error) {
+                NSLog(@"NetworkAPISingleClient(LinkedProfiles):transferItem from Vault Second:completionHandler...");
+
+                NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+                    
+                NSLog(@"The Response: %@", asHTTPResponse);
+                // set a breakpoint on the last NSLog and investigate the response in the debugger
+
+                // if you get data, you can inspect that, too. If it's JSON, do one of these:
+                NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                              options:kNilOptions
+                                                                                error:nil];
+                // or
+                NSArray *forJSONArray = [NSJSONSerialization JSONObjectWithData:data
+                                                                        options:kNilOptions
+                                                                          error:nil];
+
+                NSLog(@"One of these might exist - object: %@ \n array: %@", forJSONObject, forJSONArray);
+                    
+                        
+                NSLog(@"NetworkAPISingleClient(LinkedProfiles):TransferItem From Vault :Completed->%@",kDestinyTransferItemNotification);
+                   
+                    
+                    NSDictionary *callerInfo = [[NSDictionary alloc]
+                                    initWithObjectsAndKeys:@"NetworkAPISingleClient",@"ClassName",
+                                                           @"TransferItemFromVault",@"MethodName",
+                                                           anyInstancedItem,@"TransferObject",nil];
+                        
+                    [[NSNotificationCenter defaultCenter]
+                            postNotificationName:kDestinyTransferItemNotification
+                                            object:forJSONObject
+                                            userInfo:callerInfo];
+                        
+                    NSLog(@"NetworkAPISingleClient(LinkedProfiles):TransferItem From Vault :completionHandler:Raised->%@",kDestinyTransferItemNotification);
+                    
+                }];
+                [task resume];
+            }
+            //END SENT TO CHAR FROM VAULT SECOND
+        }
+         
+        NSLog(@"Completed::TransferItemFromVault=%@",servicePath);
+    
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+        NSLog(@"Error::%@",message);
+    }
+    @finally {
+        message = @"";
+        api = nil;
+        servicePath = nil;
+    }
+    return request;
+    
+    
+}
 
 + (AFJSONRequestOperation *)sendItemToVault:(NSObject *)anyInstancedItem
                          completionBlock:(void(^) (NSArray * values))
@@ -1160,8 +1465,7 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
        
         [task resume];
          
-        NSLog(@"Completed::TransferItem=%@",servicePath);
-    
+         
     }
     @catch (NSException *exception) {
         message = [exception description];
