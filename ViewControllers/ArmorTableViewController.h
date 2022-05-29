@@ -18,6 +18,7 @@
 @property (nonatomic,strong) NSString  *selectedMembership;
 @property (nonatomic,strong) UIImageView  *selectedCharEmblem;
 @property (nonatomic,strong) NSMutableDictionary *destChars;
+@property (nonatomic,strong) UIViewController *parentVC;
 
 -(void) closeAction;
 -(void) loadArmor;

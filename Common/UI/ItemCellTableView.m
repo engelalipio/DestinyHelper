@@ -609,7 +609,42 @@
                                             if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
                                                 ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
                                                 if (destinyArmorParentVC){
-                                                    //TODO:Refresh Armor Logic
+                                                    
+                                                    [destinyArmorParentVC.tableView.refreshControl beginRefreshing ];
+                                                    
+                                                    
+                                                    NSArray<UITableViewCell*> *visibleCells = [destinyArmorParentVC.tableView visibleCells];
+                                                    
+                                                    [destinyArmorParentVC.tableView beginUpdates];
+                                                    
+                                                     
+                                                    for (UITableViewCell *vCell in visibleCells) {
+                                                         
+                                                        [vCell.layer setMasksToBounds:NO];
+                                                        [vCell.layer setCornerRadius:0];
+                                                        [vCell.layer setBorderWidth:1];
+                                                        [vCell.layer setShadowOffset: CGSizeMake(0, 0)];
+                                                        [vCell.layer setBorderColor:[UIColor clearColor].CGColor];
+                                                        
+                                                    }
+                                                    
+                                                    if (selectedCell){
+                                                        
+                                                        [selectedCell.layer setMasksToBounds:YES];
+                                                        [selectedCell.layer setCornerRadius:5];
+                                                        [selectedCell.layer setBorderWidth:3];
+                                                        [selectedCell.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                                        [selectedCell.layer setBorderColor:[UIColor whiteColor].CGColor];
+                                                        
+                                                        [destinyArmorParentVC.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                                                        
+                                                    }
+                                                    
+                                                     [destinyArmorParentVC.tableView reloadInputViews];
+                                                    
+                                                     [destinyArmorParentVC.tableView endUpdates];
+
+                                                     [destinyArmorParentVC.tableView.refreshControl endRefreshing ];
                                                 }
                                             }
                                             
@@ -901,7 +936,7 @@
           
             UIAlertController* alert = [UIAlertController alertControllerWithTitle:strMessage
                                             message:@"*Select Action Below"
-                                            preferredStyle:UIAlertControllerStyleAlert];
+                                            preferredStyle:UIAlertControllerStyleActionSheet];
             
             
             //BEGIN SEND TO WARLOCK
@@ -953,6 +988,13 @@
                                                 
                                     if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
                                         //TODO weapons refresh logic
+                                        
+                                        WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
+                                            //TODO:Refresh Weapons Logic
+                                        
+                                        [destinyWeaponsParentVC removeWeaponAction:selectedItemHash];
+                                        [destinyWeaponsParentVC closeAction];
+                                  
                                     }
                                             
                                     if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
@@ -1088,6 +1130,10 @@
                                             
                                 if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
                                     //TODO weapons refresh logic
+                                    WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
+                                    [destinyWeaponsParentVC removeWeaponAction:selectedItemHash];
+
+                                    [destinyWeaponsParentVC closeAction];
                                 }
                                         
                                 if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
@@ -1216,7 +1262,9 @@
                                             
                                 if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
                                     //TODO weapons refresh logic
-                                    
+                                    WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
+                                    [destinyWeaponsParentVC removeWeaponAction:selectedItemHash];
+                                    [destinyWeaponsParentVC closeAction];
                                 }
                                         
                                 if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
@@ -1340,7 +1388,43 @@
                                         
                                         if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
                                             WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
-                                                //TODO:Refresh Weapons Logic
+                                            
+                                            
+                                            [destinyWeaponsParentVC.tableView.refreshControl beginRefreshing ];
+                                            
+                                            
+                                            NSArray<UITableViewCell*> *visibleCells = [destinyWeaponsParentVC.tableView visibleCells];
+                                            
+                                            [destinyWeaponsParentVC.tableView beginUpdates];
+                                            
+                                             
+                                            for (UITableViewCell *vCell in visibleCells) {
+                                                 
+                                                [vCell.layer setMasksToBounds:NO];
+                                                [vCell.layer setCornerRadius:0];
+                                                [vCell.layer setBorderWidth:1];
+                                                [vCell.layer setShadowOffset: CGSizeMake(0, 0)];
+                                                [vCell.layer setBorderColor:[UIColor clearColor].CGColor];
+                                                
+                                            }
+                                            
+                                            if (selectedCell){
+                                                
+                                                [selectedCell.layer setMasksToBounds:YES];
+                                                [selectedCell.layer setCornerRadius:5];
+                                                [selectedCell.layer setBorderWidth:3];
+                                                [selectedCell.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                                [selectedCell.layer setBorderColor:[UIColor whiteColor].CGColor];
+                                                
+                                                [destinyWeaponsParentVC.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                                                
+                                            }
+                                            
+                                             [destinyWeaponsParentVC.tableView reloadInputViews];
+                                            
+                                             [destinyWeaponsParentVC.tableView endUpdates];
+
+                                             [destinyWeaponsParentVC.tableView.refreshControl endRefreshing ];
                                         }
                                             
                                             
@@ -1427,7 +1511,7 @@
             
             //BEGIN SEND TO VAULT
 
-            transferAction = [NSString stringWithFormat:@"Transfer '%@' on %@ to Vault?",selectedTitle,strCharacter];
+            transferAction = [NSString stringWithFormat:@"Send '%@' on %@ to Vault?",selectedTitle,strCharacter];
     
              UIAlertAction* sendToVaultAction = [UIAlertAction actionWithTitle: transferAction style:UIAlertActionStyleDefault
                 handler:^(UIAlertAction * action) {
@@ -1468,6 +1552,8 @@
                                      if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
                                          WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
                                              //TODO:Refresh Weapons Logic
+                                         [destinyWeaponsParentVC closeAction];
+                                         
                                      }
                                          
                                          

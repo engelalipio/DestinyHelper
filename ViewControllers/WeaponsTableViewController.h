@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
- 
 
 @interface WeaponsTableViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource,
 UICollectionViewDataSource, UICollectionViewDelegate>
@@ -22,6 +21,7 @@ UICollectionViewDataSource, UICollectionViewDelegate>
 @property (nonatomic,strong) NSString  *selectedChar;
 @property (nonatomic,strong) UIImageView  *selectedCharEmblem;
 @property (nonatomic,strong) NSString  *selectedMembership;
+@property (nonatomic,strong) UIViewController *parentVC;
 
 - (void)closeAction;
 - (void)loadWeapons;

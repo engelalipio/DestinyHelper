@@ -1193,6 +1193,18 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
                     }
                     //END SENT TO CHAR FROM VAULT SECOND
                     
+                }else{
+                    
+                    NSDictionary *callerInfo = [[NSDictionary alloc]
+                                    initWithObjectsAndKeys:@"NetworkAPISingleClient",@"ClassName",
+                                                           @"TransferItemToVaultFirst",@"MethodName",
+                                                nil];
+                    
+                    [[NSNotificationCenter defaultCenter]
+                            postNotificationName:kDestinyTransferItemNotification
+                                            object:forJSONObject
+                                            userInfo:callerInfo];
+                    
                 }
                 }];
                  

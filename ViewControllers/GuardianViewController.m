@@ -73,6 +73,36 @@
   
 }
  
+-(void) refreshCharacterEquipment{
+    
+    
+    NSLog(@"1:GuardianViewController:refreshCharacterEquipment Called...");
+   /* if (appDelegate)
+    {
+        NSLog(@"2:GuardianViewController:clearing AppDelegate Destiny Characters...");
+        [appDelegate setDestinyCharacters:nil];
+        
+    }*/
+    
+    NSLog(@"2:GuardianViewController:resetting local Dictionaries/Arrays...");
+    self->destCharData = nil;
+    self.destChars = nil;
+    
+    self->destCharWeaponsData = [[NSMutableDictionary alloc] init];
+    self->destCharArmorData   = [[NSMutableDictionary alloc] init];
+    self->destCharEquippedData   = [[NSMutableDictionary alloc] init];
+    self->destVaultData   = [[NSMutableDictionary alloc] init];
+    
+ 
+    NSLog(@"3:GuardianViewController:calling loadCharacters from refreshCharacterEquipment...");
+    [self loadCharacters];
+    NSLog(@"4:GuardianViewController:calling loadCharacterInventories from refreshCharacterEquipment...");
+    [self loadCharacterInventories];
+    
+    NSLog(@"5:GuardianViewController:refreshCharacterEquipment Completed...");
+    
+    //[self.tblChars reloadData];
+}
 
 -(void) registerNotifications{
     
@@ -1374,7 +1404,8 @@
                 
                 if (destCharData){
                     self.destChars = (NSArray *) destCharData.allKeys;
-                   
+                    message   = @"4:GuardianViewController:loadCharacterInventories:Already in Delegate, exiting...";
+                    NSLog(@"%@",message);
                 }
                 return;
             }
@@ -2365,7 +2396,7 @@
                     [wVC setDestWeaponBuckets:self->weaponsArray];
                     [wVC setSelectedChar:self->selectedCharacter];
                     [wVC setSelectedCharEmblem:self->selectedCharEmblem];
-                    
+                    [wVC setParentVC:self];
                     [wVC loadWeapons];
                     
                     navVC = [[UINavigationController alloc] initWithRootViewController:wVC];
@@ -2419,6 +2450,7 @@
                     [aVC setDestArmorBuckets:self->armorArray];
                     [aVC setSelectedChar:self->selectedCharacter];
                     [aVC setSelectedCharEmblem:self->selectedCharEmblem];
+                    [aVC setParentVC:self];
                     [aVC loadArmor];
                     
                     navVC = [[UINavigationController alloc] initWithRootViewController:aVC];

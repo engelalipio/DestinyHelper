@@ -44,7 +44,7 @@
 -(void) startTimer;
 -(void) endTimer;
  
-
+-(void) refreshCharacterEquipment;
 
 @end
 

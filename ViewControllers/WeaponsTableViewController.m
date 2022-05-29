@@ -18,6 +18,8 @@
 #import "ItemCollectionView.h"
 #import "ItemTableViewCell.h"
 #import "ItemCollectionViewCell.h"
+#import "GuardianViewController.h"
+
 @interface WeaponsTableViewController ()
 {
     AppDelegate *appDelegate;
@@ -57,7 +59,8 @@
 @synthesize destWeaponBuckets = _destWeaponBuckets;
 @synthesize selectedCharData = _selectedCharData;
 @synthesize destChars = _destChars;
- 
+@synthesize parentVC = _parentVC;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -153,11 +156,28 @@
     NSLog(@"WeaponsViewController:closeAction:Invoked...");
      
     [self.navigationController dismissViewControllerAnimated:NO completion:^{
-        
-         
-        [self.tableView reloadData];
-        
+    
         NSLog(@"WeaponsViewController:closeAction:Completed...");
+        
+        GuardianViewController *gVC = nil;
+        
+        if (! self.parentVC){
+            NSLog(@"WeaponsViewController:closeAction:Not Parent VC Detected:exiting...");
+            return;
+        }
+        
+        if ([self.parentVC isKindOfClass:[GuardianViewController class]]){
+            
+            gVC = (GuardianViewController *) self.parentVC;
+            
+            if (gVC){
+                [gVC refreshCharacterEquipment];
+                
+                self.parentVC = nil;
+            }
+             
+        }
+        
     }];
         
     

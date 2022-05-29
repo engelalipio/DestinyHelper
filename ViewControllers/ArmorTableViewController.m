@@ -15,6 +15,7 @@
 #import "Constants.h"
 #import "NetworkAPISingleClient+Definition.h"
 #import "NetworkAPISingleClient+LinkedProfiles.h"
+#import "GuardianViewController.h"
 
 @interface ArmorTableViewController ()
 {
@@ -39,6 +40,7 @@
 @synthesize destArmorBuckets = _destArmorBuckets;
 @synthesize selectedCharEmblem = _selectedCharEmblem;
 @synthesize destChars = _destChars;
+@synthesize parentVC = _parentVC;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -469,17 +471,32 @@
 - (void)closeAction {
     
     NSLog(@"ArmorViewController:closeAction:Invoked...");
+     
+    [self.navigationController dismissViewControllerAnimated:NO completion:^{
     
-    
-    [self dismissViewControllerAnimated:NO completion:^{
+        NSLog(@"ArmorViewController:closeAction:Completed...");
         
-        if (![self.tableView hasUncommittedUpdates]){
-            [self.tableView reloadData];
-            NSLog(@"Refreshed Armors table");
+        GuardianViewController *gVC = nil;
+        
+        if (! self.parentVC){
+            NSLog(@"ArmorViewController:closeAction:Not Parent VC Detected:exiting...");
+            return;
         }
         
-        NSLog(@"ArmorViewController:closeAction:Completed...");
+        if ([self.parentVC isKindOfClass:[GuardianViewController class]]){
+            
+            gVC = (GuardianViewController *) self.parentVC;
+            
+            if (gVC){
+                [gVC refreshCharacterEquipment];
+                
+                self.parentVC = nil;
+            }
+             
+        }
+        
     }];
+        
     
 }
 
