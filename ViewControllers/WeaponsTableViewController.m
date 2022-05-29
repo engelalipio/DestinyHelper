@@ -1092,16 +1092,16 @@
             
         }else{
             
-            UILongPressGestureRecognizer *doubleTap = [[UILongPressGestureRecognizer alloc]
+            /*UILongPressGestureRecognizer *doubleTap = [[UILongPressGestureRecognizer alloc]
                                                  initWithTarget:self action:@selector(handleDoubleTap:)];
             
             
             doubleTap.minimumPressDuration = 3.0;
             doubleTap.numberOfTouchesRequired = 2.0;
-            [self.tableView addGestureRecognizer:doubleTap];
+            [self.tableView addGestureRecognizer:doubleTap];*/
             
             
-            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
             
             
             longPress.minimumPressDuration = 2.0;
