@@ -28,7 +28,10 @@
                     *classArmor;
     
     NSMutableDictionary *instanceData,
-                        *destCharData;
+                        *destCharData,
+                        *allCharsData;
+    
+    NSInteger RowHeight ;
 }
 @end
 
@@ -54,7 +57,11 @@
              *strGender = nil,
              *strLight  = nil;
     
+        self->RowHeight = 90;
+    
         if (self.destChars){
+            
+            self->allCharsData = [[NSMutableDictionary alloc] initWithDictionary:self.destChars copyItems:YES];
             
             self->destCharData = [self.destChars objectForKey:self.selectedChar];
             
@@ -556,7 +563,8 @@
                 NSLog(@"handleLongPress:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,selectedIndexPath.section, selectedIndexPath.row);
                 
                     if ([strHashKey length] > 0){
-                        [cCell equipItem:cCell];
+                        [cCell equipItem:self->allCharsData];
+                      
                     }
                     else
                     {
@@ -587,7 +595,7 @@
                                     if (strHashKey.length > 0){
                                         [cCell.lblInstanceId setText:strHashKey];
                                     
-                                        [cCell equipItem:cCell];
+                                        [cCell equipItem:self->allCharsData];
                                     }
                                 }
                             }
@@ -1105,7 +1113,7 @@
                 if (filteredItems.count == 1){
                 
                     filteredCharArmorData = (NSMutableDictionary*) [fItems firstObject];
-                    INVCItems *filterArmorItem = [[INVCItems alloc] initWithDictionary:filteredCharArmorData];
+                    INVCItems *filterArmorItem = (INVCItems*)  filteredCharArmorData;
                     
                     if (filterArmorItem){
                      
@@ -1358,8 +1366,8 @@
 
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-        NSInteger size = 110;
-     
+        NSInteger size = self->RowHeight ;
+        //NSLog(@"ArmorViewController:heightForRowAtIndexPath->%ld",(long)size);
     return size;
 }
 /*

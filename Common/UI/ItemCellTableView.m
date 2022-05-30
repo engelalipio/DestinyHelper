@@ -494,7 +494,8 @@
              *selectedItemInstance = @"",
              *selectedCharacter    = @"",
              *vaultAction          = @"Equip Item",
-             *strIdx               = @"";
+             *strIdx               = @"",
+             *strMessage           = @"";
     
     ItemCellTableView *selectedCell = nil;
     
@@ -506,6 +507,16 @@
     UIImage *lockImage = [UIImage systemImageNamed:@"lock"];
     
     NSIndexPath *indexPath = nil;
+    
+    NSMutableDictionary *charData = nil,
+                        *wData    = nil,
+                        *tData    = nil,
+                        *hData    = nil;
+    
+    BOOL isCurrentCharWarlock = NO,
+         isCurrentCharTitan   = NO,
+         isCurrentCharHunter  = NO;
+    
     @try {
         
         if (! self.parentTableView){
@@ -543,6 +554,81 @@
         }
         
         selectedCell = (ItemCellTableView*) [self.parentTableView cellForRowAtIndexPath:indexPath];
+        
+        
+        if (sender){
+            //Determine Characters
+            charData  = (NSMutableDictionary*) sender;
+            
+            if (charData){
+                
+                NSArray *charKeys = [charData allKeys];
+                
+                wData = [[NSMutableDictionary alloc] init];
+                tData = [[NSMutableDictionary alloc] init];
+                hData = [[NSMutableDictionary alloc] init];
+                
+                for(int cIdx = 0 ; cIdx < charKeys.count ; cIdx++){
+                
+                NSString *currentCKey = [charKeys objectAtIndex:cIdx];
+                    
+                NSDictionary *currentChar = [charData objectForKey:currentCKey],
+                             *chData      = [currentChar objectForKey:@"character"];
+                    
+                    if (chData){
+                        NSDictionary *cData = [chData objectForKey:@"data"];
+                        //Determine all of the character classes
+                        if (cData){
+                            NSString *classHash = [cData objectForKey:@"classHash"],
+                                     *strClass = [Utilities decodeClassHash:classHash];
+                            
+                            if ([strClass isEqualToString:@"Warlock"]){
+                                if (![wData.allKeys containsObject:currentCKey]){
+                                     [wData setValue:strClass forKey:currentCKey];
+                                }
+                                
+                                if ([currentCKey isEqualToString:selectedCharacter]){
+                                    isCurrentCharWarlock = YES;
+                                    isCurrentCharTitan = NO;
+                                    isCurrentCharHunter = NO;
+                                    NSLog(@"Warlock is the current Character!");
+                                }
+                            }
+                            
+                            if ([strClass isEqualToString:@"Titan"]){
+                                if (![tData.allKeys containsObject:currentCKey]){
+                                     [tData setValue:strClass forKey:currentCKey];
+                                }
+                                
+                                if ([currentCKey isEqualToString:selectedCharacter]){
+                                    isCurrentCharWarlock = NO;
+                                    isCurrentCharTitan = YES;
+                                    isCurrentCharHunter = NO;
+                                    NSLog(@"Titan is the current Character!");
+                                }
+                            }
+                            
+                            if ([strClass isEqualToString:@"Hunter"]){
+                                if (![hData.allKeys containsObject:currentCKey]){
+                                    [hData setValue:strClass forKey:currentCKey];
+                                }
+                                
+                                if ([currentCKey isEqualToString:selectedCharacter]){
+                                    isCurrentCharWarlock = NO;
+                                    isCurrentCharTitan = NO;
+                                    isCurrentCharHunter = YES;
+                                    NSLog(@"Hunter is the current Character!");
+                                }
+                            }
+                            
+                            
+                        }
+                    }
+             
+                }
+            }
+        }
+        
        
         if(selectedCell){
             
@@ -557,12 +643,32 @@
   
             if (selectedItemHash){
                 
+                NSString *strCharacter  = @"Current Character",
+                         *strCC         = @"";
                 
-                UIAlertController* alert = [UIAlertController alertControllerWithTitle:vaultAction
-                                               message:[NSString stringWithFormat:@"Equip %@ ?",selectedTitle]
-                                               preferredStyle:UIAlertControllerStyleAlert];
+                if(isCurrentCharTitan){
+                   strCharacter = @"Titan";
+                }
                 
-                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                if(isCurrentCharWarlock){
+                    strCharacter = @"Warlock";
+                }
+                
+                if(isCurrentCharHunter){
+                    strCharacter = @"Hunter";
+                }
+                
+                strMessage   = [NSString stringWithFormat:@"Available '%@' [Actions]",selectedTitle];
+              
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle:strMessage
+                                                message:@"*Select Action Below"
+                                                preferredStyle:UIAlertControllerStyleActionSheet];
+                
+                
+                
+                strMessage = [NSString stringWithFormat:@"Equip '%@' on %@?",selectedTitle,strCharacter];
+                
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:strMessage style:UIAlertActionStyleDefault
                    handler:^(UIAlertAction * action) {
                     NSLog(vaultAction);
                     
@@ -576,14 +682,16 @@
                         
                         if (respData){
                          
-                            NSString *respStatus = [respData objectForKey:@"ErrorStatus"];
+                            NSString *respStatus  = [respData objectForKey:@"ErrorStatus"],
+                                     *respMessage = [NSString stringWithFormat:
+                                                     @"Successfully equipped '%@'",selectedTitle];
                             
                             if (respStatus){
                                 //SendToVault Action was Successfull!
                                 if ([respStatus isEqualToString:@"Success"]){
                                     
-                                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Equip Item Action"
-                                                                   message:@"Equip Item Action was Successfull!"
+                                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Equip Item Action Result"
+                                                                   message:respMessage
                                                                    preferredStyle:UIAlertControllerStyleAlert];
                                     
                                     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault

@@ -23,6 +23,9 @@
     
     NSString *AuthState;
     
+    NSInteger RowHeight,
+              HeaderHeight,
+              FooterHeight;
  
 }
 @end
@@ -41,6 +44,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self->RowHeight = 90;
+    self->HeaderHeight = 25;
+    self->FooterHeight = 10;
     
     if (! appDelegate){
         appDelegate = [AppDelegate currentDelegate];
@@ -178,20 +185,20 @@
  
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-        NSInteger size = 120;
+        NSInteger size = self->RowHeight;
      
     return size;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-   // return CGFLOAT_MIN;
-    NSInteger size =1.0f;//90;
+   
+    NSInteger size = self->FooterHeight;
   
     return size;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    NSInteger size = 1.0f;//90;
+    NSInteger size = self->FooterHeight;
     
     return size;
 }

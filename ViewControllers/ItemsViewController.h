@@ -45,7 +45,8 @@
 @property (nonatomic,strong) NSString  *selectedChar;
 @property (nonatomic,strong) NSString  *selectedMembership;
 
- 
+@property (strong, nonatomic) IBOutlet UILabel *lblItemDescription;
+
 
 -(void) startTimer;
 -(void) endTimer;

@@ -38,6 +38,9 @@
             *equippedArray,
             *vaultArray;
     
+    NSInteger RowHeight,
+              HeaderHeight,
+              FooterHeight;
 }
 @end
 
@@ -56,6 +59,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self->RowHeight = 90;
+    self->HeaderHeight = 25;
+    self->FooterHeight = 10;
     
     appDelegate = [AppDelegate currentDelegate];
     
@@ -1853,19 +1860,19 @@
 
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-        NSInteger size = 100.0f;
+    NSInteger size = self->RowHeight ;
      
     return size;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-   // return CGFLOAT_MIN;
-    NSInteger size = CGFLOAT_MIN;
+    
+    NSInteger size = self->FooterHeight;
     return size;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    NSInteger size = 30;
+    NSInteger size = self->HeaderHeight;
     
     return size;
 }
@@ -1895,9 +1902,11 @@
     NSString *message = nil;
     @try {
         
+     
         
         if (! self.tblChars){
-            self.tblChars = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f,self.view.frame.size.width, self.view.frame.size.height)];
+            self.tblChars = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f,self.view.frame.size.width,
+                                                                          self.view.frame.size.height)];
             
             self.tblChars.contentInset = UIEdgeInsetsMake(0, 0, self.view.frame.size.height -20, 0);
             

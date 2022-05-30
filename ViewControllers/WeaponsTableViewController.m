@@ -37,6 +37,8 @@
     NSInteger sharedSection ;
     
     BOOL useCView;
+    
+    NSInteger RowHeight;
 }
 
 @property (nonatomic, strong) NSMutableArray *primaryWeaponsArray;
@@ -67,6 +69,8 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
+    self->RowHeight = 90;
+    
     [self.segTableView setHidden:YES];
     
     NSString *strClass  = nil,
@@ -2419,12 +2423,12 @@
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-        NSInteger size = 110;
+        NSInteger size = self->RowHeight;
     
     if (self->useCView){
         size = 220;
     }
-    
+    //NSLog(@"WeaponsTableViewController:heightForRowAtIndexPath->%ld",size);
     return size;
 }
  
