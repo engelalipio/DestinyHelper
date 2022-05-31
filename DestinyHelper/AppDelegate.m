@@ -13,6 +13,7 @@
 #import "NetworkAPISingleClient+Definition.h"
 #import "NetworkAPISingleClient+Auth.h"
 #import "NetworkAPISingleClient+SearchUser.h"
+#import "NetworkAPISingleClient+Clan.h"
 #import "Utilities.h"
 #import "GuardianViewController.h"
 
@@ -49,6 +50,9 @@
 @synthesize  destinyInventoryItemDefinitions = _destinyInventoryItemDefinitions;
 @synthesize  destinyActivityModeDefinitions = _destinyActivityModeDefinitions;
 @synthesize  userSettings = _userSettings;
+@synthesize  isClanLoaded = _isClanLoaded;
+@synthesize  currentClan = _currentClan;
+
 
 +(AppDelegate *) currentDelegate{
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -125,6 +129,10 @@
         NSLog(@"AppDelegate:checkAccessToken:AuthResponse already exists...");
         [self setCurrentAuthResponse:aResponse];
         [self loadMembership:aResponse.membershipId];
+        
+        if (self.currentMembershipID){
+            [self loadClanAssociations:self.currentMembershipID];
+        }
     }
     
     
@@ -137,6 +145,7 @@
     _isManifestLoaded = NO;
     _isCharsLoaded = NO;
     _isPublicVendorsLoaded = NO;
+    _isClanLoaded = NO;
     _currentLocale = @"en";
     _isOffLine = YES;
     _currentMembershipType = Xbox;
@@ -202,6 +211,59 @@
 
  
 -(void) registerNotifications{
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedClanInfoNotification
+          object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+          
+        
+         NSLog(@"AppDelegate:LoadClanAssociations:kDestinyLoadedClanInfoNotification:Received");
+          
+          CLNDetail *groupDetails  = (CLNDetail*) [note object];
+          
+          NSDictionary *userInfo = [note userInfo];
+          
+          NSString *currentGroupId    = nil,
+                   *currentMembership = nil;
+          
+
+          if (userInfo){
+              
+              currentGroupId = [userInfo objectForKey:@"CurrentGroupID"];
+              currentMembership =  [userInfo objectForKey:@"CurrentMembership"];
+              
+              @try {
+                  
+                  if (groupDetails){
+                     
+                      
+                      self.currentClan = [groupDetails copy];
+                     
+                      if (self.currentClan){
+                          [self setIsClanLoaded:YES];
+                          NSLog(@"AppDelegate:LoadClanAssociations:Clan Association was sucessfully loaded.");
+                      }
+                      else
+                      {
+                          NSLog(@"AppDelegate:LoadClanAssociations:unable to load Clan.");
+                      }
+                      
+                  }
+                  
+              }
+              @catch (NSException *exception) {
+                  NSLog(@"%@",exception.description);
+              }
+              @finally {
+                  NSLog(@"Clan Loaded");
+                  groupDetails= nil;
+                  userInfo = nil;
+              }
+               
+              
+                  
+          }
+          
+      }];
 
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyOAuthSFNotification
@@ -375,8 +437,6 @@
         
         if (userInfo){
             
-            
-            
             for (int iUserData = 0; iUserData < userInfo.allKeys.count; iUserData++) {
                 NSString *keyName = [userInfo.allKeys objectAtIndex:iUserData],
                          *valueName = [userInfo objectForKey:keyName];
@@ -415,15 +475,20 @@
             for (int iUserData; iUserData < userInfo.allKeys.count; iUserData++) {
                 NSString *keyName = [userInfo.allKeys objectAtIndex:iUserData],
                          *valueName = [userInfo objectForKey:keyName];
-                
+ 
                 NSLog(@"AppDelegate:kDestinyLoadedCharactersNotification:PostedInfo:%d->[%@]:[%@]",iUserData,keyName,valueName);
             }
         }
         
         if (destChars){
+            
+            
             [self setDestinyCharacters:destChars];
             [self setIsCharsLoaded:YES];
             [self loadPublicVendors:note];
+            if (self.currentMembershipID){
+                [self loadClanAssociations:self.currentMembershipID];
+            }
         }
                                                      
         
@@ -1118,7 +1183,74 @@
     
 }
 
- 
+
+-(void) loadClanAssociations: (NSString *) anyMembership{
+    
+    
+    NSString *strMembership = anyMembership;
+    
+    [NetworkAPISingleClient retrieveGroupsByMember:strMembership completionBlock:^(NSArray *groupData){
+        
+        if(groupData){
+            
+            CLNBaseClass *groupBase =  (CLNBaseClass*) [groupData firstObject];
+            
+            if (groupBase){
+                
+                NSDictionary *groupResponse = [groupBase response];
+    
+                if (groupResponse){
+                    
+                    NSArray *results = (NSArray*) [groupResponse objectForKey:@"results"];
+                    
+                    if (results){
+                        if (results.count > 0){
+                            
+                            NSDictionary *groupDict  = (NSDictionary*) [results firstObject];
+                            
+                            CLNDetail* groupDetail =  [[CLNDetail alloc] initWithDictionary:[groupDict objectForKey:@"group"]];
+                                
+                            if (groupDetail){
+                                
+                                
+                                NSString *groupID = [groupDetail groupId];
+                                
+                                NSDictionary *callerInfo = [[NSDictionary alloc]
+                                              initWithObjectsAndKeys:@"AppDelegate",@"ClassName",
+                                              @"loadClanAssociations",@"MethodName",
+                                              groupID,@"CurrentGroupID",
+                                              strMembership, @"CurrentMembership",nil];
+                                  
+                               [[NSNotificationCenter defaultCenter]
+                                        postNotificationName:kDestinyLoadedClanInfoNotification
+                                                      object:groupDetail
+                                                      userInfo:callerInfo];
+                             
+                               
+                            }
+                            
+                        }
+                    }
+                    
+
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    andErrorBlock:^(NSError *errorData){
+        if (errorData){
+            NSLog(@"%@",errorData.description);
+        }
+    
+    }];
+    
+    
+    
+}
 
 
 -(void) loadPublicVendors: (NSNotification *) anyMembership{
@@ -1243,7 +1375,8 @@
                                     
                                     NSDictionary *callerInfo = [[NSDictionary alloc]
                                                                 initWithObjectsAndKeys:@"AppDelegate",@"ClassName",
-                                                                                       @"loadCharacters",@"MethodName",nil];
+                                                                                       @"loadCharacters",@"MethodName",
+                                                                                       strMembership,@"CurrentMembership", nil];
                                     
                                     if (guardians){
                                         

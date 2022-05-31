@@ -271,6 +271,8 @@ enum Destiny2ItemSortType{
 
 @property (assign,nonatomic) BOOL isPublicVendorsLoaded;
 
+@property (assign,nonatomic) BOOL isClanLoaded;
+
 @property (assign,nonatomic) BOOL isOffLine;
 
 @property (nonatomic,strong) NSArray *destinyMemberships;
@@ -280,6 +282,8 @@ enum Destiny2ItemSortType{
 @property (nonatomic,strong) NSArray *destinyVendors;
 
 @property (nonatomic,strong) USRResponse *currentProfile;
+
+@property (nonatomic,strong) CLNDetail *currentClan;
 
 @property (nonatomic,strong) MBRResponse *currentMembership;
 

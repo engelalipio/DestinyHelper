@@ -21,8 +21,11 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
- 
++ (AFJSONRequestOperation *)retrieveGroupsByMember:(NSString *)membershipId
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
+ 
 
 @end
 

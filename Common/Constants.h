@@ -46,6 +46,8 @@
 #define kDestinyLoadedCharacterEquipmentNotification @"Destiny2.CharacterEquipment"
 #define kDestinyLoadedProfileVaultNotification @"Destiny2.Vault"
 
+#define kDestinyLoadedClanInfoNotification @"Destiny2.Clan"
+
 #define kDestinyLoadedPublicVendorsNotification @"Destiny2.PublicVendors"
 #define kDestinyLoadedPublicVendorsDetailsNotification @"Destiny2.PublicVendorsDetail"
 #define kDestinyLoadedVendorsNotification @"Destiny2.Vendors"

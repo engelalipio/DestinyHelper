@@ -60,6 +60,59 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
     return request;
     
 }
+#pragma mark-> /GroupV2/User/1/{membershipId}}/0/1/
++ (AFJSONRequestOperation *)retrieveGroupsByMember:(NSString *)membershipId
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
+    
+    NSString    *message         = @"",
+                *servicePath     = @"",
+                *code            = @"";
+    
+    NSURL       *url  = nil;
+    
+    AFJSONRequestOperation *request = nil;
+    
+    NetworkAPISingleClient *api = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+    //https://www.bungie.net/Platform/GroupV2/User/1/4611686018450941209/0/1/
+    
+    @try {
+        
+        appDelegate = [AppDelegate currentDelegate];
+        
+        servicePath = [NSString stringWithFormat:@"GroupV2/User/1/%@/0/1/", membershipId];
+ 
+        NSLog(@"Invoking::retrieveGroupsByMember=%@",servicePath);
+        
+        url = [[NSURL alloc] initWithString:kBungieAPIBaseURL];
+        
+        api = [[NetworkAPISingleClient sharedClient] initWithBaseURL:url];
+        
+        request = [api makeGetOperationWithObjecModel:[CLNMBaseClass class]
+                                               atPath:servicePath
+                                      completionBlock:completionBlock
+                                        andErrorBlock:errorBlock];
+        
+       
+        message = servicePath;
+        
+        NSLog(@"Completed::%@",message);
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+        NSLog(@"Error::%@",message);
+    }
+    @finally {
+        message = @"";
+        api = nil;
+        servicePath = nil;
+    }
+    return request;
+    
+}
 
 #pragma mark-> /GroupV2/{groupid}}/Members
 + (AFJSONRequestOperation *)retrieveGroupMembers:(NSString *)groupId

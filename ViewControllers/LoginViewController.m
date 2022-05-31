@@ -107,8 +107,6 @@
           NSLog(@"ProfileViewController:kDestinyLoadedMembership:Received");
           
           [self.lblMemberStatus setText:@"Profile successfully loaded..."];
-         
- 
                                                        
           
       }];

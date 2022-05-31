@@ -40,6 +40,7 @@
 @property (nonatomic,strong) NSArray   *destChars;
 @property (nonatomic,strong) NSArray   *destPublicVendors;
 @property (nonatomic,strong) NSArray   *memberships;
+@property (nonatomic,strong) NSMutableArray   *clans;
 
 -(void) startTimer;
 -(void) endTimer;

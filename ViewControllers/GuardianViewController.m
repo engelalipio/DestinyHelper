@@ -9,6 +9,7 @@
 #import "GuardianViewController.h"
 #import "ItemsViewController.h"
 #import "NetworkAPISingleClient+LinkedProfiles.h"
+#import "NetworkAPISingleClient+Clan.h"
 #import "DataModels.h"
 #import "Constants.h"
 #import "GuardianCellTableView.h"
@@ -26,7 +27,8 @@
                         *destCharWeaponsData,
                         *destCharArmorData,
                         *destCharEquippedData,
-                        *destVaultData;
+                        *destVaultData,
+                        *destClanData;
     
     NSString *currentMembership,
              *selectedCharacter;
@@ -41,6 +43,8 @@
     NSInteger RowHeight,
               HeaderHeight,
               FooterHeight;
+    
+    BOOL hasClan;
 }
 @end
 
@@ -55,6 +59,7 @@
 @synthesize destChars = _destChars;
 @synthesize memberships = _memberships;
 @synthesize destPublicVendors = _destPublicVendors;
+@synthesize clans = _clans;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -64,6 +69,8 @@
     self->HeaderHeight = 25;
     self->FooterHeight = 10;
     
+    self->hasClan = NO;
+    
     appDelegate = [AppDelegate currentDelegate];
     
     [self.navigationController setNavigationBarHidden:NO];
@@ -71,13 +78,15 @@
     [self registerNotifications];
     
     [self initTableView];
-    
+    [self loadGroupInfo];
     [self loadCharacters];
-    [self loadPublicVendors];
+
+   // [self loadPublicVendors];
   //  [self loadCharacterWeaponsStats];
+
     [self loadCharacterInventories];
     [self loadVaultItems];
-  
+
 }
  
 -(void) refreshCharacterEquipment{
@@ -111,6 +120,52 @@
     //[self.tblChars reloadData];
 }
 
+-(void) loadGroupInfo{
+    
+    BOOL hasClanData = NO;
+    
+    CLNDetail *groupDetails = nil;
+    
+    @try {
+        
+        hasClanData = [appDelegate isClanLoaded];
+        
+        if (hasClanData){
+            
+            groupDetails  = [appDelegate.currentClan copy];
+            
+            if (groupDetails){
+                
+                if (! self.clans){
+                    self.clans = [[NSMutableArray alloc] init];
+                }
+                
+                if (![self.clans containsObject:groupDetails.groupId]){
+                    [self.clans addObject:groupDetails.groupId];
+                }
+                
+                if (! self->destClanData){
+                    self->destClanData = [[NSMutableDictionary alloc] init];
+                }
+                
+                if (! [self->destClanData.allKeys containsObject:groupDetails.groupId]){
+                    [self->destClanData setValue:groupDetails forKey:groupDetails.groupId];
+                }
+               
+            }
+            
+        }
+        
+         
+    } @catch (NSException *exception) {
+        NSLog(@"GuardianVC:loadGroupInfo:Exception->%@",exception.description);
+    } @finally {
+         
+    }
+
+    
+}
+
 -(void) registerNotifications{
     
     if (! self->destCharWeaponsData){
@@ -125,6 +180,7 @@
     if (! self->destVaultData){
         self->destVaultData   = [[NSMutableDictionary alloc] init];
     }
+    
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedCharacterEquipmentNotification
         object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
@@ -552,153 +608,155 @@
             else{
                 NSLog(@"GuardianViewController:kDestinyLoadedCharacterNotification:%@ Character already loaded...",currentCharacter);
             }
+ 
+           
+            [self.tblChars performBatchUpdates:^(void){
+                
+                NSArray<NSIndexPath*> *iPaths =  [self.tblChars indexPathsForVisibleRows];
             
+                NSIndexPath *currentIPath = nil;
+                
+                GuardianCellTableView *cell = nil;
+                
+                NSInteger iCharIDX  = [currentstrCharIndex integerValue],
+                          iSections = [self.tblChars numberOfSections];
+                
+                   // currentIPath  =   [NSIndexPath indexPathForRow:iCharIDX inSection:0];
             
-                [self.tblChars performBatchUpdates:^(void){
+                    currentIPath =  [iPaths objectAtIndex:iCharIDX];
+                   
                     
-                    NSArray<NSIndexPath*> *iPaths =  [self.tblChars indexPathsForVisibleRows];
-              
-                    NSIndexPath *currentIPath = nil;
-                    
-                    GuardianCellTableView *cell = nil;
-                    
-                    NSInteger iCharIDX = [currentstrCharIndex integerValue];
-                    
-                    if (iPaths){
-                        currentIPath =  [iPaths objectAtIndex:iCharIDX];
+                    if (currentIPath){
                         
-                        if (currentIPath){
+                 
+                        NSString *message    = currentCharacter,
+                                    *imageName  = nil,
+                                    *baseURL    = nil,
+                                    *classHash  = nil,
+                                    *classDesc  = nil,
+                                    *genderHash = nil,
+                                    *genderDesc = nil,
+                                    *raceHash   = nil,
+                                    *raceDesc   = nil,
+                                    *lightLevel = nil,
+                                    *seal       = nil,
+                                    *progHash   = nil,
+                                    *emblem     = nil,
+                                    *strLight   = nil;
+                        
+                        
+                        NSURL *imageURL = nil,
+                                *emblemURL = nil;
+                        
+                        UIImage *imgEmblem = nil;
+                        
+                        BOOL needsUpdate = YES;
+                        
+                        @try {
                             
-                            NSString *message    = currentCharacter,
-                                     *imageName  = nil,
-                                     *baseURL    = nil,
-                                     *classHash  = nil,
-                                     *classDesc  = nil,
-                                     *genderHash = nil,
-                                     *genderDesc = nil,
-                                     *raceHash   = nil,
-                                     *raceDesc   = nil,
-                                     *lightLevel = nil,
-                                     *seal       = nil,
-                                     *progHash   = nil,
-                                     *emblem     = nil,
-                                     *strLight   = nil;
+                            cell = [self.tblChars cellForRowAtIndexPath:currentIPath];
                             
+                            if ([cell.lblGuardianClass.text isEqualToString:@"Loading Character..."]){
+                                needsUpdate = YES;
+                            }
                             
-                            NSURL *imageURL = nil,
-                                  *emblemURL = nil;
+                            if (! cell.tag){
+                                needsUpdate = YES;
+                            }
                             
-                            UIImage *imgEmblem = nil;
+                            if (needsUpdate){
                             
-                            BOOL needsUpdate = YES;
-                            
-                            @try {
+                                [self.tblChars beginUpdates];
                                 
-                                cell = [self.tblChars cellForRowAtIndexPath:currentIPath];
+                                [cell setTag:iCharIDX];
                                 
-                                if ([cell.lblGuardianClass.text isEqualToString:@"Loading Character..."]){
-                                    needsUpdate = YES;
-                                }
+                                NSDictionary *grd = [cData objectForKey:@"character"],
+                                                *equip = [cData objectForKey:@"equipment"],
+                                                *grdData  = nil;
                                 
-                                if (! cell.tag){
-                                    needsUpdate = YES;
-                                }
                                 
-                                if (needsUpdate){
-                                
-                                    [self.tblChars beginUpdates];
+                                grdData = [grd objectForKey:@"data"];
                                     
-                                    [cell setTag:iCharIDX];
-                                  
-                                    NSDictionary *grd = [cData objectForKey:@"character"],
-                                                 *equip = [cData objectForKey:@"equipment"],
-                                                 *grdData  = nil;
+                                
+                                if (grdData){
+                                
+                                    classHash  = [grdData objectForKey:@"classHash"];
+                                    genderHash = [grdData objectForKey:@"genderHash"];
+                                    raceHash = [grdData objectForKey:@"raceType"];
+                                        
+                                    lightLevel = [grdData objectForKey:@"light"];
+                                    progHash   = [grdData objectForKey:@"progressionHash"];
+                                    seal       = [grdData objectForKey:@"titleRecordHash"];
                                     
-                                   
-                                    grdData = [grd objectForKey:@"data"];
-                                     
+                                    imageName  = [grdData objectForKey:@"emblemPath"];
                                     
-                                    if (grdData){
-                                    
-                                        classHash  = [grdData objectForKey:@"classHash"];
-                                        genderHash = [grdData objectForKey:@"genderHash"];
-                                        raceHash = [grdData objectForKey:@"raceType"];
-                                         
-                                        lightLevel = [grdData objectForKey:@"light"];
-                                        progHash   = [grdData objectForKey:@"progressionHash"];
-                                        seal       = [grdData objectForKey:@"titleRecordHash"];
+                                    if (imageName){
+                                        baseURL = [NSString stringWithFormat:@"%@%@",kBungieBaseURL,imageName];
                                         
-                                        imageName  = [grdData objectForKey:@"emblemPath"];
-                                        
-                                        if (imageName){
-                                            baseURL = [NSString stringWithFormat:@"%@%@",kBungieBaseURL,imageName];
-                                            
-                                            if (baseURL){
-                                                emblemURL = [[NSURL alloc] initWithString:baseURL];
-                                            }
-                                        }
-                                        
-                                        emblem = [grdData objectForKey:@"emblemBackgroundPath"];
-                                        
-                                        if (emblem){
-                                            emblem = [NSString stringWithFormat:@"%@%@",kBungieBaseURL,emblem];
-                                            
-                                            if(emblem){
-                                              [cell.imgEmblem setImageWithURL:emblemURL];
-                                              [cell.imgEmblem setHidden:YES];
-                                                
-                                              imageURL = [[NSURL alloc] initWithString:emblem];
-                                                
-                                                if (imageURL){
-                                                    [cell.imgBackground setImageWithURL:imageURL];
-                                                 
-                                                }
-                                            }
-                                        }
-                                        
-                                        strLight = [NSString stringWithFormat:@"%@",lightLevel];
-                                       
-                                        if (strLight){
-                                            [cell.lblLightLevel setText:strLight];
-                                        }
-                                        classDesc = [Utilities decodeClassHash:classHash];
-                                        
-                                        if (classDesc){
-                                            [cell.lblGuardianClass setText:classDesc];
-                                        }
-                                        
-                                   
-                                        raceDesc = [Utilities decodeRaceHash:raceHash];
-                                        
-                                        if (raceDesc){
-                                          [cell.lblGuardianRace setText:raceDesc];
-                                        }
-                                        
-                                       genderDesc = [Utilities decodeGenderHash:genderHash];
-                                        
-                                        if (genderDesc){
-                                            [cell.lblGuardianGender setText:genderDesc];
+                                        if (baseURL){
+                                            emblemURL = [[NSURL alloc] initWithString:baseURL];
                                         }
                                     }
                                     
-                                [self.tblChars endUpdates];
-                             }
+                                    emblem = [grdData objectForKey:@"emblemBackgroundPath"];
+                                    
+                                    if (emblem){
+                                        emblem = [NSString stringWithFormat:@"%@%@",kBungieBaseURL,emblem];
+                                        
+                                        if(emblem){
+                                            [cell.imgEmblem setImageWithURL:emblemURL];
+                                            [cell.imgEmblem setHidden:YES];
+                                            
+                                            imageURL = [[NSURL alloc] initWithString:emblem];
+                                            
+                                            if (imageURL){
+                                                [cell.imgBackground setImageWithURL:imageURL];
+                                                
+                                            }
+                                        }
+                                    }
+                                    
+                                    strLight = [NSString stringWithFormat:@"%@",lightLevel];
+                                    
+                                    if (strLight){
+                                        [cell.lblLightLevel setText:strLight];
+                                    }
+                                    classDesc = [Utilities decodeClassHash:classHash];
+                                    
+                                    if (classDesc){
+                                        [cell.lblGuardianClass setText:classDesc];
+                                    }
+                                    
                                 
+                                    raceDesc = [Utilities decodeRaceHash:raceHash];
+                                    
+                                    if (raceDesc){
+                                        [cell.lblGuardianRace setText:raceDesc];
+                                    }
+                                    
+                                    genderDesc = [Utilities decodeGenderHash:genderHash];
+                                    
+                                    if (genderDesc){
+                                        [cell.lblGuardianGender setText:genderDesc];
+                                    }
+                                }
+                                
+                            [self.tblChars endUpdates];
                             }
-                            @catch (NSException *exception) {
-                                NSLog(@"GuardianViewController:kDestinyLoadedCharacterNotification:Loading Char Exception->%@",exception.description);
-                            }
+                            
+                        }
+                        @catch (NSException *exception) {
+                            NSLog(@"GuardianViewController:kDestinyLoadedCharacterNotification:Loading Char Exception->%@",exception.description);
                         }
                     }
-                    
-
-                    
-                }
+                
+                
+                
+            }
                 completion:^(BOOL finished) {
                    NSLog( @"GuardianViewController:kDestinyLoadedCharacterNotification:LoadingChar[%@]Completed!",currentCharacter);
                 }];
-                
-        }
+            }
         
     }];
     
@@ -1890,7 +1948,7 @@
                 [header setText:@"Characters"];
                 break;
             case 1:
-                [header setText:@"Activities and Weapons Details"];
+                [header setText:@"Current Clan Details"];
                 break;
             }
         return header;
@@ -2030,7 +2088,6 @@
             [cell.contentView setBackgroundColor:[UIColor blackColor]];
              
         }
-        
         
         
         if (cell){
@@ -2207,80 +2264,54 @@
                 
             case 1:
                 
-                /*
-                 po vendorDetails.displayProperties
-                 {
-                     description = "A peddler of strange curios, X\U00fbr's motives are not his own. He bows to his distant masters, the Nine.";
-                     hasIcon = 1;
-                     icon = "/common/destiny2_content/icons/5659e5fc95912c079962376dfe4504ab.png";
-                     largeIcon = "/common/destiny2_content/icons/801c07dc080b79c7da99ac4f59db1f66.jpg";
-                     largeTransparentIcon = "/img/destiny_content/vendor/icons/xur_large_icon.png";
-                     mapIcon = "/img/destiny_content/vendor/icons/xur_map_icon.png";
-                     name = "X\U00fbr";
-                     originalIcon = "/common/destiny2_content/icons/5659e5fc95912c079962376dfe4504ab.png";
-                     requirementsDisplay =     (
-                     );
-                     smallTransparentIcon = "/img/destiny_content/vendor/icons/xur_small_icon.png";
-                     subtitle = "Agent of the Nine";
-                 }
-                 
-                 */
+                vendorHash =  [self.clans objectAtIndex:indexPath.row];
                 
-                if (cell.tag){
-                    NSLog(@"Vendor Already loaded...");
-                    return cell;
-                }
+                CLNDetail *clanDetail = (CLNDetail *) [self->destClanData objectForKey:vendorHash];
                 
-                /*vendorHash =  [self.destPublicVendors objectAtIndex:indexPath.row];
-                
-                VNDDetails *vendorDetails =  (VNDDetails*)[destPVendorData objectForKey:vendorHash];
-                
-                VNDDetailsDisplayProperties *vDisplayProps = nil;
-                
-                NSString *vendorName = nil,
-                         *vendorDesc = nil,
-                         *vendorTitle = nil;
+               
+                NSString *clanName = nil,
+                         *clanMotto = nil,
+                         *clanBannerPath = nil,
+                         *clanAvatarPath = nil;
                 
                 
-                
-                if (vendorDetails){
-                    vDisplayProps = (VNDDetailsDisplayProperties*) [vendorDetails displayProperties] ;
+                if (clanDetail){
+                        
+                        clanName = [clanDetail name];
+                        clanMotto = [clanDetail motto];
                     
-                    if (vDisplayProps){
+                        clanBannerPath = [clanDetail bannerPath];
+                        clanAvatarPath = [clanDetail avatarPath];
                         
-                        vendorName = [vDisplayProps name];
-                        vendorDesc = [vDisplayProps description];
-                        vendorTitle = [vDisplayProps subtitle];
-                        
-                        
-                        if (vDisplayProps.hasIcon){
-                            imageName  = [vDisplayProps icon];
-                            emblem = [vDisplayProps largeIcon];
-                        }
-                        
-                        if (imageName){
-                            baseURL  = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,imageName];
+                       
+                        if (clanAvatarPath){
+                            baseURL  = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,clanAvatarPath];
                             imageURL = [[NSURL alloc] initWithString:baseURL];
                         }
                         
-                        if (emblem){
-                            emblem = [NSString stringWithFormat:@"%@%@",kBungieBaseURL,emblem];
-                            emblemURL = [[NSURL alloc] initWithString:emblem];
+                        if (clanBannerPath){
+                            clanBannerPath = [NSString stringWithFormat:@"%@%@",kBungieBaseURL,clanBannerPath];
+                            emblemURL = [[NSURL alloc] initWithString:clanBannerPath];
                         }
                         
                         [cell.imgBackground setImageWithURL:emblemURL];
                         
                         [cell.imgEmblem setImageWithURL:imageURL];
-                        
-                        [cell.lblGuardianClass setText:vendorName];
-                        [cell.lblGuardianRace setText:vendorTitle];
+                      
+                        [cell.lblGuardianClass setTextColor:[UIColor whiteColor]];
+                        [cell.lblGuardianClass setText:clanName];
+                      
+                        [cell.lblGuardianCareer setTextColor:[UIColor orangeColor]];
+                        [cell.lblGuardianCareer setText:clanMotto];
+                    
+                        [cell.lblGuardianRace setText:@""];
                         [cell.lblGuardianGender setText:@""];
                         [cell.lblLightLevel setText:@""];
-                    }
+                }
                     
-                 }
+                 
                 
-                */
+               
                 
                 break;
         }
@@ -2317,8 +2348,8 @@
         case 1:
             
               
-              if (self.destPublicVendors != nil){
-                  iRows = self.destPublicVendors.count;
+              if (self.clans != nil){
+                  iRows = self.clans.count;
               }
             
 
@@ -2332,10 +2363,13 @@
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
     
     NSInteger iRows = 1;
+   
     
-    BOOL pVendorsLoaded = [appDelegate isPublicVendorsLoaded];
-    
-    iRows = (pVendorsLoaded ? 2 : 1);
+    if (self.clans){
+        
+        iRows = (self.clans.count > 0 ? 2 : 1);
+    }
+   
 
     return iRows;
     
