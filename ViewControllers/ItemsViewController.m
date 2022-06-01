@@ -9,6 +9,7 @@
 #import "ItemsViewController.h"
 #import "NetworkAPISingleClient+Definition.h"
 #import "NetworkAPISingleClient+LinkedProfiles.h"
+#import "GuardianViewController.h"
 #import "DataModels.h"
 #import "Constants.h"
 #import "ItemCellTableView.h"
@@ -34,6 +35,11 @@
     NSInteger RowHeight,
               HeaderHeight,
               FooterHeight;
+    
+    NSString *currentClass;
+    
+    UIImageView *cImage;
+    
 }
 @end
 
@@ -53,6 +59,7 @@
 @synthesize selectedCharEmblem = _selectedCharEmblem;
 @synthesize btnClose = _btnClose;
 @synthesize lblItemDescription = _lblItemDescription;
+@synthesize parentVC = _parentVC;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -90,6 +97,8 @@
                                  
                         
                         strClass = [Utilities decodeClassHash:classHash];
+                        
+                        self->currentClass = strClass;
                         strRace  = [Utilities decodeRaceHash:raceType];
                         strGender = [Utilities decodeGenderHash:genderHash];
                         strLight  = [cData objectForKey:@"light"];
@@ -99,9 +108,9 @@
             
             
         }
-        UIImageView *cImage = self.selectedCharEmblem;
+        self->cImage = self.selectedCharEmblem;
         
-        [cImage setFrame:CGRectMake(0, 10, self.tblItems.frame.size.width, 100)];
+        [self->cImage setFrame:CGRectMake(0, 10, self.tblItems.frame.size.width, 100)];
         
         CGRect  lblFrame = CGRectMake(0, 10, self.tblItems.frame.size.width, 80);
         UILabel *lblChar   = [[UILabel alloc] initWithFrame:lblFrame];
@@ -110,9 +119,9 @@
         [lblChar setTextColor:[UIColor systemOrangeColor]];
         [lblChar setText:[NSString stringWithFormat:@"%@//%@//%@//%@",strLight,strClass,strRace,strGender]];
         
-        [cImage addSubview:lblChar];
+        [self->cImage addSubview:lblChar];
         
-        [self.navigationItem setTitleView:cImage];
+        [self.navigationItem setTitleView:self->cImage];
        
     }
     
@@ -1446,7 +1455,7 @@
                     
                     BCKDisplayProperties *dispProps = (BCKDisplayProperties*) [ibucDef displayProperties];
                     if (dispProps){
-                        title = dispProps.name;
+                        title = [NSString stringWithFormat:@"%@->%@",self->currentClass,dispProps.name];
                     }
                 }
             
@@ -2000,16 +2009,38 @@
 
 -(void) closeAction{
     
-    NSLog(@"ItemsViewController:closeAction:Invoked...");
     
-    [self dismissViewControllerAnimated:NO completion:^{
+    NSLog(@"ItemsViewController:closeAction:Invoked...");
+     
+    [self.navigationController dismissViewControllerAnimated:NO completion:^{
+    
+        NSLog(@"ItemsViewController:closeAction:Completed...");
         
-        if (![self.tblItems hasUncommittedUpdates]){
-            [self.tblItems reloadData];
-            NSLog(@"Refreshed items table");
+        GuardianViewController *gVC = nil;
+        
+        if (! self.parentVC){
+            NSLog(@"ItemsViewController:closeAction:Not Parent VC Detected:exiting...");
+            return;
+            
         }
         
-        NSLog(@"ItemsViewController:closeAction:Completed...");
+        if ([self.parentVC isKindOfClass:[GuardianViewController class]]){
+            
+            gVC = (GuardianViewController *) self.parentVC;
+            
+            if (gVC){
+                [gVC refreshCharacterEquipment];
+                
+                self.parentVC = nil;
+            }
+            
+            
+            if (self->cImage){
+                self->cImage = nil;
+                [self.navigationItem setTitleView:nil];
+            }
+        }
+        
     }];
     
 }

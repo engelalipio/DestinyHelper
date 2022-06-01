@@ -26,6 +26,8 @@ UICollectionViewDataSource, UICollectionViewDelegate>
 - (void)closeAction;
 - (void)loadWeapons;
 - (void)removeWeaponAction:(NSString *) weaponHash;
+- (void)refreshEquippedWeaponAction:(NSString *) weaponHash;
+
 - (IBAction)toggleTableAction:(UISegmentedControl *)sender;
 
 @end

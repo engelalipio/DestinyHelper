@@ -2548,6 +2548,7 @@
                     [iVC setDestEquippedItemsBuckets:self->equippedArray];
                     [iVC setDestChars:self->destCharData];
                     [iVC setSelectedCharEmblem:self->selectedCharEmblem];
+                    [iVC setParentVC:self];
                     [iVC loadItems];
                     
                     navVC = [[UINavigationController alloc] initWithRootViewController:iVC];

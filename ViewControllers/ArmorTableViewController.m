@@ -31,7 +31,12 @@
                         *destCharData,
                         *allCharsData;
     
-    NSInteger RowHeight ;
+    NSInteger RowHeight;
+    
+    NSString *currentClass;
+    
+    UIImageView *cImage;
+    
 }
 @end
 
@@ -79,6 +84,9 @@
                                  
                         
                         strClass = [Utilities decodeClassHash:classHash];
+                        
+                        self->currentClass = strClass;
+                        
                         strRace  = [Utilities decodeRaceHash:raceType];
                         strGender = [Utilities decodeGenderHash:genderHash];
                         strLight  = [cData objectForKey:@"light"];
@@ -499,7 +507,12 @@
                 
                 self.parentVC = nil;
             }
-             
+            
+            
+            if (self->cImage){
+                self->cImage = nil;
+                [self.navigationItem setTitleView:nil];
+            }
         }
         
     }];
@@ -1190,7 +1203,7 @@
                 
                 buckDef =  [appDelegate.destinyInventoryBucketDefinitions objectForKey:bucketHash];
                 if (buckDef){
-                    title  = [NSString stringWithFormat:@"%@: [%d/%d]",[buckDef.displayProperties name],CurrentArmor
+                    title  = [NSString stringWithFormat:@"%@->%@: [%d/%d]",self->currentClass,[buckDef.displayProperties name],CurrentArmor
                               ,TotalArmor];
                 }
                 

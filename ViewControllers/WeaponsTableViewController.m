@@ -39,6 +39,10 @@
     BOOL useCView;
     
     NSInteger RowHeight;
+    
+    NSString *currentClass;
+    
+    UIImageView *cImage;
 }
 
 @property (nonatomic, strong) NSMutableArray *primaryWeaponsArray;
@@ -62,6 +66,8 @@
 @synthesize selectedCharData = _selectedCharData;
 @synthesize destChars = _destChars;
 @synthesize parentVC = _parentVC;
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -98,6 +104,9 @@
                                  
                         
                         strClass = [Utilities decodeClassHash:classHash];
+                        
+                        self->currentClass = [strClass copy];
+                        
                         strRace  = [Utilities decodeRaceHash:raceType];
                         strGender = [Utilities decodeGenderHash:genderHash];
                         strLight  = [cData objectForKey:@"light"];
@@ -111,9 +120,9 @@
     
     if (self.selectedCharEmblem){
     
-        UIImageView *cImage = self.selectedCharEmblem;
+        self->cImage = self.selectedCharEmblem;
     
-        [cImage setFrame:CGRectMake(0, 10, self.tableView.frame.size.width, 100)];
+        [self->cImage setFrame:CGRectMake(0, 10, self.tableView.frame.size.width, 100)];
     
         CGRect  lblFrame = CGRectMake(0, 10, self.tableView.frame.size.width, 80);
         UILabel *lblChar   = [[UILabel alloc] initWithFrame:lblFrame];
@@ -122,9 +131,9 @@
         [lblChar setTextColor:[UIColor systemOrangeColor]];
         [lblChar setText:[NSString stringWithFormat:@"%@//%@//%@//%@",strLight,strClass,strRace,strGender]];
         
-        [cImage addSubview:lblChar];
+        [self->cImage addSubview:lblChar];
         
-        [self.navigationItem setTitleView:cImage];
+        [self.navigationItem setTitleView:self->cImage];
        
      
     }
@@ -176,8 +185,12 @@
             
             if (gVC){
                 [gVC refreshCharacterEquipment];
-                
                 self.parentVC = nil;
+            }
+            
+            if (self->cImage){
+                self->cImage = nil;
+                [self.navigationItem setTitleView:nil];
             }
              
         }
@@ -187,43 +200,242 @@
     
 }
 
+-(void)refreshEquippedWeaponAction:(NSString *)weaponHash{
+    
+    
+    ItemCellTableView *selectedCell = nil;
+    
+    NSArray<UITableViewCell*> *visibleCells = nil;
+    NSArray<NSIndexPath*>  *visibleIndexes  = nil;
+    
+    NSIndexPath *selectedRow = nil;
+    
+    @try {
+        
+        selectedRow  =  [self.tableView indexPathForSelectedRow];
+        
+        if (!selectedRow){
+            NSLog(@"WeaponsViewController:refreshEquippedWeaponAction:No Row selected to Refesh:Exiting...");
+            return;
+        }
+        
+        selectedCell = [self.tableView cellForRowAtIndexPath:selectedRow];
+        
+        if (!selectedCell){
+            NSLog(@"WeaponsViewController:refreshEquippedWeaponAction:No Cell selected for IndexPath");
+            return;
+        }
+        
+        
+        if (weaponHash){
+            
+            visibleCells =  [self.tableView visibleCells];
+            
+            visibleIndexes = [self.tableView indexPathsForVisibleRows];
+            
+            [self.refreshControl beginRefreshing];
+            
+            [self.tableView beginUpdates];
+            
+            
+                if (visibleCells.count > 0){
+                     for (UITableViewCell *vCell in visibleCells) {
+                        [vCell.layer setMasksToBounds:NO];
+                        [vCell.layer setCornerRadius:0];
+                        [vCell.layer setBorderWidth:1];
+                        [vCell.layer setShadowOffset: CGSizeMake(0, 0)];
+                        [vCell.layer setBorderColor:[UIColor clearColor].CGColor];
+                        
+                     }
+                }
+            
+              
+                [selectedCell.layer setMasksToBounds:YES];
+                [selectedCell.layer setCornerRadius:5];
+                [selectedCell.layer setBorderWidth:3];
+                [selectedCell.layer setShadowOffset: CGSizeMake(-1, 1)];
+                [selectedCell.layer setBorderColor:[UIColor whiteColor].CGColor];
+            
+               
+                [self.tableView deselectRowAtIndexPath:selectedRow animated:NO];
+            
+                NSLog(@"WeaponsViewController:refreshEquippedWeaponsAction:Refreshing UI");
+                
+                /*[self.tableView reloadRowsAtIndexPaths:visibleIndexes
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];*/
+
+                
+                [self.tableView endUpdates];
+            
+               // [self.tableView reloadData];
+             [self.refreshControl endRefreshing];
+              NSLog(@"WeaponsViewController:refreshEquippedWeaponsAction:finished!");
+            
+            
+        }
+        
+            
+    } @catch (NSException *exception) {
+        NSLog(@"WeaponsViewController:refreshEquippedWeaponAction:Exception->%@",exception.description);
+    } @finally {
+        
+        selectedCell = nil;
+        
+        visibleCells = nil;
+        visibleIndexes  = nil;
+        
+        selectedRow = nil;
+    }
+    
+    
+    
+}
 
 - (void)removeWeaponAction:(NSString *) weaponHash{
     
-    NSArray<NSIndexPath*> *selectedRows  = nil;
+    NSArray<NSIndexPath*> *deletedRows  = nil;
+    
+    NSIndexPath *selectedRow = nil;
+    
+    NSString
+            *weaponHashFilter = nil,
+            *bucketHashFilter = nil,
+            *primaryBucketKey = nil,
+            *energyBucketKey  = nil,
+            *heavyBucketKey   = nil,
+            *ghostBucketKey   = nil,
+            *artBucketKey     = nil;
+    
+    NSPredicate *bPredicate = nil;
+    
+    NSArray *primaryFilteredResult = nil,
+            *energyFilteredResult  = nil,
+            *heavyFilteredResult   = nil,
+            *ghostFilteredResult   = nil,
+            *artFilteredResult     = nil;
+ 
     @try {
         
-        if (self.destWeapons){
-            
-            if ([self.destWeapons.allKeys containsObject:weaponHash]){
-            
-                [self.destWeapons removeObjectForKey:weaponHash];
-                
-                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon->%@ to destWeapons...",weaponHash);
-            }
-        }
-        
-        if (self->instanceData){
-            
-            if ([self->instanceData.allKeys containsObject:weaponHash]){
-               
-                [self->instanceData removeObjectForKey:weaponHash];
-             
-                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon->%@ to instanceData...",weaponHash);
-            }
-        }
-        
-        selectedRows =  [self.tableView indexPathsForVisibleRows];
-        
-        if (selectedRows){
-            
-         [self.tableView beginUpdates];
-         NSLog(@"WeaponsViewController:updateInstancedItemData:Removing Vaulted Weapon");
-            
-         [self.tableView deleteRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationAutomatic];
           
-         [self.tableView endUpdates];
-          NSLog(@"WeaponsViewController:removeWeaponAction::finished!");
+        
+            for(int ikIdx = 0;ikIdx < self.destWeaponBuckets.count; ikIdx ++){
+              
+                switch (ikIdx) {
+                    case 0:
+                        primaryBucketKey  = [self.destWeaponBuckets objectAtIndex:ikIdx];
+                        break;
+                        
+                    case 1:
+                        energyBucketKey   = [self.destWeaponBuckets objectAtIndex:ikIdx];
+                        break;
+                        
+                    case 2 :
+                        heavyBucketKey    = [self.destWeaponBuckets objectAtIndex:ikIdx];
+                        break;
+                        
+                    case 3 :
+                        ghostBucketKey    = [self.destWeaponBuckets objectAtIndex:ikIdx];
+                        break;
+                    case 4:
+                        artBucketKey      = [self.destWeaponBuckets objectAtIndex:ikIdx];
+                        break;
+                }
+                
+            }
+        
+            weaponHashFilter = [NSString stringWithFormat:@"%@_%@_%@",self.selectedChar,primaryBucketKey,weaponHash];
+            bPredicate       = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",weaponHashFilter];
+        
+        
+            primaryFilteredResult = [self->primaryWeapons filteredArrayUsingPredicate:bPredicate];
+            if (primaryFilteredResult.count > 0){
+                [self->primaryWeapons removeObject:weaponHashFilter];
+                bucketHashFilter = [NSString stringWithFormat:@"%@_%@",primaryBucketKey,weaponHash];
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removed Primary Weapon->%@ from primaryWeaponsArray...",weaponHashFilter);
+            }
+        
+        
+            weaponHashFilter = [NSString stringWithFormat:@"%@_%@_%@",self.selectedChar,energyBucketKey,weaponHash];
+            bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",weaponHashFilter];
+ 
+            energyFilteredResult = [self->energyWeapons filteredArrayUsingPredicate:bPredicate];
+            if (energyFilteredResult.count > 0){
+                [self->energyWeapons removeObject:weaponHashFilter];
+                bucketHashFilter = [NSString stringWithFormat:@"%@_%@",energyBucketKey,weaponHash];
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removed Energy Weapon->%@ from energyWeaponsArray...",weaponHashFilter);
+            }
+        
+            weaponHashFilter = [NSString stringWithFormat:@"%@_%@_%@",self.selectedChar,heavyBucketKey,weaponHash];
+            bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",weaponHashFilter];
+     
+            heavyFilteredResult = [self->powerWeapons filteredArrayUsingPredicate:bPredicate];
+            if (heavyFilteredResult.count > 0){
+                [self->powerWeapons removeObject:weaponHashFilter];
+                bucketHashFilter = [NSString stringWithFormat:@"%@_%@",heavyBucketKey,weaponHash];
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removed Heavy Weapon->%@ from heavyWeaponsArray...",weaponHashFilter);
+            }
+        
+        
+            weaponHashFilter = [NSString stringWithFormat:@"%@_%@_%@",self.selectedChar,ghostBucketKey,weaponHash];
+            bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",weaponHashFilter];
+    
+            ghostFilteredResult = [self->ghosts filteredArrayUsingPredicate:bPredicate];
+            if (ghostFilteredResult.count > 0){
+                [self->ghosts  removeObject:weaponHashFilter];
+                bucketHashFilter = [NSString stringWithFormat:@"%@_%@",ghostBucketKey,weaponHash];
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removed Ghost->%@ from ghostsArray...",weaponHashFilter);
+            }
+        
+            weaponHashFilter = [NSString stringWithFormat:@"%@_%@_%@",self.selectedChar,artBucketKey,weaponHash];
+            bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",weaponHashFilter];
+    
+            artFilteredResult = [self->artifact filteredArrayUsingPredicate:bPredicate];
+            if (artFilteredResult.count > 0){
+                [self->artifact removeObject:weaponHashFilter];
+                bucketHashFilter = [NSString stringWithFormat:@"%@_%@",artBucketKey,weaponHash];
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removed Artifact->%@ from Artifacy...",weaponHashFilter);
+            }
+                
+            if ([self.destWeapons.allKeys containsObject:bucketHashFilter]){
+                [self.destWeapons removeObjectForKey:bucketHashFilter];
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon by Bucket Hash->%@ from All destWeapons...",bucketHashFilter);
+            }
+        
+            if ([self.destWeapons.allKeys containsObject:weaponHashFilter]){
+                [self.destWeapons removeObjectForKey:weaponHashFilter];
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon by Full Hash->%@ from All destWeapons...",weaponHashFilter);
+            }
+        
+            if ([self->instanceData.allKeys containsObject:weaponHashFilter]){
+                [self->instanceData removeObjectForKey:weaponHashFilter];
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon by Full Hash->%@ from Weapons instanceData...",weaponHashFilter);
+            }
+        
+            if ([self->instanceData.allKeys containsObject:weaponHash]){
+                [self->instanceData removeObjectForKey:weaponHash];
+                NSLog(@"WeaponsViewController:removeWeaponAction:Removing Weapon by Hash ->%@ from Weapons instanceData...",weaponHash);
+            }
+     
+        
+        selectedRow  =  [self.tableView indexPathForSelectedRow];
+        
+        if (selectedRow){
+         
+          deletedRows = [[NSArray<NSIndexPath*> alloc] initWithObjects:selectedRow, nil];
+            
+         //Need to remove table cell
+         [self.refreshControl beginRefreshing];
+            [self.tableView beginUpdates];
+            
+            NSLog(@"WeaponsViewController:removeWeaponsAction:Removing Actioned Weapon from UI");
+            
+            [self.tableView deleteRowsAtIndexPaths:deletedRows
+                               withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self.tableView endUpdates];
+            [self.tableView reloadData];
+         [self.refreshControl endRefreshing];
+          NSLog(@"WeaponsViewController:removeWeaponAction:finished!");
         }
         
         
@@ -231,7 +443,8 @@
     } @catch (NSException *exception) {
         NSLog(@"WeaponsViewController:removeWeaponAction:Exception->%@",exception.description);
     } @finally {
-        selectedRows = nil;
+        selectedRow = nil;
+        deletedRows = nil;
     }
 }
 
@@ -469,7 +682,9 @@
                         if (itemResponse){
                             [appDelegate.destinyInventoryItemDefinitions setValue:itemResponse forKey:strHashKey];
                             
-                            [self updateStaticItemData:[strIdx integerValue] tableSection:[strSdx integerValue] usingStaticBaseItem:invItem];
+                            [self updateStaticItemData:[strIdx integerValue]
+                                          tableSection:[strSdx integerValue]
+                                   usingStaticBaseItem:invItem];
                         }
                         
                     }
@@ -556,9 +771,13 @@
                 }
                 
                 if (! [self->instanceData.allKeys containsObject:strHashKey]){
+                    
                     NSLog(@"WeaponsViewController:kDestinyLoadedInstancedItemNotification:Adding->%@ to instanceData...",strHashKey);
+                    
                     [self->instanceData setValue:instanceBase forKey:strHashKey];
-                    [self updateInstancedItemData:[strIdx integerValue] tableSection:[strSdx integerValue]
+                    
+                    [self updateInstancedItemData:[strIdx integerValue]
+                                     tableSection:[strSdx integerValue]
                                usingInstancedItem:instanceBase
                                  usingInstancedId:strInstanceKey];
                 }
@@ -1183,19 +1402,11 @@
         NSIndexPath *cIndexPath = nil;
       
         if (!hasUncommitedChanges){
-            
-            //for (int idx = 0; idx < visibleIndexPaths.count ; idx++ ) {
                 NSIndexPath *iPath = [NSIndexPath indexPathForRow:itemIndex inSection:itemSection];
                 if (iPath){
-                   // if (idx == itemIndex){
-                        performUpdates = YES;
-                        cIndexPath = iPath;
-                      //  break;
+                   performUpdates = YES;
+                   cIndexPath = iPath;
                 }
-                
-           // }
-            
-  
         }
         else{
            
@@ -1205,11 +1416,11 @@
         }
         
         if (performUpdates){
-        
+            [UIView setAnimationsEnabled:NO];
+            [self.tableView.refreshControl beginRefreshing];
         [self.tableView performBatchUpdates:^{
-            
+           
             [self.tableView beginUpdates];
-            
             
             if (instanceBase){
                 
@@ -1303,19 +1514,24 @@
             }
            
             [self.tableView endUpdates];
+            [self.tableView.refreshControl endRefreshing];
         }
         completion:^(BOOL finished) {
             if (finished){
                 
-                [self.tableView beginUpdates];
+                
+                 [self.tableView reloadData];
+                 [self.tableView reloadInputViews];
+                
+                /*[self.tableView beginUpdates];
                 NSLog(@"WeaponsViewController:updateInstancedItemData:Reloading Indexes");
                  [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
-                [self.tableView endUpdates];
+                [self.tableView endUpdates];*/
                 NSLog(@"WeaponsViewController:updateInstancedItemData:performBatchUpdates:finished!");
                  
             }
         }];
-            
+        [UIView setAnimationsEnabled:YES];
         }
         else{
             NSLog(@"WeaponsViewController:updateInstancedItemData has uncommited changes, waiting...");
@@ -1363,8 +1579,11 @@
             //}
             
             if (performUpdates){
+            [self.refreshControl beginRefreshing];
+            [UIView setAnimationsEnabled:NO];
             [self.tableView performBatchUpdates:^{
-              //  [self.tableView beginUpdates];
+               
+                [self.tableView beginUpdates];
                 if (invItem){
                     
                     ItemCellTableView *cell = [self.tableView cellForRowAtIndexPath:cIndexPath];
@@ -1500,10 +1719,10 @@
                             INVDDisplayProperties *invDisplayProps = (INVDDisplayProperties* )invResponse.displayProperties;
                             
                             NSString *imageName     = nil,
-                                    *baseURL       = nil,
-                                    *emblem        = nil;
+                                     *baseURL       = nil,
+                                     *emblem        = nil;
                             
-                            NSURL    *imageURL      = nil,
+                            NSURL   *imageURL      = nil,
                                     *emblemURL     = nil;
                             
                             if (invDisplayProps){
@@ -1546,8 +1765,8 @@
                     
             
             }
-               // [self.tableView endUpdates];
-                
+                [self.tableView endUpdates];
+               
                /* if (! hasUncommitedChanges){
                     [self.tableView beginUpdates];
                     NSLog(@"WeaponsViewController:updateStaticItemData:Reloading Indexes");
@@ -1559,19 +1778,34 @@
               completion:^(BOOL finished) {
                     if (finished){
                         
+                       
+                        [self.tableView reloadData];
+                        [self.tableView reloadInputViews];
+                        //[self.tableView reloadData];
+                        /*
                         [self.tableView beginUpdates];
-                        NSLog(@"WeaponsViewController:updateStaticItemData:Reloading Indexes");
-                         [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                        
+                        [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths
+                                              withRowAnimation:UITableViewRowAnimationNone];
+                        NSLog(@"WeaponsViewController:updateStaticItemData:Reloading Indexes:Completed!");
+                        
                         [self.tableView endUpdates];
-                        NSLog(@"WeaponsViewController:updateStaticItemData:performBatchUpdates:finished!");
+                        */
+                        
+                        NSLog(@"WeaponsViewController:updateStaticItemData:performBatchUpdates:Finished!");
+                        
                     }
             }];
+            [UIView setAnimationsEnabled:YES];
+            [self.refreshControl endRefreshing];
           }
 
             
         }
         else{
-            NSLog(@"WeaponsViewController:UpdateStaticItemData:For IndexPath Section->[%d],Row->[%d] returning due to hasUncommitedChanges",cIndexPath.section, cIndexPath.row);
+            NSLog(@"WeaponsViewController:UpdateStaticItemData:For IndexPath Section->[%d],Row->[%d] returning due to    hasUncommitedChanges",
+                  cIndexPath.section,
+                  cIndexPath.row);
         }
             
       
@@ -1651,7 +1885,7 @@
                 
                 buckDef =  [appDelegate.destinyInventoryBucketDefinitions objectForKey:bucketHash];
                 if (buckDef){
-                    title  = [NSString stringWithFormat:@"%@: [%d/%d]",[buckDef.displayProperties name],CurrentWeapons,TotalWeapons];
+                    title  = [NSString stringWithFormat:@"%@->%@: [%d/%d]",self->currentClass, [buckDef.displayProperties name],CurrentWeapons,TotalWeapons];
                 }
                 
             }
@@ -1717,8 +1951,11 @@
         if (cCell){
             
             NSString *strHashKey = [cCell.lblHash text];
-            NSLog(@"didSelectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,indexPath.section, indexPath.row);
             
+            NSLog(@"didSelectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d]",
+                  strHashKey,
+                  indexPath.section,
+                  indexPath.row);
             
             [cCell.layer setMasksToBounds:YES];
             [cCell.layer setCornerRadius:5];
@@ -2807,8 +3044,20 @@
                                                         if (pStat){
                                                             NSObject *objValue =   [pStat objectForKey:@"value"];
                                                             if (objValue){
-                                                                [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
-                                                                [cCell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
+                                                                
+                                                                if ([cell.lblItemType.text isEqualToString:@"Artifact"]){
+                                                                    [cell.lblPowerLevel setTextColor:[UIColor systemBlueColor]];
+                                                                    [cCell.lblPowerLevel setTextColor:[UIColor systemBlueColor]];
+                                                                    [cell.lblPowerLevel setText:[NSString stringWithFormat:@"+%@",objValue]];
+                                                                    [cCell.lblPowerLevel setText:[NSString stringWithFormat:@"+%@",objValue]];
+                                                                }
+                                                                else
+                                                                {
+                                                                  [cell.lblPowerLevel setTextColor:[UIColor whiteColor]];
+                                                                  [cCell.lblPowerLevel setTextColor:[UIColor whiteColor]];
+                                                                  [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
+                                                                  [cCell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
+                                                                }
                                                             }
                                                         }
                                                     }

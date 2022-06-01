@@ -44,6 +44,7 @@
 @property (nonatomic,strong) NSArray   *destEquippedItemsBuckets;
 @property (nonatomic,strong) NSString  *selectedChar;
 @property (nonatomic,strong) NSString  *selectedMembership;
+@property (nonatomic,strong) UIViewController *parentVC;
 
 @property (strong, nonatomic) IBOutlet UILabel *lblItemDescription;
 
