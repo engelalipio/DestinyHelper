@@ -44,6 +44,9 @@ UISearchBarDelegate,UISearchDisplayDelegate,ASWebAuthenticationPresentationConte
 
 - (IBAction)loginAction:(UIButton *)sender;
 
+- (void) searchBungieGroup: (NSString *) searchGroup;
+
+- (void) loadGroupDetails: (CLNDetail *) anyProfile;
 
 @end
 

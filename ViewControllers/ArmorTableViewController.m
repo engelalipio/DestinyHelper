@@ -483,6 +483,314 @@
 }
 
 
+- (void)removeArmorAction:(NSString *) armorHash{
+    
+    NSArray<NSIndexPath*> *deletedRows  = nil;
+    
+    NSIndexPath *selectedRow = nil;
+    
+    NSString
+            *armorHashFilter = nil,
+            *bucketHashFilter = nil,
+            *helmetBucketKey  = nil,
+            *glovesBucketKey  = nil,
+            *chestBucketKey   = nil,
+            *legBucketKey     = nil,
+            *classBucketKey     = nil;
+    
+    NSPredicate *bPredicate = nil;
+    
+    NSArray *helmetFilteredResult = nil,
+            *gloveFilteredResult  = nil,
+            *chestFilteredResult  = nil,
+            *legFilteredResult    = nil,
+            *classFilteredResult  = nil;
+ 
+    @try {
+        
+        
+            for(int ikIdx = 0;ikIdx < self.destArmorBuckets.count; ikIdx ++){
+              
+                switch (ikIdx) {
+                    case 0:
+                        helmetBucketKey  = [self.destArmorBuckets objectAtIndex:ikIdx];
+                        break;
+                        
+                    case 1:
+                        glovesBucketKey   = [self.destArmorBuckets objectAtIndex:ikIdx];
+                        break;
+                        
+                    case 2 :
+                        chestBucketKey    = [self.destArmorBuckets objectAtIndex:ikIdx];
+                        break;
+                        
+                    case 3 :
+                        legBucketKey    = [self.destArmorBuckets objectAtIndex:ikIdx];
+                        break;
+                    case 4:
+                        classBucketKey    = [self.destArmorBuckets objectAtIndex:ikIdx];
+                        break;
+                }
+                
+            }
+        
+        
+ 
+        
+            armorHashFilter = [NSString stringWithFormat:@"%@_%@_%@",self.selectedChar,helmetBucketKey,armorHash];
+            bPredicate      = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",armorHashFilter];
+        
+        
+            helmetFilteredResult = [self->helmets filteredArrayUsingPredicate:bPredicate];
+            if (helmetFilteredResult.count > 0){
+                [self->helmets removeObject:armorHashFilter];
+                bucketHashFilter = [NSString stringWithFormat:@"%@_%@",helmetBucketKey,armorHash];
+                NSLog(@"ArmorViewController:removeArmorAction:Removed Helment Weapon->%@ from helmets...",armorHashFilter);
+            }
+        
+        
+            armorHashFilter = [NSString stringWithFormat:@"%@_%@_%@",self.selectedChar,glovesBucketKey,armorHash];
+            bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",armorHashFilter];
+ 
+            gloveFilteredResult = [self->gauntles filteredArrayUsingPredicate:bPredicate];
+            if (gloveFilteredResult.count > 0){
+                [self->gauntles removeObject:armorHashFilter];
+                bucketHashFilter = [NSString stringWithFormat:@"%@_%@",glovesBucketKey,armorHash];
+                NSLog(@"ArmorViewController:removeArmorAction:Removed Gloves ->%@ from gauntles...",armorHashFilter);
+            }
+        
+            armorHashFilter = [NSString stringWithFormat:@"%@_%@_%@",self.selectedChar,chestBucketKey,armorHash];
+            bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",armorHashFilter];
+     
+            chestFilteredResult = [self->chestArmor filteredArrayUsingPredicate:bPredicate];
+            if (chestFilteredResult.count > 0){
+                [self->chestArmor removeObject:armorHashFilter];
+                bucketHashFilter = [NSString stringWithFormat:@"%@_%@",chestBucketKey,armorHash];
+                NSLog(@"ArmorViewController:removeArmorAction:Removed Chest ->%@ from chestArmor...",armorHashFilter);
+            }
+        
+        
+            armorHashFilter = [NSString stringWithFormat:@"%@_%@_%@",self.selectedChar,legBucketKey,armorHash];
+            bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",armorHashFilter];
+    
+            legFilteredResult = [self->legArmor filteredArrayUsingPredicate:bPredicate];
+            if (legFilteredResult.count > 0){
+                [self->legArmor  removeObject:armorHashFilter];
+                bucketHashFilter = [NSString stringWithFormat:@"%@_%@",legBucketKey,armorHash];
+                NSLog(@"ArmorViewController:removeArmorAction:Removed Legs->%@ from legArmor...",armorHashFilter);
+            }
+        
+            armorHashFilter = [NSString stringWithFormat:@"%@_%@_%@",self.selectedChar,classBucketKey,armorHash];
+            bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",armorHashFilter];
+    
+            classFilteredResult = [self->classArmor filteredArrayUsingPredicate:bPredicate];
+            if (classFilteredResult.count > 0){
+                [self->classArmor removeObject:armorHashFilter];
+                bucketHashFilter = [NSString stringWithFormat:@"%@_%@",classBucketKey,armorHash];
+                NSLog(@"ArmorViewController:removeArmorAction:Removed Class Item->%@ from classArmor...",armorHashFilter);
+            }
+                
+            if ([self.destArmor.allKeys containsObject:bucketHashFilter]){
+                [self.destArmor removeObjectForKey:bucketHashFilter];
+                NSLog(@"ArmorViewController:removeArmorAction:Removing Armor by Bucket Hash->%@ from All destArmor...",bucketHashFilter);
+            }
+        
+            if ([self.destArmor.allKeys containsObject:armorHashFilter]){
+                [self.destArmor removeObjectForKey:armorHashFilter];
+                NSLog(@"ArmorViewController:removeArmorAction:Removing Armor by Full Hash->%@ from All destWeapons...",armorHashFilter);
+            }
+        
+            if ([self->instanceData.allKeys containsObject:armorHashFilter]){
+                [self->instanceData removeObjectForKey:armorHashFilter];
+                NSLog(@"ArmorViewController:removeArmorAction:Removing Armor by Full Hash->%@ from Armor instanceData...",armorHashFilter);
+            }
+        
+            if ([self->instanceData.allKeys containsObject:armorHash]){
+                [self->instanceData removeObjectForKey:armorHash];
+                NSLog(@"ArmorViewController:removeArmorAction:Removing Armor by Hash ->%@ from Armor instanceData...",armorHash);
+            }
+     
+        
+        selectedRow  =  [self.tableView indexPathForSelectedRow];
+        
+        if (selectedRow){
+         
+          deletedRows = [[NSArray<NSIndexPath*> alloc] initWithObjects:selectedRow, nil];
+            
+         //Need to remove table cell
+         [self.refreshControl beginRefreshing];
+            [self.tableView beginUpdates];
+            
+            NSLog(@"ArmorViewController:removeArmorAction:Removing Actioned Armor from UI");
+            
+            [self.tableView deleteRowsAtIndexPaths:deletedRows
+                               withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self.tableView endUpdates];
+            [self.tableView reloadData];
+         [self.refreshControl endRefreshing];
+          NSLog(@"ArmorViewController:removeArmorAction:finished!");
+        }
+        
+        
+        
+    } @catch (NSException *exception) {
+        NSLog(@"ArmorViewController:removeArmorAction:Exception->%@",exception.description);
+    } @finally {
+        selectedRow = nil;
+        deletedRows = nil;
+    }
+    
+}
+
+- (void)refreshLockedArmorAction:(NSString *) armorHash{
+    
+    ItemCellTableView *selectedCell = nil;
+    
+
+    NSIndexPath *selectedRow = nil;
+    
+    UIImage *lockImage = [UIImage systemImageNamed:@"lock"],
+            *unLockImage = [UIImage systemImageNamed:@"lock.open"];
+    
+    @try {
+        
+        selectedRow  =  [self.tableView indexPathForSelectedRow];
+        
+        if (!selectedRow){
+            NSLog(@"ArmorViewController:refreshLockedArmorAction:No Row selected to Refesh:Exiting...");
+            return;
+        }
+        
+        selectedCell = [self.tableView cellForRowAtIndexPath:selectedRow];
+        
+        if (!selectedCell){
+            NSLog(@"ArmorViewController:refreshLockedArmorAction:No Cell selected for IndexPath");
+            return;
+        }
+        
+        
+        if (armorHash){
+            
+            //[self.refreshControl beginRefreshing];
+            
+            [self.tableView beginUpdates];
+            
+            if ([selectedCell.btnLockAction.currentImage isEqual:lockImage]){
+                [selectedCell.btnLockAction setImage:unLockImage forState:UIControlStateNormal];
+            }else{
+                [selectedCell.btnLockAction setImage:lockImage forState:UIControlStateNormal];
+            }
+            NSLog(@"ArmorViewController:refreshLockedArmorAction:Refreshing UI");
+ 
+            [self.tableView endUpdates];
+            
+               // [self.tableView reloadData];
+            // [self.refreshControl endRefreshing];
+              NSLog(@"ArmorViewController:refreshLockedArmorAction:finished!");
+            
+            
+        }
+        
+            
+    } @catch (NSException *exception) {
+        NSLog(@"ArmorViewController:refreshLockedArmorAction:Exception->%@",exception.description);
+    } @finally {
+        
+        selectedCell = nil;
+    
+    }
+    
+}
+
+- (void)refreshEquippedArmorAction:(NSString *) armorHash{
+    
+    ItemCellTableView *selectedCell = nil;
+    
+    NSArray<UITableViewCell*> *visibleCells = nil;
+    NSArray<NSIndexPath*>  *visibleIndexes  = nil;
+    
+    NSIndexPath *selectedRow = nil;
+    
+    @try {
+        
+        selectedRow  =  [self.tableView indexPathForSelectedRow];
+        
+        if (!selectedRow){
+            NSLog(@"ArmorViewController:refreshEquippedArmorAction:No Row selected to Refesh:Exiting...");
+            return;
+        }
+        
+        selectedCell = [self.tableView cellForRowAtIndexPath:selectedRow];
+        
+        if (!selectedCell){
+            NSLog(@"ArmorViewController:refreshEquippedArmorAction:No Cell selected for IndexPath");
+            return;
+        }
+        
+        
+        if (armorHash){
+            
+            visibleCells =  [self.tableView visibleCells];
+            
+            visibleIndexes = [self.tableView indexPathsForVisibleRows];
+            
+            [self.refreshControl beginRefreshing];
+            
+            [self.tableView beginUpdates];
+            
+            
+                if (visibleCells.count > 0){
+                     for (UITableViewCell *vCell in visibleCells) {
+                        [vCell.layer setMasksToBounds:NO];
+                        [vCell.layer setCornerRadius:0];
+                        [vCell.layer setBorderWidth:1];
+                        [vCell.layer setShadowOffset: CGSizeMake(0, 0)];
+                        [vCell.layer setBorderColor:[UIColor clearColor].CGColor];
+                        
+                     }
+                }
+            
+           
+                [selectedCell.layer setMasksToBounds:YES];
+                [selectedCell.layer setCornerRadius:5];
+                [selectedCell.layer setBorderWidth:3];
+                [selectedCell.layer setShadowOffset: CGSizeMake(-1, 1)];
+                [selectedCell.layer setBorderColor:[UIColor whiteColor].CGColor];
+            
+               
+                [self.tableView deselectRowAtIndexPath:selectedRow animated:NO];
+            
+                NSLog(@"ArmorViewController:refreshEquippedArmorAction:Refreshing UI");
+                
+                /*[self.tableView reloadRowsAtIndexPaths:visibleIndexes
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];*/
+
+                
+                [self.tableView endUpdates];
+            
+               // [self.tableView reloadData];
+             [self.refreshControl endRefreshing];
+              NSLog(@"ArmorViewController:refreshEquippedArmorAction:finished!");
+            
+            
+        }
+        
+            
+    } @catch (NSException *exception) {
+        NSLog(@"ArmorViewController:refreshEquippedArmorAction:Exception->%@",exception.description);
+    } @finally {
+        
+        selectedCell = nil;
+        
+        visibleCells = nil;
+        visibleIndexes  = nil;
+        
+        selectedRow = nil;
+    }
+    
+}
+
 - (void)closeAction {
     
     NSLog(@"ArmorViewController:closeAction:Invoked...");
@@ -576,7 +884,8 @@
                 NSLog(@"handleLongPress:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,selectedIndexPath.section, selectedIndexPath.row);
                 
                     if ([strHashKey length] > 0){
-                        [cCell equipItem:self->allCharsData];
+                        [cCell transferItemAction:self->allCharsData];
+                       
                       
                     }
                     else
@@ -608,7 +917,7 @@
                                     if (strHashKey.length > 0){
                                         [cCell.lblInstanceId setText:strHashKey];
                                     
-                                        [cCell equipItem:self->allCharsData];
+                                        [cCell transferItemAction:self->allCharsData];
                                     }
                                 }
                             }
@@ -691,49 +1000,33 @@
     BOOL hasUncommitedChanges = NO,
          performUpdates = NO;
     
-    NSArray<NSIndexPath *> *visibleIndexPaths = nil;
-    
     @try {
         instanceBase = (INSTBaseClass *) anyInstancedItem ;
        
-       
         hasUncommitedChanges = [self.tableView hasUncommittedUpdates];
-        
-        visibleIndexPaths =  [self.tableView indexPathsForVisibleRows];
         
         NSIndexPath *cIndexPath = nil;
       
         if (!hasUncommitedChanges){
+            NSIndexPath *iPath = [NSIndexPath indexPathForRow:itemIndex inSection:itemSection];
             
-            //for (int idx = 0; idx < visibleIndexPaths.count ; idx++ ) {
-              
-                NSIndexPath *iPath = [NSIndexPath indexPathForRow:itemIndex inSection:itemSection];
-                
-                if (iPath){
-                   // if (idx == itemIndex){
-                        performUpdates = YES;
-                        cIndexPath = iPath;
-                      //  break;
-                }
-                
-           // }
-            
+            if (iPath){
+                performUpdates = YES;
+                cIndexPath = iPath;
+            }
   
         }
-        else{
-           
-          NSLog(@"ArmorViewController:updateInstancedItemData:itemIndex [%d] returning to due hasUncommitedChanges", itemIndex);
-          return;
-
+        else
+        {
+         NSLog(@"ArmorViewController:updateInstancedItemData:itemIndex [%d] returning to due hasUncommitedChanges", itemIndex);
+         return;
         }
         
         if (performUpdates){
         
-        [self.tableView performBatchUpdates:^{
+            [self.tableView performBatchUpdates:^{
             
-            [self.tableView beginUpdates];
-            
-            if (instanceBase){
+              if (instanceBase){
                 
                 ItemCellTableView *cell = [self.tableView cellForRowAtIndexPath:cIndexPath];
                 
@@ -780,8 +1073,6 @@
                                       }
                                        
                                 }
-                              
-                                
                                 
                                 NSDictionary *pStat = (NSDictionary*) [data objectForKey:@"primaryStat"] ;
                                 
@@ -798,25 +1089,21 @@
                 }
               
             }
-             [self.tableView endUpdates];
-        }
-        completion:^(BOOL finished) {
-            if (finished){
                 
-                [self.tableView beginUpdates];
-                NSLog(@"ArmorViewController:updateInstancedItemData:Reloading Indexes");
-                 [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
-                [self.tableView endUpdates];
-                NSLog(@"ArmorViewController:updateInstancedItemData:performBatchUpdates:finished!");
+  
+        }
+            completion:^(BOOL finished) {
+                if (finished){
+                    NSArray<NSIndexPath *> *visibleIndexPaths = [self.tableView indexPathsForVisibleRows];
+                    
+                    [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths
+                                          withRowAnimation:UITableViewRowAnimationNone];
+                    NSLog(@"ArmorViewController:updateInstancedItemData:performBatchUpdates:finished!");
  
-            }
-        }];
+                }
+            }];
             
         }
-        else{
-            NSLog(@"ArmorViewController:updateInstancedItemData has uncommited changes, waiting...");
-        }
-        
         
     } @catch (NSException *exception) {
         NSLog(@"ArmorViewController:updateInstancedItemData:Exception->%@",exception.description);
@@ -833,211 +1120,198 @@
     
     BOOL hasUncommitedChanges = NO,
          performUpdates       = NO;
-    
-    NSArray<NSIndexPath *> *visibleIndexPaths = nil;
+
     
     @try {
         
         hasUncommitedChanges = [self.tableView hasUncommittedUpdates];
-        
-        visibleIndexPaths =  [self.tableView indexPathsForVisibleRows];
-        
+    
         NSIndexPath *cIndexPath = nil;
         
-       
         if (! hasUncommitedChanges){
-            
-           
-           // for (int idx = 0; idx < visibleIndexPaths.count ; idx++ ) {
-              
+
                 NSIndexPath *iPath = [NSIndexPath indexPathForRow:itemIndex inSection:itemSection];
                 
                 if (iPath){
-                    //if (idx == itemIndex){
-                        performUpdates = YES;
-                        cIndexPath = iPath;
-                    //    break;
-                   // }
+                   performUpdates = YES;
+                   cIndexPath = iPath;
                 }
-                
-            //}
             
-            if (hasUncommitedChanges){
-                performUpdates = NO;
-                NSLog(@"updateStaticItemData:For IndexPath Section->[%d],Row->[%d] returning due to hasUncommitedChanges",cIndexPath.section, cIndexPath.row);
+            if (performUpdates){
+            
+                
+                [self.tableView performBatchUpdates:^{
+                    
+                    if (invItem){
+                        
+                        ItemCellTableView *cell = [self.tableView cellForRowAtIndexPath:cIndexPath];
+                        
+                        static NSString *cellId = @"ItemCellTableView";
+                        
+                        if (! cell){
+                            cell = [[ItemCellTableView alloc] initWithStyle:UITableViewCellStyleDefault
+                                                                reuseIdentifier:cellId];
+                            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                         
+                        }
+                        
+                        if (cell){
+                            
+                            INVDResponse *invResponse =  [[INVDResponse alloc] initWithDictionary: invItem.response ];
+                            
+                            if (invResponse){
+                                
+                            
+                                NSString    *itemTypeName   = nil,
+                                            *itemName       = nil,
+                                            *itemDamageType = nil,
+                                            *itemScreenShot = nil,
+                                            *objDamageType  = nil,
+                                            *strHashKey     = nil,
+                                            *strCharacterId = nil;
+                                
+                                double t = 0;
+                                int    i = 0;
+                                
+                                
+                                NSNumber *objHash = [NSNumber numberWithDouble:[invResponse hash]];
+                                
+                                if (self.selectedChar){
+                                    strCharacterId = self.selectedChar;
+                                    [cell.lblCharacterId setText:strCharacterId];
+                                }
+                                
+                                if (invItem.message){
+                                    
+                                    switch([invItem.message integerValue]){
+                                        case 0:
+                                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"] forState:UIControlStateNormal];
+                                            break;
+                                        case 1:
+                                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"] forState:UIControlStateNormal];
+                                            break;
+                                    }
+                                }
+                                
+                                if (cell.lblHash.text.length == 0){
+                                    strHashKey = [objHash stringValue];
+                                    [cell.lblHash setText:strHashKey];
+                                    NSLog(@"updateStaticItemData:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,cIndexPath.section, cIndexPath.row);
+                                }
+                                
+                                itemTypeName   =  [invResponse itemTypeDisplayName];
+                                
+                                itemScreenShot = [invResponse screenshot];
+                                
+                                if (itemTypeName){
+                                    [cell.lblItemType setText:itemTypeName];
+                                }
+                                
+                                if (itemScreenShot){
+                                    [cell.lblMisc setText:itemScreenShot];
+                                    
+                                }
+                                
+                                t = [invResponse defaultDamageType];
+                                i= (int) t;
+                                
+                                objDamageType =  [NSString stringWithFormat:@"%d",i];
+                                
+                                if (objDamageType){
+                                
+                                    itemDamageType = [Utilities decodeDamageType:objDamageType.intValue];
+                                
+                                    if (itemDamageType){
+                                        [cell.lblDamageType setTextColor:[UIColor lightGrayColor]];
+                                        [cell.lblDamageType setText:itemDamageType];
+                                        
+                                        if ([cell.lblDamageType.text isEqualToString:@"Arc"]){
+                                            [cell.lblDamageType setTextColor:[UIColor cyanColor]];
+                                        }
+                                        if ([cell.lblDamageType.text isEqualToString:@"Solar"]){
+                                            [cell.lblDamageType setTextColor:[UIColor systemYellowColor]];
+                                        }
+                                        if ([cell.lblDamageType.text isEqualToString:@"Void"]){
+                                            [cell.lblDamageType setTextColor:[UIColor systemPurpleColor]];
+                                        }
+                                        if ([cell.lblDamageType.text isEqualToString:@"Stasis"]){
+                                            [cell.lblDamageType setTextColor:[UIColor systemBlueColor]];
+                                        }
+                                        
+                                        if ([itemDamageType isEqualToString:@"None"]){
+                                            [cell.lblDamageType setText:@""];
+                                        }
+                                    }
+                                }
+                                
+                                INVDDisplayProperties *invDisplayProps = (INVDDisplayProperties* )invResponse.displayProperties;
+                                
+                                NSString *imageName     = nil,
+                                        *baseURL       = nil,
+                                        *emblem        = nil;
+                                
+                                NSURL    *imageURL      = nil,
+                                        *emblemURL     = nil;
+                                
+                                if (invDisplayProps){
+                                    if (invDisplayProps.hasIcon){
+                                        
+                                        emblem =  invDisplayProps.icon;
+                                        
+                                        imageName = invResponse.iconWatermark;
+                                        
+                                        if (emblem){
+                                            baseURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,emblem];
+                                            emblemURL = [[NSURL alloc] initWithString:baseURL];
+                                            if (emblemURL){
+                                                [cell.imgItem setImageWithURL:emblemURL];
+                                            }
+                                        }
+                                        
+                                        if (imageName){
+                                            baseURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,imageName];
+                                            imageURL = [[NSURL alloc] initWithString:baseURL];
+                                            if (imageURL){
+                                                [cell.imgCareer setImageWithURL:imageURL];
+                                                [cell.imgCareer setAlpha:0.7];
+                                            }
+                                        }
+                                        
+                                    }
+                                    
+                                    itemName = [invDisplayProps name];
+                                    [cell.lblItemName setText:itemName];
+                                }
+                                
+                            }
+                        }
+                        
+                
+                   }
+                    
+                  
+                
+                }
+                 completion:^(BOOL finished) {
+                        if (finished){
+                            
+                            NSArray<NSIndexPath *> *visibleIndexPaths = [self.tableView indexPathsForVisibleRows];
+                            
+                            [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths
+                                                  withRowAnimation:UITableViewRowAnimationNone];
+                            
+                            NSLog(@"ArmorViewController:updateStaticItemData:performBatchUpdates:finished!");
+                        }
+                  }];
+ 
             }
  
-            [self.tableView performBatchUpdates:^{
-               // [self.tblItems beginUpdates];
-                if (invItem){
-                    
-                    ItemCellTableView *cell = [self.tableView cellForRowAtIndexPath:cIndexPath];
-                    static NSString *cellId = @"ItemCellTableView";
-                    
-                    if (! cell){
-                        cell = [[ItemCellTableView alloc] initWithStyle:UITableViewCellStyleDefault
-                                                            reuseIdentifier:cellId];
-                        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-                     
-                    }
-                    
-                    if (cell){
-                        
-                        INVDResponse *invResponse =  [[INVDResponse alloc] initWithDictionary: invItem.response ];
-                        
-                        if (invResponse){
-                            
-                        
-                            NSString    *itemTypeName   = nil,
-                                        *itemName       = nil,
-                                        *itemDamageType = nil,
-                                        *itemScreenShot = nil,
-                                        *objDamageType  = nil,
-                                        *strHashKey     = nil,
-                                        *strCharacterId = nil;
-                            
-                            double t = 0;
-                            int    i = 0;
-                            
-                            
-                            NSNumber *objHash = [NSNumber numberWithDouble:[invResponse hash]];
-                            
-                            if (self.selectedChar){
-                                strCharacterId = self.selectedChar;
-                                [cell.lblCharacterId setText:strCharacterId];
-                            }
-                            
-                            if (invItem.message){
-                                
-                                switch([invItem.message integerValue]){
-                                    case 0:
-                                        [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"] forState:UIControlStateNormal];
-                                        break;
-                                    case 1:
-                                        [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"] forState:UIControlStateNormal];
-                                        break;
-                                }
-                            }
-                            
-                            if (cell.lblHash.text.length == 0){
-                                strHashKey = [objHash stringValue];
-                                [cell.lblHash setText:strHashKey];
-                                NSLog(@"updateStaticItemData:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,cIndexPath.section, cIndexPath.row);
-                            }
-                            
-                            itemTypeName   =  [invResponse itemTypeDisplayName];
-                            
-                            itemScreenShot = [invResponse screenshot];
-                            
-                            if (itemTypeName){
-                                [cell.lblItemType setText:itemTypeName];
-                            }
-                            
-                            if (itemScreenShot){
-                                [cell.lblMisc setText:itemScreenShot];
-                                
-                            }
-                            
-                            t = [invResponse defaultDamageType];
-                            i= (int) t;
-                            
-                            objDamageType =  [NSString stringWithFormat:@"%d",i];
-                            
-                            if (objDamageType){
-                            
-                                itemDamageType = [Utilities decodeDamageType:objDamageType.intValue];
-                            
-                                if (itemDamageType){
-                                    [cell.lblDamageType setTextColor:[UIColor lightGrayColor]];
-                                    [cell.lblDamageType setText:itemDamageType];
-                                    
-                                    if ([cell.lblDamageType.text isEqualToString:@"Arc"]){
-                                        [cell.lblDamageType setTextColor:[UIColor cyanColor]];
-                                    }
-                                    if ([cell.lblDamageType.text isEqualToString:@"Solar"]){
-                                        [cell.lblDamageType setTextColor:[UIColor systemYellowColor]];
-                                    }
-                                    if ([cell.lblDamageType.text isEqualToString:@"Void"]){
-                                        [cell.lblDamageType setTextColor:[UIColor systemPurpleColor]];
-                                    }
-                                    if ([cell.lblDamageType.text isEqualToString:@"Stasis"]){
-                                        [cell.lblDamageType setTextColor:[UIColor systemBlueColor]];
-                                    }
-                                    
-                                    if ([itemDamageType isEqualToString:@"None"]){
-                                        [cell.lblDamageType setText:@""];
-                                    }
-                                }
-                            }
-                            
-                            INVDDisplayProperties *invDisplayProps = (INVDDisplayProperties* )invResponse.displayProperties;
-                            
-                            NSString *imageName     = nil,
-                                    *baseURL       = nil,
-                                    *emblem        = nil;
-                            
-                            NSURL    *imageURL      = nil,
-                                    *emblemURL     = nil;
-                            
-                            if (invDisplayProps){
-                                if (invDisplayProps.hasIcon){
-                                    
-                                    emblem =  invDisplayProps.icon;
-                                    
-                                    imageName = invResponse.iconWatermark;
-                                    
-                                    if (emblem){
-                                        baseURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,emblem];
-                                        emblemURL = [[NSURL alloc] initWithString:baseURL];
-                                        if (emblemURL){
-                                            [cell.imgItem setImageWithURL:emblemURL];
-                                        }
-                                    }
-                                    
-                                    if (imageName){
-                                        baseURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,imageName];
-                                        imageURL = [[NSURL alloc] initWithString:baseURL];
-                                        if (imageURL){
-                                            [cell.imgCareer setImageWithURL:imageURL];
-                                            [cell.imgCareer setAlpha:0.7];
-                                        }
-                                    }
-                                    
-                                }
-                                
-                                itemName = [invDisplayProps name];
-                                [cell.lblItemName setText:itemName];
-                            }
-                            
-                        }
-                    }
-                    
+        }
+        else
+        {
+            NSLog(@"updateStaticItemData:For IndexPath Section->[%d],Row->[%d] returning due to hasUncommitedChanges",
+                  cIndexPath.section, cIndexPath.row);
             
-            }
-             //   [self.tblItems endUpdates];
-            
-            }
-              completion:^(BOOL finished) {
-                    if (finished){
-                        
-                        [self.tableView beginUpdates];
-                        NSLog(@"ArmorViewController:updateStaticItemData:Reloading Indexes");
-                         [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
-                        [self.tableView endUpdates];
-                        NSLog(@"ArmorViewController:updateStaticItemData:performBatchUpdates:finished!");
-                        
-                 
-                    }
-            }];
-    
-           /* if (! hasUncommitedChanges){
-                [self.tableView beginUpdates];
-                 [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
-                [self.tableView endUpdates];
-            }*/
-            
-        }else{
-            NSLog(@"ArmorViewController:updateStaticItemData has uncommited changes, waiting to be done...");
         }
             
       
@@ -1436,10 +1710,8 @@
      
     @try {
         
+        [UIView setAnimationsEnabled:NO];
         cell = (ItemCellTableView*) [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
-        
-    
-        
         
         if (! cell){
             cell = [[ItemCellTableView alloc] initWithStyle:UITableViewCellStyleDefault
@@ -1529,7 +1801,50 @@
                 
                 if (cell){
                     
+                    
                     [cell.lblCharacterId setText:self.selectedChar];
+                    
+                    /*
+                     
+                     
+                     Valid Enum Values
+
+                     None: 0
+                     Locked: 1
+                     If this bit is set, the item has been "locked" by the user and cannot be deleted. You may want to represent this visually with a "lock" icon.
+                     Tracked: 2
+                     If this bit is set, the item is a quest that's being tracked by the user. You may want a visual indicator to show that this is a tracked quest.
+                     Masterwork: 4
+                     If this bit is set, the item has a Masterwork plug inserted. This usually coincides with having a special "glowing" effect applied to the item's icon.
+                     Crafted: 8
+                     If this bit is set, the item has been 'crafted' by the player. You may want to represent this visually with a "crafted" icon overlay.
+                     HighlightedObjective: 16
+                     If this bit is set, the item has a 'highlighted' objective. You may want to represent this with an orange-red icon border color.
+                     
+                     */
+                    NSNumber *objLocked = [NSNumber numberWithDouble:item.state];
+                    
+                    switch (objLocked.integerValue) {
+                        case 0:
+                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"]
+                                                forState:UIControlStateNormal];
+                                
+                            break;
+                            case 1:
+                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                    forState:UIControlStateNormal];
+                             
+                            break;
+                        case 2://tracked
+                        case 4://Masterwork
+                            
+                            break;
+                            
+                        case 5://Masterwork locked
+                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                    forState:UIControlStateNormal];
+                            break;
+                    }
                     
                     if (appDelegate.destinyInventoryItemDefinitions){
                         
@@ -1805,7 +2120,7 @@
     } @catch (NSException *exception) {
         NSLog(@"%@",exception.description);
     } @finally {
-       
+        [UIView setAnimationsEnabled:YES];
     }
     return cell;
     

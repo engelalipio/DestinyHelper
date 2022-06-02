@@ -23,6 +23,9 @@
 -(void) closeAction;
 -(void) loadArmor;
 
+- (void)removeArmorAction:(NSString *) armorHash;
+- (void)refreshEquippedArmorAction:(NSString *) armorHash;
+- (void)refreshLockedArmorAction:(NSString *) armorHash;
 @end
 
  

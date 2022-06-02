@@ -60,6 +60,7 @@
 @synthesize btnClose = _btnClose;
 @synthesize lblItemDescription = _lblItemDescription;
 @synthesize parentVC = _parentVC;
+@synthesize isVaultItems = _isVaultItems;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -108,6 +109,8 @@
             
             
         }
+        
+
         self->cImage = self.selectedCharEmblem;
         
         [self->cImage setFrame:CGRectMake(0, 10, self.tblItems.frame.size.width, 100)];
@@ -117,7 +120,12 @@
         [lblChar setTextAlignment:NSTextAlignmentLeft];
         [lblChar setFont:[UIFont italicSystemFontOfSize:20]];
         [lblChar setTextColor:[UIColor systemOrangeColor]];
+        if (self.isVaultItems){
+            [lblChar setText:@"All Characters"];
+        }
+        else{
         [lblChar setText:[NSString stringWithFormat:@"%@//%@//%@//%@",strLight,strClass,strRace,strGender]];
+        }
         
         [self->cImage addSubview:lblChar];
         
@@ -157,7 +165,6 @@
     BOOL hasUncommitedChanges = NO,
          performUpdates = NO;
     
-    NSArray<NSIndexPath *> *visibleIndexPaths = nil;
     
     NSIndexPath *cIndexPath = nil;
     
@@ -165,8 +172,7 @@
         instanceBase = (INSTBaseClass *) anyInstancedItem ;
        
         hasUncommitedChanges = [self.tblItems hasUncommittedUpdates];
-        
-        visibleIndexPaths =  [self.tblItems indexPathsForVisibleRows];
+    
         
         if (!hasUncommitedChanges){
              
@@ -208,58 +214,58 @@
         
         [self.tblItems performBatchUpdates:^{
             
-            //[self.tblItems beginUpdates];
-            
-            if (instanceBase){
-                
-                ItemCellTableView *cell = [self.tblItems cellForRowAtIndexPath:cIndexPath];
-                
-                if (! cell.tag){
-                    cell.tag = bucketIndex;
-                }
-                
-                NSLog(@"ItemsViewController:updateInstancedItemData:For IndexPath Section->[%d],Row->[%d]",cIndexPath.section, cIndexPath.row);
-               
-                if (anyInstancedId){
-                    [cell.lblInstanceId setText:anyInstancedId];
-                }
-                
-               
                 if (instanceBase){
-                   
-                    NSDictionary *response = (NSDictionary *)[instanceBase response];
                     
-                    if (response){
+                    ItemCellTableView *cell = [self.tblItems cellForRowAtIndexPath:cIndexPath];
+                    
+                    if (! cell.tag){
+                        cell.tag = bucketIndex;
+                    }
+                    
+                    NSLog(@"ItemsViewController:updateInstancedItemData:For IndexPath Section->[%d],Row->[%d]",cIndexPath.section, cIndexPath.row);
+                
+                    if (anyInstancedId){
+                        [cell.lblInstanceId setText:anyInstancedId];
+                    }
+                    
+                
+                    if (instanceBase){
+                    
+                        NSDictionary *response = (NSDictionary *)[instanceBase response];
                         
-                        NSDictionary *instance = (NSDictionary*) [response objectForKey:@"instance"];
-                        
-                        if (instance){
-                            NSDictionary *data = (NSDictionary*) [instance objectForKey:@"data"];
+                        if (response){
                             
-                            if (data){
-                                NSDictionary *pStat = (NSDictionary*) [data objectForKey:@"primaryStat"] ;
+                            NSDictionary *instance = (NSDictionary*) [response objectForKey:@"instance"];
+                            
+                            if (instance){
+                                NSDictionary *data = (NSDictionary*) [instance objectForKey:@"data"];
                                 
-                                if (pStat){
-                                    NSObject *objValue =   [pStat objectForKey:@"value"];
-                                    if (objValue){
-                                        [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
-                                        [cell.lblPowerLevel setHidden:NO];
+                                if (data){
+                                    NSDictionary *pStat = (NSDictionary*) [data objectForKey:@"primaryStat"] ;
+                                    
+                                    if (pStat){
+                                        NSObject *objValue =   [pStat objectForKey:@"value"];
+                                        if (objValue){
+                                            [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
+                                            [cell.lblPowerLevel setHidden:NO];
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                
                 }
-              
-            }
-           // [self.tblItems endUpdates];
+   
         }
         completion:^(BOOL finished) {
             if (finished){
-                [self.tblItems beginUpdates];
-                 NSLog(@"ItemsViewController:updateInstancedItemData:tblItems:performBatchUpdates:Reloading Indexes");
-                [self.tblItems reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
-                [self.tblItems endUpdates];
+                
+                NSArray<NSIndexPath *> *visibleIndexPaths = [self.tblItems indexPathsForVisibleRows];
+                
+                [self.tblItems reloadRowsAtIndexPaths:visibleIndexPaths
+                                      withRowAnimation:UITableViewRowAnimationNone];
+                
                 NSLog(@"WItemsViewController:updateInstancedItemData:tblItems:performBatchUpdates:finished!");
             }
         }];
@@ -298,7 +304,7 @@
         if (! hasUncommitedChanges){
         
                 [self.tblItems performBatchUpdates:^{
-                  [self.tblItems beginUpdates];
+                 
                   //Update Static Item Data
                   if (invItem){
                       
@@ -458,10 +464,15 @@
                     }
                   }
                 
-                  [self.tblItems endUpdates];
+                 
                 }
               completion:^(BOOL finished) {
                     if (finished){
+                        
+                        NSArray<NSIndexPath *> *visibleIndexPaths = [self.tblItems indexPathsForVisibleRows];
+                        
+                        [self.tblItems reloadRowsAtIndexPaths:visibleIndexPaths
+                                              withRowAnimation:UITableViewRowAnimationNone];
                         NSLog(@"ItemsViewController:updateStaticItemData:tblItems:performBatchUpdates:finished!");
                     }
                }];
@@ -486,14 +497,11 @@
     BOOL hasUncommitedChanges = NO,
          performUpdates       = NO;
     
-    NSArray<NSIndexPath *> *visibleIndexPaths = nil;
      
     @try {
         
         hasUncommitedChanges = [self.tblItems hasUncommittedUpdates];
-        
-        visibleIndexPaths =  [self.tblItems indexPathsForVisibleRows];
-        
+                
         NSIndexPath *cIndexPath = nil;
        
         if (! hasUncommitedChanges){
@@ -542,7 +550,7 @@
             }
  
             [self.tblItems performBatchUpdates:^{
-               // [self.tblItems beginUpdates];
+                
                 if (invItem){
                     
                     ItemCellTableView *cell = [self.tblItems cellForRowAtIndexPath:cIndexPath];
@@ -699,17 +707,18 @@
                     
             
             }
-             //   [self.tblItems endUpdates];
+        
             
             }
-              completion:^(BOOL finished) {
-                   
+            completion:^(BOOL finished) {
+                
+               
                         if (finished){
+                            NSArray<NSIndexPath *> *visibleIndexPaths = [self.tblItems indexPathsForVisibleRows];
                             
-                            [self.tblItems beginUpdates];
-                            NSLog(@"ItemsViewController:updateStaticItemData:tblItems:performBatchUpdates:Reloading Indexes");
-                             [self.tblItems reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
-                            [self.tblItems endUpdates];
+                            [self.tblItems reloadRowsAtIndexPaths:visibleIndexPaths
+                                                  withRowAnimation:UITableViewRowAnimationNone];
+                            
                             NSLog(@"WItemsViewController:updateStaticItemData:tblItems:performBatchUpdates:finished!");
                         }
                         
@@ -955,9 +964,143 @@
 -(void) refreshItems{
  
     
-    [self loadItems];
+    //[self loadItems];
 }
 
+
+-(void) loadVaultItems{
+ 
+    NSString *message   = @"3:ItemsViewController:loadVaultItems:Invoked by GuardianViewController...",
+             *strMID    = @"",
+             *strCharID = @"";
+    
+    NSDictionary        *chars = nil,
+                        *equip = nil,
+                        *cChar = nil,
+                        *vData = nil;
+    
+    NSArray             *vArray = nil,
+                        *eArray = nil;
+    
+    NSMutableDictionary *cBucket = [[NSMutableDictionary alloc] init];
+    
+    NSMutableArray *cBucketDef = [[NSMutableArray alloc] init];
+    
+    @try {
+        NSLog(@"%@",message);
+         
+        strMID = self.selectedMembership;
+        strCharID = self.selectedChar;
+        
+        if (! appDelegate){
+            appDelegate = [AppDelegate currentDelegate];
+        }
+        
+        chars = self.destChars;
+        
+        vData = self.destVaultItems;
+        
+        equip = self.destEquippedItems;
+      
+        vArray = self.destVaultItemsBuckets;
+        
+        eArray = self.destEquippedItemsBuckets;
+        
+        cChar = [chars objectForKey:strCharID];
+        
+        if (strCharID){
+            
+            if (! self->destItemData){
+                self->destItemData = [[NSMutableDictionary alloc] init];
+            }
+            
+            if(! self->itemBuckets){
+                self->itemBuckets = [[NSMutableArray alloc] initWithCapacity:eArray.count];
+            }
+            
+            if (! self->instanceData){
+                self->instanceData = [[NSMutableDictionary alloc] init];
+            }
+            
+            self->itemBuckets = [vArray copy];
+            self->destItemData = [vData copy];
+            
+            for(int idx = 0 ;idx < vArray.count; idx ++){
+                    
+                NSString *vKey = [vArray objectAtIndex:idx];
+                
+                INVCItems *cFItem = (INVCItems *) [vData objectForKey:vKey];
+            
+                int fIdx = [vData.allKeys indexOfObject:cFItem];
+                
+                if (cFItem){
+                    
+
+                        NSNumber *objHashId  = [[NSNumber alloc] initWithDouble:cFItem.itemHash];
+                        NSString *strHashKey = [NSString stringWithFormat:@"%@",objHashId],
+                                    *strInstanceId = cFItem.itemInstanceId;
+                        
+                        if (strHashKey){
+                            
+                            if (! [self->instanceData.allKeys containsObject:strHashKey]){
+                                    
+                                //Need to get instance data
+                                NSLog(@"ItemsViewController:loadItems:APICall to getInstancedItem:For->%@",strHashKey);
+                                
+                                [NetworkAPISingleClient getInstancedItem:strInstanceId completionBlock:^(NSArray *values){
+                                        
+                                    if (values){
+                                        
+                                        INSTBaseClass *instanceBase = (INSTBaseClass*) [values firstObject];
+                                                
+                                        NSString *strIDX = [NSString stringWithFormat:@"%d",fIdx],
+                                                 *strSDX = [NSString stringWithFormat:@"%d",idx];
+                                            
+                                        NSDictionary *callerInfo = [[NSDictionary alloc]
+                                                        initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
+                                                                                @"loadItems",@"MethodName",
+                                                                                strIDX,@"CurrentIndex",
+                                                                                strSDX,@"CurrentSection",
+                                                                                strHashKey, @"itemHashKey",
+                                                                                strInstanceId, @"itemInstanceId",nil];
+                                                
+                                        [[NSNotificationCenter defaultCenter]
+                                            postNotificationName:kDestinyLoadedInstancedItemNotification
+                                                            object:instanceBase
+                                                        userInfo:callerInfo];
+                                                
+                                    NSLog(@"ItemsViewController:loadItems:kDestinyLoadedInstancedItemNotification:Raised->%@",strHashKey);
+                                            
+                                            
+                                    }
+                                            
+                                }
+                                andErrorBlock:^(NSError *exception){
+                                    NSLog(@"ItemsViewController:loadItems:getInstancedItem:Exception->%@",exception.description);
+                                    }];
+                                
+                            }
+                        }
+                        
+                    }
+                        
+            
+                
+                 
+            }
+            
+        }
+        
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+    } @finally {
+        if ([message length] > 0){
+            NSLog(@"%@",message);
+        }
+    }
+    
+}
 -(void) loadItems{
  
     NSString *message   = @"3:ItemsViewController:loadItems:Invoked by GuardianViewController...",
@@ -1453,9 +1596,18 @@
                 
                 if (ibucDef){
                     
+                    
+                    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",sectionKey];
+                    
+                    NSArray *filteredItems = [self->destItemData.allKeys filteredArrayUsingPredicate:bPredicate];
+                    
                     BCKDisplayProperties *dispProps = (BCKDisplayProperties*) [ibucDef displayProperties];
                     if (dispProps){
-                        title = [NSString stringWithFormat:@"%@->%@",self->currentClass,dispProps.name];
+                        if (self.isVaultItems){
+                            title = [NSString stringWithFormat:@"%@: [%lu]",dispProps.name,(unsigned long)filteredItems.count];
+                        }else{
+                        title = [NSString stringWithFormat:@"%@->%@: [%lu]",self->currentClass,dispProps.name,(unsigned long)filteredItems.count];
+                        }
                     }
                 }
             
@@ -1464,11 +1616,12 @@
       }
     }
     
+     
     
     return title;
 }
  
-/*
+ 
 -(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
    
     NSString *message   = nil;
@@ -1481,31 +1634,13 @@
         
         if (gCell){
       
-            
-            if ([gCell.lblItemType.text containsString:@"Engram"]){
-                [gCell.lblPowerLevel setHidden:YES];
+            if (self.isVaultItems){
                 [gCell.btnSendVault setHidden:YES];
-                [gCell.btnLockAction setHidden:YES];
-                
             }
             
-            if ([gCell.lblItemType.text isEqualToString:@"Redeemable"]){
-                [gCell.lblPowerLevel setHidden:YES];
-                [gCell.btnSendVault setHidden:YES];
-                [gCell.btnLockAction setHidden:YES];
-            }
             
-            if ([gCell.lblItemType.text isEqualToString:@"Finisher"]){
-                [gCell.lblPowerLevel setHidden:YES];
-                [gCell.btnSendVault setHidden:YES];
-                [gCell.btnLockAction setHidden:YES];
-            }
             
-            if ([gCell.lblItemType.text isEqualToString:@"Finisher"]){
-                [gCell.lblPowerLevel setHidden:YES];
-                [gCell.btnSendVault setHidden:YES];
-                [gCell.btnLockAction setHidden:YES];
-            }
+           
            
      }
         
@@ -1518,7 +1653,7 @@
  
 }
  
-*/
+ 
 
  
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -1542,6 +1677,7 @@
      
     @try {
         
+        [UIView setAnimationsEnabled:NO];
         cell = (ItemCellTableView*) [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
         
         if (! cell){
@@ -1665,32 +1801,20 @@
                                 [cell.lblItemType setText:itemTypeName];
                                 
                                 if ([itemTypeName containsString:@"Engram"]){
-                                    [cell.lblPowerLevel setText:@""];
-                                    [cell.btnSendVault setHidden:YES];
-                                    [cell.btnLockAction setHidden:YES];
                                     showDescription = YES;
                                 }
                                 
                                 if ([itemTypeName isEqualToString:@"Redeemable"]){
-                                    [cell.lblPowerLevel setText:@""];
-                                    [cell.btnSendVault setHidden:YES];
-                                    [cell.btnLockAction setHidden:YES];
-                                    
+                                  
                                     showDescription = YES;
                                 }
                                 
                                 if ([itemTypeName isEqualToString:@"Finisher"]){
-                                    [cell.lblPowerLevel setText:@""];
-                                    [cell.btnSendVault setHidden:YES];
-                                    [cell.btnLockAction setHidden:YES];
-                                    
+                                  
                                     showDescription = YES;
                                 }
                                 
                                 if ([itemTypeName isEqualToString:@"Finisher Collection"]){
-                                    [cell.lblPowerLevel setText:@""];
-                                    [cell.btnSendVault setHidden:YES];
-                                    [cell.btnLockAction setHidden:YES];
                                     
                                     showDescription = YES;
                                 }
@@ -1745,6 +1869,14 @@
                                     
                                     if ([itemDamageType isEqualToString:@"None"]){
                                         [cell.lblDamageType setText:@""];
+                                        
+                                        NSNumber *objQuantity = [NSNumber numberWithDouble:[item quantity]];
+                                        
+                                        if (objQuantity){
+                                            
+                                            NSString *strQuantity = [objQuantity stringValue];
+                                            [cell.lblPowerLevel setText:strQuantity];
+                                        }
                                     }
                                 }
                             }
@@ -1853,9 +1985,11 @@
                                             if (objValue){
                                                 [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
                                             }
+                                               
+                                           }
                                         }
                                     }
-                                }
+                               
                                  }
                              }
                            }
@@ -1922,44 +2056,86 @@
         NSLog(@"%@",exception.description);
     }
     @finally {
-       
+        [UIView setAnimationsEnabled:YES];
     }
     return cell;
 }
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    NSInteger tRows = 0,
-              iRows = 0;
+    NSInteger iRows = 0,
+              iSection = section;
     
-    if (self->destItemData){
+    NSString *sectionKey  = nil;
+    
+ 
         
-        tRows = self->destItemData.count;
-        
-        NSString *sectionKey = [self->itemBuckets objectAtIndex:section];
-        
-        if (sectionKey){
+        @try {
             
-            NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",sectionKey];
-            
-            NSArray *filteredItems = [self->destItemData.allKeys filteredArrayUsingPredicate:bPredicate];
            
-           //Filtered items for all chars
-            if (filteredItems){
-                iRows = filteredItems.count;
+            if (self.isVaultItems){
+                
+                
+                sectionKey = [self.destVaultItemsBuckets objectAtIndex:iSection];
+                
+                if (sectionKey){
+                    
+                    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",sectionKey];
+                    
+                    NSArray *filteredItems = [self.destVaultItems.allKeys filteredArrayUsingPredicate:bPredicate];
+                   
+                 
+                    if (filteredItems){
+                        iRows = filteredItems.count;
+                    }
+                      
+                }
+                
             }
-              
+            else{
+                
+                sectionKey = [self->itemBuckets objectAtIndex:iSection];
+                
+                if (sectionKey){
+                    
+                    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",sectionKey];
+                    
+                    NSArray *filteredItems = [self->destItemData.allKeys filteredArrayUsingPredicate:bPredicate];
+                   
+                   //Filtered items for all chars
+                    if (filteredItems){
+                        iRows = filteredItems.count;
+                    }
+                      
+                }
+                
+            }
+            
+            
+        } @catch (NSException *exception) {
+            NSLog(@"numberOfRowsInSection:Exception->%@",exception.description);
+        } @finally {
+            
         }
       
-    }
+      
+ 
     return iRows;
 }
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
     NSInteger iSections = 1;
  
-    if (self.destEquippedItemsBuckets){
-        iSections = self.destEquippedItemsBuckets.count;
+    if (! self.isVaultItems){
+        if (self.destEquippedItemsBuckets){
+            iSections = self.destEquippedItemsBuckets.count;
+        }
+    }else{
+        
+        if (self.destVaultItemsBuckets){
+            iSections = self.destVaultItemsBuckets.count;
+        }
+        
     }
     
     return iSections;
@@ -2029,7 +2205,7 @@
             gVC = (GuardianViewController *) self.parentVC;
             
             if (gVC){
-                [gVC refreshCharacterEquipment];
+               // [gVC refreshCharacterEquipment];
                 
                 self.parentVC = nil;
             }

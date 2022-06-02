@@ -17,6 +17,8 @@
 #import "INVDDestinyInventoryBaseClass.h"
 #import "WeaponsTableViewController.h"
 #import "ArmorTableViewController.h"
+#import "GroupViewController.h"
+#import "INVDInventory.h"
 
 @interface GuardianViewController ()
 {
@@ -31,19 +33,20 @@
                         *destClanData;
     
     NSString *currentMembership,
+             *currentClanName,
              *selectedCharacter;
     
     UIImageView *selectedCharEmblem;
     
     NSArray *weaponsArray,
             *armorArray,
-            *equippedArray,
-            *vaultArray;
+            *equippedArray;
     
     NSInteger RowHeight,
               HeaderHeight,
               FooterHeight;
     
+    NSMutableArray *vaultArray;
     BOOL hasClan;
 }
 @end
@@ -135,6 +138,8 @@
             groupDetails  = [appDelegate.currentClan copy];
             
             if (groupDetails){
+              
+                self->currentClanName =  [NSString stringWithFormat:@"[%@] - %@", groupDetails.clanInfo.clanCallsign,groupDetails.name]; ;
                 
                 if (! self.clans){
                     self.clans = [[NSMutableArray alloc] init];
@@ -204,11 +209,9 @@
              self->equippedArray = [[NSArray alloc] initWithObjects:@"375726501",@"215593132",@"1469714392",@"3313201758",@"3683254069",
                                     @"4274335291",@"284967655",@"2025709351",nil];
         }
-        
+         
         if (!self->vaultArray){
-             self->vaultArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",@"3448274439",
-                                 @"3551918588",@"14239492",@"20886954",@"1585787867",@"375726501",@"215593132",@"1469714392",
-                                 @"3313201758",@"3683254069",@"4274335291",@"284967655",@"2025709351",nil];
+            self->vaultArray =  [[NSMutableArray alloc] initWithObjects:@"1469714392",@"3313201758",nil];
         }
         
         
@@ -246,7 +249,7 @@
                                        
                                        if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
                                            [self->destCharWeaponsData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Primary Weapon...",strFullKey);
+                                           //NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Primary Weapon...",strFullKey);
                                        }
                                      
                                        
@@ -254,21 +257,21 @@
                                    case 2465295065://Energy
                                        if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
                                            [self->destCharWeaponsData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Energy Weapon...",strFullKey);
+                                          // NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Energy Weapon...",strFullKey);
                                        }
                                        
                                        break;
                                    case 953998645://Heavy
                                        if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
                                            [self->destCharWeaponsData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Heavy Weapon...",strFullKey);
+                                         //  NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Heavy Weapon...",strFullKey);
                                        }
                                        
                                        break;
                                    case 4023194814://Ghost
                                        if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
                                            [self->destCharWeaponsData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Ghost...",strFullKey);
+                                        //   NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Ghost...",strFullKey);
                                        }
                                        
                                        break;
@@ -276,7 +279,7 @@
                                    case 1506418338://Seasonal Artifact
                                        if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
                                            [self->destCharWeaponsData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Artifact...",strFullKey);
+                                       //    NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Artifact...",strFullKey);
                                        }
                                        
                                        break;
@@ -284,20 +287,20 @@
                                    case 3448274439://Helmet
                                        if (![self->destCharArmorData.allKeys containsObject:strFullKey]){
                                            [self->destCharArmorData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Helmet Armor...",strFullKey);
+                                       //    NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Helmet Armor...",strFullKey);
                                        }
                                        break;
                                    case 3551918588://Gauntlets
                                        
                                        if (![self->destCharArmorData.allKeys containsObject:strFullKey]){
                                            [self->destCharArmorData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Gloves Armor...",strFullKey);
+                                       //    NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Gloves Armor...",strFullKey);
                                        }
                                        break;
                                    case 14239492://Chest
                                        if (![self->destCharArmorData.allKeys containsObject:strFullKey]){
                                            [self->destCharArmorData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Chest Weapon...",strFullKey);
+                                      //     NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Chest Weapon...",strFullKey);
                                        }
                                        
                                        break;
@@ -305,7 +308,7 @@
                                        
                                        if (![self->destCharArmorData.allKeys containsObject:strFullKey]){
                                            [self->destCharArmorData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Legs Armor...",strFullKey);
+                                     //      NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Legs Armor...",strFullKey);
                                        }
                                        
                                        break;
@@ -313,7 +316,7 @@
                                        
                                        if (![self->destCharArmorData.allKeys containsObject:strFullKey]){
                                            [self->destCharArmorData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Class Armor...",strFullKey);
+                                    //       NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Class Armor...",strFullKey);
                                        }
                                        break;
                                     //Equipped Inventory
@@ -321,49 +324,49 @@
                                    case 375726501://Engrams
                                        if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                            [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Engrams...",strFullKey);
+                                          // NSLog(@"GuardianViewController:destCharEquippedData:%@->Engrams...",strFullKey);
                                        }
                                        break;
                                    case 215593132://Lost Items
                                        if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                            [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->LostItems...",strFullKey);
+                                          // NSLog(@"GuardianViewController:destCharEquippedData:%@->LostItems...",strFullKey);
                                        }
                                        break;
                                    case 1469714392://Consumables
                                        if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                            [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Consumables...",strFullKey);
+                                        //   NSLog(@"GuardianViewController:destCharEquippedData:%@->Consumables...",strFullKey);
                                        }
                                        break;
                                    case 3313201758://Modifications
                                        if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                            [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Mods...",strFullKey);
+                                         //  NSLog(@"GuardianViewController:destCharEquippedData:%@->Mods...",strFullKey);
                                        }
                                        break;
                                    case 3683254069://Finishers
                                        if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                            [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Finishers...",strFullKey);
+                                         //  NSLog(@"GuardianViewController:destCharEquippedData:%@->Finishers...",strFullKey);
                                        }
                                        break;
                                    case 4274335291://Emblems
                                        if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                            [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Emblems...",strFullKey);
+                                        //   NSLog(@"GuardianViewController:destCharEquippedData:%@->Emblems...",strFullKey);
                                        }
                                        break;
                                    case 284967655://Ships
                                        if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                            [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Ships...",strFullKey);
+                                        //   NSLog(@"GuardianViewController:destCharEquippedData:%@->Ships...",strFullKey);
                                        }
                                        break;
                                    case 2025709351://Vehicles
                                        if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                            [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Vehicles...",strFullKey);
+                                       //    NSLog(@"GuardianViewController:destCharEquippedData:%@->Vehicles...",strFullKey);
                                        }
                                        
                                        break;
@@ -443,7 +446,7 @@
                                        
                                        if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
                                            [self->destCharWeaponsData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Primary Weapon...",strFullKey);
+                                          // NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Primary Weapon...",strFullKey);
                                        }
                                      
                                        
@@ -451,48 +454,48 @@
                                    case 2465295065://Energy
                                        if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
                                            [self->destCharWeaponsData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Energy Weapon...",strFullKey);
+                                         //  NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Energy Weapon...",strFullKey);
                                        }
                                        
                                        break;
                                    case 953998645://Heavy
                                        if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
                                            [self->destCharWeaponsData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Heavy Weapon...",strFullKey);
+                                        //   NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Heavy Weapon...",strFullKey);
                                        }
                                        
                                        break;
                                    case 4023194814://Ghost
                                        if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
                                            [self->destCharWeaponsData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Ghost Weapon...",strFullKey);
+                                       //    NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Ghost Weapon...",strFullKey);
                                        }
                                        
                                        break;
                                    case 1506418338://Seasonal Artifact
                                        if (![self->destCharWeaponsData.allKeys containsObject:strFullKey]){
                                            [self->destCharWeaponsData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Artifact...",strFullKey);
+                                    //       NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Artifact...",strFullKey);
                                        }
                                        
                                        break;
                                    case 3448274439://Helmet
                                        if (![self->destCharArmorData.allKeys containsObject:strFullKey]){
                                            [self->destCharArmorData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Helmet Armor...",strFullKey);
+                                    //       NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Helmet Armor...",strFullKey);
                                        }
                                        break;
                                    case 3551918588://Gauntlets
                                        
                                        if (![self->destCharArmorData.allKeys containsObject:strFullKey]){
                                            [self->destCharArmorData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Gloves Armor...",strFullKey);
+                                        //   NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Gloves Armor...",strFullKey);
                                        }
                                        break;
                                    case 14239492://Chest
                                        if (![self->destCharArmorData.allKeys containsObject:strFullKey]){
                                            [self->destCharArmorData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Chest Weapon...",strFullKey);
+                                       //    NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Chest Weapon...",strFullKey);
                                        }
                                        
                                        break;
@@ -500,7 +503,7 @@
                                        
                                        if (![self->destCharArmorData.allKeys containsObject:strFullKey]){
                                            [self->destCharArmorData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Legs Armor...",strFullKey);
+                                      //     NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Legs Armor...",strFullKey);
                                        }
                                        
                                        break;
@@ -508,7 +511,7 @@
                                        
                                        if (![self->destCharArmorData.allKeys containsObject:strFullKey]){
                                            [self->destCharArmorData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Class Armor...",strFullKey);
+                                      //     NSLog(@"GuardianViewController:kDestinyLoadedCharacterInventoryNotification:%@ Class Armor...",strFullKey);
                                        }
                                        break;
                                 
@@ -517,13 +520,13 @@
                                       case 375726501://Engrams
                                           if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                               [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->Engrams...",strFullKey);
+                                      //        NSLog(@"GuardianViewController:destCharEquippedData:%@->Engrams...",strFullKey);
                                           }
                                           break;
                                       case 215593132://Lost Items
                                           if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                               [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->LostItems...",strFullKey);
+                                         //     NSLog(@"GuardianViewController:destCharEquippedData:%@->LostItems...",strFullKey);
                                           }
                                           break;
                                       case 1469714392://Consumables
@@ -535,32 +538,32 @@
                                       case 3313201758://Modifications
                                           if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                               [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->Mods...",strFullKey);
+                                        //      NSLog(@"GuardianViewController:destCharEquippedData:%@->Mods...",strFullKey);
                                           }
                                           break;
                                       case 3683254069://Finishers
                                           if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                               [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->Finishers...",strFullKey);
+                                        //      NSLog(@"GuardianViewController:destCharEquippedData:%@->Finishers...",strFullKey);
                                           }
                                           break;
                                       case 4274335291://Emblems
                                           if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                               [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->Emblems...",strFullKey);
+                                        //      NSLog(@"GuardianViewController:destCharEquippedData:%@->Emblems...",strFullKey);
                                           }
                                           break;
                                       case 284967655://Ships
                                           if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                               [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                              NSLog(@"GuardianViewController:destCharEquippedData:%@->Ships...",strFullKey);
+                                         //     NSLog(@"GuardianViewController:destCharEquippedData:%@->Ships...",strFullKey);
                                           }
                                           break;
                                        
                                    case 2025709351://Vehicles
                                        if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                                            [self->destCharEquippedData setValue:item forKey:strFullKey];
-                                           NSLog(@"GuardianViewController:destCharEquippedData:%@->Vehicles...",strFullKey);
+                                       //    NSLog(@"GuardianViewController:destCharEquippedData:%@->Vehicles...",strFullKey);
                                        }
                                        
                                }
@@ -1021,7 +1024,7 @@
         VAULTResponse *vResponse = nil;
         ProfileInventory *profInv = nil;
         VAULTData *vData = nil;
-         
+        
         NSArray *vItems;
         
         if (!self->equippedArray){
@@ -1029,16 +1032,14 @@
                                     @"4274335291",@"284967655",@"2025709351",nil];
         }
         
-        if (!self->vaultArray){
-             self->vaultArray = [[NSArray alloc] initWithObjects:@"1498876634",@"2465295065",@"953998645",@"3448274439",
-                                 @"3551918588",@"14239492",@"20886954",@"1585787867",@"375726501",@"215593132",@"1469714392",
-                                 @"3313201758",@"3683254069",@"4274335291",@"284967655",@"2025709351",nil];
+        if (!self->vaultArray){ //General
+             self->vaultArray = [[NSMutableArray alloc] initWithObjects:@"1469714392",@"3313201758",nil];
         }
         
             
             NSString *className =  [userInfo objectForKey:@"ClassName"],
-                     *methodName =  [userInfo objectForKey:@"MethodName"];
-            
+                     *methodName =  [userInfo objectForKey:@"MethodName"],
+                     *currentCharacter = [userInfo objectForKey:@"SelectedCharacter"];
                 if (vaultBase){
                      
                     vResponse = (VAULTResponse*) [VAULTResponse modelObjectWithDictionary:vaultBase.response];
@@ -1074,8 +1075,10 @@
                                             NSString *strItemHash = [NSString stringWithFormat:@"%@",objItemHash],
                                                      *strItemLocation = [NSString stringWithFormat:@"%@",objItemLocation],
                                                      *strBucketHash = [NSString stringWithFormat:@"%@",objItemBucket],
-                                                     *strInstanceId = vaultItem.itemInstanceId;
-                                         
+                                                     *strInstanceId = vaultItem.itemInstanceId,
+                                                     *strFullKey = [NSString stringWithFormat:@"%@_%@",strBucketHash,strItemHash];
+                                            
+                                            
                                             if (strItemHash){
                                            
                                                 if (strItemLocation){
@@ -1084,14 +1087,57 @@
                                                         case 1://Equipped
                                                             if (![self->destCharEquippedData.allKeys containsObject:strItemHash]){
                                                                 [self->destCharEquippedData setValue:vaultItem forKey:strItemHash];
-                                                                NSLog(@"GuardianViewController:VaultNotification:%@Equipped Item ",strItemHash);
+                                                                //NSLog(@"GuardianViewController:VaultNotification:%@Equipped Item ",strItemHash);
                                                             }
                                                             break;
                                                         case 2://Vault
-                                                            if (![self->destVaultData.allKeys containsObject:strItemHash]){
-                                                                [self->destVaultData setValue:vaultItem forKey:strItemHash];
-                                                                //NSLog(@"GuardianViewController:VaultNotification:%@Vault Item ",strItemHash);
+                                                            
+                                                            if ([strBucketHash isEqualToString:@"138197802"]){
+                                                                //General
+                                                                
+                                                                
+                                                                if ( appDelegate.destinyInventoryItemDefinitions){
+                                                                
+                                                                    INVDResponse *iItemDef = (INVDResponse *)[appDelegate.destinyInventoryItemDefinitions objectForKey:strItemHash];
+                                                                    
+                                                                    if (iItemDef){
+                                                                        
+                                                                        INVDInventory *iInv = (INVDInventory*)  [iItemDef inventory];
+                                                                       
+                                                                        if (iInv){
+                                                                            
+                                                                            objItemBucket     = [NSNumber numberWithDouble:iInv.bucketTypeHash];
+                                                                            
+                                                                            strBucketHash = [NSString stringWithFormat:@"%@",objItemBucket];
+                                                                            
+                                                                            if (![self->vaultArray containsObject:strBucketHash]){
+                                                                                [self->vaultArray addObject:strBucketHash];
+                                                                            }
+                                                                            
+                                                                            strFullKey = [NSString stringWithFormat:@"%@_%@",strBucketHash,strItemHash];
+                                                                            
+                                                                            if (![self->destVaultData.allKeys containsObject:strFullKey]){
+                                                                                [self->destVaultData setValue:vaultItem forKey:strFullKey];
+                                                                                NSLog(@"GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
+                                                                            }
+                                                                            
+                                                                        }
+                                                                        
+                                                                        
+                                                                    }
+                                                                
+                                                               }
+                                                                
                                                             }
+                                                            else{
+                                                                
+                                                                if (![self->destVaultData.allKeys containsObject:strFullKey]){
+                                                                    [self->destVaultData setValue:vaultItem forKey:strFullKey];
+                                                                    NSLog(@"GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
+                                                                }
+                                                            }
+                                                            
+                                                            
                                                             break;
                                                     }
                                             
@@ -1339,7 +1385,9 @@
         enum Destiny2MembershipType mType = [appDelegate currentMembershipType];
      
         NSString *strURL = @"%d/Profile/%@",
-                 *strMID = self->currentMembership;
+                 *strMID = self->currentMembership,
+                 *strCharID = [self.destChars firstObject];
+        
         
         strURL = [NSString stringWithFormat:strURL,mType,strMID];
         
@@ -1354,12 +1402,13 @@
                     
                     if (baseClass){
                         
-                             NSString *charKey       =  strMID;
+                             NSString *charKey  =  strMID;
                                         
                              NSDictionary *callerInfo = [[NSDictionary alloc]
                                     initWithObjectsAndKeys:@"GuardianViewController",@"ClassName",
                                                           @"getVaultItems",@"MethodName",
-                                                   charKey,@"CurrentMembership",nil];
+                                                          strCharID,@"SelectedCharacter",
+                                                          charKey,@"CurrentMembership",nil];
                                      
                                   [[NSNotificationCenter defaultCenter]
                                            postNotificationName:kDestinyLoadedProfileVaultNotification
@@ -1836,6 +1885,10 @@
             //[self performSegueWithIdentifier:@"segVendors" sender:selectedChar];
         }
         
+        if (indexPath.section == 1){
+            [self.segCategories setEnabled:NO];
+        }
+        
       /*  [NetworkAPISingleClient getVendors:selectedChar completionBlock:^(NSArray *values){
             
             if (values){
@@ -1937,6 +1990,8 @@
 
 -(UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
+    NSString *headerTitle = @"";
+    
     UILabel *header = nil;
         header = [[UILabel alloc] init];
         [header setFont:[UIFont fontWithName:@"Avenir Medium" size:20]];
@@ -1948,12 +2003,116 @@
                 [header setText:@"Characters"];
                 break;
             case 1:
-                [header setText:@"Current Clan Details"];
+                
+                headerTitle = [NSString stringWithFormat:@"%@", self->currentClanName];
+                
+                [header setText:headerTitle];
                 break;
             }
         return header;
     
 }
+
+
+-(void) handleLongPress:(UILongPressGestureRecognizer *) recognize{
+    
+    NSLog(@"GuardianViewController:handleLongPress:Invoked...");
+    
+    GuardianCellTableView *cCell = nil;
+    
+    GroupViewController *gVC = nil;
+    
+    UIStoryboard *storyBoard = nil;
+  
+    UINavigationController *navVC = nil;
+    
+    NSString *clanSearchTerm = nil;
+    
+    BOOL processRequest = NO;
+    @try {
+        
+        
+        switch(recognize.state){
+            case UIGestureRecognizerStateEnded:
+                NSLog(@"GuardianViewController:UIGestureRecognizerStateEnded:Detected...");
+                break;
+            case UIGestureRecognizerStateBegan:
+                NSLog(@"GuardianViewController:UIGestureRecognizerStateBegan:Detected...");
+                processRequest = YES;
+                break;
+            case UIGestureRecognizerStateChanged:
+                NSLog(@"GuardianViewController:UIGestureRecognizerStateChanged:Detected...");
+                break;
+            case UIGestureRecognizerStateCancelled:
+                NSLog(@"GuardianViewController:UIGestureRecognizerStateCancelled:Detected...");
+                break;
+            case UIGestureRecognizerStatePossible:
+                NSLog(@"GuardianViewController:UIGestureRecognizerStatePossible:Detected...");
+                break;
+            case UIGestureRecognizerStateFailed:
+                NSLog(@"GuardianViewController:UIGestureRecognizerStateFailed:Detected...");
+                break;
+        }
+        
+       
+        
+        if (processRequest){
+            
+            NSIndexPath *selectedIndexPath = [self.tblChars indexPathForSelectedRow];
+            
+            if (selectedIndexPath){
+            
+                cCell = (GuardianCellTableView*) [self.tblChars cellForRowAtIndexPath:selectedIndexPath];
+                
+                if (cCell){
+                    
+                    storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    
+                    gVC =   [storyBoard instantiateViewControllerWithIdentifier:@"sbGroup"];
+                                
+                    if (gVC){
+                     
+                        NSString *clanKey = [self.clans firstObject];
+                        
+                        CLNDetail *clanDetails = [self->destClanData objectForKey:clanKey];
+                        
+                        if (clanDetails){
+                           
+                            
+                            clanSearchTerm = [clanDetails.name stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+                            
+                            clanSearchTerm = [clanSearchTerm uppercaseString];
+                            
+                            [gVC searchBungieGroup:clanSearchTerm];
+                            
+                            navVC = [[UINavigationController alloc] initWithRootViewController:gVC];
+                                               
+                            [self presentViewController:navVC
+                                 animated:NO completion:^{
+                                                   
+                                                   
+                            }];
+
+                        }
+                    }
+                  
+                    
+               }
+               
+            }
+            
+        }
+        
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+    
+
+}
+
 
 -(void) initTableView{
     
@@ -1979,6 +2138,16 @@
         
         [self.tblChars setDelegate:self];
         [self.tblChars setDataSource:self];
+        
+        
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+        
+        
+        longPress.minimumPressDuration = 2.0;
+        longPress.numberOfTouchesRequired = 1.0;
+        [self.tblChars addGestureRecognizer:longPress];
+        
+        
       }
         @catch (NSException *exception) {
             message = [exception description];
@@ -2272,10 +2441,15 @@
                 NSString *clanName = nil,
                          *clanMotto = nil,
                          *clanBannerPath = nil,
-                         *clanAvatarPath = nil;
+                         *clanAvatarPath = nil,
+                         *clanGroupId    = nil,
+                         *clanCount      = nil;
                 
+                int intClanCount = 0;
                 
                 if (clanDetail){
+                    
+                 
                         
                         clanName = [clanDetail name];
                         clanMotto = [clanDetail motto];
@@ -2283,6 +2457,11 @@
                         clanBannerPath = [clanDetail bannerPath];
                         clanAvatarPath = [clanDetail avatarPath];
                         
+                        clanGroupId  = [NSString stringWithFormat:@"%@",clanDetail.groupId];
+                    
+                        intClanCount = clanDetail.memberCount;
+                    
+                        clanCount    = [NSString stringWithFormat:@"%d",intClanCount];
                        
                         if (clanAvatarPath){
                             baseURL  = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,clanAvatarPath];
@@ -2298,15 +2477,20 @@
                         
                         [cell.imgEmblem setImageWithURL:imageURL];
                       
-                        [cell.lblGuardianClass setTextColor:[UIColor whiteColor]];
-                        [cell.lblGuardianClass setText:clanName];
-                      
-                        [cell.lblGuardianCareer setTextColor:[UIColor orangeColor]];
-                        [cell.lblGuardianCareer setText:clanMotto];
+                        [cell.lblGuardianClass setText:@"Member Count"];
                     
-                        [cell.lblGuardianRace setText:@""];
+                   
+                        [cell.lblLightLevel setText:[NSString stringWithFormat:@"  %@",clanCount]];
+                      
+                    
+                        //[cell.lblGuardianCareer setTextColor:[UIColor whiteColor]];
+                        //[cell.lblGuardianCareer setText:clanGroupId];
+                    
+                        [cell.lblGuardianRace setText:clanGroupId];
                         [cell.lblGuardianGender setText:@""];
-                        [cell.lblLightLevel setText:@""];
+                    
+
+                    
                 }
                     
                  
@@ -2507,7 +2691,7 @@
                 }
                 
                 break;
-            case 2:
+            case 2://Equipped
                 
                 iVC =   [storyBoard instantiateViewControllerWithIdentifier:@"sbVendors"];
                 
@@ -2543,7 +2727,7 @@
                     [iVC setSelectedChar:self->selectedCharacter];
                     [iVC setDestVaultItems:self->destVaultData];
                     [iVC setDestVaultItemsBuckets:self->vaultArray];
-                    //[iVC setDestEquippedItems:self->destCharEquippedData];
+                    [iVC setIsVaultItems:NO];
                     [iVC setDestEquippedItems:filteredCharItemsData];
                     [iVC setDestEquippedItemsBuckets:self->equippedArray];
                     [iVC setDestChars:self->destCharData];
@@ -2563,7 +2747,35 @@
                 
                 
                 break;
-            case 3:
+            case 3://Vault
+                
+                iVC =   [storyBoard instantiateViewControllerWithIdentifier:@"sbVendors"];
+                
+                if (iVC){
+                   
+                    
+                    [iVC setSelectedChar:self->selectedCharacter];
+                    [iVC setDestVaultItems:self->destVaultData];
+                    [iVC setDestVaultItemsBuckets:self->vaultArray];
+                    [iVC setDestEquippedItems:self->destVaultData];
+                    [iVC setDestEquippedItemsBuckets:self->vaultArray];
+                    [iVC setDestChars:self->destCharData];
+                    [iVC setSelectedCharEmblem:self->selectedCharEmblem];
+                    [iVC setParentVC:self];
+                    [iVC setIsVaultItems:YES];
+                    [iVC loadVaultItems];
+                    
+                    navVC = [[UINavigationController alloc] initWithRootViewController:iVC];
+                    
+                    [self presentViewController:navVC
+                                       animated:YES completion:^{
+                        
+                        [sender setSelectedSegmentIndex:-1];
+                        
+                    }];
+                }
+                
+                
                 break;
             case 4:
                 break;

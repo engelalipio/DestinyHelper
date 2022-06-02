@@ -200,6 +200,68 @@
     
 }
 
+- (void)refreshLockedWeaponAction:(NSString *) weaponHash{
+    
+    ItemCellTableView *selectedCell = nil;
+    
+
+    NSIndexPath *selectedRow = nil;
+    
+    UIImage *lockImage = [UIImage systemImageNamed:@"lock"],
+            *unLockImage = [UIImage systemImageNamed:@"lock.open"];
+    
+    @try {
+        
+        selectedRow  =  [self.tableView indexPathForSelectedRow];
+        
+        if (!selectedRow){
+            NSLog(@"WeaponsViewController:refreshLockedWeaponAction:No Row selected to Refesh:Exiting...");
+            return;
+        }
+        
+        selectedCell = [self.tableView cellForRowAtIndexPath:selectedRow];
+        
+        if (!selectedCell){
+            NSLog(@"WeaponsViewController:refreshLockedWeaponAction:No Cell selected for IndexPath");
+            return;
+        }
+        
+        
+        if (weaponHash){
+            
+           
+             
+            //[self.refreshControl beginRefreshing];
+            
+            [self.tableView beginUpdates];
+            
+            if ([selectedCell.btnLockAction.currentImage isEqual:lockImage]){
+                [selectedCell.btnLockAction setImage:unLockImage forState:UIControlStateNormal];
+            }else{
+                [selectedCell.btnLockAction setImage:lockImage forState:UIControlStateNormal];
+            }
+            NSLog(@"WeaponsViewController:refreshLockedWeaponAction:Refreshing UI");
+ 
+            [self.tableView endUpdates];
+            
+               // [self.tableView reloadData];
+            // [self.refreshControl endRefreshing];
+              NSLog(@"WeaponsViewController:refreshLockedWeaponAction:finished!");
+            
+            
+        }
+        
+            
+    } @catch (NSException *exception) {
+        NSLog(@"WeaponsViewController:refreshLockedWeaponAction:Exception->%@",exception.description);
+    } @finally {
+        
+        selectedCell = nil;
+    
+    }
+    
+}
+
 -(void)refreshEquippedWeaponAction:(NSString *)weaponHash{
     
     
@@ -249,7 +311,7 @@
                      }
                 }
             
-              
+           
                 [selectedCell.layer setMasksToBounds:YES];
                 [selectedCell.layer setCornerRadius:5];
                 [selectedCell.layer setBorderWidth:3];
@@ -1390,15 +1452,12 @@
     BOOL hasUncommitedChanges = NO,
          performUpdates = NO;
     
-    NSArray<NSIndexPath *> *visibleIndexPaths = nil;
-    
+
     @try {
         instanceBase = (INSTBaseClass *) anyInstancedItem ;
        
         hasUncommitedChanges = [self.tableView hasUncommittedUpdates];
-        
-        visibleIndexPaths =  [self.tableView indexPathsForVisibleRows];
-        
+      
         NSIndexPath *cIndexPath = nil;
       
         if (!hasUncommitedChanges){
@@ -1416,12 +1475,10 @@
         }
         
         if (performUpdates){
-            [UIView setAnimationsEnabled:NO];
-            [self.tableView.refreshControl beginRefreshing];
-        [self.tableView performBatchUpdates:^{
+              //[UIView setAnimationsEnabled:NO];
+              //[self.tableView.refreshControl beginRefreshing];
+                [self.tableView performBatchUpdates:^{
            
-            [self.tableView beginUpdates];
-            
             if (instanceBase){
                 
                 ItemCellTableView *cell = [self.tableView cellForRowAtIndexPath:cIndexPath];
@@ -1512,26 +1569,22 @@
                 }
               
             }
-           
-            [self.tableView endUpdates];
-            [self.tableView.refreshControl endRefreshing];
-        }
-        completion:^(BOOL finished) {
-            if (finished){
-                
-                
-                 [self.tableView reloadData];
-                 [self.tableView reloadInputViews];
-                
-                /*[self.tableView beginUpdates];
-                NSLog(@"WeaponsViewController:updateInstancedItemData:Reloading Indexes");
-                 [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
-                [self.tableView endUpdates];*/
-                NSLog(@"WeaponsViewController:updateInstancedItemData:performBatchUpdates:finished!");
+        
+            }completion:^(BOOL finished) {
+              if (finished){
+               
+                  NSArray<NSIndexPath *> *visibleIndexPaths = [self.tableView indexPathsForVisibleRows];
+                  
+                  [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths
+                                        withRowAnimation:UITableViewRowAnimationNone];
                  
-            }
-        }];
-        [UIView setAnimationsEnabled:YES];
+                  NSLog(@"WeaponsViewController:updateInstancedItemData:performBatchUpdates:finished!");
+                  
+                 
+              }
+            }];
+           //     [self.tableView.refreshControl endRefreshing];
+            //    [UIView setAnimationsEnabled:YES];
         }
         else{
             NSLog(@"WeaponsViewController:updateInstancedItemData has uncommited changes, waiting...");
@@ -1554,36 +1607,29 @@
     BOOL hasUncommitedChanges = NO,
          performUpdates       = NO;
     
-    NSArray<NSIndexPath *> *visibleIndexPaths = nil;
     
     @try {
         
         hasUncommitedChanges = [self.tableView hasUncommittedUpdates];
         
-        visibleIndexPaths =  [self.tableView indexPathsForVisibleRows];
-        
         NSIndexPath *cIndexPath = nil;
        
         if (! hasUncommitedChanges){
 
-           // for (int idx = 0; idx < visibleIndexPaths.count ; idx++ ) {
                 NSIndexPath *iPath = [NSIndexPath indexPathForRow:itemIndex inSection:itemSection];
                 
                 if (iPath){
-                    //if (idx == itemIndex){
-                        performUpdates = YES;
-                        cIndexPath = iPath;
-                    //    break;
-                   // }
+                    performUpdates = YES;
+                    cIndexPath = iPath;
+                   
                 }
-            //}
             
             if (performUpdates){
-            [self.refreshControl beginRefreshing];
-            [UIView setAnimationsEnabled:NO];
-            [self.tableView performBatchUpdates:^{
-               
-                [self.tableView beginUpdates];
+               // [self.refreshControl beginRefreshing];
+               // [UIView setAnimationsEnabled:NO];
+                
+                [self.tableView performBatchUpdates:^{
+                 
                 if (invItem){
                     
                     ItemCellTableView *cell = [self.tableView cellForRowAtIndexPath:cIndexPath];
@@ -1626,7 +1672,7 @@
                             }
                             
                             if (invItem.message){
-                                
+                            
                                 switch([invItem.message integerValue]){
                                     case 0:
                                         [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"] forState:UIControlStateNormal];
@@ -1765,41 +1811,25 @@
                     
             
             }
-                [self.tableView endUpdates];
-               
-               /* if (! hasUncommitedChanges){
-                    [self.tableView beginUpdates];
-                    NSLog(@"WeaponsViewController:updateStaticItemData:Reloading Indexes");
-                     [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths withRowAnimation:UITableViewRowAnimationNone];
-                    [self.tableView endUpdates];
-                }*/
-            
-            }
-              completion:^(BOOL finished) {
+                 
+
+                }
+                completion:^(BOOL finished) {
                     if (finished){
                         
-                       
-                        [self.tableView reloadData];
-                        [self.tableView reloadInputViews];
-                        //[self.tableView reloadData];
-                        /*
-                        [self.tableView beginUpdates];
+                        NSArray<NSIndexPath *> *visibleIndexPaths = [self.tableView indexPathsForVisibleRows];
                         
                         [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths
                                               withRowAnimation:UITableViewRowAnimationNone];
-                        NSLog(@"WeaponsViewController:updateStaticItemData:Reloading Indexes:Completed!");
-                        
-                        [self.tableView endUpdates];
-                        */
                         
                         NSLog(@"WeaponsViewController:updateStaticItemData:performBatchUpdates:Finished!");
-                        
                     }
-            }];
-            [UIView setAnimationsEnabled:YES];
-            [self.refreshControl endRefreshing];
+                       
+                }];
+              
+               // [self.refreshControl endRefreshing];
+               // [UIView setAnimationsEnabled:YES];
           }
-
             
         }
         else{
@@ -2719,6 +2749,7 @@
     NSMutableArray *groupItems = nil;
      
     @try {
+        [UIView setAnimationsEnabled:NO];
         
             //NSLog(@"WeaponsTableViewController:cellForRowAtIndexPath:Section->%d,Row->%d,",indexPath.section,indexPath.row);
         
@@ -2738,13 +2769,16 @@
                     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
                  
                 }
-        
-                [cCell setParentTableView:self.tableView];
-                [cCell setParentViewController:self];
+            
+                if (! cCell.parentTableView){
+                    [cCell setParentTableView:self.tableView];
+                    [cCell setParentViewController:self];
+                }
                 
-                [cell setParentTableView:self.tableView];
-                [cell setParentViewController:self];
-        
+                if (! cell.parentTableView){
+                    [cell setParentTableView:self.tableView];
+                    [cell setParentViewController:self];
+                }
         
        
                 if (! self->primaryWeapons || (! self->energyWeapons) || (! self->powerWeapons) || (! self->ghosts) || (! self->artifact)){
@@ -2812,7 +2846,7 @@
                 
                     
                     INVCItems *item = [self.destWeapons objectForKey:strFullKey];
-                    
+         
                     
                     if (item){
                         
@@ -2824,8 +2858,52 @@
                         
                         if (cell){
                             
+                            
+                            
                             [cell.lblCharacterId setText:self.selectedChar];
                             [cell.imgBackground setHidden:YES];
+                            
+                            /*
+                             
+                             
+                             Valid Enum Values
+
+                             None: 0
+                             Locked: 1
+                             If this bit is set, the item has been "locked" by the user and cannot be deleted. You may want to represent this visually with a "lock" icon.
+                             Tracked: 2
+                             If this bit is set, the item is a quest that's being tracked by the user. You may want a visual indicator to show that this is a tracked quest.
+                             Masterwork: 4
+                             If this bit is set, the item has a Masterwork plug inserted. This usually coincides with having a special "glowing" effect applied to the item's icon.
+                             Crafted: 8
+                             If this bit is set, the item has been 'crafted' by the player. You may want to represent this visually with a "crafted" icon overlay.
+                             HighlightedObjective: 16
+                             If this bit is set, the item has a 'highlighted' objective. You may want to represent this with an orange-red icon border color.
+                             
+                             */
+                            NSNumber *objLocked = [NSNumber numberWithDouble:item.state];
+                            
+                            switch (objLocked.integerValue) {
+                                case 0:
+                                    [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"]
+                                                        forState:UIControlStateNormal];
+                                        
+                                    break;
+                                    case 1:
+                                    [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                            forState:UIControlStateNormal];
+                                     
+                                    break;
+                                case 2://tracked
+                                case 4://Masterwork
+                                    
+                                    break;
+                                    
+                                case 5://Masterwork locked
+                                    [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                            forState:UIControlStateNormal];
+                                    break;
+                            }
                             
                             if (appDelegate.destinyInventoryBucketDefinitions){
                                 
@@ -2867,7 +2945,7 @@
                                 
                                 INVDResponse *itemDef =   [appDelegate.destinyInventoryItemDefinitions objectForKey:strHashKey];
                                 
-                                
+                               
                                 if (itemDef){
                                    
                                 
@@ -3174,9 +3252,8 @@
     } @catch (NSException *exception) {
         NSLog(@"%@",exception.description);
     } @finally {
-       
+        [UIView setAnimationsEnabled:YES];
     }
-    
     
     if (self->useCView){
         [cCell setHidden:NO];

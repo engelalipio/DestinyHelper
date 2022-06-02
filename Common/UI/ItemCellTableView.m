@@ -522,6 +522,7 @@
             return;
         }
         
+        
         if ([self.parentTableView isKindOfClass:[UITableView class]]){
             indexPath =  [self.parentTableView indexPathForSelectedRow];
             
@@ -530,6 +531,8 @@
                 }
             
             strIdx = [NSString stringWithFormat:@"%d",indexPath.row ];
+            
+            
         }
         
         if (! self.parentViewController){
@@ -554,6 +557,15 @@
         
         selectedCell = (ItemCellTableView*) [self.parentTableView cellForRowAtIndexPath:indexPath];
         
+        if (! selectedCell){
+            return;
+        }
+        
+        //Extract Data from Selected Cell
+        selectedTitle = selectedCell.lblItemName.text;
+        selectedItemHash = [selectedCell.lblHash text];
+        selectedItemInstance = [selectedCell.lblInstanceId text];
+        selectedCharacter  = [selectedCell.lblCharacterId text];
         
         if (sender){
             //Determine Characters
@@ -628,223 +640,179 @@
             }
         }
         
-       
-        if(selectedCell){
-            
-            selectedTitle = selectedCell.lblItemName.text;
-            
-            selectedItemHash = [selectedCell.lblHash text];
-            
-            selectedItemInstance = [selectedCell.lblInstanceId text];
-            
-            selectedCharacter  = [selectedCell.lblCharacterId text];
-            
+    
   
-            if (selectedItemHash){
-                
-                NSString *strCharacter  = @"Current Character",
-                         *strCC         = @"";
-                
-                if(isCurrentCharTitan){
-                   strCharacter = @"Titan";
-                }
-                
-                if(isCurrentCharWarlock){
-                    strCharacter = @"Warlock";
-                }
-                
-                if(isCurrentCharHunter){
-                    strCharacter = @"Hunter";
-                }
-                
-                strMessage   = [NSString stringWithFormat:@"Available '%@' [Actions]",selectedTitle];
-              
-                UIAlertController* alert = [UIAlertController alertControllerWithTitle:strMessage
-                                                message:@"*Select Action Below"
-                                                preferredStyle:UIAlertControllerStyleActionSheet];
-                
-                
-                
-                strMessage = [NSString stringWithFormat:@"Equip '%@' on %@?",selectedTitle,strCharacter];
-                
-                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:strMessage style:UIAlertActionStyleDefault
-                   handler:^(UIAlertAction * action) {
-                    NSLog(vaultAction);
-                    
-                    [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyEquipItemNotification
-                        object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
-                        
-                        
-                        NSDictionary *respData  = (NSDictionary*) [note object],
-                                     *userInfo  = [note userInfo];
-                        
-                        
-                        if (respData){
-                         
-                            NSString *respStatus  = [respData objectForKey:@"ErrorStatus"],
-                                     *respMessage = [NSString stringWithFormat:
-                                                     @"Successfully equipped '%@'",selectedTitle];
-                            
-                            if (respStatus){
-                                //SendToVault Action was Successfull!
-                                if ([respStatus isEqualToString:@"Success"]){
-                                    
-                                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Equip Item Action Result"
-                                                                   message:respMessage
-                                                                   preferredStyle:UIAlertControllerStyleAlert];
-                                    
-                                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                       handler:^(UIAlertAction * action) {
-                                        NSLog(@"%@-",respStatus);
-                                        
-                                    
-                                        if (destinyItemsParentVC){
-                                            
-                                            if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
-                                                [destinyItemsParentVC refreshItems];
-                                            }
-                                            
-                                            if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
-                                                WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
-                                                if (destinyWeaponsParentVC){
-                                                    [destinyWeaponsParentVC refreshEquippedWeaponAction:selectedItemHash];
-                                                }
-                                            }
-                                                
-                                              
-                                            if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
-                                                ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
-                                                if (destinyArmorParentVC){
-                                                    
-                                                    [destinyArmorParentVC.tableView.refreshControl beginRefreshing ];
-                                                    
-                                                    
-                                                    NSArray<UITableViewCell*> *visibleCells = [destinyArmorParentVC.tableView visibleCells];
-                                                    
-                                                    [destinyArmorParentVC.tableView beginUpdates];
-                                                    
-                                                     
-                                                    for (UITableViewCell *vCell in visibleCells) {
-                                                         
-                                                        [vCell.layer setMasksToBounds:NO];
-                                                        [vCell.layer setCornerRadius:0];
-                                                        [vCell.layer setBorderWidth:1];
-                                                        [vCell.layer setShadowOffset: CGSizeMake(0, 0)];
-                                                        [vCell.layer setBorderColor:[UIColor clearColor].CGColor];
-                                                        
-                                                    }
-                                                    
-                                                    if (selectedCell){
-                                                        
-                                                        [selectedCell.layer setMasksToBounds:YES];
-                                                        [selectedCell.layer setCornerRadius:5];
-                                                        [selectedCell.layer setBorderWidth:3];
-                                                        [selectedCell.layer setShadowOffset: CGSizeMake(-1, 1)];
-                                                        [selectedCell.layer setBorderColor:[UIColor whiteColor].CGColor];
-                                                        
-                                                        [destinyArmorParentVC.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                                                        
-                                                    }
-                                                    
-                                                     [destinyArmorParentVC.tableView reloadInputViews];
-                                                    
-                                                     [destinyArmorParentVC.tableView endUpdates];
-
-                                                     [destinyArmorParentVC.tableView.refreshControl endRefreshing ];
-                                                }
-                                            }
-                                            
-                                        }
-                                         
-                                    }];
-                                    
-                                    [alert addAction:defaultAction];
-                                    if ( destinyItemsParentVC){
-                                        [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
-                                    }
-                                   
-                                }
-                                //Equip Action Issue
-                                else{
-                                    
-                                    NSString *errorCode = [respData objectForKey:@"ErrorCode"],
-                                             *errorStatus = [respData objectForKey:@"ErrorStatus"],
-                                             *errorMessage = [respData objectForKey:@"Message"];
-                                    
-        
-                                    
-                                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:errorStatus
-                                                                   message:errorMessage
-                                                                   preferredStyle:UIAlertControllerStyleAlert];
-                                    
-                                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                       handler:^(UIAlertAction * action) {
-                                        NSLog(@"%@-%@",errorCode,errorStatus);
-                                        
-                                        
-                                         
-                                    }];
-                                    
-                                  
-                                    
-                                    [alert addAction:defaultAction];
-                                    if ( destinyItemsParentVC){
-                                        [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
-                                    }
-                                }
-                          }
-                        }
-                    }];
-                      
-                    EQXBaseClass *payload = [[EQXBaseClass alloc] init];
-                    [payload setCharacterId:selectedCharacter];
-                    [payload setMembershipType:appDelegate.currentMembershipType];
-                    [payload setItemId:selectedItemInstance];
-                      
-                    NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
-                        
-                    NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
-                        
-                    payload  = nil;
-                        
-                    NSError *writeError = nil;
-                    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData options:NSJSONReadingMutableContainers
-                                                                             error:&writeError];
-                        
-                    NSString *jsonString = [[NSString alloc] initWithData:jsonData
-                                                                     encoding:NSUTF8StringEncoding];
-                    NSLog(@"JSON Output: %@", jsonString);
-                        
-                    [NetworkAPISingleClient equipItem:jsonString
-                                            completionBlock:^(NSArray *values) {
-                        
-                     if (values){
-                        //Not used
-                        NSLog(@"equipItem:Completion=%@",values);
-                     }
-                        
-                    } andErrorBlock:^(NSError *exception) {
-                        NSLog(@"ItemCellTableView:equipItem:Exception->%@",exception.description);
-                    }];
-                     
-                }];
-                
-                UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
-                   handler:^(UIAlertAction * action) {
-                    NSLog(@"ItemCellTableView:equipItem:Cancelled Clicked");
-                }];
-                
-                [alert addAction:defaultAction];
-                [alert addAction:cancelAction];
-                if ( destinyItemsParentVC){
-                    [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
-                }
-                
+        if (selectedItemHash){
+            
+            NSString *strCharacter  = @"Current Character",
+                     *strCC         = @"";
+            
+            if(isCurrentCharTitan){
+                strCharacter = @"Titan";
             }
             
-
+            if(isCurrentCharWarlock){
+                strCharacter = @"Warlock";
+            }
+            
+            if(isCurrentCharHunter){
+                strCharacter = @"Hunter";
+            }
+            
+            strMessage   = [NSString stringWithFormat:@"Available '%@' [Actions]",selectedTitle];
+            
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:strMessage
+                                            message:@"*Select Action Below"
+                                            preferredStyle:UIAlertControllerStyleActionSheet];
+            
+            
+            
+            strMessage = [NSString stringWithFormat:@"Equip '%@' on %@?",selectedTitle,strCharacter];
+            
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:strMessage style:UIAlertActionStyleDefault
+                handler:^(UIAlertAction * action) {
+                NSLog(vaultAction);
+                
+                [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyEquipItemNotification
+                    object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+                    
+                    
+                    NSDictionary *respData  = (NSDictionary*) [note object],
+                                    *userInfo  = [note userInfo];
+                    
+                    
+                    if (respData){
+                        
+                        NSString *respStatus  = [respData objectForKey:@"ErrorStatus"],
+                                    *respMessage = [NSString stringWithFormat:
+                                                    @"Successfully equipped '%@'",selectedTitle];
+                        
+                        if (respStatus){
+                            //SendToVault Action was Successfull!
+                            if ([respStatus isEqualToString:@"Success"]){
+                                
+                                UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Equip Item Action Result"
+                                                                message:respMessage
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+                                
+                                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                    NSLog(@"%@-",respStatus);
+                                    
+                                
+                                    if (destinyItemsParentVC){
+                                        
+                                        if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
+                                            [destinyItemsParentVC refreshItems];
+                                        }
+                                        
+                                        if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
+                                            WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
+                                            if (destinyWeaponsParentVC){
+                                                [destinyWeaponsParentVC refreshEquippedWeaponAction:selectedItemHash];
+                                            }
+                                        }
+                                            
+                                            
+                                        if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
+                                            
+                                            ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
+                                            
+                                            if (destinyArmorParentVC){
+                                                [destinyArmorParentVC refreshEquippedArmorAction:selectedItemHash];
+                                            }
+                                        }
+                                        
+                                    }
+                                        
+                                }];
+                                
+                                [alert addAction:defaultAction];
+                                if ( destinyItemsParentVC){
+                                    [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
+                                }
+                                
+                            }
+                            //Equip Action Issue
+                            else{
+                                
+                                NSString *errorCode = [respData objectForKey:@"ErrorCode"],
+                                            *errorStatus = [respData objectForKey:@"ErrorStatus"],
+                                            *errorMessage = [respData objectForKey:@"Message"];
+                                
+    
+                                
+                                UIAlertController* alert = [UIAlertController alertControllerWithTitle:errorStatus
+                                                                message:errorMessage
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+                                
+                                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                    NSLog(@"%@-%@",errorCode,errorStatus);
+                                    
+                                    
+                                        
+                                }];
+                                
+                                
+                                
+                                [alert addAction:defaultAction];
+                                if ( destinyItemsParentVC){
+                                    [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
+                                }
+                            }
+                        }
+                    }
+                }];
+                    
+                EQXBaseClass *payload = [[EQXBaseClass alloc] init];
+                [payload setCharacterId:selectedCharacter];
+                [payload setMembershipType:appDelegate.currentMembershipType];
+                [payload setItemId:selectedItemInstance];
+                    
+                NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
+                    
+                NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
+                    
+                payload  = nil;
+                    
+                NSError *writeError = nil;
+                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData options:NSJSONReadingMutableContainers
+                                                                            error:&writeError];
+                    
+                NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                                    encoding:NSUTF8StringEncoding];
+                NSLog(@"JSON Output: %@", jsonString);
+                    
+                [NetworkAPISingleClient equipItem:jsonString
+                                        completionBlock:^(NSArray *values) {
+                    
+                    if (values){
+                    //Not used
+                    NSLog(@"equipItem:Completion=%@",values);
+                    }
+                    
+                } andErrorBlock:^(NSError *exception) {
+                    NSLog(@"ItemCellTableView:equipItem:Exception->%@",exception.description);
+                }];
+                    
+            }];
+            
+            UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                handler:^(UIAlertAction * action) {
+                NSLog(@"ItemCellTableView:equipItem:Cancelled Clicked");
+            }];
+            
+            [alert addAction:defaultAction];
+            [alert addAction:cancelAction];
+            if ( destinyItemsParentVC){
+                [destinyItemsParentVC presentViewController:alert animated:YES completion:nil];
+            }
+            
         }
-        
+            
+
+    
         
     } @catch (NSException *exception) {
         NSLog(@"ItemCellTableView:equipItem:Exception->%@",exception.description);
@@ -937,7 +905,7 @@
         }
         
         selectedCell = (ItemCellTableView*) [self.parentTableView cellForRowAtIndexPath:indexPath];
-        
+
         if (! selectedCell){
             return;
         }
@@ -1102,7 +1070,7 @@
                                      }
                                             
                                     if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
-                                        //TODO armor refresh logic
+
                                     }
                                         
                                 }
@@ -1495,7 +1463,10 @@
                                             
                                         if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
                                             ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
-                                            //TODO:Refresh Armor Logic
+                                           
+                                            if (destinyArmorParentVC){
+                                                [destinyArmorParentVC refreshEquippedArmorAction:selectedItemHash];
+                                            }
                                         }
                                         
                                 
@@ -1621,8 +1592,12 @@
                                          
                                          
                                      if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
+         
                                          ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
-                                         //TODO:Refresh Armor Logic
+                                        
+                                         if (destinyArmorParentVC){
+                                             [destinyArmorParentVC removeArmorAction:selectedItemHash];
+                                         }
                                      }
                                       
                                  }];
@@ -1711,6 +1686,122 @@
              //END SEND TO VAULT
             
             
+            //BEGIN Lock Action
+            
+            transferAction = [NSString stringWithFormat:@"Lock '%@' on %@ ?",selectedTitle,strCharacter];
+            BOOL bLockAction = YES;
+            NSString *strLocked = @"1";
+            
+            if ([selectedCell.btnLockAction.currentImage isEqual:lockImage]){
+                transferAction = [NSString stringWithFormat:@"Unlock '%@' on %@ ?",selectedTitle,strCharacter];
+                bLockAction = NO;
+                strLocked = @"0";
+            }
+            
+            
+            UIAlertAction* lockAction = [UIAlertAction actionWithTitle:transferAction style:UIAlertActionStyleDefault
+               handler:^(UIAlertAction * action) {
+                NSLog(transferAction);
+                
+                
+                [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLockItemStateNotification
+                    object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+                    
+                    
+                    NSDictionary *respData  = (NSDictionary*) [note object],
+                                 *userInfo  = [note userInfo];
+                    
+                    
+                    if (respData){
+                     
+                        NSString *respStatus = [respData objectForKey:@"ErrorStatus"];
+                        
+                        if (respStatus){
+                            if ([respStatus isEqualToString:@"Success"]){
+                              
+                                NSString *strMessage = [transferAction stringByReplacingOccurrencesOfString:@"?" withString:@"Result"];
+                                 
+                                 UIAlertController* alertLockItemOk = [UIAlertController alertControllerWithTitle: strMessage
+                                                                message:respStatus
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+                                 
+                                 UIAlertAction* lockItemOkAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+
+                                       NSLog(@"[%@]:Lock Item On %@ Action Response:[%@]",selectedTitle, strCharacter, respStatus);
+                                     
+                                      if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
+                                         //TODO:Refresh Items Logic
+                                     }
+                                     
+                                     if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
+                                         WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
+                                        [destinyWeaponsParentVC refreshLockedWeaponAction:selectedItemHash];
+                                    }
+                                         
+                                         
+                                     if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
+         
+                                         ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
+                                        
+                                         if (destinyArmorParentVC){
+                                             [destinyArmorParentVC refreshLockedArmorAction:selectedItemHash];
+                                         }
+                                     }
+                                      
+                                 }];
+                                 
+                                 [alertLockItemOk addAction:lockItemOkAction];
+                                 if ( destinyItemsParentVC){
+                                     [destinyItemsParentVC presentViewController: alertLockItemOk animated:YES completion:nil];
+                                 }
+                                
+                                
+                                 
+                           }
+                      }
+                    }
+                }];
+                
+                    
+                    LCKBaseClass *payload = [[LCKBaseClass alloc] init];
+                    [payload setCharacterId:selectedCharacter];
+                    [payload setState:bLockAction];
+                    [payload setMembershipType:appDelegate.currentMembershipType];
+                    [payload setItemId:selectedItemInstance];
+                   
+                    NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
+                    
+                    NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
+                    
+                    payload  = nil;
+                    
+                    NSError *writeError = nil;
+                    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData options:NSJSONReadingMutableContainers
+                                                                         error:&writeError];
+                    
+                    NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                                 encoding:NSUTF8StringEncoding];
+                    NSLog(@"JSON Output: %@", jsonString);
+                    
+                    [NetworkAPISingleClient lockStateItem:jsonString
+                                            completionBlock:^(NSArray *values) {
+                        
+                        if (values){
+                            //Not used
+                        }
+                        
+                        
+                    } andErrorBlock:^(NSError *exception) {
+                        NSLog(@"ItemCellTableView:lockStateAction:Exception->%@",exception.description);
+                    }];
+                    
+                 
+            }];
+ 
+            //END Lock Action
+            
+            
             UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                                     style:UIAlertActionStyleCancel
                 handler:^(UIAlertAction * action) {
@@ -1719,6 +1810,7 @@
 
             [alert addAction:equipAction];
             [alert addAction:sendToVaultAction];
+            [alert addAction:lockAction];
             [alert addAction:cancelAction];
             
             if ( destinyItemsParentVC){
@@ -1874,8 +1966,9 @@
                                                 
                                             if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
                                                 ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
+                                               
                                                 if (destinyArmorParentVC){
-                                                    [destinyArmorParentVC loadArmor];
+                                                    [destinyArmorParentVC removeArmorAction:selectedItemHash];
                                                 }
                                             }
                                             
@@ -2114,34 +2207,40 @@
                             if (respStatus){
                                 if ([respStatus isEqualToString:@"Success"]){
                                     
-                                    
-                                    [NetworkAPISingleClient retrieveStaticEntityDefinitionByManifestType:@"DestinyInventoryItemDefinition" staticHashId:selectedItemHash completionBlock:^(NSArray *values) {
+                                     
+                                     UIAlertController* alertLockItemOk = [UIAlertController alertControllerWithTitle: lockAction
+                                                                    message:respStatus
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+                                     
+                                     UIAlertAction* lockItemOkAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action) {
+
                                         
-                                        if (values){
-                                          
-                                        NSLog(@"ItemCellViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Received->%@",selectedItemHash);
-                                              
-                                        INVDDestinyInventoryBaseClass *invItem = (INVDDestinyInventoryBaseClass *) [values firstObject];
-                                        
-                                        NSDictionary *callerInfo = [[NSDictionary alloc]
-                                                          initWithObjectsAndKeys:@"ItemCellViewController",@"ClassName",
-                                                          @"getStaticItem",@"MethodName",
-                                                          strIdx,@"CurrentIndex",
-                                                          strLocked, @"LockState",
-                                                          selectedItemHash, @"itemHashKey",nil];
-                                              
-                                        [[NSNotificationCenter defaultCenter]
-                                                postNotificationName:kDestinyLoadedStaticItemNotification
-                                                              object:invItem
-                                                                userInfo:callerInfo];
-                                            
-                                        NSLog(@"ItemCellViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Raised->%@",selectedItemHash);
-                                        
+                                          if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
+                                             //TODO:Refresh Items Logic
+                                         }
+                                         
+                                         if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
+                                             WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
+                                            [destinyWeaponsParentVC refreshLockedWeaponAction:selectedItemHash];
                                         }
-                                        
-                                    } andErrorBlock:^(NSError *exception) {
-                                     NSLog(@"ItemCellViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Exception->%@",exception.description);
-                                    }];
+                                             
+                                             
+                                         if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
+             
+                                             ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
+                                            
+                                             if (destinyArmorParentVC){
+                                                 [destinyArmorParentVC refreshLockedArmorAction:selectedItemHash];
+                                             }
+                                         }
+                                          
+                                     }];
+                                     
+                                     [alertLockItemOk addAction:lockItemOkAction];
+                                     if ( destinyItemsParentVC){
+                                         [destinyItemsParentVC presentViewController: alertLockItemOk animated:YES completion:nil];
+                                     }
                                     
                                      
                                }

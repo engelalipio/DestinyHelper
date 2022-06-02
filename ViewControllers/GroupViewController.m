@@ -28,6 +28,10 @@
     
     NSString *AuthState;
     
+    
+    NSInteger RowHeight,
+              HeaderHeight,
+              FooterHeight;
  
 }
 @end
@@ -67,13 +71,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-   // if (! appDelegate){
-        appDelegate = [AppDelegate currentDelegate];
-   // }
  
+    self->RowHeight = 90;
+    self->HeaderHeight = 1;
+    self->FooterHeight = 1;
     
+    appDelegate = [AppDelegate currentDelegate];
  
-    [_searchBar setDelegate:self];
+    [self.searchBar setDelegate:self];
   
     [self registerNotifications];
     [self initTableView];
@@ -409,22 +414,20 @@
  
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-        NSInteger size = 120;
+        NSInteger size = self->RowHeight;
      
     return size;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-   // return CGFLOAT_MIN;
-    NSInteger size =1.0f;//90;
-
     
+    NSInteger size = self->FooterHeight;
   
     return size;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    NSInteger size = 1.0f;//90;
+    NSInteger size = self->RowHeight;
     
     return size;
 }
@@ -447,7 +450,6 @@
             
         }
         
-      
       }
         @catch (NSException *exception) {
             message = [exception description];
@@ -502,7 +504,8 @@
              *imageName = nil,
              *memberName = nil,
              *baseURL   = nil,
-             *onlineStatus = nil;
+             *onlineStatus = nil,
+             *memberRole = nil;
     
     
     Founder *groupMember = nil;
@@ -513,6 +516,8 @@
     NSURL *imgURL = nil;
     
     UIImage *placeholderImg = nil;
+    
+    int intMemberType = 0;
     
     BOOL isOnline = NO;
     
@@ -537,11 +542,49 @@
             
             isOnline = [groupMember isOnline];
             
-            onlineStatus = @"Offline";
-            [cell.detailTextLabel setTextColor:[UIColor systemOrangeColor]];
+            intMemberType = groupMember.memberType;
+        
+           
+            /*
+             MemberType Enum Values
+                None: 0
+                Beginner: 1
+                Member: 2
+                Admin: 3
+                ActingFounder: 4
+                Founder: 5
+             */
+            
+            switch(intMemberType){
+                case 0:
+                    memberRole = @"N/A";
+                    break;
+                case 1:
+                    memberRole = @"Beginner";
+                    break;
+                case 2:
+                    memberRole = @"Member";
+                    break;
+                case 3:
+                    memberRole = @"Admin";
+                    break;
+                case 4:
+                    memberRole = @"Acting Founder";
+                    break;
+                case 5:
+                    memberRole = @"Founder";
+                    break;
+               
+            }
+            
+            onlineStatus = @"Online Status: OFFLINE";
+            [cell.detailTextLabel setTextColor:[UIColor darkGrayColor]];
+            [cell setAccessoryType:UITableViewCellAccessoryNone];
+            
             if (isOnline){
-                onlineStatus = @"Currently Online";
+                onlineStatus = @"Online Status: ONLINE";
                 [cell.detailTextLabel setTextColor:[UIColor systemGreenColor]];
+                [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
             }
             
             
@@ -577,10 +620,11 @@
             
             [cell.textLabel setTextColor:[UIColor whiteColor]];
 
-            [cell.textLabel setText:memberName];
+            [cell.textLabel setText:[NSString stringWithFormat:@"%@ - [%@]",memberName,memberRole]];
+            
             [cell.detailTextLabel setText:onlineStatus];
             
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+   
            
             
         }

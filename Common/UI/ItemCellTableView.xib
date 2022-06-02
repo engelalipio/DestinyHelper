@@ -90,10 +90,10 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TPI-ik-chS">
-                        <rect key="frame" x="78" y="55" width="22" height="22"/>
+                        <rect key="frame" x="80" y="55" width="19" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="tintColor" systemColor="systemOrangeColor"/>
-                        <state key="normal" image="lock.open" catalog="system"/>
+                        <state key="normal" image="lock" catalog="system"/>
                         <connections>
                             <action selector="lockStateAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ARU-Ax-vrP"/>
                         </connections>
@@ -134,7 +134,7 @@
         <image name="PlaceHolder.jpg" width="90" height="90"/>
         <image name="archivebox.circle" catalog="system" width="128" height="121"/>
         <image name="damage_solar.png" width="25.600000381469727" height="25.600000381469727"/>
-        <image name="lock.open" catalog="system" width="128" height="110"/>
+        <image name="lock" catalog="system" width="128" height="128"/>
         <image name="primaryAmmo.png" width="44.799999237060547" height="32"/>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

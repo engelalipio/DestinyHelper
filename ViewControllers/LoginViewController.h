@@ -43,7 +43,7 @@ UISearchBarDelegate,UISearchDisplayDelegate,ASWebAuthenticationPresentationConte
 -(void) endTimer;
 
 @property (strong, nonatomic) IBOutlet UILabel *lblLoginStatus;
-
+@property (strong, nonatomic) IBOutlet UILabel *lblClanStatus;
 @property (strong, nonatomic) IBOutlet UILabel *lblMemberStatus;
 @property (strong, nonatomic) IBOutlet UILabel *lblCharStatus;
 

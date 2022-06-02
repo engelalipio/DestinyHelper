@@ -45,6 +45,7 @@
 @property (nonatomic,strong) NSString  *selectedChar;
 @property (nonatomic,strong) NSString  *selectedMembership;
 @property (nonatomic,strong) UIViewController *parentVC;
+@property (nonatomic) BOOL isVaultItems;
 
 @property (strong, nonatomic) IBOutlet UILabel *lblItemDescription;
 
@@ -52,8 +53,9 @@
 -(void) startTimer;
 -(void) endTimer;
 -(void) loadItems;
+-(void) loadVaultItems;
 -(void) refreshItems;
--(void)closeAction;
+-(void) closeAction;
 @end
 
  

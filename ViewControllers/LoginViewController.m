@@ -41,7 +41,7 @@
 @synthesize imgPlayerLogo = _imgPlayerLogo;
 @synthesize imgPlayerBG   = _imgPlayerBG;
 @synthesize activityIndicator = _activityIndicator;
-
+@synthesize lblClanStatus = _lblClanStatus;
 
 -(void) viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -78,9 +78,11 @@
 }
 
 -(void) resetLabelStatuses{
+    
     [self.lblLoginStatus setText:@""];
     [self.lblMemberStatus setText:@""];
     [self.lblCharStatus setText:@""];
+    [self.lblClanStatus setText:@""];
 }
 
 -(void) initIndicator{
@@ -97,12 +99,22 @@
 -(void) registerNotifications{
    
     
+    [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedClanInfoNotification
+          object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+          
+        
+            NSLog(@"ProfileViewController:kDestinyLoadedClanInfoNotification:Received");
+          
+         [self.lblClanStatus setText:@"Clan Details successfully loaded..."];
+        
+      }];
+
+    
   
       [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedMembership
           object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
            
           NSArray *memberships = (NSArray *) [note object];
-          
           
           NSLog(@"ProfileViewController:kDestinyLoadedMembership:Received");
           
