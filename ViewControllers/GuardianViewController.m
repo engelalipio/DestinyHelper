@@ -34,6 +34,7 @@
     
     NSString *currentMembership,
              *currentClanName,
+             *lastAccessedCharacter,
              *selectedCharacter;
     
     UIImageView *selectedCharEmblem;
@@ -47,6 +48,9 @@
               FooterHeight;
     
     NSMutableArray *vaultArray;
+    
+    NSDate *dteLastAccessed;
+    
     BOOL hasClan;
 }
 @end
@@ -89,7 +93,7 @@
 
     [self loadCharacterInventories];
     [self loadVaultItems];
-
+    [self startTimer];
 }
  
 -(void) refreshCharacterEquipment{
@@ -139,7 +143,7 @@
             
             if (groupDetails){
               
-                self->currentClanName =  [NSString stringWithFormat:@"[%@] - %@", groupDetails.clanInfo.clanCallsign,groupDetails.name]; ;
+                self->currentClanName =  [NSString stringWithFormat:@"Clan: %@", groupDetails.name]; ;
                 
                 if (! self.clans){
                     self.clans = [[NSMutableArray alloc] init];
@@ -594,13 +598,59 @@
         
         NSString *currentCharacter    = nil,
                  *currentstrCharIndex = nil;
-        
-        
+ 
         if (userInfo){
             
             currentCharacter = [userInfo objectForKey:@"CurrentCharacter"];
             
             currentstrCharIndex =  [userInfo objectForKey:@"CurrentCharacterIndex"];
+            
+            //Determine last played character
+            if (cData){
+                
+                NSDictionary *dBase = (NSDictionary *) cData;
+                
+                if (dBase){
+                    
+                    NSDictionary *cBase = [(NSDictionary*) dBase objectForKey:@"character"];
+                    
+                    if (cBase){
+                    
+                        NSDictionary *iBase = [(NSDictionary*) cBase objectForKey:@"data"];
+                        
+                        NSDate *dteCurrentCharLastAccessed = nil;
+                        
+                        NSString *strDataLastPlayed = [iBase objectForKey:@"dateLastPlayed"];
+                        
+                        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                        
+                        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+                   
+                        dteCurrentCharLastAccessed = [[NSDate alloc] init];
+                        
+                       dteCurrentCharLastAccessed  = [dateFormatter dateFromString:strDataLastPlayed];
+                    
+                     if (! self->dteLastAccessed){
+                         self->dteLastAccessed = [[NSDate alloc] init];
+                         
+                        self->dteLastAccessed = (NSDate*) [dteCurrentCharLastAccessed copy];
+                        self->lastAccessedCharacter = currentCharacter;
+                     }
+                     else{
+                        //Compare
+                        if (self->dteLastAccessed > dteCurrentCharLastAccessed ){
+                            self->dteLastAccessed = dteCurrentCharLastAccessed;
+                            self->lastAccessedCharacter = currentCharacter;
+                            NSLog(@"GuardianViewController:kDestinyLoadedCharacterNotification:Last Accessed Guardian...",currentCharacter);
+                        }else{
+                            NSLog(@"Last Accessed Character Still %@ on %@",currentCharacter, self->dteLastAccessed);
+                        }
+                     }
+                    }
+                    
+                }
+                
+            }
             
             if (![self->destCharData.allKeys containsObject:currentCharacter]){
                 
@@ -633,12 +683,12 @@
                         
                  
                         NSString *message    = currentCharacter,
-                                    *imageName  = nil,
-                                    *baseURL    = nil,
-                                    *classHash  = nil,
-                                    *classDesc  = nil,
-                                    *genderHash = nil,
-                                    *genderDesc = nil,
+                                 *imageName  = nil,
+                                 *baseURL    = nil,
+                                 *classHash  = nil,
+                                 *classDesc  = nil,
+                                 *genderHash = nil,
+                                 *genderDesc = nil,
                                     *raceHash   = nil,
                                     *raceDesc   = nil,
                                     *lightLevel = nil,
@@ -649,7 +699,7 @@
                         
                         
                         NSURL *imageURL = nil,
-                                *emblemURL = nil;
+                              *emblemURL = nil;
                         
                         UIImage *imgEmblem = nil;
                         
@@ -669,13 +719,14 @@
                             
                             if (needsUpdate){
                             
-                                [self.tblChars beginUpdates];
+                               // [self.tblChars beginUpdates];
+                                
                                 
                                 [cell setTag:iCharIDX];
                                 
                                 NSDictionary *grd = [cData objectForKey:@"character"],
-                                                *equip = [cData objectForKey:@"equipment"],
-                                                *grdData  = nil;
+                                             *equip = [cData objectForKey:@"equipment"],
+                                             *grdData  = nil;
                                 
                                 
                                 grdData = [grd objectForKey:@"data"];
@@ -685,7 +736,7 @@
                                 
                                     classHash  = [grdData objectForKey:@"classHash"];
                                     genderHash = [grdData objectForKey:@"genderHash"];
-                                    raceHash = [grdData objectForKey:@"raceType"];
+                                    raceHash   = [grdData objectForKey:@"raceType"];
                                         
                                     lightLevel = [grdData objectForKey:@"light"];
                                     progHash   = [grdData objectForKey:@"progressionHash"];
@@ -744,7 +795,7 @@
                                     }
                                 }
                                 
-                            [self.tblChars endUpdates];
+                           // [self.tblChars endUpdates];
                             }
                             
                         }
@@ -757,6 +808,11 @@
                 
             }
                 completion:^(BOOL finished) {
+                
+               /* NSArray<NSIndexPath *> *visibleIndexPaths = [self.tblChars indexPathsForVisibleRows];
+                                
+                                [self.tblChars reloadRowsAtIndexPaths:visibleIndexPaths
+                                                      withRowAnimation:UITableViewRowAnimationNone];*/
                    NSLog( @"GuardianViewController:kDestinyLoadedCharacterNotification:LoadingChar[%@]Completed!",currentCharacter);
                 }];
             }
@@ -1737,15 +1793,14 @@
     if (self.timer != nil){
         [self.timer invalidate];
     }
-    NSLog(@"Profile Timer Stopped");
+    NSLog(@"Determine Last Access Character Timer Stopped");
     self.timer = nil;
 }
 
 
 -(void) startTimer{
-    
 
-    double interval = 5;
+    double interval = 2;
     
         self.timer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]]
                                               interval:interval target:self
@@ -1767,12 +1822,82 @@
     
     NSString *message         = @"";
     
+    int      totalSections   = 0,
+              totalRows       = 0;
+    
+    NSIndexPath *iPath = nil;
+    
+    GuardianCellTableView *cell = nil;
+    
+    UIImage *selCharImage = nil;
+    
+    UIImageView *selCharImageView = nil;
     @try {
         
+        if (self->lastAccessedCharacter){
             
-       //TODO:something
+            totalSections =  [self.tblChars numberOfSections];
             
-        
+            if (totalSections == 2 ){
+                
+                totalRows = [self.tblChars numberOfRowsInSection:0];
+                
+                if (totalRows == self.destChars.count){
+                    
+                    for(NSString *cKey in self.destChars){
+                        
+                        int cRow = [self.destChars indexOfObject:cKey];
+                        
+                        if ([cKey isEqualToString:self->lastAccessedCharacter]){
+                            
+                            iPath = [NSIndexPath indexPathForRow:cRow inSection:0];
+                          
+                            cell = (GuardianCellTableView*) [self.tblChars cellForRowAtIndexPath:iPath];
+                            
+                            //Last access character
+                            [cell.layer setBorderWidth:3];
+                            [cell.layer setShadowOffset: CGSizeMake(-1, 1)];
+                            [cell.layer setBorderColor:[UIColor systemOrangeColor].CGColor];
+                        
+                            if (!self.segCategories.isEnabled){
+                                [self.segCategories setEnabled:YES];
+                                [self.segCategories setTintColor:[UIColor whiteColor]];
+                                [self.segCategories setHighlighted:YES];
+                            }
+                            
+                            selCharImage = [UIImage imageWithData:UIImagePNGRepresentation(cell.imgBackground.image)];
+                             
+                            selCharImageView =   [[UIImageView alloc] initWithImage:selCharImage];
+                                
+                                if (selCharImageView){
+                                    self->selectedCharEmblem = selCharImageView;
+                                }
+                            
+                            self->selectedCharacter  = cKey;
+                            
+                            [self.tblChars selectRowAtIndexPath:iPath
+                                                       animated:NO
+                                                 scrollPosition:UITableViewScrollPositionNone];
+                            
+
+                               
+                            
+                           // [self tableView:self.tblChars didSelectRowAtIndexPath:iPath];
+                            
+                            NSLog(@"timerFireMethod:Sucessfully Processed [%d/%lu] Characters, stopping timer.",totalRows,(unsigned long)self.destChars.count);
+                            [self endTimer];
+                        }
+                        
+                    }
+                     
+                }
+                
+            }else{
+             
+                NSLog(@"timerFireMethod:Checking Processed [%@/%@] Characters...",totalRows,self.destChars.count);
+            }
+        }
+    
     }
     @catch (NSException *exception) {
         message = [exception description];
@@ -2295,7 +2420,8 @@
                 grdData =  [destCharData objectForKey:message];
                 
                 if (grdData){
-                
+                    
+        
                     classHash  = [grdData objectForKey:@"classHash"];
                     genderHash = [grdData objectForKey:@"genderHash"];
                     
@@ -2477,16 +2603,16 @@
                         
                         [cell.imgEmblem setImageWithURL:imageURL];
                       
-                        [cell.lblGuardianClass setText:@"Member Count"];
+                        [cell.lblGuardianClass setText:@"Members#"];
                     
                    
-                        [cell.lblLightLevel setText:[NSString stringWithFormat:@"  %@",clanCount]];
+                        [cell.lblLightLevel setText:[NSString stringWithFormat:@"   %@",clanCount]];
                       
                     
                         //[cell.lblGuardianCareer setTextColor:[UIColor whiteColor]];
                         //[cell.lblGuardianCareer setText:clanGroupId];
-                    
-                        [cell.lblGuardianRace setText:clanGroupId];
+                        
+                        [cell.lblGuardianRace setText:[NSString stringWithFormat:@"[%@]",clanDetail.clanInfo.clanCallsign]];
                         [cell.lblGuardianGender setText:@""];
                     
 

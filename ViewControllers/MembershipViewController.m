@@ -65,17 +65,18 @@
         }
     }
     
-    
-    
    // [self registerNotifications];
-    [self initTableView];
-    
-    if (self.memberships != nil){
-        [self.tblMemberships reloadData];
-    }
+  
     
     [self initIndicator];
- 
+    
+    [self initTableView];
+    
+      if (self.memberships != nil){
+          [self.activityIndicator startAnimating];
+           [self.tblMemberships reloadData];
+          [self.activityIndicator stopAnimating];
+      }
 }
 
 -(void) initIndicator{
@@ -83,8 +84,9 @@
     if (! self.activityIndicator){
         _activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:self.tblMemberships.frame];
     }
-    
+   
     [self.view addSubview:_activityIndicator];
+    
     
 }
 
@@ -216,6 +218,9 @@
         
         [self.tblMemberships setDelegate:self];
         [self.tblMemberships setDataSource:self];
+        [self.tblMemberships setRefreshControl:self.activityIndicator];
+        
+        
       }
         @catch (NSException *exception) {
             message = [exception description];
@@ -234,25 +239,29 @@
 
  
 -(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *message   = @"";
-    
-    
-    @try {
-        
-        if (cell){
-            //This will set the background of all of the views within the tablecell
-            cell.contentView.superview.backgroundColor = UIColor.blackColor;
-        
-        }
-        
-    }
-    @catch (NSException *exception) {
-        message = [exception description];
-    }
-    @finally {
-        message = @"";
-    }
+ 
 
+    NSString *message   = nil;
+ 
+    @try {
+        message =  [NSString stringWithFormat:@"MembershipVC:tableView:willDisplayCell->Section:[%ld]|Row:[%ld]",
+                    (long)indexPath.section,(long)indexPath.row];
+       
+        if (cell){
+           [cell.contentView.superview setBackgroundColor:UIColor.blackColor];
+           //[cell setAccessoryType:UITableViewCellAccessoryNone];
+        }
+   
+        
+    } @catch (NSException *exception) {
+        message = [exception description];
+    } @finally {
+        if ([message length] > 0){
+            NSLog(@"%@",message);
+        }
+        message = nil;
+    }
+    
 }
 
  
@@ -281,6 +290,7 @@
         if (! cell){
             
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"imgCell"];
+           // [cell setAccessoryType:UITableViewCellAccessoryNone];
         }
         
         placeholderImg = [UIImage imageNamed:@"PlaceHolder.jpg"];
@@ -307,6 +317,9 @@
                     [cell setHighlighted:YES];
                     [cell.detailTextLabel setTextColor:[UIColor whiteColor]];
                     [cell.detailTextLabel setText:@"Primary Membership"];
+                    
+                    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                   
                 }
             }
             
@@ -342,9 +355,7 @@
             [cell.textLabel setTextColor:[UIColor whiteColor]];
             
             [cell.textLabel setText:membership.displayName];
-           // [cell.detailTextLabel setText:membership.membershipId];
-            
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+      
            
             
         }
@@ -460,19 +471,22 @@
                 dteFirst  = [dateFormatter dateFromString:bungieUser.firstAccess];
                 dteLast   = [dateFormatter dateFromString:bungieUser.lastUpdate];
                 
-                dateFormatter.timeStyle = NSDateFormatterShortStyle;
-                dateFormatter.dateStyle = NSDateIntervalFormatterMediumStyle;
+                dateFormatter.timeStyle = NSDateFormatterNoStyle;
+                dateFormatter.dateStyle = NSDateIntervalFormatterLongStyle;
                 
                 strFirst = [dateFormatter stringFromDate:dteFirst];
                 strLast  = [dateFormatter stringFromDate:dteLast];
                 
-
+                [self.lblFirstAccessed setTextColor:[UIColor systemOrangeColor]];
                 [self.lblFirstAccessed setText:strFirst];
                 [self.lblLastAccessed setText:strLast];
                 
                 [self.lblPlayerMotto setText:bungieUser.statusText];
-                [self->_lblPlayerName setText:bungieUser.displayName];
+                 
+                [self.lblPlayerName setTextColor:[UIColor whiteColor]];
+                [self.lblPlayerName setText:bungieUser.uniqueName];
                 
+                    
                 enum Destiny2MembershipType mType = Xbox;
                
                 //xbox = 1

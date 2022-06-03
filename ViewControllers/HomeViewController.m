@@ -8,6 +8,7 @@
 
 #import "HomeViewController.h"
 #import "LoginViewController.h"
+#import "GuardianViewController.h"
 #import "Utilities.h"
 
 @interface HomeViewController ()
@@ -149,7 +150,9 @@
     
     appDelegate = [AppDelegate currentDelegate];
     
+    [self setupButtons];
     [self setupImages];
+    
     
     if (useTableView){
       [self initTableView];
@@ -161,6 +164,17 @@
        // [self performSegueWithIdentifier:@"segLogin" sender:self];
     }
 
+}
+
+-(void) setupButtons{
+    
+    [self.btnGuardians.layer setMasksToBounds:YES];
+    [self.btnGuardians.layer  setCornerRadius:5];
+    //[self.btnGuardians.layer  setBorderWidth:3];
+ 
+    [self.btnInventory.layer setMasksToBounds:YES];
+    [self.btnInventory.layer  setCornerRadius:5];
+    //[self.btnInventory.layer  setBorderWidth:3];
 }
 
 /*
@@ -242,6 +256,7 @@
 }
 
 - (IBAction)guardiansAction:(UIButton *)sender {
+    [self performSegueWithIdentifier:@"segGuardians" sender:sender];
     [self endTimer];
 }
 
@@ -252,6 +267,44 @@
     }
     
     [self endTimer];
+}
+
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    
+    GuardianViewController *targetVC = nil;
+    
+    NSArray *memberships = nil,
+            *characters  = nil;
+    @try {
+        
+        
+        targetVC =  (GuardianViewController *) segue.destinationViewController;
+       
+        if (targetVC){
+         memberships = (NSArray *) [appDelegate.destinyMemberships copy];
+        
+         characters =   (NSArray *) [appDelegate.destinyCharacters copy];
+        
+        if ([targetVC isKindOfClass:[GuardianViewController class]]){
+             [targetVC setDestChars:characters];
+             [targetVC setMemberships:memberships];
+         }
+     }
+        
+    } @catch (NSException *exception) {
+        NSLog(@"HomeViewController:prepareForSegue:GuardianViewController:Error->%@...",exception.description);
+    } @finally {
+        targetVC = nil;
+        
+        memberships = nil;
+          characters  = nil;
+        
+    }
+
+   
+    
 }
 
 -(void) endTimer{
