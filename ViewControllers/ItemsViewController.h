@@ -55,6 +55,7 @@
 -(void) loadItems;
 -(void) loadVaultItems;
 -(void) refreshItems;
+-(void) loadInventories;
 -(void) closeAction;
 @end
 

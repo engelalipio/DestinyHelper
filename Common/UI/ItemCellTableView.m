@@ -1197,7 +1197,8 @@
                                 NSLog(@"Transfer to Titan Action Status:[%@]",respStatus);
                                                 
                                 if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
-                                    //TODO inventory refresh logic
+                                    ItemsViewController *destinyItemParentVC = (ItemsViewController*) destinyItemsParentVC;
+                                    [destinyItemParentVC refreshItems];
                                 }
                                             
                                 if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
@@ -1207,7 +1208,8 @@
                                 }
                                         
                                 if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
-                                    //TODO armor refresh logic
+                                    ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
+                                    [destinyArmorParentVC removeArmorAction:selectedItemHash];
                                 }
                    
                                                     
@@ -1336,7 +1338,8 @@
                                 }
                                         
                                 if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
-                                    //TODO armor refresh logic
+                                    ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
+                                    [destinyArmorParentVC removeArmorAction:selectedItemHash];
                                 }
                              
                                                     

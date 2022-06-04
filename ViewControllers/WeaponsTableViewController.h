@@ -10,10 +10,11 @@
 
 
 @interface WeaponsTableViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource,
-UICollectionViewDataSource, UICollectionViewDelegate>
+UICollectionViewDataSource, UICollectionViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segTableView;
 
+@property (strong, nonatomic) IBOutlet UISearchBar *searchWeapons;
 @property (nonatomic,strong) NSMutableDictionary  *selectedCharData;
 @property (nonatomic,strong) NSMutableDictionary  *destWeapons;
 @property (nonatomic,strong) NSMutableDictionary *destChars;

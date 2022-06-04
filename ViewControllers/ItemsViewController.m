@@ -113,9 +113,11 @@
 
         self->cImage = self.selectedCharEmblem;
         
-        [self->cImage setFrame:CGRectMake(0, 10, self.tblItems.frame.size.width, 100)];
         
-        CGRect  lblFrame = CGRectMake(0, 10, self.tblItems.frame.size.width, 80);
+        [self->cImage setFrame:CGRectMake(0, 0, self.tblItems.frame.size.width, 100)];
+        
+        CGRect  lblFrame = CGRectMake(50, -20, self.tblItems.frame.size.width, 80);
+        
         UILabel *lblChar   = [[UILabel alloc] initWithFrame:lblFrame];
         [lblChar setTextAlignment:NSTextAlignmentLeft];
         [lblChar setFont:[UIFont italicSystemFontOfSize:20]];
@@ -1101,6 +1103,159 @@
     }
     
 }
+
+-(void) loadInventories{
+    
+    NSString *message   = @"3:ItemsViewController:loadInventories:Invoked by GuardianViewController...",
+             *strMID    = @"",
+             *strCharID = @"";
+    
+    NSDictionary        *chars = nil,
+                        *equip = nil,
+                        *cChar = nil,
+                        *vData = nil;
+    
+    NSArray             *vArray = nil,
+                        *eArray = nil;
+    
+    NSMutableDictionary *cBucket = [[NSMutableDictionary alloc] init];
+    
+    NSMutableArray *cBucketDef = [[NSMutableArray alloc] init];
+    
+    @try {
+        NSLog(@"%@",message);
+         
+        strMID = self.selectedMembership;
+        strCharID = self.selectedChar;
+        
+        if (! appDelegate){
+            appDelegate = [AppDelegate currentDelegate];
+        }
+        
+        chars = self.destChars;
+        
+        vData = self.destVaultItems;
+        
+        equip = self.destEquippedItems;
+      
+        vArray = self.destVaultItemsBuckets;
+        
+        eArray = self.destEquippedItemsBuckets;
+        
+        cChar = [chars objectForKey:strCharID];
+        
+        if (strCharID){
+            
+            if (! self->destItemData){
+                self->destItemData = [[NSMutableDictionary alloc] init];
+            }
+            
+            if(! self->itemBuckets){
+                self->itemBuckets = [[NSMutableArray alloc] initWithCapacity:eArray.count];
+            }
+            
+            if (! self->instanceData){
+                self->instanceData = [[NSMutableDictionary alloc] init];
+            }
+            
+            for(int idx = 0 ;idx < eArray.count; idx ++){
+             
+                NSString *sectionKey = [eArray objectAtIndex:idx];
+                
+                NSString *bucketFilter = [NSString stringWithFormat:@"%@",sectionKey];
+               
+                NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",bucketFilter];
+                
+                NSArray *filteredItems = [equip.allKeys filteredArrayUsingPredicate:bPredicate];
+               
+                if (filteredItems){
+                    
+                    if (! [cBucketDef containsObject:bucketFilter]){
+                          [cBucketDef addObject:bucketFilter];
+                    }
+                    
+                    for(int fIdx = 0 ; fIdx < filteredItems.count ; fIdx++){
+                       
+                        NSString *cFBucket = [filteredItems objectAtIndex:fIdx];
+                        
+                        INVCItems *cFItem = (INVCItems *) [equip objectForKey:cFBucket];
+                        
+                        if (cFItem){
+                         if (![cBucket.allKeys containsObject:cFBucket]){
+                             [cBucket setValue:cFItem forKey:cFBucket];
+                             
+                          }
+                            
+                            NSNumber *objHashId  = [[NSNumber alloc] initWithDouble:cFItem.itemHash];
+                            NSString *strHashKey = [NSString stringWithFormat:@"%@",objHashId],
+                                     *strInstanceId = cFItem.itemInstanceId;
+                            
+                            if (strHashKey){
+                                
+                                if (! [self->instanceData.allKeys containsObject:strHashKey]){
+                                     
+                                    //Need to get instance data
+                                    NSLog(@"ItemsViewController:loadInventories:APICall to getInstancedItem:For->%@",strHashKey);
+                                    
+                                    [NetworkAPISingleClient getInstancedItem:strInstanceId completionBlock:^(NSArray *values){
+                                            
+                                        if (values){
+                                            
+                                            INSTBaseClass *instanceBase = (INSTBaseClass*) [values firstObject];
+                                                    
+                                            NSString *strIDX = [NSString stringWithFormat:@"%d",fIdx],
+                                                     *strSDX = [NSString stringWithFormat:@"%d",idx];
+                                                
+                                            NSDictionary *callerInfo = [[NSDictionary alloc]
+                                                            initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
+                                                                                    @"loadInventories",@"MethodName",
+                                                                                    strIDX,@"CurrentIndex",
+                                                                                    strSDX,@"CurrentSection",
+                                                                                    strHashKey, @"itemHashKey",
+                                                                                    strInstanceId, @"itemInstanceId",nil];
+                                                    
+                                            [[NSNotificationCenter defaultCenter]
+                                                postNotificationName:kDestinyLoadedInstancedItemNotification
+                                                                object:instanceBase
+                                                            userInfo:callerInfo];
+                                                    
+                                      NSLog(@"ItemsViewController:loadInventories:kDestinyLoadedInstancedItemNotification:Raised->%@",strHashKey);
+                                                
+                                                
+                                     }
+                                                
+                                    }
+                                    andErrorBlock:^(NSError *exception){
+                                     NSLog(@"ItemsViewController:loadInventories:getInstancedItem:Exception->%@",exception.description);
+                                     }];
+                                    
+                                }
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                    self->itemBuckets = [cBucketDef copy];
+                    self->destItemData = [cBucket copy];
+                }
+                 
+            }
+            
+        }
+        
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+    } @finally {
+        if ([message length] > 0){
+            NSLog(@"%@",message);
+        }
+    }
+    
+    
+}
+
 -(void) loadItems{
  
     NSString *message   = @"3:ItemsViewController:loadItems:Invoked by GuardianViewController...",
@@ -1797,6 +1952,7 @@
                       
                             itemScreenShot = [itemDef screenshot];
                             
+                         
                             if (itemTypeName){
                                 [cell.lblItemType setText:itemTypeName];
                                 
@@ -1899,6 +2055,8 @@
                                     strDesc = invDisplayProps.displayPropertiesDescription;
                                     imageName = itemDef.iconWatermark;
                                     
+                                    
+                                    
                                     if (emblem){
                                         baseURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,emblem];
                                         emblemURL = [[NSURL alloc] initWithString:baseURL];
@@ -1916,6 +2074,9 @@
                                         }
                                     }
                                     
+                                    if (! itemScreenShot){
+                                        [cell.lblMisc setText:emblem];
+                                    }
                                 }
                                 
                                 itemName = [invDisplayProps name];

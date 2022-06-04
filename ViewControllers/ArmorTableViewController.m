@@ -101,9 +101,11 @@
     
         UIImageView *cImage = self.selectedCharEmblem;
     
-        [cImage setFrame:CGRectMake(0, 10, self.tableView.frame.size.width, 100)];
-    
-        CGRect  lblFrame = CGRectMake(0, 10, self.tableView.frame.size.width, 80);
+        
+        [self->cImage setFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 100)];
+        
+        CGRect  lblFrame = CGRectMake(50, -20, self.tableView.frame.size.width, 80);
+        
         UILabel *lblChar   = [[UILabel alloc] initWithFrame:lblFrame];
         [lblChar setTextAlignment:NSTextAlignmentLeft];
         [lblChar setFont:[UIFont italicSystemFontOfSize:20]];

@@ -175,6 +175,10 @@
     [self.btnInventory.layer setMasksToBounds:YES];
     [self.btnInventory.layer  setCornerRadius:5];
     //[self.btnInventory.layer  setBorderWidth:3];
+    
+    [self.btnLogin.layer setMasksToBounds:YES];
+    [self.btnLogin.layer  setCornerRadius:5];
+    
 }
 
 /*

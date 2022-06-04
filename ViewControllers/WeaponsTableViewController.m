@@ -66,7 +66,7 @@
 @synthesize selectedCharData = _selectedCharData;
 @synthesize destChars = _destChars;
 @synthesize parentVC = _parentVC;
-
+@synthesize searchWeapons = _searchWeapons;
 
 
 - (void)viewDidLoad {
@@ -122,19 +122,28 @@
     
         self->cImage = self.selectedCharEmblem;
     
-        [self->cImage setFrame:CGRectMake(0, 10, self.tableView.frame.size.width, 100)];
+        [self->cImage setFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 100)];
     
-        CGRect  lblFrame = CGRectMake(0, 10, self.tableView.frame.size.width, 80);
+        CGRect  lblFrame = CGRectMake(50, -20, self.tableView.frame.size.width, 80);
+        
         UILabel *lblChar   = [[UILabel alloc] initWithFrame:lblFrame];
+        
+     
+        
+        
         [lblChar setTextAlignment:NSTextAlignmentLeft];
         [lblChar setFont:[UIFont italicSystemFontOfSize:20]];
         [lblChar setTextColor:[UIColor systemOrangeColor]];
         [lblChar setText:[NSString stringWithFormat:@"%@//%@//%@//%@",strLight,strClass,strRace,strGender]];
         
+    
         [self->cImage addSubview:lblChar];
         
+        [self.navigationItem setTitle:@"Weapons"];
+ 
         [self.navigationItem setTitleView:self->cImage];
-       
+  
+ 
      
     }
        
@@ -158,7 +167,7 @@
     self->appDelegate = [AppDelegate currentDelegate];
     
     [self initTableView];
-    
+    [self initSearchBar];
     [self registerNotifications];
     
 }
@@ -1369,6 +1378,15 @@
     
     
 
+}
+
+-(void) initSearchBar{
+    
+    
+    //self.searchWeapons = [[UISearchBar alloc] initWithFrame:self.segTableView.frame];
+ 
+    [self.searchWeapons setDelegate:self];
+    
 }
 
 -(void) initTableView{
@@ -2687,6 +2705,17 @@
     ItemCollectionView *collectionView = (ItemCollectionView *)scrollView;
     NSInteger index = collectionView.indexPath.row;
     self.contentOffsetDictionary[[@(index) stringValue]] = @(horizontalOffset);
+}
+
+-(CGFloat) tableView:(UITableView *)tableView heightForHeaderAtIndexPath:(NSIndexPath *)indexPath{
+        NSInteger size = 10;
+        
+    if (indexPath.section == 0){
+     //   size = self->RowHeight;
+    }
+    
+    //NSLog(@"WeaponsTableViewController:heightForRowAtIndexPath->%ld",size);
+    return size;
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

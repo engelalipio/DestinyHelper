@@ -12,6 +12,7 @@
 
 @interface GuardianViewController : UIViewController<UITabBarDelegate,UITableViewDataSource>
 
+
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segCategories;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblPlayerName;
