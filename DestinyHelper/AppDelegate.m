@@ -49,10 +49,11 @@
 @synthesize  destinyVendorGroupDefinitions = _destinyVendorGroupDefinitions;
 @synthesize  destinyInventoryItemDefinitions = _destinyInventoryItemDefinitions;
 @synthesize  destinyActivityModeDefinitions = _destinyActivityModeDefinitions;
+@synthesize  destinyStatDefinitions = _destinyStatDefinitions;
 @synthesize  userSettings = _userSettings;
 @synthesize  isClanLoaded = _isClanLoaded;
 @synthesize  currentClan = _currentClan;
-
+@synthesize  currentBungieName = _currentBungieName;
 
 +(AppDelegate *) currentDelegate{
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -156,6 +157,12 @@
     [self registerNotifications];
     
     [self loadDestinyManifest];
+ 
+    /*[[UILabel appearance] setFont:[UIFont fontWithName:@"Neue Hass Grotesk Medium" size:[UIFont labelFontSize]]];
+    
+    [[UIButton appearance] setFont:[UIFont fontWithName:@"Neue Hass Grotesk Medium" size:[UIFont buttonFontSize]]];
+   
+    [[UITableViewCell appearance] setFont:[UIFont fontWithName:@"Neue Hass Grotesk Medium" size:[UIFont labelFontSize]]];*/
     
     return YES;
 }
@@ -890,6 +897,8 @@
                                 }
                             }
                             
+                            
+                            
                             if ([defKeyName isEqualToString:(@"DestinyClassDefinition")]){
                                 
                                 
@@ -1108,6 +1117,95 @@
                                     
                                 }
                             }
+                            
+                            
+                            if ([defKeyName isEqualToString:(@"DestinyStatDefinition")]){
+                                  
+                                  jsonPath = [Utilities retrieveDataFromJSONFile:defKeyName
+                                                                    andExtension:@"json"];
+                                  
+                                NSMutableArray *jsonArrayPath = nil;
+                                
+                                if ([jsonPath isKindOfClass:[NSArray class]]){
+                                    
+                                    jsonArrayPath = [[NSMutableArray alloc] initWithArray:jsonPath];
+                                    jsonPath = nil;
+                                    
+                                    NSMutableDictionary *buckets = [[NSMutableDictionary alloc]
+                                                                    initWithCapacity:jsonArrayPath.count];
+                                    
+                                    for(int jIdx = 0 ;jIdx < jsonArrayPath.count; jIdx++ ){
+                                        
+                                        NSDictionary *jPath = (NSDictionary*) [jsonArrayPath objectAtIndex:jIdx];
+                                        
+                                        if (jPath){
+                                            
+                                            long lngKey = [jPath objectForKey:@"id"];
+                                            
+                                            NSNumber *objKey = [NSNumber numberWithLong:lngKey];
+                                            
+                                            NSString *jsonData = [jPath objectForKey:@"json"],
+                                                     *jsonKey  = [NSString stringWithFormat:@"%@",[objKey integerValue]];
+                                            
+                                            if (!  [jsonData isKindOfClass:[NSNull class]]){
+                                                
+                                                NSDictionary *  statData = nil;
+                                                
+                                                @try {
+                                                    
+                                                  statData = (NSDictionary *)[NSJSONSerialization
+                                                                                 JSONObjectWithData:[jsonData dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                options:kNilOptions error:NULL];
+                                                    
+                                                } @catch (NSException *exception) {
+                                                    NSLog(@"Appdelegate:DestinyStatDefinition:Exception->%@",exception.description);
+                                                } @finally {
+                                                    
+                                                }
+                                             
+                                             
+                                                
+                                                if (statData){
+                                                    
+                                                    DestinyStatDefinition *statDef  = [[DestinyStatDefinition alloc]
+                                                                                       initWithDictionary:statData];
+                                                    
+                                                    if (statDef){
+                                                        
+                                                        @try {
+                                                            
+                                                            if (jsonKey){
+                                                                if (! [buckets.allKeys containsObject:jsonKey]){
+                                                                    [buckets setValue:statDef forKey:jsonKey];
+                                                                }
+                                                            }
+                                                            
+                                                        } @catch (NSException *exception) {
+                                                            NSLog(@"Appdelegate:DestinyStatDefinition:Exception->%@",exception.description);
+                                                        } @finally {
+                                                            statData = nil;
+                                                            statDef = nil;
+                                                        }
+
+                                                    }
+                                                }
+                                                
+                                            }
+                                            
+                                        }
+                                    }
+                                    
+                                    if (! self->_destinyStatDefinitions){
+                                        self->_destinyStatDefinitions = [[NSDictionary alloc] initWithDictionary:buckets];
+                                    }
+                                    
+                                }
+                                
+                              
+                                  
+                           }
+                              
+                              
                             
                         }
                         

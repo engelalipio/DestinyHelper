@@ -25,6 +25,10 @@
                         <rect key="frame" x="2" y="5" width="75" height="75"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </imageView>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="weaponMaster.png" translatesAutoresizingMaskIntoConstraints="NO" id="u6n-Nk-NMo">
+                        <rect key="frame" x="2" y="5" width="75" height="75"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gBI-wH-lSp">
                         <rect key="frame" x="297" y="2" width="73" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -107,6 +111,10 @@
                             <action selector="sendVaultAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="rQ5-Bu-4ds"/>
                         </connections>
                     </button>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="crafted.png" translatesAutoresizingMaskIntoConstraints="NO" id="jYC-w7-kPJ">
+                        <rect key="frame" x="10" y="56" width="20" height="20"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             </tableViewCellContentView>
@@ -116,8 +124,10 @@
                 <outlet property="btnSendVault" destination="nvv-Cf-vyq" id="36Q-s7-yP8"/>
                 <outlet property="imgBackground" destination="RDX-IQ-xn4" id="qTD-0Q-nIp"/>
                 <outlet property="imgCareer" destination="Ivr-jE-MOd" id="l7j-5d-6aF"/>
+                <outlet property="imgCrafted" destination="jYC-w7-kPJ" id="FbF-gA-gho"/>
                 <outlet property="imgItem" destination="Jvr-UA-kqk" id="Gvp-RM-61x"/>
                 <outlet property="imgItemBurn" destination="VvW-G4-fBQ" id="rP0-QX-Bhl"/>
+                <outlet property="imgMaster" destination="u6n-Nk-NMo" id="wKo-PH-Hd4"/>
                 <outlet property="lblCharacterId" destination="OYM-oa-Fc3" id="u1Q-Eu-QTD"/>
                 <outlet property="lblDamageType" destination="UE9-Kb-s1n" id="JuQ-Wf-h7q"/>
                 <outlet property="lblHash" destination="VVW-ii-DXM" id="tQh-TW-fiV"/>
@@ -133,9 +143,11 @@
     <resources>
         <image name="PlaceHolder.jpg" width="90" height="90"/>
         <image name="archivebox.circle" catalog="system" width="128" height="121"/>
+        <image name="crafted.png" width="19" height="19"/>
         <image name="damage_solar.png" width="25.600000381469727" height="25.600000381469727"/>
         <image name="lock" catalog="system" width="128" height="128"/>
         <image name="primaryAmmo.png" width="44.799999237060547" height="32"/>
+        <image name="weaponMaster.png" width="40.799999237060547" height="40.799999237060547"/>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

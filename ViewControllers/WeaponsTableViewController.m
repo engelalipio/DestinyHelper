@@ -19,6 +19,7 @@
 #import "ItemTableViewCell.h"
 #import "ItemCollectionViewCell.h"
 #import "GuardianViewController.h"
+#import "WeaponDetailsViewController.h"
 
 @interface WeaponsTableViewController ()
 {
@@ -128,11 +129,8 @@
         
         UILabel *lblChar   = [[UILabel alloc] initWithFrame:lblFrame];
         
-     
-        
-        
         [lblChar setTextAlignment:NSTextAlignmentLeft];
-        [lblChar setFont:[UIFont italicSystemFontOfSize:20]];
+        [lblChar setFont:[UIFont fontWithName:kDefaultFontName size:22]];
         [lblChar setTextColor:[UIColor systemOrangeColor]];
         [lblChar setText:[NSString stringWithFormat:@"%@//%@//%@//%@",strLight,strClass,strRace,strGender]];
         
@@ -169,6 +167,47 @@
     [self initTableView];
     [self initSearchBar];
     [self registerNotifications];
+    
+}
+
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    
+    WeaponDetailsViewController *targetVC = (WeaponDetailsViewController *) segue.destinationViewController;
+    
+    ItemCellTableView *selectedCell = (ItemCellTableView*) sender;
+    if ([targetVC isKindOfClass:[WeaponDetailsViewController class]]){
+       
+        if (selectedCell){
+            
+            NSString *weaponKey = selectedCell.lblHash.text,
+                     *instanceKey = selectedCell.lblInstanceId.text;
+            
+            if (instanceKey.length == 0){
+                instanceKey = [self resolveItemInstanceId:weaponKey
+                                       withItemCollection:self.destWeapons];
+                
+                if (instanceKey.length > 0){
+                    [selectedCell.lblInstanceId setText:instanceKey];
+                }
+            }
+            
+            if (weaponKey){
+                
+                INSTBaseClass *itemResponse =  (INSTBaseClass*) [self->instanceData objectForKey:weaponKey];
+                
+                if (itemResponse){
+                    
+                    [targetVC loadWeaponDetail:itemResponse
+                                withWeaponCell:selectedCell
+                                charactersData:self->allCharsData];
+                    
+                }
+                
+            }
+        }
+    }
     
 }
 
@@ -919,6 +958,7 @@
     
     NSString *selectedCharacter = nil;
     
+    
     BOOL loadData = NO;
     @try {
         
@@ -1231,36 +1271,15 @@
                     }
                     else{
                         
-                        NSString *charFilter = [NSString stringWithFormat:@"%@", strStaticKey];
-                       
-                        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
-                      
-                        NSArray *filteredItems = [self.destWeapons.allKeys filteredArrayUsingPredicate:bPredicate];
+                        strHashKey = [self resolveItemInstanceId:strStaticKey
+                                              withItemCollection:self.destWeapons];
                         
-                        NSArray<NSDictionary *> *fItems =   [self.destWeapons objectsForKeys:filteredItems notFoundMarker:self.destWeapons];
                         
-                        NSMutableDictionary *filteredCharWeaponsData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
-                        
-                        if (filteredItems.count == 1){
-                            
-                            filteredCharWeaponsData = (NSMutableDictionary*) [fItems firstObject];
-                            
-                            if (filteredCharWeaponsData){
-                             
-                                INVCItems* fObject  = (INVCItems*) filteredCharWeaponsData;
+                            if (strHashKey.length > 0){
+                                [cCell.lblInstanceId setText:strHashKey];
+                                [cCell transferItemAction:self->allCharsData];
                                 
-                                if (fObject){
-                                
-                                    strHashKey = [fObject itemInstanceId];
-                                
-                                    if (strHashKey.length > 0){
-                                        [cCell.lblInstanceId setText:strHashKey];
-                                        [cCell transferItemAction:self->allCharsData];
-                                        
-                                    }
-                                }
                             }
-                        }
                     }
                }
                
@@ -1277,6 +1296,66 @@
     
    
     
+}
+
+-(NSString *) resolveItemInstanceId:(NSString *) staticKey withItemCollection:(NSMutableDictionary *) anyCollection{
+    
+    
+    NSString *charFilter =  nil,
+             *strInstanceHashKey = nil;
+   
+    NSPredicate *bPredicate = nil;
+  
+    NSArray *filteredItems = nil;
+    
+    NSArray<NSDictionary *> *fItems =   nil;
+    
+    NSMutableDictionary *filteredCharWeaponsData = nil;
+    
+    INVCItems* fObject  = nil;
+    
+    @try {
+        
+          charFilter = [NSString stringWithFormat:@"%@", staticKey];
+       
+          bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
+      
+          filteredItems = [anyCollection.allKeys filteredArrayUsingPredicate:bPredicate];
+        
+          fItems =   [anyCollection objectsForKeys:filteredItems notFoundMarker:anyCollection];
+        
+          filteredCharWeaponsData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
+        
+        if (filteredItems.count == 1){
+            
+            filteredCharWeaponsData = (NSMutableDictionary*) [fItems firstObject];
+            
+            if (filteredCharWeaponsData){
+             
+                fObject  = (INVCItems*) filteredCharWeaponsData;
+                
+                if (fObject){
+                
+                    strInstanceHashKey = [fObject itemInstanceId];
+                     
+                }
+            }
+        }
+        
+        
+    } @catch (NSException *exception) {
+        NSLog(@"resolveItemInstanceId:Exception=%@",exception.description);
+    } @finally {
+        
+        charFilter =  nil;
+        bPredicate = nil;
+        filteredItems = nil;
+        fItems =   nil;
+        filteredCharWeaponsData = nil;
+        fObject  = nil;
+        
+    }
+    return strInstanceHashKey;
 }
 
 -(void) handleLongPress:(UILongPressGestureRecognizer *) recognize{
@@ -1333,36 +1412,16 @@
                     }
                     else{
                         
-                        NSString *charFilter = [NSString stringWithFormat:@"%@", strStaticKey];
-                       
-                        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
-                      
-                        NSArray *filteredItems = [self.destWeapons.allKeys filteredArrayUsingPredicate:bPredicate];
+                        strHashKey = [self resolveItemInstanceId:strStaticKey
+                                              withItemCollection:self.destWeapons];
                         
-                        NSArray<NSDictionary *> *fItems =   [self.destWeapons objectsForKeys:filteredItems notFoundMarker:self.destWeapons];
+                   
+                        if (strHashKey.length > 0){
+                            [cCell.lblInstanceId setText:strHashKey];
                         
-                        NSMutableDictionary *filteredCharWeaponsData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
-                        
-                        if (filteredItems.count == 1){
-                            
-                            filteredCharWeaponsData = (NSMutableDictionary*) [fItems firstObject];
-                            
-                            if (filteredCharWeaponsData){
-                             
-                                INVCItems* fObject  = (INVCItems*) filteredCharWeaponsData;
-                                
-                                if (fObject){
-                                
-                                    strHashKey = [fObject itemInstanceId];
-                                
-                                    if (strHashKey.length > 0){
-                                        [cCell.lblInstanceId setText:strHashKey];
-                                    
-                                        [cCell equipItem:cCell];
-                                    }
-                                }
-                            }
+                            [cCell equipItem:cCell];
                         }
+                        
                     }
                }
                
@@ -1394,6 +1453,7 @@
     NSString *message =  @"2:WeaponsTableViewController:initTableView...";
     @try {
         
+         
         
         if (! self.tableView){
             self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f,
@@ -1564,9 +1624,9 @@
                                           [cCell.layer setShadowOffset: CGSizeMake(-1, 1)];
                                           [cCell.layer setBorderColor:[UIColor whiteColor].CGColor];
                                           
-                                        [cell setHighlighted:YES];
+                                        /*[cell setHighlighted:YES];
                                           
-                                        [cCell setHighlighted:YES];
+                                        [cCell setHighlighted:YES];*/
                                       }
                                        
                                 }
@@ -1689,21 +1749,65 @@
                                 [cCell.lblCharacterId setText:strCharacterId];
                             }
                             
+                            [cell.imgItem.layer setMasksToBounds:NO];
+                            [cell.imgItem.layer setBorderWidth:0];
+                            //[cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                            [cell.imgItem.layer setBorderColor:[UIColor clearColor].CGColor];
+                            
+                            [cell.imgCrafted setHidden:YES];
+                            
                             if (invItem.message){
                             
+                                
                                 switch([invItem.message integerValue]){
                                     case 0:
-                                        [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"] forState:UIControlStateNormal];
+                                        [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"]
+                                                            forState:UIControlStateNormal];
+                                            
+                                        break;
+                                        case 1:
+                                        [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                                forState:UIControlStateNormal];
+                                         
+                                        break;
+                                    case 2://tracked
+                                        break;
+                                    case 4://Masterwork
+                                        [cell.imgItem.layer setMasksToBounds:YES];
+                                        [cell.imgItem.layer setBorderWidth:2];
+                                        [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                        [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
+                                        break;
+                                        
+                                    case 5://Masterwork locked
+                                        [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                                forState:UIControlStateNormal];
+                                        [cell.imgItem.layer setMasksToBounds:YES];
+                                        [cell.imgItem.layer setBorderWidth:2];
+                                        [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                        [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
+                                        break;
+                                    case 8://Crafted
+                                        [cell.imgCrafted setHidden:NO];
+                                        break;
+                                    case 12://bitmask ItemState ["Masterwork", "Crafted"]
+                                        
+                                        [cell.imgCrafted setHidden:NO];
+                                        [cell.imgItem.layer setMasksToBounds:YES];
+                                        [cell.imgItem.layer setBorderWidth:2];
+                                        [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                        [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
                                         
                                         break;
-                                    case 1:
-                                        [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
-                                                            forState:UIControlStateNormal];
-                                     
+                                    case 16://red bar
+                                        
+                                        [cell.imgItem.layer setMasksToBounds:YES];
+                                        [cell.imgItem.layer setBorderWidth:2];
+                                        [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                        [cell.imgItem.layer setBorderColor:[UIColor orangeColor].CGColor];
+                                        
                                         break;
-                                    case 8:
-                                        [cCell.btnSendVault setImage:[UIImage systemImageNamed:@"archivebox.circle"] forState:UIControlStateNormal];
-                                        break;
+                                   
                                 }
                             }
                             
@@ -1992,31 +2096,48 @@
     NSLog(@"Weapons:tableView:didSelectRowAtIndexPath");
     
     ItemTableViewCell *cCell = nil;
+    ItemCellTableView *tCell =  nil;
     @try {
         
          cCell = [self.tableView cellForRowAtIndexPath:indexPath];
-        
-        if (cCell){
+         
+        tCell = (ItemCellTableView*) [self.tableView cellForRowAtIndexPath:indexPath];
+        if (tCell){
             
-            NSString *strHashKey = [cCell.lblHash text];
+            NSString *strHashKey     = [tCell.lblHash text],
+                     *strInstanceKey = [tCell.lblInstanceId text];
             
-            NSLog(@"didSelectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d]",
-                  strHashKey,
-                  indexPath.section,
-                  indexPath.row);
+            if (strInstanceKey.length == 0){
+                strInstanceKey = [self resolveItemInstanceId:strHashKey
+                                          withItemCollection:self.destWeapons];
+                
+                if (strInstanceKey.length > 0){
+                    
+                    [tCell.lblInstanceId setText:strInstanceKey];
+                }
+                
+            }
             
-            [cCell.layer setMasksToBounds:YES];
-            [cCell.layer setCornerRadius:5];
-            [cCell.layer setBorderWidth:3];
-            [cCell.layer setShadowOffset: CGSizeMake(-1, 1)];
-            [cCell.layer setBorderColor:[UIColor systemYellowColor].CGColor];
+            NSLog(@"didSelectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d],Static Hash->[%@],Instance->[%@]",
+                  tCell.lblItemName.text, indexPath.section,indexPath.row,strHashKey,strInstanceKey);
 
-            
+
+           
+        }
+        
+        if (tCell){
+            [self performSegueWithIdentifier:@"segWeaponDetail" sender:tCell];
         }
         
     } @catch (NSException *exception) {
         
     } @finally {
+        
+        [cCell.layer setMasksToBounds:YES];
+        [cCell.layer setCornerRadius:5];
+        [cCell.layer setBorderWidth:3];
+        [cCell.layer setShadowOffset: CGSizeMake(-1, 1)];
+        [cCell.layer setBorderColor:[UIColor systemYellowColor].CGColor];
         
     }
 }
@@ -2728,9 +2849,11 @@
     return size;
 }
  
+
 -(void) tableView:(UITableView *)tableView willDisplayCell:(ItemTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
    
     ItemTableViewCell *cCell = nil;
+     
     
     if (self->useCView){
         
@@ -2751,6 +2874,17 @@
             }
         }
        
+    }else{
+        
+        /*if (cell.lblHash.text.length > 0){
+            [cell.lblHash setText:@""];
+        }
+        
+        if (cell.lblInstanceId.text.length > 0){
+            [cell.lblInstanceId setText:@""];
+        }*/
+        
+ 
     }
     
  
@@ -2810,7 +2944,7 @@
                 }
         
        
-                if (! self->primaryWeapons || (! self->energyWeapons) || (! self->powerWeapons) || (! self->ghosts) || (! self->artifact)){
+                if (! self->primaryWeapons || (! self->energyWeapons) || (! self->powerWeapons) /*|| (! self->ghosts) || (! self->artifact)*/){
                     
                     strBucketKey = [self.destWeaponBuckets objectAtIndex:indexPath.section];
                       
@@ -2854,7 +2988,7 @@
                         }
                         
                         break;
-                    case 3:
+                   /* case 3:
                         
                         if (self->ghosts){
                             strFullKey = [self->ghosts objectAtIndex:indexPath.row];
@@ -2867,7 +3001,7 @@
                             strFullKey = [self->artifact objectAtIndex:indexPath.row];
                         }
                         
-                        break;
+                        break;*/
 
                 }
                 
@@ -2910,6 +3044,15 @@
                              If this bit is set, the item has a 'highlighted' objective. You may want to represent this with an orange-red icon border color.
                              
                              */
+                            [cell.imgCrafted setHidden:YES];
+                            [cell.imgMaster setAlpha:0];
+                            [cell.imgMaster setHidden:YES];
+                            
+                            [cell.imgItem.layer setMasksToBounds:NO];
+                            [cell.imgItem.layer setBorderWidth:0];
+                            //[cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                            [cell.imgItem.layer setBorderColor:[UIColor clearColor].CGColor];
+                            
                             NSNumber *objLocked = [NSNumber numberWithDouble:item.state];
                             
                             switch (objLocked.integerValue) {
@@ -2924,13 +3067,52 @@
                                      
                                     break;
                                 case 2://tracked
+                                    break;
                                 case 4://Masterwork
                                     
+                                    [cell.imgItem.layer setMasksToBounds:YES];
+                                    [cell.imgItem.layer setBorderWidth:2];
+                                    [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                    [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
+                                    [cell.imgMaster setHidden:NO];
+                                    [cell.imgMaster setAlpha:0.3];
                                     break;
                                     
-                                case 5://Masterwork locked
+                                case 5://Masterwork + locked
                                     [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
                                                             forState:UIControlStateNormal];
+                                    
+                                    [cell.imgItem.layer setMasksToBounds:YES];
+                                    [cell.imgItem.layer setBorderWidth:2];
+                                    [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                    [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
+                                    
+                                    [cell.imgMaster setHidden:NO];
+                                    [cell.imgMaster setAlpha:0.3];
+                                    
+                                    break;
+                                case 8://Crafted
+                                    [cell.imgCrafted setHidden:NO];
+                                    break;
+                                case 12://bitmask ItemState ["Masterwork", "Crafted"]
+                                    
+                                    [cell.imgCrafted setHidden:NO];
+                                    [cell.imgItem.layer setMasksToBounds:YES];
+                                    [cell.imgItem.layer setBorderWidth:2];
+                                    [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                    [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
+                                    
+                                    [cell.imgMaster setHidden:NO];
+                                    [cell.imgMaster setAlpha:0.3];
+                                    
+                                    break;
+                                case 16://red bar
+                                    
+                                    [cell.imgItem.layer setMasksToBounds:YES];
+                                    [cell.imgItem.layer setBorderWidth:2];
+                                    [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                    [cell.imgItem.layer setBorderColor:[UIColor orangeColor].CGColor];
+                                    
                                     break;
                             }
                             

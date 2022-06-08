@@ -10,6 +10,7 @@
 #import "LoginViewController.h"
 #import "GuardianViewController.h"
 #import "Utilities.h"
+#import "Constants.h"
 
 @interface HomeViewController ()
 {
@@ -126,7 +127,7 @@
             self->isLoggedIn = YES;
          }
         
-        [self.btnLogin setHidden:isLoggedIn];
+        //[self.btnLogin setHidden:isLoggedIn];
         [self.btnInventory setHidden:!isLoggedIn];
         [self.btnGuardians setHidden:!isLoggedIn];
     }
@@ -168,17 +169,22 @@
 
 -(void) setupButtons{
     
+    
     [self.btnGuardians.layer setMasksToBounds:YES];
     [self.btnGuardians.layer  setCornerRadius:5];
-    //[self.btnGuardians.layer  setBorderWidth:3];
+    
+    [self.btnGuardians setFont:[UIFont fontWithName:kDefaultFontName
+                                              size:self.btnGuardians.font.pointSize]];
  
     [self.btnInventory.layer setMasksToBounds:YES];
     [self.btnInventory.layer  setCornerRadius:5];
-    //[self.btnInventory.layer  setBorderWidth:3];
+    [self.btnInventory setFont:[UIFont fontWithName:kDefaultFontName
+                                              size:self.btnInventory.font.pointSize]];
     
     [self.btnLogin.layer setMasksToBounds:YES];
     [self.btnLogin.layer  setCornerRadius:5];
-    
+    [self.btnLogin setFont:[UIFont fontWithName:kDefaultFontName
+                                              size:self.btnLogin.font.pointSize]];
 }
 
 /*
@@ -396,7 +402,7 @@
                  [_imgBackView.layer setBorderColor:[UIColor darkGrayColor].CGColor];
                  [_imgBackView setImage:image];
                 
-                [_lblTitle setText:title];
+                //[_lblTitle setText:title];
                 currentImageName = newImageName;
             }
            

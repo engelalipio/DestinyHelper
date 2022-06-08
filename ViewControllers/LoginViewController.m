@@ -14,7 +14,7 @@
 #import "GuardianViewController.h"
 #import "MembershipViewController.h"
 #import "HomeViewController.h"
-
+#import "Utilities.h"
 
 @interface LoginViewController ()
 {
@@ -28,7 +28,7 @@
     
     NSString *AuthState;
     
- 
+    UIImage *bgImage;
 }
 @end
 
@@ -57,13 +57,31 @@
     }
 }
 
+-(void)setupBackgroundImage{
+    
+    UIImage *oImage = [UIImage imageNamed:@"Vanguard.jpg"] ;
+    
+    CGSize newSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height - 150);
+    
+    self->bgImage = [Utilities imageResize:oImage andResizeTo:newSize];
+ 
+    self.view.backgroundColor = [UIColor colorWithPatternImage:self->bgImage];
+   
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
    appDelegate = [AppDelegate currentDelegate];
  
-  
+    
+    [[UILabel appearance] setFont:[UIFont fontWithName:kDefaultFontName size:[UIFont labelFontSize]]];
+    
+    [[UIButton appearance] setFont:[UIFont fontWithName:kDefaultFontName size:[UIFont buttonFontSize]]];
+    
+   // [self setupBackgroundImage];
     [self registerNotifications];
    /* [self initTableView];*/
     [self initIndicator];
@@ -129,6 +147,8 @@
         destChars = (NSArray*) [note object];
        
         [self.activityIndicator stopAnimating];
+        [self.view setBackgroundColor:[UIColor blackColor]];
+        
         NSLog(@"ProfileViewController:kDestinyLoadedCharactersNotification:Received");
         [self.lblCharStatus setText:@"Characters successfully loaded..."];
         

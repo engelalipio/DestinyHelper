@@ -285,6 +285,8 @@ enum Destiny2ItemSortType{
 
 @property (nonatomic,strong) CLNDetail *currentClan;
 
+@property (nonatomic,strong) NSString *currentBungieName;
+
 @property (nonatomic,strong) MBRResponse *currentMembership;
 
 @property (nonatomic,assign) enum Destiny2MembershipType currentMembershipType;
@@ -298,6 +300,8 @@ enum Destiny2ItemSortType{
 @property (nonatomic,strong) RefreshToken *currentRefreshToken;
 
 @property (nonatomic,strong) NSDictionary *destinyManifest;
+
+@property (nonatomic,strong) NSMutableDictionary *destinyStatDefinitions;
 
 @property (nonatomic,strong) NSDictionary *destinyClassDefinitions;
 

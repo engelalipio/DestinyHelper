@@ -14,7 +14,8 @@
 @property (strong, nonatomic) IBOutlet UIImageView *imgItem;
 @property (strong, nonatomic) IBOutlet UIImageView *imgBackground;
 @property (strong, nonatomic) IBOutlet UIImageView *imgItemBurn;
-
+@property (strong, nonatomic) IBOutlet UIImageView *imgCrafted;
+@property (strong, nonatomic) IBOutlet UIImageView *imgMaster;
 
 @property (strong, nonatomic) IBOutlet UILabel *lblItemName;
 @property (strong, nonatomic) IBOutlet UILabel *lblDamageType;
@@ -42,6 +43,8 @@
 - (IBAction)equipItem:(id)sender;
 
 - (IBAction)pullFromPostMaster:(id)sender;
+
+- (IBAction)pullFromVaultAction:(id)sender;
 
 @end
 

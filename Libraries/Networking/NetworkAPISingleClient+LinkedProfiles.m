@@ -74,10 +74,11 @@
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
     
-    NSString    *message         = @"",
-                *servicePath     = @"",
-                *tokenValue      = @"",
-                *currentMembership = @"";
+    NSString    *message           = @"",
+                *servicePath       = @"",
+                *tokenValue        = @"",
+                *currentMembership = @"",
+                *componentOptions  = @"";
     
     NSURL       *url  = nil;
     
@@ -85,7 +86,14 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
     
     NetworkAPISingleClient *api = nil;
     
-    enum Destiny2ComponentType cType = ITEMINSTANCES;
+    enum Destiny2ComponentType itemInstancesEnum = ITEMINSTANCES,    //300
+                               itemPerskEnum     = ITEMPERKS,        //302
+                               itemRenderEnum    = ITEMRENDERDATA,   //303
+                               itemStatsEnum     = ITEMSTATS,        //304
+                               itemSocketsEnum   = ITEMSOCKETS,      //305
+                               itemCommonEnum    = ITEMCOMMONDATA,   //307
+                               itemPlugsEnum     = ITEMREUSABLEPLUGS;//310
+   
     
     enum Destiny2MembershipType mType = Xbox;
     
@@ -101,10 +109,13 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
             currentMembership = appDelegate.currentMembershipID;
         }
         
- 
+        componentOptions = [NSString stringWithFormat:@"components=%d,%d,%d,%d,%d,%d,%d",
+                            itemInstancesEnum,itemPerskEnum,itemRenderEnum,itemStatsEnum,
+                            itemSocketsEnum,itemCommonEnum,itemPlugsEnum];
+        
         ///Destiny2/{membershipType}/Profile/{destinyMembershipId}/Item/{itemInstanceId}/
         
-        servicePath = [NSString stringWithFormat:@"%@/%d/Profile/%@/Item/%@/?components=%d",kBungieAPIBaseD2URL,mType,currentMembership,anyInstancedId,cType];
+        servicePath = [NSString stringWithFormat:@"%@/%d/Profile/%@/Item/%@/?%@",kBungieAPIBaseD2URL,mType,currentMembership,anyInstancedId,componentOptions];
         
         NSLog(@"NetworkAPISingleClient(LinkedProfiles):getInstancedItem->%@",servicePath);
         

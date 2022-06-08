@@ -10,6 +10,7 @@
 #import "ItemsViewController.h"
 #import "NetworkAPISingleClient+LinkedProfiles.h"
 #import "NetworkAPISingleClient+Clan.h"
+#import "NetworkAPISingleClient+Definition.h"
 #import "DataModels.h"
 #import "Constants.h"
 #import "GuardianCellTableView.h"
@@ -19,6 +20,7 @@
 #import "ArmorTableViewController.h"
 #import "GroupViewController.h"
 #import "INVDInventory.h"
+#import "INVDDisplayProperties.h"
 
 @interface GuardianViewController ()
 {
@@ -38,7 +40,8 @@
     NSString *currentMembership,
              *currentClanName,
              *lastAccessedCharacter,
-             *selectedCharacter;
+             *selectedCharacter,
+             *vaultHash;
     
     UIImageView *selectedCharEmblem;
     
@@ -85,9 +88,15 @@
     
     self->hasClan = NO;
     
+    self->vaultHash = kDestinyVaultHash;
+    
     appDelegate = [AppDelegate currentDelegate];
     
     [self.navigationController setNavigationBarHidden:NO];
+    
+    if (appDelegate.currentBungieName){
+        [self.navigationItem setTitle:appDelegate.currentBungieName];
+    }
     
     [self registerNotifications];
     
@@ -106,7 +115,7 @@
 -(void) refreshCharacterEquipment{
     
     
-    NSLog(@"1:GuardianViewController:refreshCharacterEquipment Called...");
+    NSLog(@"🤺:1:GuardianViewController:refreshCharacterEquipment Called...");
    /* if (appDelegate)
     {
         NSLog(@"2:GuardianViewController:clearing AppDelegate Destiny Characters...");
@@ -114,7 +123,7 @@
         
     }*/
     
-    NSLog(@"2:GuardianViewController:resetting local Dictionaries/Arrays...");
+    NSLog(@"🤺:2:GuardianViewController:resetting local Dictionaries/Arrays...");
     self->destCharData = nil;
     self.destChars = nil;
     
@@ -124,12 +133,12 @@
     self->destVaultData   = [[NSMutableDictionary alloc] init];
     
  
-    NSLog(@"3:GuardianViewController:calling loadCharacters from refreshCharacterEquipment...");
+    NSLog(@"🤺:3:GuardianViewController:calling loadCharacters from refreshCharacterEquipment...");
     [self loadCharacters];
-    NSLog(@"4:GuardianViewController:calling loadCharacterInventories from refreshCharacterEquipment...");
+    NSLog(@"🤺:4:GuardianViewController:calling loadCharacterInventories from refreshCharacterEquipment...");
     [self loadCharacterInventories];
     
-    NSLog(@"5:GuardianViewController:refreshCharacterEquipment Completed...");
+    NSLog(@"🤺:5:GuardianViewController:refreshCharacterEquipment Completed...");
     
     //[self.tblChars reloadData];
 }
@@ -174,9 +183,12 @@
         
          
     } @catch (NSException *exception) {
-        NSLog(@"GuardianVC:loadGroupInfo:Exception->%@",exception.description);
+        NSLog(@"🤺:GuardianVC:loadGroupInfo:Exception->%@",exception.description);
     } @finally {
-         
+        
+        hasClanData = NO;
+       
+       groupDetails = nil;
     }
 
     
@@ -247,6 +259,7 @@
             
             if (cData){
                 INVCInventory *inventory = [[INVCInventory alloc] initWithDictionary:[cData objectForKey:@"inventory"]];
+              
                 
                if (inventory){
                    
@@ -314,7 +327,7 @@
                    
                         dteCurrentCharLastAccessed = [[NSDate alloc] init];
                         
-                       dteCurrentCharLastAccessed  = [dateFormatter dateFromString:strDataLastPlayed];
+                        dteCurrentCharLastAccessed  = [dateFormatter dateFromString:strDataLastPlayed];
                     
                      if (! self->dteLastAccessed){
                          self->dteLastAccessed = [[NSDate alloc] init];
@@ -323,14 +336,33 @@
                         self->lastAccessedCharacter = currentCharacter;
                      }
                      else{
+                         
+                         NSLog(@"🤺:kDestinyLoadedCharacterNotification:Last Accessed Details:[%@ on %@]",currentCharacter, dteCurrentCharLastAccessed);
+                         
+                         NSDate *comparedDate = [self->dteLastAccessed laterDate:dteCurrentCharLastAccessed];
+                         
+                         if ([comparedDate isEqualToDate:self->dteLastAccessed]){
+                             
+                             NSLog(@"🤺:kDestinyLoadedCharacterNotification:Last Accessed Character Still %@ on %@",
+                                   currentCharacter, self->dteLastAccessed);
+                             
+                         }else{
+                             
+                             self->dteLastAccessed = dteCurrentCharLastAccessed;
+                             self->lastAccessedCharacter = currentCharacter;
+                             
+                             NSLog(@"🤺:kDestinyLoadedCharacterNotification:Last Accessed Guardian...",currentCharacter);
+                             
+                         }
+                         
                         //Compare
-                        if (self->dteLastAccessed > dteCurrentCharLastAccessed ){
+                        /*if (self->dteLastAccessed > dteCurrentCharLastAccessed ){
                             self->dteLastAccessed = dteCurrentCharLastAccessed;
                             self->lastAccessedCharacter = currentCharacter;
-                            NSLog(@"GuardianViewController:kDestinyLoadedCharacterNotification:Last Accessed Guardian...",currentCharacter);
+                            NSLog(@"🤺:kDestinyLoadedCharacterNotification:Last Accessed Guardian...",currentCharacter);
                         }else{
-                            NSLog(@"Last Accessed Character Still %@ on %@",currentCharacter, self->dteLastAccessed);
-                        }
+                            NSLog(@"🤺:kDestinyLoadedCharacterNotification:Last Accessed Character Still %@ on %@",currentCharacter, self->dteLastAccessed);
+                        }*/
                      }
                     }
                     
@@ -341,18 +373,30 @@
             if (![self->destCharData.allKeys containsObject:currentCharacter]){
                 
                 [self->destCharData setValue:cData forKey:currentCharacter];
-                NSLog(@"GuardianViewController:kDestinyLoadedCharacterNotification:%@ Processing...",currentCharacter);
+                NSLog(@"🤺:GuardianViewController:kDestinyLoadedCharacterNotification:%@ Processing...",currentCharacter);
                 
             }
             else{
-                NSLog(@"GuardianViewController:kDestinyLoadedCharacterNotification:%@ Character already loaded...",currentCharacter);
+                NSLog(@"🤺:GuardianViewController:kDestinyLoadedCharacterNotification:%@ Character already loaded...",currentCharacter);
             }
  
            
             [self.tblChars performBatchUpdates:^(void){
                 
                 NSArray<NSIndexPath*> *iPaths =  [self.tblChars indexPathsForVisibleRows];
-            
+                
+                if (! iPaths){
+                    NSLog(@"🤺:GuardianViewController:kDestinyLoadedCharacterNotification:No Visible Rows:exiting...");
+                    return;
+                }
+                else{
+                    
+                    if (iPaths.count == 0){
+                        NSLog(@"🤺:GuardianViewController:kDestinyLoadedCharacterNotification:No Visible Rows:exiting...");
+                        return;
+                    }
+                }
+                
                 NSIndexPath *currentIPath = nil;
                 
                 GuardianCellTableView *cell = nil;
@@ -481,12 +525,124 @@
                                     }
                                 }
                                 
+                                if (equip){
+                                  
+                                    NSDictionary *data = [equip objectForKey:@"data"];
+                                    
+                                    if (data){
+                                        NSArray *items = (NSArray *) [data objectForKey:@"items"];
+                                        
+                                        if (items){
+                                          
+                                            
+                                            for(int idx = 0; idx < items.count; idx++ ){
+                                                
+                                                INVCItems * iItem = [[INVCItems alloc] initWithDictionary:[items objectAtIndex:idx]];
+                                                
+                                                if (iItem.bucketHash == 3284755031){
+                                                   //Subclass
+                                                    
+                                                    
+                                                    if (appDelegate.destinyInventoryItemDefinitions){
+                                                     
+                                                        NSNumber *objHash = [NSNumber numberWithDouble:iItem.itemHash];
+                                                        
+                                                        NSString *strItemHash = [NSString stringWithFormat:@"%@",objHash];
+                                                        
+                                                        INVDResponse *iItemDef = (INVDResponse *)
+                                                        
+                                                        [appDelegate.destinyInventoryItemDefinitions
+                                                                                                  objectForKey:strItemHash];
+                                                        
+                                                        if (!iItemDef){
+                                                            
+                                                            [NetworkAPISingleClient retrieveStaticEntityDefinitionByManifestType:@"DestinyInventoryItemDefinition" staticHashId:strItemHash completionBlock:^(NSArray *values) {
+                                                                
+                                                                if (values){
+                                                                    
+                                                                NSLog(@"🤺:GuardianViewController:subClassLookup:static:Received->%@",strItemHash);
+                                                                        
+                                                                INVDDestinyInventoryBaseClass *invItem = (INVDDestinyInventoryBaseClass *) [values firstObject];
+                                                                
+                                                                    [self->appDelegate.destinyInventoryItemDefinitions setObject:invItem forKey:strItemHash];
+                                                                    
+                                                                    
+                                                                    if (invItem){
+                                                                        INVDResponse *resp = [[INVDResponse alloc] initWithDictionary:[invItem response]];
+                                                                        
+                                                                        if (resp){
+                                                                            
+                                                                            INVDDisplayProperties *dispP = resp.displayProperties;
+                                                                            
+                                                                            if (dispP){
+                                                                                NSString *subImageName  = [dispP icon],
+                                                                                        *subBaseURL    = @"";
+                                                                                
+                                                                                if (subImageName){
+                                                                                    subBaseURL  = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,subImageName];
+                                                                                    NSURL* subImageURL = [[NSURL alloc] initWithString:subBaseURL];
+                                                                                    
+                                                                                    if (subImageURL){
+                                                                                        [cell.imgCareer setImageWithURL:subImageURL];
+                                                                                        [cell.imgCareer setHidden:NO];
+                                                                                        
+                                                                                        [cell.lblGuardianCareer setText:dispP.name];
+                                                                                    }
+                                                                                }
+                                                                                
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    
+                                                                }
+                                                                
+                                                            } andErrorBlock:^(NSError *exception) {
+                                                                NSLog(@"🤺:GuardianViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Exception->%@",exception.description);
+                                                            }];
+                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                        
+                                                            INVDDestinyInventoryBaseClass *invItem = (INVDDestinyInventoryBaseClass *) [iItemDef copy];
+                                                            
+                                                            INVDResponse *resp = [[INVDResponse alloc] initWithDictionary:[invItem response]];
+                                                            
+                                                            INVDDisplayProperties *dispP = resp.displayProperties;
+                                                            
+                                                            if (dispP){
+                                                                NSString *subImageName  = [dispP icon],
+                                                                         *subBaseURL    = @"";
+                                                                
+                                                                if (subImageName){
+                                                                    subBaseURL  = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,subImageName];
+                                                                    NSURL* subImageURL = [[NSURL alloc] initWithString:subBaseURL];
+                                                                    
+                                                                    if (subImageURL){
+                                                                        [cell.imgCareer setImageWithURL:subImageURL];
+                                                                        [cell.imgCareer setHidden:NO];
+                                                                        
+                                                                        [cell.lblGuardianCareer setText:dispP.name];
+                                                                    }
+                                                                }
+                                                                
+                                                            }
+                                                       }
+                                                    }
+                                                }
+                                                
+                                            }
+                                            
+                                        }
+                                    }
+                                }
+                                
                            // [self.tblChars endUpdates];
                             }
                             
                         }
                         @catch (NSException *exception) {
-                            NSLog(@"GuardianViewController:kDestinyLoadedCharacterNotification:Loading Char Exception->%@",exception.description);
+                            NSLog(@"🤺:GuardianViewController:kDestinyLoadedCharacterNotification:Loading Char Exception->%@",exception.description);
                         }
                     }
                 
@@ -499,7 +655,7 @@
                                 
                                 [self.tblChars reloadRowsAtIndexPaths:visibleIndexPaths
                                                       withRowAnimation:UITableViewRowAnimationNone];*/
-                   NSLog( @"GuardianViewController:kDestinyLoadedCharacterNotification:LoadingChar[%@]Completed!",currentCharacter);
+                   NSLog( @"🤺:GuardianViewController:kDestinyLoadedCharacterNotification:LoadingChar[%@]Completed!",currentCharacter);
                 }];
             }
         
@@ -510,7 +666,7 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedPublicVendorsDetailsNotification
         object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
         
-        NSLog(@"GuardianViewController:kDestinyLoadedPublicVendorsDetailsNotification:Invoked...");
+        NSLog(@"🤺:GuardianViewController:kDestinyLoadedPublicVendorsDetailsNotification:Invoked...");
         
         NSDictionary *userInfo = [note userInfo];
         
@@ -521,10 +677,10 @@
         if (![self->destPVendorData.allKeys containsObject:publicVendorHash]){
             
             [self->destPVendorData setValue:publicVendorData forKey:publicVendorHash];
-            NSLog(@"GuardianViewController:kDestinyLoadedPublicVendorsDetailsNotification:%@ Processing...",publicVendorHash);
+            NSLog(@"🤺:GuardianViewController:kDestinyLoadedPublicVendorsDetailsNotification:%@ Processing...",publicVendorHash);
         }
         else{
-            NSLog(@"GuardianViewController:kDestinyLoadedPublicVendorsDetailsNotification:%@ already loaded...",publicVendorHash);
+            NSLog(@"🤺:GuardianViewController:kDestinyLoadedPublicVendorsDetailsNotification:%@ already loaded...",publicVendorHash);
         }
             
             
@@ -645,7 +801,7 @@
                 
             }completion:^(BOOL finished) {
                 if (finished){
-                 NSLog(@"GuardianViewController:kDestinyLoadedPublicVendorsDetailsNotification:Completed for->%@",publicVendorHash);
+                 NSLog(@"🤺:GuardianViewController:kDestinyLoadedPublicVendorsDetailsNotification:Completed for->%@",publicVendorHash);
                 }
             }];
        
@@ -656,7 +812,7 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedPublicVendorsNotification
         object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
         
-        NSLog(@"GuardianViewController:kDestinyLoadedPublicVendorsNotification:Invoked...");
+        NSLog(@"🤺:GuardianViewController:kDestinyLoadedPublicVendorsNotification:Invoked...");
         
         NSDictionary  *userInfo = (NSDictionary*) [note userInfo],
                       *vendorResponse = nil,
@@ -757,7 +913,7 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedProfileVaultNotification
             object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
             
-            NSLog(@"GuardianViewController:kDestinyLoadedProfileVaultNotification:Invoked...");
+            NSLog(@"🤺:GuardianViewController:kDestinyLoadedProfileVaultNotification:Invoked...");
             
         NSDictionary  *userInfo = (NSDictionary*) [note userInfo];
               
@@ -788,7 +944,7 @@
                             if (vData){
                                 vItems = (NSArray*) [vData items] ;
                                 if (vItems){
-                                NSLog(@"GuardianViewController:kDestinyLoadedProfileVaultNotification:Vault Items Count = %d",vItems.count);
+                                NSLog(@"🤺:GuardianViewController:kDestinyLoadedProfileVaultNotification:Vault Items Count = %d",vItems.count);
                                     
                                   
                                     for(int vIDX = 0; vIDX < vItems.count; vIDX++){
@@ -826,7 +982,7 @@
                                                             break;
                                                         case 2://Vault
                                                             
-                                                            if ([strBucketHash isEqualToString:@"138197802"]){
+                                                            if ([strBucketHash isEqualToString:kDestinyVaultHash]){
                                                                 //General
                                                                 
                                                                 
@@ -856,12 +1012,12 @@
                                                                             
                                                                             if (![self->destVaultData.allKeys containsObject:strFullKey]){
                                                                                 [self->destVaultData setValue:vaultItem forKey:strFullKey];
-                                                                                NSLog(@"GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
+                                                                                NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
                                                                             }
                                                                           
                                                                             if (![self->destCharInventoryData.allKeys containsObject:strFullKey]){
                                                                                 [self->destCharInventoryData setValue:vaultItem forKey:strFullKey];
-                                                                                NSLog(@"GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
+                                                                                NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
                                                                             }
                                                                             
                                                                         }
@@ -876,7 +1032,12 @@
                                                                 
                                                                 if (![self->destVaultData.allKeys containsObject:strFullKey]){
                                                                     [self->destVaultData setValue:vaultItem forKey:strFullKey];
-                                                                    NSLog(@"GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
+                                                                    NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
+                                                                }
+                                                                
+                                                                if (![self->destCharInventoryData.allKeys containsObject:strFullKey]){
+                                                                    [self->destCharInventoryData setValue:vaultItem forKey:strFullKey];
+                                                                    NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
                                                                 }
                                                             }
                                                             
@@ -904,7 +1065,7 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedUniqueWeaponsStatsNotification
             object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
             
-            NSLog(@"GuardianViewController:kDestinyLoadedUniqueWeaponsStatsNotification:Invoked...");
+            NSLog(@"🤺:GuardianViewController:kDestinyLoadedUniqueWeaponsStatsNotification:Invoked...");
             
             NSDictionary  *userInfo = (NSDictionary*) [note userInfo],
                           *wResponse = nil,
@@ -973,7 +1134,7 @@
     NSArray *vendorKeys = nil;
     
     
-    NSString *message    = @"1:GuardianViewController:loadPublicVendorsDetails called...",
+    NSString *message    = @"🤺:1:GuardianViewController:loadPublicVendorsDetails called...",
              *vendorKey  = nil,
              *vendorHash = nil;
     
@@ -982,7 +1143,7 @@
         
         NSLog(@"%@",message);
         if (! self.memberships){
-            message   = @"2:GuardianViewController:loadPublicVendorsDetails:Getting Membership Detail from Delegate...";
+            message   = @"🤺:2:GuardianViewController:loadPublicVendorsDetails:Getting Membership Detail from Delegate...";
             NSLog(@"%@",message);
             self.memberships = (NSArray *) [appDelegate destinyMemberships];
         }
@@ -1003,7 +1164,7 @@
                 
             message = [NSString stringWithFormat:strURL, mType, strMID, strCharID,vendorHash];
                 
-            NSLog(@"GuardianViewController:loadPublicVendorsDetails:%d[%@]",iVendors,message);
+            NSLog(@"🤺:GuardianViewController:loadPublicVendorsDetails:%d[%@]",iVendors,message);
                 
             //Path: MembershipType/Profile/{destinyMembershipId}/Character/{characterId}/Vendors/{vendorId}/
                 
@@ -1033,7 +1194,7 @@
                 }
             }
                 andErrorBlock:^(NSError *exception){
-                    NSLog(@"loadCharacters:loadPublicVendorsDetails:getVendor:Exception->%@",exception.description);
+                    NSLog(@"🤺:loadCharacters:loadPublicVendorsDetails:getVendor:Exception->%@",exception.description);
                 }];
                    
             
@@ -1041,7 +1202,7 @@
       
         
     } @catch (NSException *exception) {
-        NSLog(@"loadCharacters:loadPublicVendorsDetails:getVendor:Exception->%@",exception.description);
+        NSLog(@"🤺:loadCharacters:loadPublicVendorsDetails:getVendor:Exception->%@",exception.description);
     } @finally {
         
     }
@@ -1053,7 +1214,7 @@
 -(void) loadCharacterWeaponsStats{
  
     
-    NSString *message   = @"2:GuardianViewController:loadCharacterWeaponsStats called...";
+    NSString *message   = @"🤺:2:GuardianViewController:loadCharacterWeaponsStats called...";
     
     MBRDestinyMemberships *membership = nil;
     
@@ -1093,7 +1254,7 @@
             
             
         }andErrorBlock:^(NSError *exception) {
-            NSLog(@"loadCharacters:NetworkAPISingleClient:getCharacter:Exception->%@",exception.description);
+            NSLog(@"🤺:loadCharacterWeaponsStats:NetworkAPISingleClient:getCharacter:Exception->%@",exception.description);
         }];
         
          
@@ -1106,14 +1267,14 @@
 
 -(void) loadVaultItems{
     
-    NSString *message   = @"1:GuardianViewController:loadVaultItems called...";
+    NSString *message   = @"🤺:1:GuardianViewController:loadVaultItems called...";
     
     MBRDestinyMemberships *membership = nil;
     
     @try {
         NSLog(@"%@",message);
         if (! self.memberships){
-            message   = @"2:GuardianViewController:loadVaultItems:Getting Membership Detail from Delegate...";
+            message   = @"🤺:2:GuardianViewController:loadVaultItems:Getting Membership Detail from Delegate...";
             NSLog(@"%@",message);
             self.memberships = (NSArray *) [appDelegate destinyMemberships];
         }
@@ -1134,7 +1295,7 @@
         
         strURL = [NSString stringWithFormat:strURL,mType,strMID];
         
-        NSLog(@"GuardianViewController:loadVaultItems:[%@]",strURL);
+        NSLog(@"🤺:GuardianViewController:loadVaultItems:[%@]",strURL);
         
 
         [NetworkAPISingleClient getVaultItems:strURL completionBlock:^(NSArray *values){
@@ -1164,18 +1325,16 @@
           
         }
         andErrorBlock:^(NSError *exception) {
-            NSLog(@"loadCharacters:NetworkAPISingleClient:loadVaultItems:Exception->%@",exception.description);
+            NSLog(@"🤺:NetworkAPISingleClient:loadVaultItems:Exception->%@",exception.description);
         }];
         
      
       
         
     } @catch (NSException *exception) {
-        message = [exception description];
+        NSLog(@"🤺:NetworkAPISingleClient:loadVaultItems:Exception->%@",exception.description);
     } @finally {
-        if ([message length] > 0){
-            NSLog(@"%@",message);
-        }
+        message = nil;
     }
     
     
@@ -1184,7 +1343,7 @@
 -(void) loadPublicVendors{
     
     
-    NSString *message   = @"2:GuardianViewController:loadPublicVendors called...";
+    NSString *message   = @"🤺:2:GuardianViewController:loadPublicVendors called...";
     
     MBRDestinyMemberships *membership = nil;
     
@@ -1228,14 +1387,14 @@
 
 -(void) loadCharacterInventories{
  
-    NSString *message   = @"1:GuardianViewController:loadCharacterInventories called...";
+    NSString *message   = @"🤺:1:GuardianViewController:loadCharacterInventories called...";
     
     MBRDestinyMemberships *membership = nil;
     
     @try {
         NSLog(@"%@",message);
         if (! self.memberships){
-            message   = @"2:GuardianViewController:loadCharacterInventories:Getting Membership Detail from Delegate...";
+            message   = @"🤺:2:GuardianViewController:loadCharacterInventories:Getting Membership Detail from Delegate...";
             NSLog(@"%@",message);
             self.memberships = (NSArray *) [appDelegate destinyMemberships];
         }
@@ -1247,7 +1406,7 @@
         }
       
         if (! destCharData){
-            message   = @"3:GuardianViewController:loadCharacterInventories:Getting Characters Detail from Delegate...";
+            message   = @"🤺:3:GuardianViewController:loadCharacterInventories:Getting Characters Detail from Delegate...";
             NSLog(@"%@",message);
             
             if ([[appDelegate destinyCharacters] isKindOfClass:NSArray.class]){
@@ -1261,7 +1420,7 @@
                 
                 if (destCharData){
                     self.destChars = (NSArray *) destCharData.allKeys;
-                    message   = @"4:GuardianViewController:loadCharacterInventories:Already in Delegate, exiting...";
+                    message   = @"🤺:4:GuardianViewController:loadCharacterInventories:Already in Delegate, exiting...";
                     NSLog(@"%@",message);
                 }
                 return;
@@ -1281,7 +1440,7 @@
            // message = [NSString stringWithFormat:strURL, mType, strMID];
             message = [NSString stringWithFormat:strURL, mType, strMID, strCharID];
             
-            NSLog(@"GuardianViewController:loadCharacterInventories:%d[%@]",iChars,message);
+            NSLog(@"🤺:GuardianViewController:loadCharacterInventory:%d[%@]",iChars,message);
             
             // Path: MembershipType/Profile/{destinyMembershipId}/Character/{characterId}/
                
@@ -1326,7 +1485,7 @@
                    
                }
                andErrorBlock:^(NSError *exception){
-                   NSLog(@"loadCharacters:NetworkAPISingleClient:getCharacter:Exception->%@",exception.description);
+                   NSLog(@"🤺:loadCharacters:NetworkAPISingleClient:getCharacterInventory:Exception->%@",exception.description);
                }];
                
             
@@ -1335,11 +1494,9 @@
       
         
     } @catch (NSException *exception) {
-        message = [exception description];
+        NSLog(@"🤺:loadCharacters:NetworkAPISingleClient:getCharacterInventory:Exception->%@",exception.description);
     } @finally {
-        if ([message length] > 0){
-            NSLog(@"%@",message);
-        }
+        message = nil;
     }
     
 }
@@ -1347,16 +1504,17 @@
  
 -(void) loadCharacters{
  
-    NSString *message   = @"1:GuardianViewController:loadCharacters called...";
+    NSString *message   = @"🤺:1:GuardianViewController:loadCharacters called...";
     
     MBRDestinyMemberships *membership = nil;
     
     @try {
         NSLog(@"%@",message);
+        
         if (! self.memberships){
-            message   = @"2:GuardianViewController:loadCharacters:Getting Membership Detail from Delegate...";
-            NSLog(@"%@",message);
+            message   = @"🤺:2:GuardianViewController:loadCharacters:Getting Membership Detail from Delegate...";
             self.memberships = (NSArray *) [appDelegate destinyMemberships];
+            NSLog(@"%@",message);
         }
         
         membership = (MBRDestinyMemberships *) [self.memberships objectAtIndex:0];
@@ -1366,20 +1524,23 @@
         }
       
         if (! destCharData){
-            message   = @"3:GuardianViewController:loadCharacters:Getting Characters Detail from Delegate...";
-            NSLog(@"%@",message);
-            
+        
             if ([[appDelegate destinyCharacters] isKindOfClass:NSArray.class]){
                 //Initial time as NSArray
                 self.destChars = (NSArray *) [appDelegate destinyCharacters];
+                message   = @"🤺:3:GuardianViewController:loadCharacters:Getting Characters Detail from Delegate as Array...";
+                NSLog(@"%@",message);
             }
             else{
                 //Already loaded Chars and NSDictionary
                 
                 destCharData = (NSMutableDictionary *) [appDelegate destinyCharacters];
-                
                 if (destCharData){
+                    
+                    
                     self.destChars = (NSArray *) destCharData.allKeys;
+                    message   = @"🤺:3:GuardianViewController:loadCharacters:Getting Characters Detail from Delegate as Dictionary...";
+                    NSLog(@"%@",message);
                    
                 }
                 return;
@@ -1398,7 +1559,7 @@
             
             message = [NSString stringWithFormat:strURL, mType, strMID, strCharID];
             
-            NSLog(@"GuardianViewController:loadCharacters:%d[%@]",iChars,message);
+            NSLog(@"🤺:%d:GuardianViewController:loadCharacter:[%@]",iChars,message);
             
             // Path: MembershipType/Profile/{destinyMembershipId}/Character/{characterId}/
                
@@ -1457,7 +1618,7 @@
                    
                }
                andErrorBlock:^(NSError *exception){
-                   NSLog(@"loadCharacters:NetworkAPISingleClient:getCharacter:Exception->%@",exception.description);
+                   NSLog(@"🤺:GuardianViewController:loadCharacters:NetworkAPISingleClient:getCharacter:Exception->%@",exception.description);
                }];
                
             
@@ -1466,11 +1627,12 @@
       
         
     } @catch (NSException *exception) {
-        message = [exception description];
+        message = [NSString stringWithFormat:
+                   @"🤺:GuardianViewController:loadCharacters:NetworkAPISingleClient:getCharacter:Exception->%@",exception.description];
+        NSLog(@"%@",message);
     } @finally {
-        if ([message length] > 0){
-            NSLog(@"%@",message);
-        }
+        message = nil;
+        membership = nil;
     }
     
 }
@@ -1480,7 +1642,7 @@
     if (self.timer != nil){
         [self.timer invalidate];
     }
-    NSLog(@"Determine Last Access Character Timer Stopped");
+    NSLog(@"🤺:Determine Last Access Character Timer Stopped");
     self.timer = nil;
 }
 
@@ -1507,10 +1669,12 @@
 
 - (void)timerFireMethod:(NSTimer *)t{
     
-    NSString *message         = @"";
+    NSString *message         = @"",
+             *lastChar        = @"";
     
     int      totalSections   = 0,
-              totalRows       = 0;
+             totalChars      = 0,
+              totalRows      = 0;
     
     NSIndexPath *iPath = nil;
     
@@ -1519,82 +1683,122 @@
     UIImage *selCharImage = nil;
     
     UIImageView *selCharImageView = nil;
+    
+    BOOL canProcess = NO;
+    
     @try {
         
-        if (self->lastAccessedCharacter){
+        message = @"🤺:timerFireMethod:Checking lastAccessedCharacter:Started...";
+        NSLog(@"%@",message);
+        
+        if(! self.tblChars){
+            canProcess = NO;
+            message = @"🤺:1:timerFireMethod:Checking lastAccessedCharacter:NO self.tblChars:Exiting...";
+            NSLog(@"%@",message);
+            return;
+        }else{
             
-            totalSections =  [self.tblChars numberOfSections];
+            totalSections = [self.tblChars numberOfSections];
+            totalRows     = [self.tblChars numberOfRowsInSection:0];
             
-            if (totalSections == 2 ){
-                
-                totalRows = [self.tblChars numberOfRowsInSection:0];
-                
-                if (totalRows == self.destChars.count){
-                    
-                    for(NSString *cKey in self.destChars){
-                        
-                        int cRow = [self.destChars indexOfObject:cKey];
-                        
-                        if ([cKey isEqualToString:self->lastAccessedCharacter]){
-                            
-                            iPath = [NSIndexPath indexPathForRow:cRow inSection:0];
-                          
-                            cell = (GuardianCellTableView*) [self.tblChars cellForRowAtIndexPath:iPath];
-                            
-                            //Last access character
-                            [cell.layer setBorderWidth:3];
-                            [cell.layer setShadowOffset: CGSizeMake(-1, 1)];
-                            [cell.layer setBorderColor:[UIColor systemOrangeColor].CGColor];
-                        
-                            if (!self.segCategories.isEnabled){
-                                [self.segCategories setEnabled:YES];
-                                [self.segCategories setTintColor:[UIColor whiteColor]];
-                                [self.segCategories setHighlighted:YES];
-                            }
-                            
-                            selCharImage = [UIImage imageWithData:UIImagePNGRepresentation(cell.imgBackground.image)];
-                             
-                            selCharImageView =   [[UIImageView alloc] initWithImage:selCharImage];
-                                
-                                if (selCharImageView){
-                                    self->selectedCharEmblem = selCharImageView;
-                                }
-                            
-                            self->selectedCharacter  = cKey;
-                            
-                            [self.tblChars selectRowAtIndexPath:iPath
-                                                       animated:NO
-                                                 scrollPosition:UITableViewScrollPositionNone];
-                            
+            message = [NSString stringWithFormat:
+                       @"🤺:1:timerFireMethod:Checking lastAccessedCharacter:self.tblChar:Sections Count:[%d],CharsRow Count:[%d]",
+                       totalSections,totalRows];
+            
+            canProcess = YES;
+            NSLog(@"%@",message);
+            
+        }
+        
+        if(! self.destChars){
+            canProcess = NO;
+            message = @"🤺:2:timerFireMethod:Checking lastAccessedCharacter:NO self.destChars:Exiting...";
+            NSLog(@"%@",message);
+            return;
+        }else{
+            totalChars  = [self.destChars count];
+            message = [NSString stringWithFormat:@"🤺:2:timerFireMethod:Checking lastAccessedCharacter:Total Chars:[%d]",totalChars];
+            canProcess = YES;
+            NSLog(@"%@",message);
+        }
+        
+        if(! self->lastAccessedCharacter){
+            canProcess = NO;
+            message = @"🤺:3:timerFireMethod:Checking lastAccessedCharacter:Exiting:No self.lastAccessedCharacter...";
+            NSLog(@"%@",message);
+            return;
+        }else{
+            lastChar = self->lastAccessedCharacter;
+            message = [NSString stringWithFormat:@"🤺:3:timerFireMethod:Checking lastAccessedCharacter:Last Character:[%@]",lastChar];
+            canProcess = YES;
+            NSLog(@"%@",message);
+        }
 
-                               
-                            
-                           // [self tableView:self.tblChars didSelectRowAtIndexPath:iPath];
-                            
-                            NSLog(@"timerFireMethod:Sucessfully Processed [%d/%lu] Characters, stopping timer.",totalRows,(unsigned long)self.destChars.count);
-                            [self endTimer];
-                        }
+        
+        if (canProcess){
+            
+            if (totalRows == totalChars){
+                    
+                for(NSString *cKey in self.destChars){
+                    
+                    int cRow = [self.destChars indexOfObject:cKey];
+                    
+                    if ([cKey isEqualToString:lastChar]){
                         
+                        iPath = [NSIndexPath indexPathForRow:cRow inSection:0];
+                        
+                        cell = (GuardianCellTableView*) [self.tblChars cellForRowAtIndexPath:iPath];
+                        
+                        //Last access character
+
+                        [cell.imgLastAccessedGuardian setHidden:NO];
+                    
+                        selCharImage = [UIImage imageWithData:UIImagePNGRepresentation(cell.imgBackground.image)];
+                            
+                        selCharImageView =   [[UIImageView alloc] initWithImage:selCharImage];
+                            
+                            if (selCharImageView){
+                                self->selectedCharEmblem = selCharImageView;
+                            }
+                        
+                        self->selectedCharacter  = cKey;
+                        
+                       /* [self.tblChars selectRowAtIndexPath:iPath
+                                                    animated:NO
+                                                scrollPosition:UITableViewScrollPositionNone];*/
+                        
+                        // [self tableView:self.tblChars didSelectRowAtIndexPath:iPath];
+                        
+                        message = [NSString stringWithFormat:
+                                   @"🤺:4:timerFireMethod:Sucessfully Processed [%d/%lu] Characters, stopping timer.",totalRows,totalChars];
+                        
+                        NSLog(@"%@",message);
+                        
+                        [self endTimer];
                     }
-                     
+                    
                 }
                 
-            }else{
-             
-                NSLog(@"timerFireMethod:Checking Processed [%@/%@] Characters...",totalRows,self.destChars.count);
+            }
+            else{
+                
+                if (self.destChars){
+                    message = [NSString stringWithFormat:
+                               @"🤺:4:timerFireMethod:Still processing [%d/%lu] Characters...",totalRows,(unsigned long)totalChars];
+                    NSLog(@"%@",message);
+                }
             }
         }
     
     }
     @catch (NSException *exception) {
-        message = [exception description];
+        message = [NSString stringWithFormat:@"Exception from:[%@]\r\n{%@}",message, exception.description];
+        NSLog(@"%@",message);
+       
     }
     @finally {
-        
-        if ([message length] > 0){
-            NSLog(@"%@",message);
-        }
-       
+ 
+        message = nil;
         
     }
     
@@ -1650,6 +1854,10 @@
         
         selCharKey = [self.destChars objectAtIndex:iRow];
         
+        if (indexPath.section == 1){
+            selCharKey = kDestinyVaultHash;
+        }
+        
         self->selectedCharacter = selCharKey;
          
         UIImage *selCharImage = [UIImage imageWithData:UIImagePNGRepresentation(selectedCell.imgBackground.image)];
@@ -1697,7 +1905,7 @@
             //[self performSegueWithIdentifier:@"segVendors" sender:selectedChar];
         }
         
-        if (indexPath.section == 1){
+        if (indexPath.section == 2){
             [self.segCategories setEnabled:NO];
         }
         
@@ -1806,7 +2014,7 @@
     
     UILabel *header = nil;
         header = [[UILabel alloc] init];
-        [header setFont:[UIFont fontWithName:@"Avenir Medium" size:20]];
+        [header setFont:[UIFont fontWithName:kDefaultFontName size:20]];
         [header setTextAlignment:NSTextAlignmentLeft];
         [header setTextColor:[UIColor systemOrangeColor]];
         [header setBackgroundColor:[UIColor blackColor]];
@@ -1815,6 +2023,9 @@
                 [header setText:@"Characters"];
                 break;
             case 1:
+                [header setText:@"General Vault"];
+                break;
+            case 2:
                 
                 headerTitle = [NSString stringWithFormat:@"%@", self->currentClanName];
                 
@@ -2081,7 +2292,7 @@
                 [self->destCharGeneralData setValue:item forKey:strFullKey];
              //   NSLog(@"GuardianViewController:destCharGeneralData:%@->Ships...",strFullKey);
             }
-            
+            break;
         case 3054419239://Emotes
             if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                 [self->destCharEquippedData setValue:item forKey:strFullKey];
@@ -2128,6 +2339,7 @@
                 [self->destCharInventoryData setValue:item forKey:strFullKey];
              //   NSLog(@"GuardianViewController:destCharEquippedData:%@->Consumables...",strFullKey);
             }
+            break;
         case 3313201758://Modifications
             if (![self->destCharEquippedData.allKeys containsObject:strFullKey]){
                 [self->destCharEquippedData setValue:item forKey:strFullKey];
@@ -2198,7 +2410,7 @@
     }
     
     if (!self->equippedArray){
-        self->equippedArray = [[NSArray alloc] init];
+        self->equippedArray = [[NSMutableArray alloc] init];
     }
      
     if (!self->vaultArray){//General
@@ -2354,7 +2566,7 @@
     
     VNDBaseClass* vendorBase = nil;
     
-    int section = indexPath.section;
+    NSInteger section = indexPath.section;
      
     @try {
         
@@ -2383,7 +2595,8 @@
         }
         
         switch (section) {
-            case 0:
+                
+            case 0:{
                 
                 if (cell.tag){
                     //character could be already processed
@@ -2542,8 +2755,8 @@
                 }
                 
                 break;
-                
-            case 1:
+            }
+            case 2:{
                 
                 vendorHash =  [self.clans objectAtIndex:indexPath.row];
                 
@@ -2561,8 +2774,6 @@
                 
                 if (clanDetail){
                     
-                 
-                        
                         clanName = [clanDetail name];
                         clanMotto = [clanDetail motto];
                     
@@ -2598,22 +2809,30 @@
                         //[cell.lblGuardianCareer setTextColor:[UIColor whiteColor]];
                         //[cell.lblGuardianCareer setText:clanGroupId];
                         
-                        [cell.lblGuardianRace setText:[NSString stringWithFormat:@"[%@]",clanDetail.clanInfo.clanCallsign]];
+                        [cell.lblGuardianCareer setText:[NSString stringWithFormat:@"[%@]",clanDetail.clanInfo.clanCallsign]];
                         [cell.lblGuardianGender setText:@""];
-                    
+                        [cell.lblGuardianRace setText:@""];
 
-                    
                 }
                     
-                 
-                
-               
                 
                 break;
+            }
+            case 1:{
+                
+                
+                [cell.imgBackground setImage:[UIImage imageNamed:@"vaultEmblem"]];
+                [cell.imgBackground setContentMode:UIViewContentModeScaleAspectFit];
+                [cell.imgEmblem setHidden:YES];
+                
+                [cell.lblGuardianClass setText:@""];
+                [cell.lblGuardianRace setText:@""];
+                [cell.lblGuardianGender setText:@""];
+                [cell.lblLightLevel setText:@""];
+                [cell.lblGuardianCareer setText:@""];
+                break;
+            }
         }
-        
-        
-       
         
         
     } @catch (NSException *exception) {
@@ -2644,11 +2863,16 @@
         case 1:
             
               
-              if (self.clans != nil){
-                  iRows = self.clans.count;
-              }
+            iRows = 1;
             
 
+            
+            break;
+        case 2:
+            
+            if (self.clans != nil){
+                iRows = self.clans.count;
+            }
             
             break;
     }
@@ -2663,7 +2887,7 @@
     
     if (self.clans){
         
-        iRows = (self.clans.count > 0 ? 2 : 1);
+        iRows = (self.clans.count > 0 ? 3 : 2);
     }
    
 
@@ -2684,6 +2908,8 @@
     ArmorTableViewController   *aVC = nil;
     
     ItemsViewController *iVC = nil;
+    
+    BOOL isVault = NO;
     
     @try {
         
@@ -2846,7 +3072,7 @@
                     [iVC setSelectedCharEmblem:self->selectedCharEmblem];
                     [iVC setParentVC:self];
                     [iVC loadItems];
-                    
+                   
                     navVC = [[UINavigationController alloc] initWithRootViewController:iVC];
                     
                     [self presentViewController:navVC
@@ -2901,7 +3127,7 @@
                     [iVC setDestChars:self->destCharData];
                     [iVC setSelectedCharEmblem:self->selectedCharEmblem];
                     [iVC setParentVC:self];
-                    [iVC loadItems];
+                    [iVC loadLostItems];
                     
                     navVC = [[UINavigationController alloc] initWithRootViewController:iVC];
                     
@@ -2926,9 +3152,23 @@
                    
                     NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
                     
-                    NSArray *filteredItems = [self->destCharInventoryData.allKeys filteredArrayUsingPredicate:bPredicate];
+                    NSArray *filteredItems = nil;
+                    NSArray<NSDictionary *> *fItems = nil;
                     
-                    NSArray<NSDictionary *> *fItems =   [self->destCharInventoryData objectsForKeys:filteredItems notFoundMarker:self->destCharInventoryData];
+                    if ([self->selectedCharacter isEqualToString:kDestinyVaultHash]){
+                        
+                        filteredItems =  [self->destVaultData.allKeys filteredArrayUsingPredicate:bPredicate];
+                        
+                        fItems =   [self->destVaultData objectsForKeys:filteredItems
+                                                                notFoundMarker:self->destVaultData];
+                        isVault = YES;
+                        
+                    }else{
+                        filteredItems =  [self->destCharInventoryData.allKeys filteredArrayUsingPredicate:bPredicate];
+                        fItems =   [self->destCharInventoryData objectsForKeys:filteredItems
+                                                                notFoundMarker:self->destCharInventoryData];
+                    }
+                    
                     
                     NSMutableDictionary *filteredCharItemsData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
                     
@@ -2948,16 +3188,32 @@
                         
                     }
                     
-                    [iVC setSelectedChar:self->selectedCharacter];
-                    [iVC setDestVaultItems:self->destCharInventoryData];
-                    [iVC setDestVaultItemsBuckets:self->invArray];
-                    [iVC setIsVaultItems:NO];
-                    [iVC setDestEquippedItems:self->destVaultData];
-                    [iVC setDestEquippedItemsBuckets:self->invArray];
-                    [iVC setDestChars:self->destCharData];
-                    [iVC setSelectedCharEmblem:self->selectedCharEmblem];
-                    [iVC setParentVC:self];
-                    [iVC loadInventories];
+                    if (isVault){
+                        
+                        [iVC setSelectedChar:self->selectedCharacter];
+                        [iVC setDestVaultItems:self->destVaultData];
+                        [iVC setDestVaultItemsBuckets:self->vaultArray];
+                        [iVC setIsVaultItems:YES];
+                        [iVC setDestEquippedItems:filteredCharItemsData];
+                        [iVC setDestEquippedItemsBuckets:self->invArray];
+                        [iVC setDestChars:self->destCharData];
+                        [iVC setSelectedCharEmblem:self->selectedCharEmblem];
+                        [iVC setParentVC:self];
+                        [iVC loadVaultItems];
+                        
+                    }else{
+                    
+                        [iVC setSelectedChar:self->selectedCharacter];
+                        [iVC setDestVaultItems:self->destCharInventoryData];
+                        [iVC setDestVaultItemsBuckets:self->invArray];
+                        [iVC setIsVaultItems:NO];
+                        [iVC setDestEquippedItems:self->destCharInventoryData];
+                        [iVC setDestEquippedItemsBuckets:self->invArray];
+                        [iVC setDestChars:self->destCharData];
+                        [iVC setSelectedCharEmblem:self->selectedCharEmblem];
+                        [iVC setParentVC:self];
+                        [iVC loadInventories];
+                    }
                     
                     navVC = [[UINavigationController alloc] initWithRootViewController:iVC];
                     

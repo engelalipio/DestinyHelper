@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *lblGuardianClass;
 @property (strong, nonatomic) IBOutlet UILabel *lblGuardianGender;
 @property (strong, nonatomic) IBOutlet UILabel *lblGuardianCareer;
+@property (strong, nonatomic) IBOutlet UIImageView *imgLastAccessedGuardian;
 
 @property (strong, nonatomic) IBOutlet UILabel *lblGuardianRace;
 @property (strong, nonatomic) IBOutlet UIImageView *imgCareer;

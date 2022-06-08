@@ -17,7 +17,7 @@
 
 #define kBungieThemeURL @"https://www.bungie.net/img/userThemes/"
 
-
+#define kDefaultFontName @"Neue Hass Grotesk Medium"
 
 //BEGIN OAuth Paths
 
@@ -86,6 +86,7 @@
 
 #define kDestinyProgressionDefinitionJSON @"jsonWorldComponentContentPaths/{locale}/DestinyProgressionDefinition"
 
+#define kDestinyVaultHash @"138197802"
 
 //END Manifest Paths
 

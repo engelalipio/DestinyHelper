@@ -20,6 +20,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *lblHash;
 @property (strong, nonatomic) IBOutlet UILabel *lblItemType;
 @property (strong, nonatomic) IBOutlet UIImageView *imgCareer;
+@property (strong, nonatomic) IBOutlet UIImageView *imgMaster;
 @property (strong, nonatomic) IBOutlet UILabel *lblCharacterId;
 @property (strong, nonatomic) IBOutlet UILabel *lblInstanceId;
 @property (strong, nonatomic) IBOutlet UILabel *lblPowerLevel;

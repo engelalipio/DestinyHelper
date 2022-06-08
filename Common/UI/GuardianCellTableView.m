@@ -19,6 +19,8 @@
 @synthesize lblGuardianRace = _lblGuardianRace;
 @synthesize lblGuardianCareer = _lblGuardianCareer;
 @synthesize imgCareer = _imgCareer;
+@synthesize imgLastAccessedGuardian = _imgLastAccessedGuardian;
+
 + (id)instanceFromNib
 {
     NSString *className = @"GuardianCellTableView";
@@ -55,6 +57,18 @@
           }
           
         
+        if (! self.imgLastAccessedGuardian){
+              UIImage *defaultImage = [UIImage imageNamed:@"currentSelected.png"];
+            
+             defaultImage = [Utilities imageResize:defaultImage andResizeTo:CGSizeMake(30,30)];
+              
+              self.imgLastAccessedGuardian = [[UIImageView alloc] initWithImage:defaultImage];
+              
+              [self.imgLastAccessedGuardian setFrame:cFrame];
+              
+              [self.contentView addSubview:self.imgLastAccessedGuardian];
+          }
+        
       if (! self.imgBackground){
             UIImage *defaultImage = [UIImage imageNamed:@"DefaultEmblem.png"];
             
@@ -68,11 +82,11 @@
         if (! self.imgCareer){
               UIImage *defaultImage = [UIImage imageNamed:@"Factions.png"];
             
-              defaultImage = [Utilities imageResize:defaultImage andResizeTo:CGSizeMake(35,size.height)];
+              defaultImage = [Utilities imageResize:defaultImage andResizeTo:CGSizeMake(50,50)];
             
               self.imgCareer = [[UIImageView alloc] initWithImage:defaultImage];
               
-              //[self.imgCareer setFrame:cFrame];
+              [self.imgCareer setFrame:cFrame];
               
               [self.contentView addSubview:self.imgCareer];
           }

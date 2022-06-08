@@ -17,6 +17,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="391" height="333"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="weaponMaster.png" translatesAutoresizingMaskIntoConstraints="NO" id="oFw-AU-pBg">
+                        <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlaceHolder.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="Jvr-UA-kqk">
                         <rect key="frame" x="-2" y="0.0" width="80" height="80"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -113,6 +117,7 @@
                 <outlet property="imgBackground" destination="RDX-IQ-xn4" id="9kb-r0-JdG"/>
                 <outlet property="imgCareer" destination="Ivr-jE-MOd" id="lXB-YB-szu"/>
                 <outlet property="imgItem" destination="Jvr-UA-kqk" id="NJ3-0x-kyD"/>
+                <outlet property="imgMaster" destination="oFw-AU-pBg" id="U99-us-x7y"/>
                 <outlet property="lblCharacterId" destination="OYM-oa-Fc3" id="Yix-u3-Lec"/>
                 <outlet property="lblDamageType" destination="UE9-Kb-s1n" id="Lod-KD-IHf"/>
                 <outlet property="lblHash" destination="VVW-ii-DXM" id="gna-JJ-OoC"/>
@@ -130,6 +135,7 @@
         <image name="archivebox.circle" catalog="system" width="128" height="121"/>
         <image name="heavyAmmo.png" width="44.799999237060547" height="32"/>
         <image name="lock.open" catalog="system" width="128" height="110"/>
+        <image name="weaponMaster.png" width="40.799999237060547" height="40.799999237060547"/>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

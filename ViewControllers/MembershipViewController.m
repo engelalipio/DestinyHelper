@@ -486,8 +486,14 @@
                 [self.lblPlayerName setTextColor:[UIColor whiteColor]];
                 [self.lblPlayerName setText:bungieUser.uniqueName];
                 
+                
+                [appDelegate setCurrentBungieName:bungieUser.uniqueName];
                     
                 enum Destiny2MembershipType mType = Xbox;
+                
+                
+                
+                 
                
                 //xbox = 1
                 message = [NSString stringWithFormat:@"%@/%@",bungieUser.membershipId,@"1" ];

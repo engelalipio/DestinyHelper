@@ -40,6 +40,11 @@
     
     UIImageView *cImage;
     
+    BOOL isGeneralItems,
+         isLostItems,
+         isVaultItems,
+         isInventoryItems;
+    
 }
 @end
 
@@ -72,7 +77,7 @@
              *strLight  = nil;
     
     self->RowHeight = 90;
-    self->HeaderHeight = 25;
+    self->HeaderHeight = 30;
     self->FooterHeight = 10;
     
     [self.lblItemDescription setText:@""];
@@ -120,7 +125,7 @@
         
         UILabel *lblChar   = [[UILabel alloc] initWithFrame:lblFrame];
         [lblChar setTextAlignment:NSTextAlignmentLeft];
-        [lblChar setFont:[UIFont italicSystemFontOfSize:20]];
+        [lblChar setFont:[UIFont fontWithName:kDefaultFontName size:22]];
         [lblChar setTextColor:[UIColor systemOrangeColor]];
         if (self.isVaultItems){
             [lblChar setText:@"All Characters"];
@@ -963,11 +968,70 @@
     
 }
 
--(void) refreshItems{
+-(void) refreshItems:(NSString *) itemHash{
  
     
-    //[self loadItems];
+    NSArray<NSIndexPath*> *deletedRows  = nil;
+    
+    NSIndexPath *selectedRow = nil;
+    
+    NSString
+            *weaponHashFilter = nil,
+            *bucketHashFilter = nil,
+            *primaryBucketKey = nil,
+            *energyBucketKey  = nil,
+            *heavyBucketKey   = nil,
+            *ghostBucketKey   = nil,
+            *artBucketKey     = nil;
+    
+    NSPredicate *bPredicate = nil;
+    
+    NSArray *primaryFilteredResult = nil,
+            *energyFilteredResult  = nil,
+            *heavyFilteredResult   = nil,
+            *ghostFilteredResult   = nil,
+            *artFilteredResult     = nil;
+ 
+    @try {
+        
+        //self->itemBuckets = [cBucketDef copy];
+       // self->destItemData = [cBucket copy];
+          
+        
+ 
+        [self->destItemData removeObjectForKey:itemHash];
+     
+        selectedRow  =  [self.tblItems indexPathForSelectedRow];
+        
+        if (selectedRow){
+         
+          deletedRows = [[NSArray<NSIndexPath*> alloc] initWithObjects:selectedRow, nil];
+            
+         //Need to remove table cell
+         
+            [self.tblItems beginUpdates];
+            
+            NSLog(@"ItemsViewController:refreshItems:Removing Actioned Item from UI");
+            
+            [self.tblItems deleteRowsAtIndexPaths:deletedRows
+                               withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self.tblItems endUpdates];
+            [self.tblItems reloadData];
+        
+          NSLog(@"ItemsViewController:refreshItems:finished!");
+        }
+        
+        
+        
+    } @catch (NSException *exception) {
+        NSLog(@"ItemsViewController:refreshItems::Exception->%@",exception.description);
+    } @finally {
+        selectedRow = nil;
+        deletedRows = nil;
+    }
 }
+
 
 
 -(void) loadVaultItems{
@@ -990,6 +1054,11 @@
     
     @try {
         NSLog(@"%@",message);
+        
+        isGeneralItems = NO;
+        isLostItems = NO;
+        isVaultItems = YES;
+        isInventoryItems = NO;
          
         strMID = self.selectedMembership;
         strCharID = self.selectedChar;
@@ -1125,6 +1194,12 @@
     @try {
         NSLog(@"%@",message);
          
+        
+        isGeneralItems = NO;
+        isLostItems = NO;
+        isVaultItems = NO;
+        isInventoryItems = YES;
+        
         strMID = self.selectedMembership;
         strCharID = self.selectedChar;
         
@@ -1256,9 +1331,9 @@
     
 }
 
--(void) loadItems{
+-(void) loadLostItems{
  
-    NSString *message   = @"3:ItemsViewController:loadItems:Invoked by GuardianViewController...",
+    NSString *message   = @"3:ItemsViewController:loadLostItems:Invoked by GuardianViewController...",
              *strMID    = @"",
              *strCharID = @"";
     
@@ -1276,6 +1351,11 @@
     
     @try {
         NSLog(@"%@",message);
+        
+        isGeneralItems = NO;
+        isLostItems = YES;
+        isVaultItems = NO;
+        isInventoryItems = NO;
          
         strMID = self.selectedMembership;
         strCharID = self.selectedChar;
@@ -1388,12 +1468,172 @@
                         
                     }
                     
-                    self->itemBuckets = [cBucketDef copy];
-                    self->destItemData = [cBucket copy];
+                   // self->itemBuckets = [cBucketDef copy];
+                   // self->destItemData = [cBucket copy];
                 }
                  
             }
             
+            self->itemBuckets = [cBucketDef copy];
+            self->destItemData = [cBucket copy];
+        }
+        
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+    } @finally {
+        if ([message length] > 0){
+            NSLog(@"%@",message);
+        }
+    }
+    
+}
+
+-(void) loadItems{
+ 
+    NSString *message   = @"3:ItemsViewController:loadItems:Invoked by GuardianViewController...",
+             *strMID    = @"",
+             *strCharID = @"";
+    
+    NSDictionary        *chars = nil,
+                        *equip = nil,
+                        *cChar = nil,
+                        *vData = nil;
+    
+    NSArray             *vArray = nil,
+                        *eArray = nil;
+    
+    NSMutableDictionary *cBucket = [[NSMutableDictionary alloc] init];
+    
+    NSMutableArray *cBucketDef = [[NSMutableArray alloc] init];
+    
+    @try {
+        NSLog(@"%@",message);
+        
+        isGeneralItems = YES;
+        isLostItems = NO;
+        isVaultItems = NO;
+        isInventoryItems = NO;
+         
+        strMID = self.selectedMembership;
+        strCharID = self.selectedChar;
+        
+        if (! appDelegate){
+            appDelegate = [AppDelegate currentDelegate];
+        }
+        
+        chars = self.destChars;
+        
+        vData = self.destVaultItems;
+        
+        equip = self.destEquippedItems;
+      
+        vArray = self.destVaultItemsBuckets;
+        
+        eArray = self.destEquippedItemsBuckets;
+        
+        cChar = [chars objectForKey:strCharID];
+        
+        if (strCharID){
+            
+            if (! self->destItemData){
+                self->destItemData = [[NSMutableDictionary alloc] init];
+            }
+            
+            if(! self->itemBuckets){
+                self->itemBuckets = [[NSMutableArray alloc] initWithCapacity:eArray.count];
+            }
+            
+            if (! self->instanceData){
+                self->instanceData = [[NSMutableDictionary alloc] init];
+            }
+            
+            for(int idx = 0 ;idx < eArray.count; idx ++){
+             
+                NSString *sectionKey = [eArray objectAtIndex:idx];
+                
+                NSString *bucketFilter = [NSString stringWithFormat:@"%@_%@",strCharID, sectionKey];
+               
+                NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",bucketFilter];
+                
+                NSArray *filteredItems = [equip.allKeys filteredArrayUsingPredicate:bPredicate];
+               
+                if (filteredItems){
+                    
+                    if (! [cBucketDef containsObject:bucketFilter]){
+                          [cBucketDef addObject:bucketFilter];
+                    }
+                    
+                    for(int fIdx = 0 ; fIdx < filteredItems.count ; fIdx++){
+                       
+                        NSString *cFBucket = [filteredItems objectAtIndex:fIdx];
+                        
+                        INVCItems *cFItem = (INVCItems *) [equip objectForKey:cFBucket];
+                        
+                        if (cFItem){
+                         if (![cBucket.allKeys containsObject:cFBucket]){
+                             [cBucket setValue:cFItem forKey:cFBucket];
+                             
+                          }
+                            
+                            NSNumber *objHashId  = [[NSNumber alloc] initWithDouble:cFItem.itemHash];
+                            NSString *strHashKey = [NSString stringWithFormat:@"%@",objHashId],
+                                     *strInstanceId = cFItem.itemInstanceId;
+                            
+                            if (strHashKey){
+                                
+                                if (! [self->instanceData.allKeys containsObject:strHashKey]){
+                                     
+                                    //Need to get instance data
+                                    NSLog(@"ItemsViewController:loadItems:APICall to getInstancedItem:For->%@",strHashKey);
+                                    
+                                    [NetworkAPISingleClient getInstancedItem:strInstanceId completionBlock:^(NSArray *values){
+                                            
+                                        if (values){
+                                            
+                                            INSTBaseClass *instanceBase = (INSTBaseClass*) [values firstObject];
+                                                    
+                                            NSString *strIDX = [NSString stringWithFormat:@"%d",fIdx],
+                                                     *strSDX = [NSString stringWithFormat:@"%d",idx];
+                                                
+                                            NSDictionary *callerInfo = [[NSDictionary alloc]
+                                                            initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
+                                                                                    @"loadItems",@"MethodName",
+                                                                                    strIDX,@"CurrentIndex",
+                                                                                    strSDX,@"CurrentSection",
+                                                                                    strHashKey, @"itemHashKey",
+                                                                                    strInstanceId, @"itemInstanceId",nil];
+                                                    
+                                            [[NSNotificationCenter defaultCenter]
+                                                postNotificationName:kDestinyLoadedInstancedItemNotification
+                                                                object:instanceBase
+                                                            userInfo:callerInfo];
+                                                    
+                                      NSLog(@"ItemsViewController:loadItems:kDestinyLoadedInstancedItemNotification:Raised->%@",strHashKey);
+                                                
+                                                
+                                     }
+                                                
+                                    }
+                                    andErrorBlock:^(NSError *exception){
+                                     NSLog(@"ItemsViewController:loadItems:getInstancedItem:Exception->%@",exception.description);
+                                     }];
+                                    
+                                }
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                   // self->itemBuckets = [cBucketDef copy];
+                   // self->destItemData = [cBucket copy];
+                }
+                 
+            }
+            
+            self->itemBuckets = [cBucketDef copy];
+            self->destItemData = [cBucket copy];
         }
         
     }
@@ -1637,7 +1877,18 @@
                 NSLog(@"handleLongPress:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,selectedIndexPath.section, selectedIndexPath.row);
                 
                     if ([strHashKey length] > 0){
-                        [cCell pullFromPostMaster:cCell];
+                        
+                        if (self->isLostItems){
+                          [cCell pullFromPostMaster:cCell];
+                        }
+                        
+                        if (self->isInventoryItems){
+                             [cCell pullFromVaultAction:self.destChars];
+                        }
+                        
+                        if (self->isGeneralItems){
+                             [cCell transferItemAction:self.destChars];
+                        }
                     }
                     else
                     {
@@ -1667,7 +1918,18 @@
                                 
                                     if (strHashKey.length > 0){
                                         [cCell.lblInstanceId setText:strHashKey];
-                                        [cCell pullFromPostMaster:cCell];
+                                        if (self->isLostItems){
+                                            [cCell pullFromPostMaster:cCell];
+                                        }
+                                        
+                                        if (self->isInventoryItems){
+                                            [cCell pullFromVaultAction:self.destChars];
+                                        }
+                                        
+                                        
+                                        if (self->isGeneralItems){
+                                             [cCell transferItemAction:self.destChars];
+                                        }
                                        
                                     }
                                 }
@@ -1738,6 +2000,8 @@
 
 -(NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     NSString *title = @"Equipped Inventory";
+    
+    NSInteger defaultTotal = 10;
   
     if (self.destEquippedItemsBuckets){
         
@@ -1758,10 +2022,28 @@
                     
                     BCKDisplayProperties *dispProps = (BCKDisplayProperties*) [ibucDef displayProperties];
                     if (dispProps){
+                        
+                        if ([dispProps.name isEqualToString:@"Lost Items"] || [dispProps.name isEqualToString:@"Messages"] ||
+                            [dispProps.name isEqualToString:@"Special Orders"]){
+                            defaultTotal = 20;
+                        }
+                        
+                        if ([dispProps.name isEqualToString:@"Consumables"] || [dispProps.name isEqualToString:@"Modifications"]){
+                            defaultTotal = 50;
+                        }
+                        
+                        if ([dispProps.name isEqualToString:@"Quests"]){
+                            defaultTotal = 60;
+                        }
+                        
+                        if ([dispProps.name containsString:@"Weapons"]){
+                            defaultTotal = 60;
+                        }
+                        
                         if (self.isVaultItems){
                             title = [NSString stringWithFormat:@"%@: [%lu]",dispProps.name,(unsigned long)filteredItems.count];
                         }else{
-                        title = [NSString stringWithFormat:@"%@->%@: [%lu]",self->currentClass,dispProps.name,(unsigned long)filteredItems.count];
+                        title = [NSString stringWithFormat:@"%@->%@: [%lu/%d]",self->currentClass,dispProps.name,(unsigned long)filteredItems.count,defaultTotal];
                         }
                     }
                 }
@@ -1793,9 +2075,6 @@
                 [gCell.btnSendVault setHidden:YES];
             }
             
-            
-            
-           
            
      }
         
@@ -1923,6 +2202,101 @@
                   }
                                 
                 }
+                
+                
+                /*
+                 
+                 
+                 Valid Enum Values
+
+                 None: 0
+                 Locked: 1
+                 If this bit is set, the item has been "locked" by the user and cannot be deleted. You may want to represent this visually with a "lock" icon.
+                 Tracked: 2
+                 If this bit is set, the item is a quest that's being tracked by the user. You may want a visual indicator to show that this is a tracked quest.
+                 Masterwork: 4
+                 If this bit is set, the item has a Masterwork plug inserted. This usually coincides with having a special "glowing" effect applied to the item's icon.
+                 Crafted: 8
+                 If this bit is set, the item has been 'crafted' by the player. You may want to represent this visually with a "crafted" icon overlay.
+                 HighlightedObjective: 16
+                 If this bit is set, the item has a 'highlighted' objective. You may want to represent this with an orange-red icon border color.
+                 
+                 */
+                
+                [cell.imgCrafted setHidden:YES];
+                
+                [cell.imgMaster setAlpha:0];
+                [cell.imgMaster setHidden:YES];
+                
+                [cell.imgItem.layer setMasksToBounds:NO];
+                [cell.imgItem.layer setBorderWidth:0];
+                [cell.imgItem.layer setBorderColor:[UIColor clearColor].CGColor];
+                
+                NSNumber *objLocked = [NSNumber numberWithDouble:item.state];
+                
+                switch (objLocked.integerValue) {
+                            case 0:
+                                [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"]
+                                                    forState:UIControlStateNormal];
+                                                       
+                                break;
+                            case 1:
+                                [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                    forState:UIControlStateNormal];
+                                                    
+                                break;
+                            case 2://tracked
+                                break;
+                            case 4://Masterwork
+                                                   
+                                [cell.imgItem.layer setMasksToBounds:YES];
+                                [cell.imgItem.layer setBorderWidth:2];
+                                [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
+                        
+                                [cell.imgMaster setAlpha:0.3];
+                                [cell.imgMaster setHidden:NO];
+                                                   
+                                break;
+                                                   
+                            case 5://Masterwork + locked
+                                [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                    forState:UIControlStateNormal];
+                                                   
+                                [cell.imgItem.layer setMasksToBounds:YES];
+                                [cell.imgItem.layer setBorderWidth:2];
+                                [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
+                        
+                                [cell.imgMaster setAlpha:0.3];
+                                [cell.imgMaster setHidden:NO];
+                                                   
+                            break;
+                            case 8://Crafted
+                                [cell.imgCrafted setHidden:NO];
+                            break;
+                            case 12://bitmask ItemState ["Masterwork", "Crafted"]
+                                                   
+                                [cell.imgCrafted setHidden:NO];
+                                [cell.imgItem.layer setMasksToBounds:YES];
+                                [cell.imgItem.layer setBorderWidth:2];
+                                [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
+                        
+                                [cell.imgMaster setAlpha:0.3];
+                                [cell.imgMaster setHidden:NO];
+                                                   
+                            break;
+                            case 16://red bar
+                                                   
+                                [cell.imgItem.layer setMasksToBounds:YES];
+                                [cell.imgItem.layer setBorderWidth:2];
+                                [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                [cell.imgItem.layer setBorderColor:[UIColor orangeColor].CGColor];
+                                                   
+                            break;
+                    }
+                
                             
                 if (appDelegate.destinyInventoryItemDefinitions){
                         
@@ -1986,6 +2360,7 @@
                             
                             objDamageType =  [NSString stringWithFormat:@"%d",i];
                             
+                       
                             [cell.imgItemBurn setHidden:YES];
                             if (objDamageType){
                             
@@ -2206,9 +2581,15 @@
                         
                         
         }
-           
-            }
+        else{
+            NSLog(@"ItemsViewController:cellForRowAtIndexPath:Nothing found%@",sectionKey);
         }
+           
+        }
+      }
+      else{
+          NSLog(@"ItemsViewController:cellForRowAtIndexPath:Nothing found%@",sectionKey);
+      }
               
       }
         

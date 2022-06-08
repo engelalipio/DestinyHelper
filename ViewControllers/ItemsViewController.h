@@ -53,8 +53,9 @@
 -(void) startTimer;
 -(void) endTimer;
 -(void) loadItems;
+-(void) loadLostItems;
 -(void) loadVaultItems;
--(void) refreshItems;
+-(void) refreshItems:(NSString *) itemHash;
 -(void) loadInventories;
 -(void) closeAction;
 @end

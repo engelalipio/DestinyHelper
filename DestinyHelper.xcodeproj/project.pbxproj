@@ -20,10 +20,30 @@
 		AC2C7928255896AF0060AD98 /* Vanguard_2X.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AC2C7927255896AF0060AD98 /* Vanguard_2X.jpeg */; };
 		AC2C792B255896CF0060AD98 /* Vanguard_3X.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AC2C792A255896CF0060AD98 /* Vanguard_3X.jpeg */; };
 		AC2C79312558A6390060AD98 /* MembershipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC2C79302558A6390060AD98 /* MembershipViewController.m */; };
+		AC2ECFDD284E868100543E43 /* StatIconSequences.m in Sources */ = {isa = PBXBuildFile; fileRef = AC2ECFD6284E867E00543E43 /* StatIconSequences.m */; };
+		AC2ECFDE284E868100543E43 /* StatDisplayProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = AC2ECFD7284E867E00543E43 /* StatDisplayProperties.m */; };
+		AC2ECFDF284E868100543E43 /* StatBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AC2ECFD9284E868000543E43 /* StatBaseClass.m */; };
+		AC2ECFE0284E868100543E43 /* DestinyStatDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = AC2ECFDA284E868100543E43 /* DestinyStatDefinition.m */; };
+		AC31FCAF284D6CDE00E45BCB /* StatGroupDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = AC31FCAD284D6CDD00E45BCB /* StatGroupDefinition.m */; };
 		AC56F231282B06F000F25324 /* ACMBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AC56F22A282B06F000F25324 /* ACMBaseClass.m */; };
 		AC56F232282B06F000F25324 /* ACMDisplayProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = AC56F22B282B06F000F25324 /* ACMDisplayProperties.m */; };
 		AC56F233282B06F000F25324 /* ActivityModeHash.m in Sources */ = {isa = PBXBuildFile; fileRef = AC56F230282B06F000F25324 /* ActivityModeHash.m */; };
 		AC56F235282B09BD00F25324 /* DestinyActivityModeDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = AC56F234282B09BD00F25324 /* DestinyActivityModeDefinition.json */; };
+		AC689C5E284FCF810005A232 /* LegendaryFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = AC689C5B284FCF800005A232 /* LegendaryFrame.png */; };
+		AC689C5F284FCF810005A232 /* LegendaryMasterFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = AC689C5C284FCF800005A232 /* LegendaryMasterFrame.png */; };
+		AC689C60284FCF810005A232 /* ExoticMasterFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = AC689C5D284FCF810005A232 /* ExoticMasterFrame.png */; };
+		AC689C62284FDB030005A232 /* ExoticFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = AC689C61284FDB030005A232 /* ExoticFrame.png */; };
+		AC689C642850F9170005A232 /* currentSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = AC689C632850F9170005A232 /* currentSelected.png */; };
+		AC7398DE284D19AA0015DB7B /* background_Titan.png in Resources */ = {isa = PBXBuildFile; fileRef = AC7398DD284D19AA0015DB7B /* background_Titan.png */; };
+		AC7398E1284D1A480015DB7B /* background_Hunter.png in Resources */ = {isa = PBXBuildFile; fileRef = AC7398DF284D1A480015DB7B /* background_Hunter.png */; };
+		AC7398E2284D1A480015DB7B /* background_Warlock.png in Resources */ = {isa = PBXBuildFile; fileRef = AC7398E0284D1A480015DB7B /* background_Warlock.png */; };
+		AC7398E4284D1D310015DB7B /* weaponMaster.png in Resources */ = {isa = PBXBuildFile; fileRef = AC7398E3284D1D310015DB7B /* weaponMaster.png */; };
+		AC7398E6284D253C0015DB7B /* weaponPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = AC7398E5284D253B0015DB7B /* weaponPlaceholder.png */; };
+		AC7398E9284D39A70015DB7B /* WeaponDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7398E8284D39A70015DB7B /* WeaponDetailsViewController.m */; };
+		AC7398EB284D45870015DB7B /* vaultEmblem.png in Resources */ = {isa = PBXBuildFile; fileRef = AC7398EA284D45870015DB7B /* vaultEmblem.png */; };
+		AC7398ED284D62F50015DB7B /* DestinyStatDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = AC7398EC284D62F50015DB7B /* DestinyStatDefinition.json */; };
+		AC7398EF284D63410015DB7B /* DestinyStatGroupDefinition.json in Resources */ = {isa = PBXBuildFile; fileRef = AC7398EE284D63410015DB7B /* DestinyStatGroupDefinition.json */; };
+		AC7884A8284BE217007DBE50 /* crafted.png in Resources */ = {isa = PBXBuildFile; fileRef = AC7884A7284BE217007DBE50 /* crafted.png */; };
 		AC7942AB25FDB06F00B30F2A /* TRXBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7942A825FDB06E00B30F2A /* TRXBaseClass.m */; };
 		AC7942B025FE971D00B30F2A /* LCKBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7942AF25FE971D00B30F2A /* LCKBaseClass.m */; };
 		AC7D5145283E8ADC0063B44B /* EQXBaseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7D5143283E86B90063B44B /* EQXBaseClass.m */; };
@@ -374,6 +394,18 @@
 		AC2C792A255896CF0060AD98 /* Vanguard_3X.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Vanguard_3X.jpeg; sourceTree = "<group>"; };
 		AC2C792F2558A62E0060AD98 /* MembershipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MembershipViewController.h; sourceTree = "<group>"; };
 		AC2C79302558A6390060AD98 /* MembershipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MembershipViewController.m; sourceTree = "<group>"; };
+		AC2ECFD4284E867D00543E43 /* StatBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatBaseClass.h; sourceTree = "<group>"; };
+		AC2ECFD5284E867D00543E43 /* DestinyStatDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinyStatDefinition.h; sourceTree = "<group>"; };
+		AC2ECFD6284E867E00543E43 /* StatIconSequences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatIconSequences.m; sourceTree = "<group>"; };
+		AC2ECFD7284E867E00543E43 /* StatDisplayProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatDisplayProperties.m; sourceTree = "<group>"; };
+		AC2ECFD8284E867E00543E43 /* StatDisplayProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatDisplayProperties.h; sourceTree = "<group>"; };
+		AC2ECFD9284E868000543E43 /* StatBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatBaseClass.m; sourceTree = "<group>"; };
+		AC2ECFDA284E868100543E43 /* DestinyStatDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinyStatDefinition.m; sourceTree = "<group>"; };
+		AC2ECFDB284E868100543E43 /* StatDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatDataModels.h; sourceTree = "<group>"; };
+		AC2ECFDC284E868100543E43 /* StatIconSequences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatIconSequences.h; sourceTree = "<group>"; };
+		AC31FCAC284D6CDD00E45BCB /* SGDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDataModels.h; sourceTree = "<group>"; };
+		AC31FCAD284D6CDD00E45BCB /* StatGroupDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatGroupDefinition.m; sourceTree = "<group>"; };
+		AC31FCAE284D6CDE00E45BCB /* StatGroupDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatGroupDefinition.h; sourceTree = "<group>"; };
 		AC56F22A282B06F000F25324 /* ACMBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMBaseClass.m; sourceTree = "<group>"; };
 		AC56F22B282B06F000F25324 /* ACMDisplayProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMDisplayProperties.m; sourceTree = "<group>"; };
 		AC56F22C282B06F000F25324 /* ACMBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMBaseClass.h; sourceTree = "<group>"; };
@@ -382,6 +414,22 @@
 		AC56F22F282B06F000F25324 /* ACMDisplayProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMDisplayProperties.h; sourceTree = "<group>"; };
 		AC56F230282B06F000F25324 /* ActivityModeHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityModeHash.m; sourceTree = "<group>"; };
 		AC56F234282B09BD00F25324 /* DestinyActivityModeDefinition.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DestinyActivityModeDefinition.json; sourceTree = "<group>"; };
+		AC689C5B284FCF800005A232 /* LegendaryFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LegendaryFrame.png; sourceTree = "<group>"; };
+		AC689C5C284FCF800005A232 /* LegendaryMasterFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LegendaryMasterFrame.png; sourceTree = "<group>"; };
+		AC689C5D284FCF810005A232 /* ExoticMasterFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ExoticMasterFrame.png; sourceTree = "<group>"; };
+		AC689C61284FDB030005A232 /* ExoticFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ExoticFrame.png; sourceTree = "<group>"; };
+		AC689C632850F9170005A232 /* currentSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = currentSelected.png; sourceTree = "<group>"; };
+		AC7398DD284D19AA0015DB7B /* background_Titan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_Titan.png; sourceTree = "<group>"; };
+		AC7398DF284D1A480015DB7B /* background_Hunter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_Hunter.png; sourceTree = "<group>"; };
+		AC7398E0284D1A480015DB7B /* background_Warlock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_Warlock.png; sourceTree = "<group>"; };
+		AC7398E3284D1D310015DB7B /* weaponMaster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weaponMaster.png; sourceTree = "<group>"; };
+		AC7398E5284D253B0015DB7B /* weaponPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weaponPlaceholder.png; sourceTree = "<group>"; };
+		AC7398E7284D399D0015DB7B /* WeaponDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeaponDetailsViewController.h; sourceTree = "<group>"; };
+		AC7398E8284D39A70015DB7B /* WeaponDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeaponDetailsViewController.m; sourceTree = "<group>"; };
+		AC7398EA284D45870015DB7B /* vaultEmblem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vaultEmblem.png; sourceTree = "<group>"; };
+		AC7398EC284D62F50015DB7B /* DestinyStatDefinition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DestinyStatDefinition.json; sourceTree = "<group>"; };
+		AC7398EE284D63410015DB7B /* DestinyStatGroupDefinition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DestinyStatGroupDefinition.json; sourceTree = "<group>"; };
+		AC7884A7284BE217007DBE50 /* crafted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crafted.png; sourceTree = "<group>"; };
 		AC7942A825FDB06E00B30F2A /* TRXBaseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRXBaseClass.m; sourceTree = "<group>"; };
 		AC7942A925FDB06F00B30F2A /* TRXBaseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRXBaseClass.h; sourceTree = "<group>"; };
 		AC7942AA25FDB06F00B30F2A /* TRXDataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRXDataModels.h; sourceTree = "<group>"; };
@@ -1017,6 +1065,32 @@
 			path = ItemBucketDefinition;
 			sourceTree = "<group>";
 		};
+		AC2ECFD3284E865C00543E43 /* DestinyStatDefinition */ = {
+			isa = PBXGroup;
+			children = (
+				AC2ECFD5284E867D00543E43 /* DestinyStatDefinition.h */,
+				AC2ECFDA284E868100543E43 /* DestinyStatDefinition.m */,
+				AC2ECFD4284E867D00543E43 /* StatBaseClass.h */,
+				AC2ECFD9284E868000543E43 /* StatBaseClass.m */,
+				AC2ECFDB284E868100543E43 /* StatDataModels.h */,
+				AC2ECFD8284E867E00543E43 /* StatDisplayProperties.h */,
+				AC2ECFD7284E867E00543E43 /* StatDisplayProperties.m */,
+				AC2ECFDC284E868100543E43 /* StatIconSequences.h */,
+				AC2ECFD6284E867E00543E43 /* StatIconSequences.m */,
+			);
+			path = DestinyStatDefinition;
+			sourceTree = "<group>";
+		};
+		AC31FCAB284D6CBF00E45BCB /* StatGroupDefinition */ = {
+			isa = PBXGroup;
+			children = (
+				AC31FCAC284D6CDD00E45BCB /* SGDataModels.h */,
+				AC31FCAE284D6CDE00E45BCB /* StatGroupDefinition.h */,
+				AC31FCAD284D6CDD00E45BCB /* StatGroupDefinition.m */,
+			);
+			path = StatGroupDefinition;
+			sourceTree = "<group>";
+		};
 		AC56F229282B06C200F25324 /* ActivityModeDefinition */ = {
 			isa = PBXGroup;
 			children = (
@@ -1132,6 +1206,8 @@
 		ACA05A31253362BD008CB2BD /* Content */ = {
 			isa = PBXGroup;
 			children = (
+				AC7398EE284D63410015DB7B /* DestinyStatGroupDefinition.json */,
+				AC7398EC284D62F50015DB7B /* DestinyStatDefinition.json */,
 				ACBDC7E425FDA9680098B6BB /* DestinyInventoryItemDefinition.json */,
 				ACA05A6A2533B7E4008CB2BD /* DestinyAchievementDefinition.json */,
 				ACA05A672533B748008CB2BD /* DestinyGenderDefinition.json */,
@@ -1372,6 +1448,9 @@
 		ACCE04EA260F892800C389B2 /* Weapons */ = {
 			isa = PBXGroup;
 			children = (
+				AC7398E5284D253B0015DB7B /* weaponPlaceholder.png */,
+				AC7398E3284D1D310015DB7B /* weaponMaster.png */,
+				AC7884A7284BE217007DBE50 /* crafted.png */,
 				ACD26C812834040800E7724E /* damage_stasis.png */,
 				ACCE04FF260FC99400C389B2 /* weaponFrame.png */,
 				ACCE04F5260F8AC000C389B2 /* damage_arc.png */,
@@ -1566,6 +1645,12 @@
 		ACE2D20C25225DE900FF095A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				AC689C632850F9170005A232 /* currentSelected.png */,
+				AC689C61284FDB030005A232 /* ExoticFrame.png */,
+				AC689C5D284FCF810005A232 /* ExoticMasterFrame.png */,
+				AC689C5B284FCF800005A232 /* LegendaryFrame.png */,
+				AC689C5C284FCF800005A232 /* LegendaryMasterFrame.png */,
+				AC7398EA284D45870015DB7B /* vaultEmblem.png */,
 				ACCE04EA260F892800C389B2 /* Weapons */,
 				AC2C792A255896CF0060AD98 /* Vanguard_3X.jpeg */,
 				AC2C7927255896AF0060AD98 /* Vanguard_2X.jpeg */,
@@ -1597,6 +1682,9 @@
 		ACE2D21B25225DE900FF095A /* Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
+				AC7398DD284D19AA0015DB7B /* background_Titan.png */,
+				AC7398DF284D1A480015DB7B /* background_Hunter.png */,
+				AC7398E0284D1A480015DB7B /* background_Warlock.png */,
 				ACE2D21C25225DE900FF095A /* Venus.jpg */,
 				ACE2D21D25225DE900FF095A /* Dreadnaught1.jpg */,
 				ACE2D21E25225DE900FF095A /* Vex.jpg */,
@@ -1789,6 +1877,8 @@
 				ACF3C3882530CCBF00C41679 /* GuardianViewController.m */,
 				ACB6981225EAFF7800EF7FD6 /* ItemsViewController.h */,
 				ACB6981325EAFF8400EF7FD6 /* ItemsViewController.m */,
+				AC7398E7284D399D0015DB7B /* WeaponDetailsViewController.h */,
+				AC7398E8284D39A70015DB7B /* WeaponDetailsViewController.m */,
 				AC03956F260667E2009951D3 /* ArmorTableViewController.h */,
 				AC039570260667F0009951D3 /* ArmorTableViewController.m */,
 				AC03956126056FF9009951D3 /* WeaponsTableViewController.h */,
@@ -1885,6 +1975,8 @@
 		ACF3C31F252E2EF200C41679 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				AC2ECFD3284E865C00543E43 /* DestinyStatDefinition */,
+				AC31FCAB284D6CBF00E45BCB /* StatGroupDefinition */,
 				AC7D5141283E86700063B44B /* EquipItem */,
 				ACD26C83283438C300E7724E /* VaultInventory */,
 				ACCCB17828317A9500AF9ADA /* UniqueWeaponsHistory */,
@@ -2017,6 +2109,7 @@
 				ACCE04E6260D619B00C389B2 /* primaryAmmo.png in Resources */,
 				ACE2D25D25225DE900FF095A /* Factions.jpg in Resources */,
 				ACA05A652533B6A8008CB2BD /* DestinyClassDefinition.json in Resources */,
+				AC7398E1284D1A480015DB7B /* background_Hunter.png in Resources */,
 				ACE2D27725225DE900FF095A /* amsLogo.png in Resources */,
 				ACF3C357252FAA8400C41679 /* POBA.png in Resources */,
 				ACE2D26225225DE900FF095A /* PlaceHolder.jpg in Resources */,
@@ -2024,6 +2117,7 @@
 				ACCE04EF260F8A0E00C389B2 /* damage_solar.png in Resources */,
 				ACE2D19E25225C1A00FF095A /* LaunchScreen.storyboard in Resources */,
 				ACE2D25925225DE900FF095A /* DefaultEmblem.png in Resources */,
+				AC689C642850F9170005A232 /* currentSelected.png in Resources */,
 				ACE2D19B25225C1A00FF095A /* Assets.xcassets in Resources */,
 				AC56F235282B09BD00F25324 /* DestinyActivityModeDefinition.json in Resources */,
 				ACE433E425F6EA0F006CEAB1 /* DestinyInventoryBucketDefinition.json in Resources */,
@@ -2035,8 +2129,10 @@
 				ACE2D26625225DE900FF095A /* Vex.jpg in Resources */,
 				ACF3C356252FAA8400C41679 /* Ares.png in Resources */,
 				ACE2D25A25225DE900FF095A /* Vanguard.jpg in Resources */,
+				AC7398E2284D1A480015DB7B /* background_Warlock.png in Resources */,
 				ACA05A2A2532235B008CB2BD /* PORTUGUESE.png in Resources */,
 				AC00AFD62537721900922C2B /* GuardianCellTableView.xib in Resources */,
+				AC7398EF284D63410015DB7B /* DestinyStatGroupDefinition.json in Resources */,
 				ACF3C36F252FABDE00C41679 /* Icon76.png in Resources */,
 				ACF3C361252FAA8400C41679 /* Diamond.png in Resources */,
 				ACE2D25725225DE900FF095A /* Queen.jpg in Resources */,
@@ -2053,6 +2149,7 @@
 				ACE2D26B25225DE900FF095A /* City.jpg in Resources */,
 				ACF3C35B252FAA8400C41679 /* BirdShield.png in Resources */,
 				AC2C792B255896CF0060AD98 /* Vanguard_3X.jpeg in Resources */,
+				AC689C60284FCF810005A232 /* ExoticMasterFrame.png in Resources */,
 				ACBDC7E525FDA9680098B6BB /* DestinyInventoryItemDefinition.json in Resources */,
 				ACE2D26D25225DE900FF095A /* Cabal.jpg in Resources */,
 				ACCE04D9260D0B6500C389B2 /* heavyAmmo.png in Resources */,
@@ -2060,18 +2157,22 @@
 				ACF3C358252FAA8400C41679 /* IB.png in Resources */,
 				AC243A9B25F93651005DC7B6 /* DestinyItemCategoryDefinition.json in Resources */,
 				ACCE04F7260F8AC000C389B2 /* damage_arc.png in Resources */,
+				AC7884A8284BE217007DBE50 /* crafted.png in Resources */,
 				ACA05A3325336394008CB2BD /* Manifest.json in Resources */,
 				ACF3C366252FAA8400C41679 /* Deer.png in Resources */,
 				ACE2D25F25225DE900FF095A /* QueenBanner.jpg in Resources */,
 				ACF3C365252FAA8400C41679 /* Gambit.png in Resources */,
+				AC7398EB284D45870015DB7B /* vaultEmblem.png in Resources */,
 				ACA05A262532235B008CB2BD /* Italian.png in Resources */,
 				ACF3C359252FAA8400C41679 /* Rasputin.png in Resources */,
 				ACE2D27125225DE900FF095A /* Loot.jpg in Resources */,
 				ACE2D25E25225DE900FF095A /* BANNERS.jpg in Resources */,
 				ACF3C364252FAA8400C41679 /* CircleHat.png in Resources */,
 				ACE2D26425225DE900FF095A /* Venus.jpg in Resources */,
+				AC7398ED284D62F50015DB7B /* DestinyStatDefinition.json in Resources */,
 				ACE2D25625225DE900FF095A /* FWC.jpg in Resources */,
 				ACE2D25C25225DE900FF095A /* RAID.png in Resources */,
+				AC689C5E284FCF810005A232 /* LegendaryFrame.png in Resources */,
 				ACE2D27525225DE900FF095A /* DestinyHelperLogo.png in Resources */,
 				ACE2D26325225DE900FF095A /* DestinyHelperLogo.psd in Resources */,
 				ACE2D19925225C1700FF095A /* Main.storyboard in Resources */,
@@ -2088,6 +2189,7 @@
 				ACE2D26925225DE900FF095A /* Mars.jpg in Resources */,
 				ACBDC66E25F954C60098B6BB /* DestinyItemTierTypeDefinition.json in Resources */,
 				ACA05A252532235B008CB2BD /* DUTCH.png in Resources */,
+				AC7398DE284D19AA0015DB7B /* background_Titan.png in Resources */,
 				ACBDC7CB25FD486C0098B6BB /* DestinyVendorGroupDefinition.json in Resources */,
 				ACF3C35E252FAA8400C41679 /* RedCross.png in Resources */,
 				ACF3C369252FAA8400C41679 /* Wolf.png in Resources */,
@@ -2097,12 +2199,16 @@
 				ACCE04D5260D09AE00C389B2 /* ItemTableViewCell.xib in Resources */,
 				ACE2D27025225DE900FF095A /* Mercury.jpg in Resources */,
 				ACE2D26025225DE900FF095A /* BladeDancer.jpg in Resources */,
+				AC689C5F284FCF810005A232 /* LegendaryMasterFrame.png in Resources */,
 				ACE2D27325225DE900FF095A /* ICONS.png in Resources */,
 				ACE2D26F25225DE900FF095A /* MercurySun.jpg in Resources */,
 				ACCE0500260FC99400C389B2 /* weaponFrame.png in Resources */,
+				AC689C62284FDB030005A232 /* ExoticFrame.png in Resources */,
 				ACD26C822834040800E7724E /* damage_stasis.png in Resources */,
 				ACE2D27625225DE900FF095A /* Patrol.png in Resources */,
+				AC7398E4284D1D310015DB7B /* weaponMaster.png in Resources */,
 				ACCE04E1260D4A9400C389B2 /* ItemCollectionViewCell.xib in Resources */,
+				AC7398E6284D253C0015DB7B /* weaponPlaceholder.png in Resources */,
 				ACF3C367252FAA8400C41679 /* Warlock.png in Resources */,
 				ACA05A222532235B008CB2BD /* CROATIAN.png in Resources */,
 			);
@@ -2152,6 +2258,7 @@
 				ACBDC79525FA9F6E0098B6BB /* INVDQuality.m in Sources */,
 				ACE4338D25F15B69006CEAB1 /* CLNMMessageData.m in Sources */,
 				ACBDC78C25FA9DEC0098B6BB /* INVDDisplayProperties.m in Sources */,
+				AC7398E9284D39A70015DB7B /* WeaponDetailsViewController.m in Sources */,
 				ACE4336A25F1570B006CEAB1 /* Founder.m in Sources */,
 				ACA05A6F2533B976008CB2BD /* Utilities.m in Sources */,
 				AC039571260667F0009951D3 /* ArmorTableViewController.m in Sources */,
@@ -2206,6 +2313,7 @@
 				ACA05A0525320FEE008CB2BD /* PtBr.m in Sources */,
 				ACBDC78025FA9B480098B6BB /* INVDDestinyInventoryBaseClass.m in Sources */,
 				ACF3C2FC252E27B700C41679 /* AFXMLRequestOperation.m in Sources */,
+				AC31FCAF284D6CDE00E45BCB /* StatGroupDefinition.m in Sources */,
 				ACCCB16928316FC200AF9ADA /* KillsDeathsAssists.m in Sources */,
 				ACF3C318252E2D9300C41679 /* JTMappings.m in Sources */,
 				ACE2D24E25225DE900FF095A /* GRDCustomization.m in Sources */,
@@ -2260,6 +2368,7 @@
 				ACA05A4A25336A4F008CB2BD /* DCDBaseClass.m in Sources */,
 				ACCCB16228316FC200AF9ADA /* CompletionReason.m in Sources */,
 				ACE432EE25EC194B006CEAB1 /* VNDResponse.m in Sources */,
+				AC2ECFE0284E868100543E43 /* DestinyStatDefinition.m in Sources */,
 				ACE2D1D125225DDF00FF095A /* GLSClassDefinition.m in Sources */,
 				ACE2D27825225DE900FF095A /* MBRDestinyMemberships.m in Sources */,
 				ACE2D19325225C1700FF095A /* SceneDelegate.m in Sources */,
@@ -2298,6 +2407,7 @@
 				ACE4336D25F1570B006CEAB1 /* D2ClanProgressions.m in Sources */,
 				AC00AFD52537721900922C2B /* GuardianCellTableView.m in Sources */,
 				ACCCB19228317AC300AF9ADA /* UniqueWeaponPrecisionKills.m in Sources */,
+				AC2ECFDF284E868100543E43 /* StatBaseClass.m in Sources */,
 				ACBDC7C425FAD3450098B6BB /* INSTResponse.m in Sources */,
 				ACBDC7C025FAD3450098B6BB /* INSTBaseClass.m in Sources */,
 				ACF3C2F6252E27B700C41679 /* AFPropertyListRequestOperation.m in Sources */,
@@ -2327,6 +2437,7 @@
 				ACA059FE25320FEE008CB2BD /* ZhCht.m in Sources */,
 				ACE2D1CF25225DDF00FF095A /* GLSMessageData.m in Sources */,
 				ACE2D24025225DE900FF095A /* GRDSTATARMOR.m in Sources */,
+				AC2ECFDD284E868100543E43 /* StatIconSequences.m in Sources */,
 				ACE2D1AF25225DB800FF095A /* USRResponse.m in Sources */,
 				ACA05A0625320FEE008CB2BD /* MNFMessageData.m in Sources */,
 				ACBDC7A525FAA52A0098B6BB /* INVDSocketCategories.m in Sources */,
@@ -2345,6 +2456,7 @@
 				ACA05A55253372FD008CB2BD /* NetworkAPISingleClient+Definition.m in Sources */,
 				ACE2D1BE25225DC200FF095A /* BaseClass.m in Sources */,
 				ACBDC7A125FAA49E0098B6BB /* INVDBackgroundColor.m in Sources */,
+				AC2ECFDE284E868100543E43 /* StatDisplayProperties.m in Sources */,
 				ACCCB19A28317AC300AF9ADA /* UWHResponse.m in Sources */,
 				AC2C79312558A6390060AD98 /* MembershipViewController.m in Sources */,
 				ACE2D24325225DE900FF095A /* GRDMessageData.m in Sources */,

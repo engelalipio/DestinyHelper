@@ -108,7 +108,7 @@
         
         UILabel *lblChar   = [[UILabel alloc] initWithFrame:lblFrame];
         [lblChar setTextAlignment:NSTextAlignmentLeft];
-        [lblChar setFont:[UIFont italicSystemFontOfSize:20]];
+        [lblChar setFont:[UIFont fontWithName:kDefaultFontName size:22]];
         [lblChar setTextColor:[UIColor systemOrangeColor]];
         [lblChar setText:[NSString stringWithFormat:@"%@//%@//%@//%@",strLight,strClass,strRace,strGender]];
         
@@ -1824,29 +1824,78 @@
                      If this bit is set, the item has a 'highlighted' objective. You may want to represent this with an orange-red icon border color.
                      
                      */
+                    
+                    [cell.imgCrafted setHidden:YES];
+                    [cell.imgMaster setAlpha:0];
+                    [cell.imgMaster setHidden:YES];
+                    
+                    [cell.imgItem.layer setMasksToBounds:NO];
+                    [cell.imgItem.layer setBorderWidth:0];
+                    [cell.imgItem.layer setBorderColor:[UIColor clearColor].CGColor];
+                    
                     NSNumber *objLocked = [NSNumber numberWithDouble:item.state];
                     
                     switch (objLocked.integerValue) {
-                        case 0:
-                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"]
-                                                forState:UIControlStateNormal];
-                                
-                            break;
-                            case 1:
-                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
-                                                    forState:UIControlStateNormal];
-                             
-                            break;
-                        case 2://tracked
-                        case 4://Masterwork
+                                case 0:
+                                    [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"]
+                                                        forState:UIControlStateNormal];
+                                                           
+                                    break;
+                                case 1:
+                                    [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                        forState:UIControlStateNormal];
+                                                        
+                                    break;
+                                case 2://tracked
+                                    break;
+                                case 4://Masterwork
+                                                       
+                                    [cell.imgItem.layer setMasksToBounds:YES];
+                                    [cell.imgItem.layer setBorderWidth:2];
+                                    [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                    [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
+                                                   
+                                    [cell.imgMaster setAlpha:0.3];
+                                    [cell.imgMaster setHidden:NO];
+                                    break;
+                                                       
+                                case 5://Masterwork + locked
+                                    [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                        forState:UIControlStateNormal];
+                                                       
+                                    [cell.imgItem.layer setMasksToBounds:YES];
+                                    [cell.imgItem.layer setBorderWidth:2];
+                                    [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                    [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
                             
-                            break;
+                                    [cell.imgMaster setAlpha:0.3];
+                                    [cell.imgMaster setHidden:NO];
+                                                       
+                                break;
+                                case 8://Crafted
+                                    [cell.imgCrafted setHidden:NO];
+                                break;
+                                case 12://bitmask ItemState ["Masterwork", "Crafted"]
+                                                       
+                                    [cell.imgCrafted setHidden:NO];
+                                    [cell.imgItem.layer setMasksToBounds:YES];
+                                    [cell.imgItem.layer setBorderWidth:2];
+                                    [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                    [cell.imgItem.layer setBorderColor:[UIColor yellowColor].CGColor];
                             
-                        case 5://Masterwork locked
-                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
-                                                    forState:UIControlStateNormal];
-                            break;
-                    }
+                                    [cell.imgMaster setAlpha:0.3];
+                                    [cell.imgMaster setHidden:NO];
+                                                       
+                                break;
+                                case 16://red bar
+                                                       
+                                    [cell.imgItem.layer setMasksToBounds:YES];
+                                    [cell.imgItem.layer setBorderWidth:2];
+                                    [cell.imgItem.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                    [cell.imgItem.layer setBorderColor:[UIColor orangeColor].CGColor];
+                                                       
+                                break;
+                        }
                     
                     if (appDelegate.destinyInventoryItemDefinitions){
                         

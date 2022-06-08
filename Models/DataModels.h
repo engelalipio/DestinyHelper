@@ -38,4 +38,6 @@
 #import "ACTHDataModels.h"
 #import "UWHDataModels.h"
 #import "VAULTDataModels.h"
+#import "SGDataModels.h"
+#import "StatDataModels.h"
 
