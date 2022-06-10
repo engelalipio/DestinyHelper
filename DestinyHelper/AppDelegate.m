@@ -50,6 +50,7 @@
 @synthesize  destinyInventoryItemDefinitions = _destinyInventoryItemDefinitions;
 @synthesize  destinyActivityModeDefinitions = _destinyActivityModeDefinitions;
 @synthesize  destinyStatDefinitions = _destinyStatDefinitions;
+@synthesize  destinySandBoxPerkDefinitions = _destinySandBoxPerkDefinitions;
 @synthesize  userSettings = _userSettings;
 @synthesize  isClanLoaded = _isClanLoaded;
 @synthesize  currentClan = _currentClan;
@@ -1204,7 +1205,94 @@
                               
                                   
                            }
-                              
+                            
+                            
+                            
+                            if ([defKeyName isEqualToString:(@"DestinySandboxPerkDefinition")]){
+                                                           
+                                    jsonPath = [Utilities retrieveDataFromJSONFile:defKeyName
+                                                                        andExtension:@"json"];
+                                                           
+                                    NSMutableArray *jsonArrayPath = nil;
+                                                         
+                                    if ([jsonPath isKindOfClass:[NSArray class]]){
+                                                             
+                                    jsonArrayPath = [[NSMutableArray alloc] initWithArray:jsonPath];
+                                    jsonPath = nil;
+                                                             
+                                    NSMutableDictionary *buckets = [[NSMutableDictionary alloc]
+                                                                    initWithCapacity:jsonArrayPath.count];
+                                                             
+                                    for(int jIdx = 0 ;jIdx < jsonArrayPath.count; jIdx++ ){
+                                                                
+                                        NSDictionary *jPath = (NSDictionary*) [jsonArrayPath objectAtIndex:jIdx];
+                                                                 
+                                        if (jPath){
+                                                                     
+                                            long lngKey = [jPath objectForKey:@"id"];
+                                                                     
+                                            NSNumber *objKey = [NSNumber numberWithLong:lngKey];
+                                                                     
+                                            NSString *jsonData = [jPath objectForKey:@"json"],
+                                                    *jsonKey  = [NSString stringWithFormat:@"%@",[objKey integerValue]];
+                                                                     
+                                            if (!  [jsonData isKindOfClass:[NSNull class]]){
+                                                                         
+                                                NSDictionary *  perkData = nil;
+                                                                         
+                                                @try {
+                                                                             
+                                                    perkData = (NSDictionary *)[NSJSONSerialization
+                                                                                JSONObjectWithData:[jsonData dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                options:kNilOptions error:NULL];
+                                                                             
+                                                } @catch (NSException *exception) {
+                                                    NSLog(@"Appdelegate:DestinySanboxPerkDefinition:Exception->%@",exception.description);
+                                                } @finally {
+                                                                             
+                                                }
+                                                                      
+                                                                      
+                                                                         
+                                              if (perkData){
+                                                                            
+                                                 SandPerkBaseClass *perkBase = [[SandPerkBaseClass alloc]
+                                                                            initWithDictionary:perkData];
+                                                                            
+                                                if (perkBase){
+                                                                                
+                                                    @try {
+                                                                                    
+                                                        if (jsonKey){
+                                                            if (! [buckets.allKeys containsObject:jsonKey]){
+                                                                [buckets setValue:perkBase forKey:jsonKey];
+                                                            }
+                                                        }
+                                                                                    
+                                                    } @catch (NSException *exception) {
+                                                    NSLog(@"Appdelegate:DestinySanboxPerkDefinition:Exception->%@",exception.description);
+                                                    } @finally {
+                                                        perkData = nil;
+                                                        perkBase = nil;
+                                                    }
+
+                                                }
+                                            }
+                                                                        
+                                            }
+                                                                     
+                                        }
+                                    }
+                                           
+                                    if (! self->_destinySandBoxPerkDefinitions){
+                                        self->_destinySandBoxPerkDefinitions = [[NSDictionary alloc] initWithDictionary:buckets];
+                                    }
+                                                             
+                                 }
+                                                         
+                                                       
+                                                           
+                                }
                               
                             
                         }

@@ -40,4 +40,5 @@
 #import "VAULTDataModels.h"
 #import "SGDataModels.h"
 #import "StatDataModels.h"
+#import "SPDataModels.h"
 

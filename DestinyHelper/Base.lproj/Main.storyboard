@@ -123,7 +123,7 @@
                                     <segue destination="PiO-M2-XJb" kind="presentation" identifier="segLogin" id="MZU-7v-vWa"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" image="ICONS.png" translatesAutoresizingMaskIntoConstraints="NO" id="aMs-KJ-0n8">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" image="RAID.png" translatesAutoresizingMaskIntoConstraints="NO" id="aMs-KJ-0n8">
                                 <rect key="frame" x="-10" y="150" width="400" height="350"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
@@ -1090,7 +1090,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PERKS//TRAITS//MODS" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FwW-d7-w1i">
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text=" PERKS//TRAITS//MODS" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FwW-d7-w1i">
                                 <rect key="frame" x="0.0" y="453" width="414" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1290,121 +1290,148 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n9D-Nq-dCF" userLabel="btnInsTrait1Desc">
-                                <rect key="frame" x="67" y="493" width="320" height="25"/>
+                                <rect key="frame" x="56" y="493" width="333" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ymy-yD-Rvx" userLabel="btnInsTrait2Desc">
-                                <rect key="frame" x="67" y="533" width="320" height="25"/>
+                                <rect key="frame" x="56" y="533" width="333" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1xJ-Oo-ZBI" userLabel="lblMagazine1">
-                                <rect key="frame" x="67" y="573" width="320" height="25"/>
+                                <rect key="frame" x="56" y="573" width="333" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EZV-Nr-dPG" userLabel="lblMagazine2">
-                                <rect key="frame" x="67" y="613" width="320" height="25"/>
+                                <rect key="frame" x="56" y="613" width="333" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pb0-6W-KtJ" userLabel="lnlPerkTrait1">
-                                <rect key="frame" x="67" y="653" width="320" height="25"/>
+                                <rect key="frame" x="56" y="653" width="340" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KSt-K6-iaN" userLabel="lblPerkTrait2">
-                                <rect key="frame" x="67" y="692" width="320" height="25"/>
+                                <rect key="frame" x="56" y="692" width="340" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IiF-cg-lb2" userLabel="lblPerkTrait3">
-                                <rect key="frame" x="68" y="726" width="320" height="25"/>
+                                <rect key="frame" x="57" y="726" width="339" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1pJ-P0-0Ev" userLabel="lblPerkTrait4">
-                                <rect key="frame" x="67" y="774" width="320" height="25"/>
+                                <rect key="frame" x="56" y="774" width="340" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iqU-2I-DbA" userLabel="lblKillTracker1">
-                                <rect key="frame" x="67" y="814" width="320" height="25"/>
+                                <rect key="frame" x="56" y="814" width="333" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AbW-Hu-3dE" userLabel="btnBarrelPerk1">
-                                <rect key="frame" x="10" y="475" width="60" height="60"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" toolTip="Click for Description" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AbW-Hu-3dE" userLabel="btnBarrelPerk1">
+                                <rect key="frame" x="0.0" y="475" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="weaponFrame.png"/>
+                                <connections>
+                                    <action selector="perkLookupAction:" destination="tmd-sz-xMZ" eventType="touchUpInside" id="ogZ-e5-fwP"/>
+                                </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hnK-nn-e3B" userLabel="btnBarrelPerk2">
-                                <rect key="frame" x="10" y="515" width="60" height="60"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" toolTip="Click for Description" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hnK-nn-e3B" userLabel="btnBarrelPerk2">
+                                <rect key="frame" x="0.0" y="515" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="weaponFrame.png"/>
+                                <connections>
+                                    <action selector="perkLookupAction:" destination="tmd-sz-xMZ" eventType="touchUpInside" id="XXf-YY-CQc"/>
+                                </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUz-RK-ACs" userLabel="btnMagazine1">
-                                <rect key="frame" x="10" y="555" width="60" height="60"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" toolTip="Click for Description" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OUz-RK-ACs" userLabel="btnMagazine1">
+                                <rect key="frame" x="0.0" y="555" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="weaponFrame.png"/>
+                                <connections>
+                                    <action selector="perkLookupAction:" destination="tmd-sz-xMZ" eventType="touchUpInside" id="sOr-Fz-HPH"/>
+                                </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Uh-1N-u1J" userLabel="btnMagazine2">
-                                <rect key="frame" x="10" y="595" width="60" height="60"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" toolTip="Click for Description" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Uh-1N-u1J" userLabel="btnMagazine2">
+                                <rect key="frame" x="0.0" y="595" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="weaponFrame.png"/>
+                                <connections>
+                                    <action selector="perkLookupAction:" destination="tmd-sz-xMZ" eventType="touchUpInside" id="yCx-dt-9Hf"/>
+                                </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uCj-2y-iRC" userLabel="btnPerkTrait1">
-                                <rect key="frame" x="10" y="634" width="60" height="60"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" toolTip="Click for Description" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uCj-2y-iRC" userLabel="btnPerkTrait1">
+                                <rect key="frame" x="0.0" y="634" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="weaponFrame.png"/>
+                                <connections>
+                                    <action selector="perkLookupAction:" destination="tmd-sz-xMZ" eventType="touchUpInside" id="aHR-1r-umV"/>
+                                </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ic-xH-Xg0" userLabel="btnPerkTrait2">
-                                <rect key="frame" x="10" y="675" width="60" height="60"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" toolTip="Click for Description" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ic-xH-Xg0" userLabel="btnPerkTrait2">
+                                <rect key="frame" x="0.0" y="675" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="weaponFrame.png"/>
+                                <connections>
+                                    <action selector="perkLookupAction:" destination="tmd-sz-xMZ" eventType="touchUpInside" id="jEI-iL-f8d"/>
+                                </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P7Z-VX-KMu" userLabel="btnPerkTrait3">
-                                <rect key="frame" x="10" y="715" width="60" height="60"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" toolTip="Click for Description" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P7Z-VX-KMu" userLabel="btnPerkTrait3">
+                                <rect key="frame" x="0.0" y="715" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="weaponFrame.png"/>
+                                <connections>
+                                    <action selector="perkLookupAction:" destination="tmd-sz-xMZ" eventType="touchUpInside" id="0LE-9o-Teg"/>
+                                </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vx1-1I-Iiv" userLabel="btnPerkTrait4">
-                                <rect key="frame" x="10" y="756" width="60" height="60"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" toolTip="Click for Description" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vx1-1I-Iiv" userLabel="btnPerkTrait4">
+                                <rect key="frame" x="0.0" y="756" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="weaponFrame.png"/>
+                                <connections>
+                                    <action selector="perkLookupAction:" destination="tmd-sz-xMZ" eventType="touchUpInside" id="wXH-ZY-s7w"/>
+                                </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="myl-ui-f1z" userLabel="btnKillTracker1">
-                                <rect key="frame" x="10" y="796" width="60" height="60"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" toolTip="Click for Description" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="myl-ui-f1z" userLabel="btnKillTracker1">
+                                <rect key="frame" x="0.0" y="796" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="weaponFrame.png"/>
+                                <connections>
+                                    <action selector="perkLookupAction:" destination="tmd-sz-xMZ" eventType="touchUpInside" id="9xT-Fn-izA"/>
+                                </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lock" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Xqg-8G-XD9">
                                 <rect key="frame" x="358" y="172.5" width="15" height="13.5"/>
@@ -1416,11 +1443,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="abL-WQ-CPJ">
-                                <rect key="frame" x="157" y="730" width="100" height="25"/>
+                                <rect key="frame" x="186" y="456" width="134" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                 <color key="tintColor" systemColor="systemOrangeColor"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Actions">
+                                <buttonConfiguration key="configuration" style="filled" title="Weapon Actions">
                                     <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
@@ -1452,8 +1479,10 @@
                         <outlet property="imgWeaponIcon" destination="FJD-HG-c2X" id="LZt-bh-Ohc"/>
                         <outlet property="imgWeaponQuality" destination="hQs-W7-SYK" id="94e-Lx-rpV"/>
                         <outlet property="imgWeaponScreenshot" destination="P5p-mA-tXE" id="QOw-Mw-LeQ"/>
+                        <outlet property="lblAimAssistLabel" destination="xMY-nN-2cl" id="Nw5-zL-YPw"/>
                         <outlet property="lblAimAssistValue" destination="pnC-Mc-IgI" id="Ntn-op-HgN"/>
                         <outlet property="lblFlavoredText" destination="ggG-No-4yx" id="qEp-yi-CZs"/>
+                        <outlet property="lblHandlingLabel" destination="MMa-Kd-5MM" id="3Gn-b4-lGs"/>
                         <outlet property="lblHandlingValue" destination="hN5-iE-PqJ" id="SZk-UK-BM5"/>
                         <outlet property="lblImpactLable" destination="J9Q-dT-5uY" id="HFe-cT-Mpq"/>
                         <outlet property="lblImpactValue" destination="OCp-Vr-szI" id="3EH-rT-a4i"/>
@@ -1463,10 +1492,13 @@
                         <outlet property="lblPower" destination="9Ef-v6-4rQ" id="IEv-Za-Q5E"/>
                         <outlet property="lblRangeLabel" destination="irS-u5-nqh" id="eHV-30-g3V"/>
                         <outlet property="lblRangeValue" destination="xRq-2Q-O4P" id="Sj7-b4-hr4"/>
+                        <outlet property="lblRecoilLabel" destination="DvI-mt-v3S" id="36H-km-1zL"/>
                         <outlet property="lblRecoilValue" destination="Zcr-by-Kbx" id="zYt-D6-GLh"/>
+                        <outlet property="lblReloadSpeedLabel" destination="60M-0f-QK8" id="buN-EF-YAm"/>
                         <outlet property="lblReloadValue" destination="Q56-ft-Rfa" id="zvp-7N-mat"/>
                         <outlet property="lblRoundsLabel" destination="kgX-q8-Rbr" id="UdT-3g-65n"/>
                         <outlet property="lblRoundsValue" destination="pvs-0Y-dXk" id="yuj-3j-FgV"/>
+                        <outlet property="lblStabilityLabel" destination="V5u-Ta-mgz" id="XFw-Fh-Rux"/>
                         <outlet property="lblStabilityValue" destination="Bkt-oM-ebx" id="b1r-2G-aSx"/>
                         <outlet property="lblTrait1Desc" destination="n9D-Nq-dCF" id="gB4-kp-ihh"/>
                         <outlet property="lblTrait2Desc" destination="Ymy-yD-Rvx" id="yDy-7F-8HZ"/>
@@ -1501,9 +1533,9 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="DefaultEmblem.png" width="736" height="210"/>
-        <image name="ICONS.png" width="1440" height="1042"/>
         <image name="LegendaryMasterFrame.png" width="564" height="98"/>
         <image name="PlaceHolder.jpg" width="90" height="90"/>
+        <image name="RAID.png" width="1500" height="1500"/>
         <image name="amsLogo.png" width="122.87999725341797" height="122.87999725341797"/>
         <image name="books.vertical" catalog="system" width="128" height="107"/>
         <image name="cube.fill" catalog="system" width="128" height="124"/>

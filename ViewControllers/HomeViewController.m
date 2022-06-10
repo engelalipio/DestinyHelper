@@ -329,7 +329,7 @@
 
 -(void) startTimer{
     
-   // return;
+    return;
 
     double interval = [appDelegate interval];
        
@@ -437,7 +437,7 @@
     
     @try {
         
-        currentImageName = @"Icons.png";
+        currentImageName = @"Raid.png";
         
         if (! backgroundImages){
             

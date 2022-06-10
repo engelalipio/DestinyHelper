@@ -147,6 +147,7 @@
     if (btnClose){
         [btnClose setTitle:@"Close"];
         [btnClose setTarget:self];
+        [btnClose setTintColor:[UIColor systemOrangeColor]];
         [btnClose setAction:@selector(closeAction)];
         
     }

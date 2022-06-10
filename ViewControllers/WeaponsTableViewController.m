@@ -121,6 +121,10 @@
     
     if (self.selectedCharEmblem){
     
+        
+        //UIImageView *charImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"header_%@.png",strClass]]];
+        
+        //self->cImage = charImage;
         self->cImage = self.selectedCharEmblem;
     
         [self->cImage setFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 100)];
@@ -146,7 +150,6 @@
     }
        
     
-    
     UIBarButtonItem *btnClose =  [[UIBarButtonItem alloc] init];
     
     
@@ -154,7 +157,7 @@
         [btnClose setTitle:@"Close"];
         [btnClose setTarget:self];
         [btnClose setAction:@selector(closeAction)];
-        
+        [btnClose setTintColor:[UIColor systemOrangeColor]];
     }
 
     self.navigationItem.rightBarButtonItem = btnClose;
@@ -163,7 +166,7 @@
     self->useCView = NO;
     
     self->appDelegate = [AppDelegate currentDelegate];
-    
+    [self setupBackgroundImage:strClass];
     [self initTableView];
     [self initSearchBar];
     [self registerNotifications];
@@ -171,9 +174,40 @@
 }
 
 
+
+-(void)setupBackgroundImage:(NSString *) anyClass{
+    
+    UIImage *oImage = nil;
+    
+    NSString *imageName = nil;
+    
+    if ([anyClass isEqualToString:@"Warlock"]){
+        imageName = @"background_Warlock.png";
+    }
+    
+    if ([anyClass isEqualToString:@"Titan"]){
+        imageName = @"background_Titan.png";
+    }
+    
+    if ([anyClass isEqualToString:@"Hunter"]){
+        imageName = @"background_Hunter.png";
+    }
+    
+    oImage =  [UIImage imageNamed:imageName] ;
+    CGSize newSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height  );
+    
+    oImage = [Utilities imageResize:oImage andResizeTo:newSize];
+   
+     self.view.backgroundColor = [UIColor colorWithPatternImage:oImage];
+    
+ 
+}
+
+
+
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
-    
+
     WeaponDetailsViewController *targetVC = (WeaponDetailsViewController *) segue.destinationViewController;
     
     ItemCellTableView *selectedCell = (ItemCellTableView*) sender;
@@ -1268,6 +1302,7 @@
                     if (strHashKey.length > 0){
                         
                         [cCell transferItemAction:self->allCharsData];
+                      //  [self performSegueWithIdentifier:@"segWeaponDetail" sender:cCell];
                     }
                     else{
                         
@@ -1278,7 +1313,7 @@
                             if (strHashKey.length > 0){
                                 [cCell.lblInstanceId setText:strHashKey];
                                 [cCell transferItemAction:self->allCharsData];
-                                
+                               // [self performSegueWithIdentifier:@"segWeaponDetail" sender:cCell];
                             }
                     }
                }
@@ -1399,7 +1434,7 @@
             if (selectedIndexPath){
             
                 cCell = (ItemCellTableView*) [self.tableView cellForRowAtIndexPath:selectedIndexPath];
-                
+             
                 if (cCell){
                     
                 NSString *strHashKey = [cCell.lblInstanceId text],
@@ -1557,6 +1592,8 @@
               //[self.tableView.refreshControl beginRefreshing];
                 [self.tableView performBatchUpdates:^{
            
+            BOOL   performMatch   = NO;
+                    
             if (instanceBase){
                 
                 ItemCellTableView *cell = [self.tableView cellForRowAtIndexPath:cIndexPath];
@@ -1575,8 +1612,26 @@
                       cIndexPath.section, cIndexPath.row);
                 
                 if (anyInstancedId){
-                    [cell.lblInstanceId setText:anyInstancedId];
-                    [cCell.lblInstanceId setText:anyInstancedId];
+                    
+                    if (cell.lblInstanceId.text.length == 0){
+                        
+                        NSLog(@"WeaponsViewController:updateInstancedItemData:Setting to [%@] ",anyInstancedId);
+                        [cell.lblInstanceId setText:anyInstancedId];
+                        [cCell.lblInstanceId setText:anyInstancedId];
+                        
+                    }else{
+                        
+                        NSLog(@"WeaponsViewController:updateInstancedItemData:anyInstancedId=[%@],cell.lblInstanceId=[%@]",
+                              anyInstancedId,cell.lblInstanceId.text);
+                        
+                        if (![cell.lblInstanceId.text isEqual:anyInstancedId]){
+                            performMatch = YES;
+                            NSLog(@"WeaponsViewController:Need to perform Match!");
+                        }
+                        
+                    }
+                    
+                  
                 }
                 
                 if (instanceBase){
@@ -1585,7 +1640,28 @@
                     
                     if (response){
                         
-                        NSDictionary *instance = (NSDictionary*) [response objectForKey:@"instance"];
+                        NSDictionary *instance = (NSDictionary*) [response objectForKey:@"instance"],
+                                     *itemD    = (NSDictionary*) [response objectForKey:@"item"];
+                        
+                        if (performMatch){
+                            
+                            NSDictionary *iDD = (NSDictionary*) [itemD objectForKey:@"data"];
+                            
+                            if (iDD){
+                                
+                                NSString *iInstanceID = [iDD objectForKey:@"itemInstanceId"];
+                                
+                                if (![cell.lblInstanceId.text isEqualToString:iInstanceID] && [anyInstancedId isEqualToString:iInstanceID]){
+                                    
+                                    [cell.lblInstanceId setText:iInstanceID];
+                                    
+                                    NSLog(@"WeaponsViewController:updateInstancedItemData:Udate to Match[%@] ",iInstanceID);
+                                    
+                                }
+                                
+                            }
+                            
+                        }
                         
                         if (instance){
                             NSDictionary *data = (NSDictionary*) [instance objectForKey:@"data"];
@@ -2118,26 +2194,27 @@
                 
             }
             
+            
+            [tCell.layer setMasksToBounds:YES];
+            [tCell.layer setCornerRadius:5];
+            [tCell.layer setBorderWidth:3];
+            [tCell.layer setShadowOffset: CGSizeMake(-1, 1)];
+            [tCell.layer setBorderColor:[UIColor systemYellowColor].CGColor];
+            
             NSLog(@"didSelectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d],Static Hash->[%@],Instance->[%@]",
                   tCell.lblItemName.text, indexPath.section,indexPath.row,strHashKey,strInstanceKey);
 
-
+            
+            [self performSegueWithIdentifier:@"segWeaponDetail" sender:tCell];
            
         }
         
-        if (tCell){
-            [self performSegueWithIdentifier:@"segWeaponDetail" sender:tCell];
-        }
+      
         
     } @catch (NSException *exception) {
         
     } @finally {
         
-        [cCell.layer setMasksToBounds:YES];
-        [cCell.layer setCornerRadius:5];
-        [cCell.layer setBorderWidth:3];
-        [cCell.layer setShadowOffset: CGSizeMake(-1, 1)];
-        [cCell.layer setBorderColor:[UIColor systemYellowColor].CGColor];
         
     }
 }

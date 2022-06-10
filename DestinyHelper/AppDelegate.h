@@ -303,6 +303,8 @@ enum Destiny2ItemSortType{
 
 @property (nonatomic,strong) NSMutableDictionary *destinyStatDefinitions;
 
+@property (nonatomic,strong) NSMutableDictionary *destinySandBoxPerkDefinitions;
+
 @property (nonatomic,strong) NSDictionary *destinyClassDefinitions;
 
 @property (nonatomic,strong) NSDictionary *destinyGenderDefinitions;

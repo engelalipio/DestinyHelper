@@ -71,12 +71,27 @@
 @property (strong, nonatomic) IBOutlet UILabel *lblRangeLabel;
 
 @property (strong, nonatomic) IBOutlet UILabel *lblRangeValue;
+
+@property (strong, nonatomic) IBOutlet UILabel *lblStabilityLabel;
+
 @property (strong, nonatomic) IBOutlet UILabel *lblStabilityValue;
+
+@property (strong, nonatomic) IBOutlet UILabel *lblHandlingLabel;
+
 @property (strong, nonatomic) IBOutlet UILabel *lblHandlingValue;
 
+
+@property (strong, nonatomic) IBOutlet UILabel *lblReloadSpeedLabel;
+
 @property (strong, nonatomic) IBOutlet UILabel *lblReloadValue;
+
+@property (strong, nonatomic) IBOutlet UILabel *lblAimAssistLabel;
+
 @property (strong, nonatomic) IBOutlet UILabel *lblAimAssistValue;
 @property (strong, nonatomic) IBOutlet UILabel *lblWeaponDamageType;
+
+
+@property (strong, nonatomic) IBOutlet UILabel *lblRecoilLabel;
 
 @property (strong, nonatomic) IBOutlet UILabel *lblRecoilValue;
 
@@ -121,6 +136,8 @@
 -(void) loadWeaponDetail:(INSTBaseClass *) weaponData withWeaponCell:(ItemCellTableView*) anyCell charactersData:(NSDictionary *) characters;
 
 - (IBAction)weaponAction:(UIButton *)sender;
+
+- (IBAction)perkLookupAction:(UIButton *)sender;
 
 
 @end

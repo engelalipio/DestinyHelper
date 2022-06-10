@@ -99,7 +99,7 @@
     }
     
     [self registerNotifications];
-    
+   // [self setupBackgroundImage];
     [self initTableView];
     [self loadGroupInfo];
     [self loadCharacters];
@@ -112,6 +112,22 @@
     [self startTimer];
 }
  
+
+-(void)setupBackgroundImage{
+    
+    UIImage *oImage = [UIImage imageNamed:@"background_Warlock.png"] ;
+    
+    CGSize newSize = CGSizeMake(self.tblChars.frame.size.width, self.tblChars.frame.size.height);
+    
+    oImage = [Utilities imageResize:oImage andResizeTo:newSize];
+    
+    self.tblChars.backgroundColor = [UIColor colorWithPatternImage:oImage];
+ 
+   
+   
+}
+
+
 -(void) refreshCharacterEquipment{
     
     
@@ -2953,7 +2969,7 @@
                         }
                         
                     }
-                    
+                   
                     //Passing already filtered weapons for selected char
                     [wVC setDestWeapons:filteredCharWeaponsData];
                     [wVC setSelectedCharData:selectedCharData];
