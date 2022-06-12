@@ -40,10 +40,19 @@
 @synthesize imgPlayerBG   = _imgPlayerBG;
 @synthesize activityIndicator = _activityIndicator;
 @synthesize memberships = _memberships;
+@synthesize VCName = _VCName;
 
+
+-(NSString *) VCName{
+    return _VCName;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+  
+    NSLog(@"%@:viewDidLoad:Invoked",[self VCName]);
+  
     
     self->RowHeight = 90;
     self->HeaderHeight = 25;
@@ -65,9 +74,7 @@
         }
     }
     
-   // [self registerNotifications];
-  
-    
+ 
     [self initIndicator];
     
     [self initTableView];
@@ -91,13 +98,12 @@
 }
 
 -(void) registerNotifications{
-   
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLoadedMembership
         object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
           
         self.memberships = (NSArray*) [note object];
-        NSLog(@"MemberShipViewController:kDestinyLoadedMembership:Received");
+        NSLog(@"%@:kDestinyLoadedMembership:Received",[self VCName]);
         if (self.memberships != nil){
             [self.tblMemberships reloadData];
         }
@@ -113,7 +119,7 @@
     if (self.timer != nil){
         [self.timer invalidate];
     }
-    NSLog(@"Profile Timer Stopped");
+    NSLog(@"%@Timer Stopped",[self VCName]);
     self.timer = nil;
 }
 
@@ -152,34 +158,49 @@
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSString *selectedTitle = @"";
-    
-    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    MBRDestinyMemberships *selectedMembership = (MBRDestinyMemberships*) [_memberships objectAtIndex:indexPath.row];
-    
-    if(selectedCell){
-       
-        switch (selectedCell.tag) {
-            case 1:
-                [appDelegate setCurrentMembershipType:Xbox];
-                break;
-                
-            case 2:
-                [appDelegate setCurrentMembershipType:Playstation];
-                break;
-                
-            case 4:
-                [appDelegate setCurrentMembershipType:PC];
-                break;
+    NSString *selectedTitle = nil;
+    UITableViewCell *selectedCell = nil;
+    MBRDestinyMemberships *selectedMembership = nil;
+    @try {
+        
+        selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        selectedMembership = (MBRDestinyMemberships*) [_memberships objectAtIndex:indexPath.row];
+        
+        if(selectedCell){
+           
+            switch (selectedCell.tag) {
+                case 1:
+                    [appDelegate setCurrentMembershipType:Xbox];
+                    break;
+                    
+                case 2:
+                    [appDelegate setCurrentMembershipType:Playstation];
+                    break;
+                    
+                case 4:
+                    [appDelegate setCurrentMembershipType:PC];
+                    break;
+            }
+            
+            if ( selectedMembership){
+                [appDelegate setCurrentMembershipID:selectedMembership.membershipId];
+            }
+            
+            [self performSegueWithIdentifier:@"segGuardians" sender:destChars];
         }
         
-        if ( selectedMembership){
-            [appDelegate setCurrentMembershipID:selectedMembership.membershipId];
-        }
+    } @catch (NSException *exception) {
+        NSLog(@"%@:didSelectRowAtIndexPath:Exception->%@",[self VCName],exception.description);
+    } @finally {
         
-        [self performSegueWithIdentifier:@"segGuardians" sender:destChars];
+        selectedTitle = nil;
+        selectedCell = nil;
+        selectedMembership = nil;
+        
     }
+    
+  
     
 }
 

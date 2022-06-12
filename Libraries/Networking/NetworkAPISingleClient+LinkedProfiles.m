@@ -92,6 +92,7 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
                                itemStatsEnum     = ITEMSTATS,        //304
                                itemSocketsEnum   = ITEMSOCKETS,      //305
                                itemCommonEnum    = ITEMCOMMONDATA,   //307
+                               itemPlugObjEnum   = ITEMPLUGOBJECTIVES,//309
                                itemPlugsEnum     = ITEMREUSABLEPLUGS;//310
    
     
@@ -109,9 +110,9 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
             currentMembership = appDelegate.currentMembershipID;
         }
         
-        componentOptions = [NSString stringWithFormat:@"components=%d,%d,%d,%d,%d,%d,%d",
+        componentOptions = [NSString stringWithFormat:@"components=%d,%d,%d,%d,%d,%d,%d,%d",
                             itemInstancesEnum,itemPerskEnum,itemRenderEnum,itemStatsEnum,
-                            itemSocketsEnum,itemCommonEnum,itemPlugsEnum];
+                            itemSocketsEnum,itemCommonEnum,itemPlugObjEnum,itemPlugsEnum];
         
         ///Destiny2/{membershipType}/Profile/{destinyMembershipId}/Item/{itemInstanceId}/
         
@@ -307,10 +308,10 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
     NetworkAPISingleClient *api = nil;
     
     enum Destiny2ComponentType cType = PROFILEINVENTORIES;
- 
+    
     @try {
         
-        servicePath = [NSString stringWithFormat:@"%@/%@/?components=%d", kBungieAPIBaseD2URL,anyMembershipType,cType];
+        servicePath = [NSString stringWithFormat:@"%@/%@/?components=%d,201", kBungieAPIBaseD2URL,anyMembershipType,cType];
  
         NSLog(@"NetworkAPISingleClient(LinkedProfiles):getVaultItems->%@",servicePath);
         
@@ -800,7 +801,132 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
             
             NSDictionary *callerInfo = [[NSDictionary alloc]
                             initWithObjectsAndKeys:@"NetworkAPISingleClient",@"ClassName",
-                                                    @"lockStateItem",@"MethodName", nil];
+                                                   @"lockStateItem",@"MethodName",
+                                                  anyInstancedItem,@"anyInstancedItem", nil];
+                
+            [[NSNotificationCenter defaultCenter]
+                    postNotificationName:kDestinyLockItemStateNotification
+                                    object:forJSONObject
+                                    userInfo:callerInfo];
+                
+            NSLog(@"NetworkAPISingleClient(LinkedProfiles):lockStateItem:completionHandler:Raised->%@",kDestinyLockItemStateNotification);
+            
+             
+                
+        }];
+       
+        [task resume];
+         
+        NSLog(@"Completed::lockStateItem=%@",servicePath);
+    
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+        NSLog(@"Error::%@",message);
+    }
+    @finally {
+        message = @"";
+        api = nil;
+        servicePath = nil;
+    }
+    return request;
+}
+
+
+
+
++ (AFJSONRequestOperation *)lockStateItemWithAction:(NSObject *)anyInstancedItem
+                         lockAction:(NSString *) anyAction
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
+    
+    NSString    *message         = nil,
+                *servicePath     = nil,
+                *tokenValue      = nil,
+                *payload         = nil;
+    
+    NSURL       *url  = nil;
+    
+    AFJSONRequestOperation *request = nil;
+    
+    NetworkAPISingleClient *api = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+    NSData *postData = nil;
+    
+    @try {
+
+        
+        if (anyInstancedItem){
+            payload = anyInstancedItem;
+            payload = [payload stringByReplacingOccurrencesOfString:@"[" withString:@""];
+            payload = [payload stringByReplacingOccurrencesOfString:@"]" withString:@""];
+        }
+        
+        postData = [payload dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
+        
+        appDelegate = [AppDelegate currentDelegate];
+        
+        servicePath =  [NSString stringWithFormat:@"%@/Actions/Items/SetLockState/",kBungieAPIBaseD2URL];
+ 
+        NSLog(@"Invoking::lockStateItem=%@",servicePath);
+        
+        url = [[NSURL alloc] initWithString:servicePath];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                           timeoutInterval:60.0];
+        [request setHTTPMethod:@"POST"];
+        
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setValue:kDestinyOriginHeader forHTTPHeaderField:@"Origin"];
+        [request setValue:@"www.bungie.net" forHTTPHeaderField:@"Authority" ];
+        [request setValue:kBungieAPIKey forHTTPHeaderField:@"X-API-Key"];
+        
+        tokenValue = [NetworkAPISingleClient getAuthorizationTokenHeaderValue];
+        
+        if (tokenValue ){
+            [request setValue:tokenValue forHTTPHeaderField:@"Authorization"];
+        }
+    
+        [request setHTTPBody:postData];
+        
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                              delegate:nil
+                                                         delegateQueue:[NSOperationQueue mainQueue]];
+        
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData * _Nullable data,
+                                                                    NSURLResponse * _Nullable response,
+                                                                    NSError * _Nullable error) {
+                NSLog(@"NetworkAPISingleClient(LinkedProfiles):lockStateItem:completionHandler...");
+
+                NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+            
+                NSLog(@"The Response: %@", asHTTPResponse);
+                // set a breakpoint on the last NSLog and investigate the response in the debugger
+
+                // if you get data, you can inspect that, too. If it's JSON, do one of these:
+                NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                            options:kNilOptions
+                                                                                error:nil];
+                // or
+                NSArray *forJSONArray = [NSJSONSerialization JSONObjectWithData:data
+                                                                        options:kNilOptions
+                                                                          error:nil];
+
+                NSLog(@"One of these might exist - object: %@ \n array: %@", forJSONObject, forJSONArray);
+            
+            
+            NSDictionary *callerInfo = [[NSDictionary alloc]
+                            initWithObjectsAndKeys:@"NetworkAPISingleClient",@"ClassName",
+                                @"lockStateItem",@"MethodName",
+                                anyInstancedItem,@"InstancedItem",
+                                anyAction,@"lockAction", nil];
                 
             [[NSNotificationCenter defaultCenter]
                     postNotificationName:kDestinyLockItemStateNotification
@@ -1382,6 +1508,128 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
     }
     return request;
     
+    
+}
+
++ (AFJSONRequestOperation *)sendItemToVault:(NSObject *)anyInstancedItem
+                                 vaultAction:(NSString *) anyAction
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
+    
+    NSString    *message         = nil,
+                *servicePath     = nil,
+                *tokenValue      = nil,
+                *payload         = nil;
+    
+    NSURL       *url  = nil;
+    
+    AFJSONRequestOperation *request = nil;
+    
+    NetworkAPISingleClient *api = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+    NSData *postData = nil;
+    
+    @try {
+
+        
+        if (anyInstancedItem){
+            payload = anyInstancedItem;
+            payload = [payload stringByReplacingOccurrencesOfString:@"[" withString:@""];
+            payload = [payload stringByReplacingOccurrencesOfString:@"]" withString:@""];
+        }
+        
+        postData = [payload dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
+        
+        appDelegate = [AppDelegate currentDelegate];
+        
+        servicePath =  [NSString stringWithFormat:@"%@/Actions/Items/TransferItem/",kBungieAPIBaseD2URL];
+ 
+        NSLog(@"Invoking::TransferItem=%@",servicePath);
+        
+        url = [[NSURL alloc] initWithString:servicePath];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                           timeoutInterval:60.0];
+        [request setHTTPMethod:@"POST"];
+        
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setValue:kDestinyOriginHeader forHTTPHeaderField:@"Origin"];
+        [request setValue:@"www.bungie.net" forHTTPHeaderField:@"Authority" ];
+        [request setValue:kBungieAPIKey forHTTPHeaderField:@"X-API-Key"];
+        
+        tokenValue = [NetworkAPISingleClient getAuthorizationTokenHeaderValue];
+        
+        if (tokenValue ){
+            [request setValue:tokenValue forHTTPHeaderField:@"Authorization"];
+        }
+    
+        [request setHTTPBody:postData];
+        
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                              delegate:nil
+                                                         delegateQueue:[NSOperationQueue mainQueue]];
+        
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData * _Nullable data,
+                                                                    NSURLResponse * _Nullable response,
+                                                                    NSError * _Nullable error) {
+                NSLog(@"NetworkAPISingleClient(LinkedProfiles):sendItemToVault:completionHandler...");
+
+                NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+            
+                NSLog(@"The Response: %@", asHTTPResponse);
+                // set a breakpoint on the last NSLog and investigate the response in the debugger
+
+                // if you get data, you can inspect that, too. If it's JSON, do one of these:
+                NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                            options:kNilOptions
+                                                                                error:nil];
+                // or
+                NSArray *forJSONArray = [NSJSONSerialization JSONObjectWithData:data
+                                                                        options:kNilOptions
+                                                                          error:nil];
+
+                NSLog(@"One of these might exist - object: %@ \n array: %@", forJSONObject, forJSONArray);
+            
+            
+            NSDictionary *callerInfo = [[NSDictionary alloc]
+                            initWithObjectsAndKeys:@"NetworkAPISingleClient",@"ClassName",
+                                                    @"TransferItem",@"MethodName",
+                                        anyAction, @"vaultAction",
+                                        anyInstancedItem,@"InstancedItem",
+                                        nil];
+                
+            [[NSNotificationCenter defaultCenter]
+                    postNotificationName:kDestinySendToVaultNotification
+                                    object:forJSONObject
+                                    userInfo:callerInfo];
+                
+            NSLog(@"NetworkAPISingleClient(LinkedProfiles):TransferItem:completionHandler:Raised->%@",kDestinySendToVaultNotification);
+            
+             
+                
+        }];
+       
+        [task resume];
+         
+         
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+        NSLog(@"Error::%@",message);
+    }
+    @finally {
+        message = @"";
+        api = nil;
+        servicePath = nil;
+    }
+    return request;
     
 }
 

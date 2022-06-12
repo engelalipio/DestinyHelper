@@ -16,6 +16,7 @@
 #import "NetworkAPISingleClient+Definition.h"
 #import "NetworkAPISingleClient+LinkedProfiles.h"
 #import "GuardianViewController.h"
+#import "ArmorDetailsViewController.h"
 
 @interface ArmorTableViewController ()
 {
@@ -135,11 +136,171 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     self->appDelegate = [AppDelegate currentDelegate];
-    
+    [self setupBackgroundImage:strClass];
     [self initTableView];
     
     [self registerNotifications];
     
+}
+
+
+
+-(void)setupBackgroundImage:(NSString *) anyClass{
+    
+    UIImage *oImage = nil;
+    
+    NSString *imageName = nil;
+    
+    if ([anyClass isEqualToString:@"Warlock"]){
+        imageName = @"background_Warlock.png";
+    }
+    
+    if ([anyClass isEqualToString:@"Titan"]){
+        imageName = @"background_Titan.png";
+    }
+    
+    if ([anyClass isEqualToString:@"Hunter"]){
+        imageName = @"background_Hunter.png";
+    }
+    
+    oImage =  [UIImage imageNamed:imageName] ;
+    CGSize newSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height  );
+    
+    oImage = [Utilities imageResize:oImage andResizeTo:newSize];
+   
+     self.view.backgroundColor = [UIColor colorWithPatternImage:oImage];
+    
+ 
+}
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+ 
+    ArmorDetailsViewController *targetVC = nil;
+    ItemCellTableView *selectedCell = nil;
+    
+    INSTBaseClass *itemResponse = nil;
+    NSString *weaponKey   = nil,
+             *compareKey  = nil,
+             *instanceKey = nil;
+    @try {
+        
+        targetVC = (ArmorDetailsViewController *) segue.destinationViewController;
+        selectedCell = (ItemCellTableView*) sender;
+        
+        if ([targetVC isKindOfClass:[ArmorDetailsViewController class]]){
+           
+            if (selectedCell){
+                
+                weaponKey = selectedCell.lblHash.text;
+                instanceKey = selectedCell.lblInstanceId.text;
+                
+                if (instanceKey.length == 0){
+                    instanceKey = [self resolveItemInstanceId:weaponKey
+                                           withItemCollection:self.destArmor];
+                    
+                    if (instanceKey.length > 0){
+                        [selectedCell.lblInstanceId setText:instanceKey];
+                    }
+                }
+                
+                if (weaponKey){
+                    
+                    compareKey = [self resolveItemInstanceId:weaponKey
+                                         withItemCollection:self.destArmor];
+                    
+                    if (![instanceKey isEqualToString:compareKey] ){
+                        NSLog(@"ArmorVC:prepareForSegue:Setting MatchFrom=%@, To=%@",instanceKey,compareKey);
+                        [selectedCell.lblInstanceId setText:compareKey];
+                        
+                    }
+                    
+                    itemResponse =  (INSTBaseClass*) [self->instanceData objectForKey:weaponKey];
+                    
+                    if (itemResponse){
+                        
+                        [targetVC loadArmorDetail:itemResponse
+                                    withArmorCell:selectedCell
+                                    charactersData:self->allCharsData];
+                    }
+                    
+                }
+            }
+        }
+        
+    } @catch (NSException *exception) {
+        NSLog(@"ArmorVC:prepareForSegue:Exception=%@",exception.description);
+    } @finally {
+        
+        targetVC = nil;
+        selectedCell = nil;
+        
+        itemResponse = nil;
+        weaponKey   = nil;
+        instanceKey = nil;
+        
+    }
+    
+}
+
+
+-(NSString *) resolveItemInstanceId:(NSString *) staticKey withItemCollection:(NSMutableDictionary *) anyCollection{
+    
+    
+    NSString *charFilter =  nil,
+             *strInstanceHashKey = nil;
+   
+    NSPredicate *bPredicate = nil;
+  
+    NSArray *filteredItems = nil;
+    
+    NSArray<NSDictionary *> *fItems =   nil;
+    
+    NSMutableDictionary *filteredCharWeaponsData = nil;
+    
+    INVCItems* fObject  = nil;
+    
+    @try {
+        
+          charFilter = [NSString stringWithFormat:@"%@", staticKey];
+       
+          bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
+      
+          filteredItems = [anyCollection.allKeys filteredArrayUsingPredicate:bPredicate];
+        
+          fItems =   [anyCollection objectsForKeys:filteredItems notFoundMarker:anyCollection];
+        
+          filteredCharWeaponsData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
+        
+        if (filteredItems.count == 1){
+            
+            filteredCharWeaponsData = (NSMutableDictionary*) [fItems firstObject];
+            
+            if (filteredCharWeaponsData){
+             
+                fObject  = (INVCItems*) filteredCharWeaponsData;
+                
+                if (fObject){
+                
+                    strInstanceHashKey = [fObject itemInstanceId];
+                    NSLog(@"ArmorVC:resolveItemInstanceId:For StaticHash=[%@] with InstanceHash=[%@]",staticKey,strInstanceHashKey);
+                }
+            }
+        }
+        
+        
+    } @catch (NSException *exception) {
+        NSLog(@"resolveItemInstanceId:Exception=%@",exception.description);
+    } @finally {
+        
+        charFilter =  nil;
+        bPredicate = nil;
+        filteredItems = nil;
+        fItems =   nil;
+        filteredCharWeaponsData = nil;
+        fObject  = nil;
+        
+    }
+    return strInstanceHashKey;
 }
 
 
@@ -686,12 +847,16 @@
             }
             NSLog(@"ArmorViewController:refreshLockedArmorAction:Refreshing UI");
  
-            [self.tableView endUpdates];
             
+            [self.tableView endUpdates];
+             
                // [self.tableView reloadData];
             // [self.refreshControl endRefreshing];
               NSLog(@"ArmorViewController:refreshLockedArmorAction:finished!");
             
+            [self.tableView deselectRowAtIndexPath:selectedRow animated:NO];
+            
+            NSLog(@"ArmorViewController:refreshLockedArmorAction:deselectRowAtIndexPath");
             
         }
         
@@ -875,10 +1040,8 @@
             
                 cCell = (ItemCellTableView*) [self.tableView cellForRowAtIndexPath:selectedIndexPath];
                
-                NSString
-                        *strCharKey  = [cCell.lblCharacterId text],
-                        *strStaticKey = [cCell.lblHash text],
-                        *strHashKey = [cCell.lblInstanceId text];
+                NSString *strStaticKey = [cCell.lblHash text],
+                         *strHashKey   = [cCell.lblInstanceId text];
                 
                 if (cCell){
                     
@@ -894,39 +1057,14 @@
                     else
                     {
                         
+                        strHashKey = [self resolveItemInstanceId:strStaticKey withItemCollection:self.destArmor];
                         
-                        NSString *charFilter = [NSString stringWithFormat:@"%@", strStaticKey];
-                       
-                        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
+                        if (strHashKey.length > 0){
+                            [cCell.lblInstanceId setText:strHashKey];
                         
-                        NSArray *filteredItems = [self.destArmor.allKeys filteredArrayUsingPredicate:bPredicate];
-                        
-                        NSArray<NSDictionary *> *fItems =   [self.destArmor objectsForKeys:filteredItems notFoundMarker:self.destArmor];
-                        
-                        NSMutableDictionary *filteredCharArmorData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
-                        
-                        if (filteredItems.count == 1){
-                            
-                            filteredCharArmorData = (NSMutableDictionary*) [fItems firstObject];
-                            
-                            if (filteredCharArmorData){
-                             
-                                INVCItems* fObject  = (INVCItems*) filteredCharArmorData;
-                                
-                                if (fObject){
-                                
-                                    strHashKey = [fObject itemInstanceId];
-                                
-                                    if (strHashKey.length > 0){
-                                        [cCell.lblInstanceId setText:strHashKey];
-                                    
-                                        [cCell transferItemAction:self->allCharsData];
-                                    }
-                                }
-                            }
+                            [cCell transferItemAction:self->allCharsData];
                         }
-                        
-                        
+
                     }
                }
                
@@ -1028,6 +1166,8 @@
         if (performUpdates){
         
             [self.tableView performBatchUpdates:^{
+                
+            BOOL performMatch = NO;
             
               if (instanceBase){
                 
@@ -1035,9 +1175,27 @@
                 
                 NSLog(@"ArmorViewController:updateInstancedItemData:For IndexPath Section->[%d],Row->[%d]",cIndexPath.section, cIndexPath.row);
                 
-                if (anyInstancedId){
-                    [cell.lblInstanceId setText:anyInstancedId];
-                }
+                  if (anyInstancedId){
+                      
+                      if (cell.lblInstanceId.text.length == 0){
+                          
+                          NSLog(@"ArmorViewController:updateInstancedItemData:Setting to [%@] ",anyInstancedId);
+                          [cell.lblInstanceId setText:anyInstancedId];
+                           
+                      }else{
+                          
+                          NSLog(@"ArmorViewController:updateInstancedItemData:anyInstancedId=[%@],cell.lblInstanceId=[%@]",
+                                anyInstancedId,cell.lblInstanceId.text);
+                          
+                          if (![cell.lblInstanceId.text isEqual:anyInstancedId]){
+                              performMatch = YES;
+                              NSLog(@"ArmorViewController:Need to perform Match!");
+                          }
+                          
+                      }
+                      
+                    
+                  }
                 
                 if (instanceBase){
                    
@@ -1045,7 +1203,30 @@
                     
                     if (response){
                         
-                        NSDictionary *instance = (NSDictionary*) [response objectForKey:@"instance"];
+                        NSDictionary *instance = (NSDictionary*) [response objectForKey:@"instance"],
+                                    *itemD    = (NSDictionary*) [response objectForKey:@"item"];
+                        
+                        if (performMatch){
+                            
+                            NSDictionary *iDD = (NSDictionary*) [itemD objectForKey:@"data"];
+                            
+                            if (iDD){
+                                
+                                NSString *iInstanceID = [iDD objectForKey:@"itemInstanceId"];
+                                
+                                if (![cell.lblInstanceId.text isEqualToString:iInstanceID] && [anyInstancedId isEqualToString:iInstanceID]){
+                                    
+                                    [cell.lblInstanceId setText:iInstanceID];
+                                    
+                                    NSLog(@"ArmorViewController:updateInstancedItemData:Udate to Match[%@] ",iInstanceID);
+                                    
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                        
                         
                         if (instance){
                             NSDictionary *data = (NSDictionary*) [instance objectForKey:@"data"];
@@ -1347,7 +1528,6 @@
             NSLog(@"didDeselectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,indexPath.section, indexPath.row);
             
             
-            
             [cCell.layer setMasksToBounds:NO];
             [cCell.layer setCornerRadius:0];
             [cCell.layer setBorderWidth:1];
@@ -1367,64 +1547,59 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"Weapons:tableView:didSelectRowAtIndexPath");
+   
+    NSLog(@"Armor:tableView:didSelectRowAtIndexPath");
     
-    ItemCellTableView *cCell = nil;
+    ItemCellTableView *tCell =  nil;
+    NSString *strHashKey     = nil,
+             *strInstanceKey = nil;
     @try {
         
-         cCell = [self.tableView cellForRowAtIndexPath:indexPath];
-        
-        if (cCell){
+        tCell = (ItemCellTableView*) [self.tableView cellForRowAtIndexPath:indexPath];
+        if (tCell){
             
-            NSString *strHashKey = [cCell.lblHash text],
-                     *strInstanceId = [cCell.lblInstanceId text];
+            strHashKey     = [tCell.lblHash text];
+            strInstanceKey = [tCell.lblInstanceId text];
             
-            NSLog(@"didSelectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,indexPath.section, indexPath.row);
-            
-            
-            [cCell.layer setMasksToBounds:YES];
-            [cCell.layer setCornerRadius:5];
-            [cCell.layer setBorderWidth:3];
-            [cCell.layer setShadowOffset: CGSizeMake(-1, 1)];
-            [cCell.layer setBorderColor:[UIColor systemYellowColor].CGColor];
-            
-            
-            if (strInstanceId.length == 0){
-            NSString *charFilter = [NSString stringWithFormat:@"%@", strHashKey];
-           
-            NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",charFilter];
-            
-            NSArray *filteredItems = [self.destArmor.allKeys filteredArrayUsingPredicate:bPredicate];
-            
-            NSArray<NSDictionary *> *fItems =   [self.destArmor objectsForKeys:filteredItems notFoundMarker:self.destArmor];
-            
-            NSMutableDictionary *filteredCharArmorData = [[NSMutableDictionary alloc] initWithCapacity:fItems.count];
-            
-                if (filteredItems.count == 1){
+            if (strInstanceKey.length == 0){
+                strInstanceKey = [self resolveItemInstanceId:strHashKey
+                                          withItemCollection:self.destArmor];
                 
-                    filteredCharArmorData = (NSMutableDictionary*) [fItems firstObject];
-                    INVCItems *filterArmorItem = (INVCItems*)  filteredCharArmorData;
-                    
-                    if (filterArmorItem){
-                     
-                        strInstanceId = [filterArmorItem itemInstanceId];
-                        
-                        if (strInstanceId.length > 0){
-                            [cCell.lblInstanceId setText:strInstanceId];
-                        }
-                    }
-                    
+                if (strInstanceKey.length > 0){
+                    NSLog(@"ArmorVC:didSelectRow:resolveItemInstanceId=%@:Section->[%d],Row->[%d],Instance->[%@]",
+                          tCell.lblItemName.text, indexPath.section,indexPath.row,strInstanceKey);
+                    [tCell.lblInstanceId setText:strInstanceKey];
                 }
-            
+                
             }
             
+            
+            [tCell.layer setMasksToBounds:YES];
+            [tCell.layer setCornerRadius:5];
+            [tCell.layer setBorderWidth:3];
+            [tCell.layer setShadowOffset: CGSizeMake(-1, 1)];
+            [tCell.layer setBorderColor:[UIColor systemYellowColor].CGColor];
+            
+            NSLog(@"ArmorVC:didSelectRow=%@:Section->[%d],Row->[%d],Static Hash->[%@],Instance->[%@]",
+                  tCell.lblItemName.text, indexPath.section,indexPath.row,strHashKey,strInstanceKey);
+
+            
+            [self performSegueWithIdentifier:@"segArmorDetails" sender:tCell];
+            
+           
         }
         
-    } @catch (NSException *exception) {
+      
         
+    } @catch (NSException *exception) {
+        NSLog(@"ArmorVC:tableView:didSelectRowAtIndexPath:Exception->%@",exception.description);
     } @finally {
+        tCell =  nil;
+        strHashKey     = nil;
+        strInstanceKey = nil;
         
     }
+    
 }
 
 
@@ -1727,7 +1902,7 @@
         [cell setParentViewController:self];
         
      
-        NSLog(@"6:ArmorTableViewController:cellForRowAtIndexPath:Section->%d,Row->%d,",indexPath.section,indexPath.row);
+        //NSLog(@"6:ArmorTableViewController:cellForRowAtIndexPath:Section->%d,Row->%d,",indexPath.section,indexPath.row);
 
         if (! self->helmets || (! self->gauntles) || (! self->chestArmor) || (! self->chestArmor) || (! self->legArmor) || (! self->classArmor)  ){
             
@@ -1804,7 +1979,16 @@
                 
                 if (cell){
                     
+                    if (cell.lblItemName.text.length > 0){
+                    NSLog(@"ArmorVC:CellFor=%@,InstanceId->%@,Hash->%@,Section->%d,Row->%d,",cell.lblItemName.text, cell.lblInstanceId.text,
+                          cell.lblHash.text,
+                          indexPath.section,indexPath.row);
                     
+                    NSLog(@"ArmorVC:ItemFor=InstanceId->%@,Hash->%@,Section->%d,Row->%d,", item.itemInstanceId,
+                          strHashKey,
+                          indexPath.section,indexPath.row);
+                    
+                    }
                     [cell.lblCharacterId setText:self.selectedChar];
                     
                     /*

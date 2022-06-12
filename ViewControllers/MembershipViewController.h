@@ -34,6 +34,7 @@
 
 @property (nonatomic,strong) NSTimer   *timer;
 @property (nonatomic,strong) NSRunLoop *loop;
+@property (nonatomic,strong) NSString  *VCName;
 
 -(void) startTimer;
 -(void) endTimer;

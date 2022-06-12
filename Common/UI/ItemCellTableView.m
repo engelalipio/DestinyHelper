@@ -1619,6 +1619,225 @@
     
 }
 
+
+-(void) registerNotifications:(UIViewController*) parentVC{
+    
+    @try {
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:kDestinySendToVaultNotification
+            object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+            
+            
+            NSDictionary *respData  = (NSDictionary*) [note object],
+                         *userInfo  = [note userInfo];
+            
+            NSString *respStatus  = nil,
+                     *respAction  = nil,
+                     *respMessage = nil,
+                     *respInstance = nil,
+                     *respItemHash = nil;
+
+            UIViewController *destinyParentVC = parentVC;
+            
+            if (userInfo){
+                
+                respAction = (NSString*) [userInfo objectForKey:@"vaultAction"];
+                
+                respInstance =  (NSString*) [userInfo objectForKey:@"InstancedItem"];
+                
+                if (respInstance){
+                    
+                    
+                 NSDictionary* instData = (NSDictionary *)[NSJSONSerialization
+                        JSONObjectWithData:[respInstance dataUsingEncoding:NSUTF8StringEncoding]
+                        options:kNilOptions error:NULL];
+                
+                    if (instData){
+                        NSArray *payload = (NSArray*) instData;
+                        
+                        if (payload){
+                            NSDictionary *pData = [payload firstObject];
+                            
+                            respItemHash = [pData objectForKey:@"itemReferenceHash"];
+                        }
+                        
+                    }
+                    
+                }
+                
+                if (respAction){
+                
+                    respMessage =   [respAction stringByReplacingOccurrencesOfString:@"?" withString:@" Result"];
+                }
+            }
+            
+            if (respData){
+             
+                respStatus = [respData objectForKey:@"ErrorStatus"];
+                
+                if (respStatus){
+                    //SendToVault Action was Successfull!
+                    if ([respStatus isEqualToString:@"Success"]){
+
+                        
+                        UIAlertController* alertSendToVaultOk = [UIAlertController alertControllerWithTitle: respMessage
+                                                       message:respStatus
+                                                       preferredStyle:UIAlertControllerStyleAlert];
+                        
+                        UIAlertAction* sendToVaultOkAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction * action) {
+
+                              NSLog(@"[%@]:Transfer to Vault Action Response:[%@]",respMessage, respStatus);
+                            
+                             if ([parentVC isKindOfClass:[ItemsViewController class]]){
+                                //TODO:Refresh Items Logic
+                            }
+                            
+                            if ([parentVC isKindOfClass:[WeaponsTableViewController class]]){
+                                WeaponsTableViewController *destinyParentVC = (WeaponsTableViewController*) parentVC;
+                               [destinyParentVC removeWeaponAction:respItemHash];
+                           }
+                                
+                                
+                            if ([parentVC isKindOfClass:[ArmorTableViewController class]]){
+
+                                ArmorTableViewController *destinyParentVC = (ArmorTableViewController*) parentVC;
+                               
+                                if (destinyParentVC){
+                                    [destinyParentVC removeArmorAction:respItemHash];
+                                }
+                            }
+                             
+                        }];
+                        
+                        [alertSendToVaultOk addAction:sendToVaultOkAction];
+                        if ( parentVC){
+                            [parentVC presentViewController: alertSendToVaultOk animated:YES completion:nil];
+                        }
+                       
+                    }
+                    //SendToVault Action Issue
+                    else{
+                        
+                        NSString *errorCode    = [respData objectForKey:@"ErrorCode"],
+                                 *errorStatus  = [respData objectForKey:@"ErrorStatus"],
+                                 *errorMessage = [respData objectForKey:@"Message"];
+                        
+                        /* ErrorCode = 1656;
+                         ErrorStatus = DestinyCannotPerformActionOnEquippedItem;
+                         Message = "You cannot perform this action on an equipped item.";
+                         MessageData =     {
+                         };
+                         Response = 0;
+                         ThrottleSeconds = 0;*/
+                        
+                        UIAlertController* sendToVaultAlertError = [UIAlertController alertControllerWithTitle:errorStatus
+                                                       message:errorMessage
+                                                       preferredStyle:UIAlertControllerStyleAlert];
+                        
+                        UIAlertAction* sendToVaultActionError = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction * action) {
+                            NSLog(@"%@-%@",errorCode,errorStatus);
+                            
+                            
+                        }];
+                        
+                      
+                        [sendToVaultAlertError addAction: sendToVaultActionError];
+                        if ( destinyParentVC){
+                            [destinyParentVC presentViewController: sendToVaultAlertError animated:YES completion:nil];
+                        }
+                    }
+              }
+            }
+        }];
+        
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLockItemStateNotification
+            object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification *note){
+            
+          
+            NSDictionary *respData  = (NSDictionary*) [note object],
+                         *userInfo  = [note userInfo];
+            
+            NSString *respStatus  = nil,
+                     *respAction  = nil,
+                     *respMessage = nil,
+                     *respInstance = nil;
+
+            UIViewController *destinyParentVC = parentVC;
+            
+            if (userInfo){
+                
+                respAction = (NSString*) [userInfo objectForKey:@"lockAction"];
+                
+                respInstance =  (NSString*) [userInfo objectForKey:@"InstancedItem"];
+                
+                if (respAction){
+                
+                    respMessage =   [respAction stringByReplacingOccurrencesOfString:@"?" withString:@"Result"];
+                }
+            }
+            if (respData){
+             
+                respStatus = [respData objectForKey:@"ErrorStatus"];
+                
+                if (respStatus){
+                    if ([respStatus isEqualToString:@"Success"]){
+                      
+                         
+                         UIAlertController* alertLockItemOk = [UIAlertController alertControllerWithTitle: respMessage
+                                                        message:respStatus
+                                                        preferredStyle:UIAlertControllerStyleAlert];
+                         
+                         UIAlertAction* lockItemOkAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action) {
+
+                               NSLog(@"[%@]:Lock Item Action Response:[%@]",respMessage , respStatus);
+                        
+                              if ([destinyParentVC isKindOfClass:[ItemsViewController class]]){
+                                 //TODO:Refresh Items Logic
+                             }
+                             
+                             if ([destinyParentVC isKindOfClass:[WeaponsTableViewController class]]){
+                                 WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyParentVC;
+                                [destinyWeaponsParentVC refreshLockedWeaponAction:respInstance];
+                            }
+                                 
+                                 
+                             if ([destinyParentVC isKindOfClass:[ArmorTableViewController class]]){
+ 
+                                 ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyParentVC;
+                                
+                                 if (destinyArmorParentVC){
+                                     [destinyArmorParentVC refreshLockedArmorAction:respInstance];
+                                 }
+                             }
+                              
+                         }];
+                         
+                         [alertLockItemOk addAction:lockItemOkAction];
+                         if ( destinyParentVC ){
+                             [destinyParentVC presentViewController: alertLockItemOk animated:YES completion:nil];
+                         }
+                        
+                        
+                         
+                   }
+              }
+            }
+        }];
+        
+        
+         
+    } @catch (NSException *exception) {
+        NSLog(@"kDestinyLockItemStateNotification:Received:Exception->%@",exception.description);
+    } @finally {
+         
+    }
+    
+}
+
 - (IBAction)transferItemAction:(id)sender{
     
     NSString *selectedTitle        = @"",
@@ -1685,15 +1904,21 @@
         }
         
         selectedCell = (ItemCellTableView*) [self.parentTableView cellForRowAtIndexPath:indexPath];
-
+ 
         if (! selectedCell){
             return;
         }
+        
+        
         //Extract Data from Selected Cell
         selectedTitle = selectedCell.lblItemName.text;
         selectedItemHash = [selectedCell.lblHash text];
         selectedItemInstance = [selectedCell.lblInstanceId text];
         selectedCharacter  = [selectedCell.lblCharacterId text];
+        
+        
+        [self registerNotifications: destinyItemsParentVC];
+        
         
         if (sender){
             //Determine Characters
@@ -2336,105 +2561,13 @@
                 handler:^(UIAlertAction * action) {
                  NSLog(transferAction);
                  
-                 
-                 [[NSNotificationCenter defaultCenter] addObserverForName:kDestinySendToVaultNotification
-                     object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
-                     
-                     
-                     NSDictionary *respData  = (NSDictionary*) [note object],
-                                  *userInfo  = [note userInfo];
-                     
-                     
-                     if (respData){
-                      
-                         NSString *respStatus = [respData objectForKey:@"ErrorStatus"];
-                         
-                         if (respStatus){
-                             //SendToVault Action was Successfull!
-                             if ([respStatus isEqualToString:@"Success"]){
-
-                                NSString *strMessage = [NSString stringWithFormat:@"Send ‘%@‘ on %@ to Vault Result",selectedTitle,strCC];
-                                 
-                                 UIAlertController* alertSendToVaultOk = [UIAlertController alertControllerWithTitle: strMessage
-                                                                message:respStatus
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-                                 
-                                 UIAlertAction* sendToVaultOkAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-
-                                       NSLog(@"[%@]:Transfer to Vault From %@ Action Response:[%@]",selectedTitle, strCharacter, respStatus);
-                                     
-                                      if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
-                                         //TODO:Refresh Items Logic
-                                     }
-                                     
-                                     if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
-                                         WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
-                                        [destinyWeaponsParentVC removeWeaponAction:selectedItemHash];
-                                    }
-                                         
-                                         
-                                     if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
-         
-                                         ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
-                                        
-                                         if (destinyArmorParentVC){
-                                             [destinyArmorParentVC removeArmorAction:selectedItemHash];
-                                         }
-                                     }
-                                      
-                                 }];
-                                 
-                                 [alertSendToVaultOk addAction:sendToVaultOkAction];
-                                 if ( destinyItemsParentVC){
-                                     [destinyItemsParentVC presentViewController: alertSendToVaultOk animated:YES completion:nil];
-                                 }
-                                
-                             }
-                             //SendToVault Action Issue
-                             else{
-                                 
-                                 NSString *errorCode    = [respData objectForKey:@"ErrorCode"],
-                                          *errorStatus  = [respData objectForKey:@"ErrorStatus"],
-                                          *errorMessage = [respData objectForKey:@"Message"];
-                                 
-                                 /* ErrorCode = 1656;
-                                  ErrorStatus = DestinyCannotPerformActionOnEquippedItem;
-                                  Message = "You cannot perform this action on an equipped item.";
-                                  MessageData =     {
-                                  };
-                                  Response = 0;
-                                  ThrottleSeconds = 0;*/
-                                 
-                                 UIAlertController* sendToVaultAlertError = [UIAlertController alertControllerWithTitle:errorStatus
-                                                                message:errorMessage
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-                                 
-                                 UIAlertAction* sendToVaultActionError = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-                                     NSLog(@"%@-%@",errorCode,errorStatus);
-                                     
-                                     
-                                 }];
-                                 
-                               
-                                 [sendToVaultAlertError addAction: sendToVaultActionError];
-                                 if ( destinyItemsParentVC){
-                                     [destinyItemsParentVC presentViewController: sendToVaultAlertError animated:YES completion:nil];
-                                 }
-                             }
-                       }
-                     }
-                 }];
-                 
-                     
-                     TRXBaseClass *payload = [[TRXBaseClass alloc] init];
-                     [payload setCharacterId:selectedCharacter];
-                     [payload setStackSize:1];
-                     [payload setMembershipType:appDelegate.currentMembershipType];
-                     [payload setItemId:selectedItemInstance];
-                     [payload setItemReferenceHash:selectedItemHash];
-                     [payload setTransferToVault:YES];
+               TRXBaseClass *payload = [[TRXBaseClass alloc] init];
+                [payload setCharacterId:selectedCharacter];
+                [payload setStackSize:1];
+                [payload setMembershipType:appDelegate.currentMembershipType];
+                [payload setItemId:selectedItemInstance];
+                [payload setItemReferenceHash:selectedItemHash];
+                [payload setTransferToVault:YES];
                     
                      NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
                      
@@ -2449,20 +2582,34 @@
                      NSString *jsonString = [[NSString alloc] initWithData:jsonData
                                                                   encoding:NSUTF8StringEncoding];
                      NSLog(@"JSON Output: %@", jsonString);
-                     
-                     [NetworkAPISingleClient sendItemToVault:jsonString
-                                             completionBlock:^(NSArray *values) {
+                 
+                 
+                 dispatch_queue_t sendToVaultActionQueue ;
+                              
+                sendToVaultActionQueue = dispatch_queue_create("com.ams.DestinyHelper.sendVaultActionQueue", NULL);
+                               
+                dispatch_async(sendToVaultActionQueue, ^{
+                            
+                            NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.lsendVaultActionQueueStarted...]");
+                                      
+                                          
+                            [NetworkAPISingleClient sendItemToVault:jsonString
+                                                vaultAction:transferAction
+                                        completionBlock:^(NSArray *values) {
+                                              
+                                if (values){
+                                    NSLog(@"ItemCellTableView:sendVaultActionQueue:Received->%@",values);
+                                }
+                                               
+                            } andErrorBlock:^(NSError *exception) {
+                                              NSLog(@"ItemCellTableView:sendVaultActionQueue:Exception->%@",exception.description);
+                            }];
+                                        
+                            NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.sendVaultActionQueue Done!]");
+                                    
+                });
                          
-                         if (values){
-                             //Not used
-                             NSLog(@"sendItemToVault:Completion=%@",values);
-                         }
-                         
-                         
-                     } andErrorBlock:^(NSError *exception) {
-                         NSLog(@"ItemCellTableView:lockStateAction:Exception->%@",exception.description);
-                     }];
-                     
+                    
                   
              }];
              
@@ -2486,66 +2633,6 @@
                handler:^(UIAlertAction * action) {
                 NSLog(transferAction);
                 
-                
-                [[NSNotificationCenter defaultCenter] addObserverForName:kDestinyLockItemStateNotification
-                    object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
-                    
-                    
-                    NSDictionary *respData  = (NSDictionary*) [note object],
-                                 *userInfo  = [note userInfo];
-                    
-                    
-                    if (respData){
-                     
-                        NSString *respStatus = [respData objectForKey:@"ErrorStatus"];
-                        
-                        if (respStatus){
-                            if ([respStatus isEqualToString:@"Success"]){
-                              
-                                NSString *strMessage = [transferAction stringByReplacingOccurrencesOfString:@"?" withString:@"Result"];
-                                 
-                                 UIAlertController* alertLockItemOk = [UIAlertController alertControllerWithTitle: strMessage
-                                                                message:respStatus
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-                                 
-                                 UIAlertAction* lockItemOkAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-
-                                       NSLog(@"[%@]:Lock Item On %@ Action Response:[%@]",selectedTitle, strCharacter, respStatus);
-                                     
-                                      if ([destinyItemsParentVC isKindOfClass:[ItemsViewController class]]){
-                                         //TODO:Refresh Items Logic
-                                     }
-                                     
-                                     if ([destinyItemsParentVC isKindOfClass:[WeaponsTableViewController class]]){
-                                         WeaponsTableViewController *destinyWeaponsParentVC = (WeaponsTableViewController*) destinyItemsParentVC;
-                                        [destinyWeaponsParentVC refreshLockedWeaponAction:selectedItemHash];
-                                    }
-                                         
-                                         
-                                     if ([destinyItemsParentVC isKindOfClass:[ArmorTableViewController class]]){
-         
-                                         ArmorTableViewController *destinyArmorParentVC = (ArmorTableViewController*) destinyItemsParentVC;
-                                        
-                                         if (destinyArmorParentVC){
-                                             [destinyArmorParentVC refreshLockedArmorAction:selectedItemHash];
-                                         }
-                                     }
-                                      
-                                 }];
-                                 
-                                 [alertLockItemOk addAction:lockItemOkAction];
-                                 if ( destinyItemsParentVC){
-                                     [destinyItemsParentVC presentViewController: alertLockItemOk animated:YES completion:nil];
-                                 }
-                                
-                                
-                                 
-                           }
-                      }
-                    }
-                }];
-                
                     
                     LCKBaseClass *payload = [[LCKBaseClass alloc] init];
                     [payload setCharacterId:selectedCharacter];
@@ -2566,19 +2653,34 @@
                     NSString *jsonString = [[NSString alloc] initWithData:jsonData
                                                                  encoding:NSUTF8StringEncoding];
                     NSLog(@"JSON Output: %@", jsonString);
+                
+                
+                    dispatch_queue_t lockItemActionQueue ;
+                
+                    lockItemActionQueue = dispatch_queue_create("com.ams.DestinyHelper.lockItemActionQueue", NULL);
+                 
+                    dispatch_async(lockItemActionQueue, ^{
                     
-                    [NetworkAPISingleClient lockStateItem:jsonString
-                                            completionBlock:^(NSArray *values) {
-                        
-                        if (values){
-                            //Not used
-                        }
-                        
-                        
-                    } andErrorBlock:^(NSError *exception) {
-                        NSLog(@"ItemCellTableView:lockStateAction:Exception->%@",exception.description);
-                    }];
+                        NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.lockItemActionQueue Started...]");
                     
+                        
+                        [NetworkAPISingleClient lockStateItemWithAction:jsonString
+                                                             lockAction:transferAction
+                                                completionBlock:^(NSArray *values) {
+                            
+                            if (values){
+                                NSLog(@"ItemCellTableView:lockStateItemWithAction:Received->%@",values);
+                            }
+                            
+                            
+                        } andErrorBlock:^(NSError *exception) {
+                            NSLog(@"ItemCellTableView:lockStateItemWithAction:Exception->%@",exception.description);
+                        }];
+                                      
+                    
+                        NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.lockItemActionQueue Done!]");
+                    
+                    });
                  
             }];
  

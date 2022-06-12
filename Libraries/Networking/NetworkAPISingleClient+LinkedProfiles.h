@@ -98,6 +98,11 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
++ (AFJSONRequestOperation *)sendItemToVault:(NSObject *)anyInstancedItem
+                                 vaultAction:(NSString *) anyAction
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
+
 + (AFJSONRequestOperation *)pullItemFromVault:(NSObject *)anyInstancedItem
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
@@ -114,6 +119,10 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
                          completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
++ (AFJSONRequestOperation *)lockStateItemWithAction:(NSObject *)anyInstancedItem
+                         lockAction:(NSString *) anyAction
+                         completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
 
 

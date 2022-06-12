@@ -1002,62 +1002,81 @@
                                                                 //General
                                                                 
                                                                 
-                                                                if ( appDelegate.destinyInventoryItemDefinitions){
-                                                                
-                                                                    INVDResponse *iItemDef = (INVDResponse *)[appDelegate.destinyInventoryItemDefinitions objectForKey:strItemHash];
-                                                                    
-                                                                    if (iItemDef){
-                                                                        
-                                                                        INVDInventory *iInv = (INVDInventory*)  [iItemDef inventory];
-                                                                       
-                                                                        if (iInv){
+                                                if ( appDelegate.destinyInventoryItemDefinitions){
+                                                
+                                                    INVDResponse *iItemDef = (INVDResponse *)[appDelegate.destinyInventoryItemDefinitions objectForKey:strItemHash];
+                                                    
+                                                    if (iItemDef){
+                                                        
+                                                        [self processVaultItem:iItemDef
+                                                                 withVaultItem:vaultItem];
+                                                        
+                                                    }
+                                                    else
+                                                    {
+                                                    NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item Def Not Found",strItemHash);
+                                                                                                    
+                                                    dispatch_queue_t vaultQueue ;
+                                                
+                                                    vaultQueue = dispatch_queue_create("com.ams.DestinyHelper.VaultActionQueue", NULL);
+                                                 
+                                                    dispatch_async(vaultQueue, ^{
+                                                    
+                                                    NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.lockItemActionQueue Started...]");
+                                                    
                                                                             
-                                                                            objItemBucket     = [NSNumber numberWithDouble:iInv.bucketTypeHash];
-                                                                            
-                                                                            strBucketHash = [NSString stringWithFormat:@"%@",objItemBucket];
-                                                                            
-                                                                            if (![self->vaultArray containsObject:strBucketHash]){
-                                                                                [self->vaultArray addObject:strBucketHash];
-                                                                            }
-                                                                            
-                                                                            if (![self->invArray containsObject:strBucketHash]){
-                                                                                [self->invArray addObject:strBucketHash];
-                                                                            }
-                                                                            
-                                                                            strFullKey = [NSString stringWithFormat:@"%@_%@",strBucketHash,strItemHash];
-                                                                            
-                                                                            if (![self->destVaultData.allKeys containsObject:strFullKey]){
-                                                                                [self->destVaultData setValue:vaultItem forKey:strFullKey];
-                                                                                NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
-                                                                            }
-                                                                          
-                                                                            if (![self->destCharInventoryData.allKeys containsObject:strFullKey]){
-                                                                                [self->destCharInventoryData setValue:vaultItem forKey:strFullKey];
-                                                                                NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
-                                                                            }
-                                                                            
-                                                                        }
-                                                                        
-                                                                        
+                                                    [NetworkAPISingleClient retrieveStaticEntityDefinitionByManifestType:@"DestinyInventoryItemDefinition" staticHashId:strItemHash completionBlock:^(NSArray *values) {
+                                                        if (values){
+                                                         NSLog(@"🤺:GuardianViewController:subClassLookup:static:Received->%@",strItemHash);
+                                                            INVDDestinyInventoryBaseClass *invItem = (INVDDestinyInventoryBaseClass *) [values firstObject];
+                                                                                                                             
+                                                                if (invItem){
+                                                                                                        
+                                                                    INVDResponse *iItemDef = [[INVDResponse alloc]
+                                                                                        initWithDictionary:[invItem response]];
+                                                                                                            
+                                                                                                            
+                                                                    if ( iItemDef){
+                                                                        [self->appDelegate.destinyInventoryItemDefinitions
+                                                                                    setObject:invItem
+                                                                                    forKey:strItemHash];
+                                                                                                                
+                                                                        [self processVaultItem:iItemDef
+                                                                        withVaultItem:vaultItem];
                                                                     }
-                                                                
+                                                                                                            
                                                                }
-                                                                
-                                                            }
-                                                            else{
-                                                                
-                                                                if (![self->destVaultData.allKeys containsObject:strFullKey]){
-                                                                    [self->destVaultData setValue:vaultItem forKey:strFullKey];
-                                                                    NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
-                                                                }
-                                                                
-                                                                if (![self->destCharInventoryData.allKeys containsObject:strFullKey]){
-                                                                    [self->destCharInventoryData setValue:vaultItem forKey:strFullKey];
-                                                                    NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
-                                                                }
-                                                            }
+                                                                                                                                                                    
+                                                         }
+                                                                                                                                                                
+                                                        } andErrorBlock:^(NSError *exception) {
+                                                        NSLog(@"🤺:GuardianViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Exception->%@",exception.description);
+                                                    }];
+
+                                                                                                                  
+                                                                        
+                                                    NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.lockItemActionQueue Done!]");
+                                                                        
+                                                    });
+                                                                           
+                                                    }
+                                                        }
                                                             
-                                                            
+                                                    }
+                                                    else{
+                                                        
+                                                        if (![self->destVaultData.allKeys containsObject:strFullKey]){
+                                                            [self->destVaultData setValue:vaultItem forKey:strFullKey];
+                                                            NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
+                                                        }
+                                                        
+                                                        if (![self->destCharInventoryData.allKeys containsObject:strFullKey]){
+                                                            [self->destCharInventoryData setValue:vaultItem forKey:strFullKey];
+                                                            NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
+                                                        }
+                                                    }
+                                                    
+                                                    
                                                             break;
                                                     }
                                             
@@ -1129,6 +1148,88 @@
                 }
                 
         }];
+    
+    
+    
+}
+
+-(void) processVaultItem:(INVDResponse *) iItemDef withVaultItem:(VAULTItems *) vaultItem{
+    
+
+    INVDInventory *iInv = nil;
+    
+    NSNumber *objItemBucket = nil,
+             *objItemHash = nil;
+    
+    NSString *strBucketHash = nil,
+             *strFullKey = nil,
+             *strItemHash = nil;
+    
+    NSInteger iItemBucket   = 0;
+    
+    @try {
+        
+        
+        objItemBucket     = [NSNumber numberWithDouble:vaultItem.bucketHash];
+                 
+        objItemHash       = [NSNumber numberWithDouble:vaultItem.itemHash];
+        
+        iItemBucket       = [objItemBucket integerValue];
+        
+        strItemHash = [NSString stringWithFormat:@"%@",objItemHash];
+        
+        if (iItemDef){
+            
+           iInv = (INVDInventory*)  [iItemDef inventory];
+           
+            if (iInv){
+                
+                objItemBucket     = [NSNumber numberWithDouble:iInv.bucketTypeHash];
+                
+                strBucketHash = [NSString stringWithFormat:@"%@",objItemBucket];
+                
+                if (![self->vaultArray containsObject:strBucketHash]){
+                    [self->vaultArray addObject:strBucketHash];
+                }
+                
+                if (![self->invArray containsObject:strBucketHash]){
+                    [self->invArray addObject:strBucketHash];
+                }
+                
+                strFullKey = [NSString stringWithFormat:@"%@_%@",strBucketHash,strItemHash];
+                
+                if (![self->destVaultData.allKeys containsObject:strFullKey]){
+                    [self->destVaultData setValue:vaultItem forKey:strFullKey];
+                    NSLog(@"🤺:GuardianViewController:VaultNotification:processVaultItem:%@Vault Item ",strFullKey);
+                }
+              
+                if (![self->destCharInventoryData.allKeys containsObject:strFullKey]){
+                    [self->destCharInventoryData setValue:vaultItem forKey:strFullKey];
+                    NSLog(@"🤺:GuardianViewController:VaultNotification:processVaultItem:%@Vault Item ",strFullKey);
+                }
+                
+            }
+            
+            
+        }
+        
+    } @catch (NSException *exception) {
+        NSLog(@"🤺:GuardianViewController:VaultNotification:processVaultItem:Exception->%@",exception.description);
+    } @finally {
+        
+        
+        iInv = nil;
+        
+        objItemBucket = nil;
+        objItemHash = nil;
+        
+        strBucketHash = nil;
+        strFullKey = nil;
+        strItemHash = nil;
+        
+       iItemBucket   = 0;
+        
+    }
     
     
     
@@ -2166,6 +2267,8 @@
              *strBucketHash = [NSString stringWithFormat:@"%@",objItemBucket],
              *strFullKey = [NSString stringWithFormat:@"%@_%@_%@",currentCharacter,strBucketHash,strItemHash];
  
+
+     
     //Full Key = Characterid_buckethash_itemhash
     switch (iItemBucket){
         
@@ -2198,6 +2301,7 @@
                 [self->destCharArmorData setValue:item forKey:strFullKey];
             //    NSLog(@"GuardianViewController:kDestinyLoadedCharacterEquipmentNotification:%@ Helmet Armor...",strFullKey);
             }
+           
             break;
         case 3551918588://Gauntlets
             
@@ -3220,8 +3324,8 @@
                     }else{
                     
                         [iVC setSelectedChar:self->selectedCharacter];
-                        [iVC setDestVaultItems:self->destCharInventoryData];
-                        [iVC setDestVaultItemsBuckets:self->invArray];
+                        [iVC setDestVaultItems:self->destVaultData];
+                        [iVC setDestVaultItemsBuckets:self->vaultArray];
                         [iVC setIsVaultItems:NO];
                         [iVC setDestEquippedItems:self->destCharInventoryData];
                         [iVC setDestEquippedItemsBuckets:self->invArray];

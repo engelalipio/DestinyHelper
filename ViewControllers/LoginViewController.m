@@ -316,16 +316,28 @@
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
-    
-    MembershipViewController *targetVC = (MembershipViewController *) segue.destinationViewController;
-    
-    NSArray *memberships = (NSArray*) sender;
-     
-    if ([targetVC isKindOfClass:MembershipViewController.class]){
-        [targetVC setMemberships:memberships];
+    MembershipViewController *targetVC = nil;
+    NSArray *memberships = nil;
+    @try {
+        
+        targetVC = (MembershipViewController *) segue.destinationViewController;
+        
+        memberships = (NSArray*) sender;
+         
+        if ([targetVC isKindOfClass:MembershipViewController.class]){
+            [targetVC setMemberships:memberships];
+            NSLog(@"LoginVC:prepareForSegue:loading MembershipVC->%@",memberships.description);
+        }
+        
+        [self closeAction:self.btnClose];
+        
+    } @catch (NSException *exception) {
+        NSLog(@"LoginVC:prepareForSegue:Exception->%@",exception.description);
+    } @finally {
+        targetVC = nil;
+        memberships = nil;
     }
-    
-    [self closeAction:self.btnClose];
+  
     
 }
  

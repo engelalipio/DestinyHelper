@@ -1,12 +1,12 @@
 //
-//  WeaponDetailsViewController.m
+//  ArmorDetailsViewController.m
 //  DestinyHelper
 //
 //  Created by Bertle on 10/8/20.
 //  Copyright © 2020 Agile Mobile Solutions. All rights reserved.
 //
 #import "UIImageView+AFNetworking.h"
-#import "WeaponDetailsViewController.h"
+#import "ArmorDetailsViewController.h"
 #import "NetworkAPISingleClient+Definition.h"
 #import "NetworkAPISingleClient+LinkedProfiles.h"
 #import "GuardianViewController.h"
@@ -18,9 +18,9 @@
 #import "INSTBaseClass.h"
 #import "INVDResponse.h"
 #import "INVDInventory.h"
-#import "WeaponsTableViewController.h"
+#import "ArmorTableViewController.h"
 
-@interface WeaponDetailsViewController ()
+@interface ArmorDetailsViewController ()
 {
     AppDelegate *appDelegate;
     
@@ -51,7 +51,7 @@
          isInventoryItems;
     
     ItemCellTableView *cCell;
-    INSTBaseClass *cWeapon;
+    INSTBaseClass *cArmor;
     
     int timerCounter;
 }
@@ -59,13 +59,13 @@
 
 
 
-@implementation WeaponDetailsViewController
+@implementation ArmorDetailsViewController
 
 
-@synthesize imgWeaponScreenshot   = _imgWeaponScreenshot;
-@synthesize imgWeaponIcon = _imgWeaponIcon;
+@synthesize imgArmorScreenshot   = _imgArmorScreenshot;
+@synthesize imgArmorIcon = _imgArmorIcon;
 @synthesize lblPower = _lblPower;
-@synthesize lblWeaponType = _lblWeaponType;
+@synthesize lblArmorType = _lblArmorType;
 
 @synthesize destChars = _destChars;
 @synthesize selectedMembership = _selectedMembership;
@@ -126,12 +126,12 @@
     
     @try {
         
-        if (self->cWeapon){
+        if (self->cArmor){
             
             NSString *staticHash = cCell.lblHash.text,
                      *instHash   = cCell.lblInstanceId.text;
             
-            response = (NSDictionary*)[self->cWeapon response];
+            response = (NSDictionary*)[self->cArmor response];
             
             if (response){
                 invData =  (INVDInventory*) [response objectForKey:@"instance"];
@@ -176,7 +176,7 @@
                                 
                                 perkHash = [NSString stringWithFormat:@"%@",[objPHash integerValue]];
                                 
-                                NSLog(@"WeaponsDetails:perkLookup:for[%@]",perkHash);
+                                NSLog(@"ArmorDetails:perkLookup:for[%@]",perkHash);
                                 
                                 //Check against AppDelegate SandBox Perk first
                                 
@@ -219,14 +219,14 @@
                                                  }
                                                  
                                              }
-                                            // NSLog(@"WeaponsDetails:perkLookup:Received->%@",dName);
+                                            // NSLog(@"ArmorDetails:perkLookup:Received->%@",dName);
                                              
                                          }
                                      }
                                             
                                     }
                                    andErrorBlock:^(NSError *exception) {
-                                   NSLog(@"WeaponsDetails:perkLookup::Exception->%@",exception.description);
+                                   NSLog(@"ArmorDetails:perkLookup::Exception->%@",exception.description);
                                    }];
                                         
                                         
@@ -248,15 +248,15 @@
                     NSURL *screeShot = [[NSURL alloc] initWithString:baseURL];
                    
                     
-                    if (! self.lblWeaponName){
-                        self.lblWeaponName = [[UILabel alloc] init];
+                    if (! self.lblArmorName){
+                        self.lblArmorName = [[UILabel alloc] init];
                     }
-                    [self.lblWeaponName setText:self->cCell.lblItemName.text];
+                    [self.lblArmorName setText:self->cCell.lblItemName.text];
                     
-                    if (! self.imgWeaponAmmoType){
-                        self.imgWeaponAmmoType = [[UIImageView alloc] init];
+                    if (! self.imgArmorAmmoType){
+                        self.imgArmorAmmoType = [[UIImageView alloc] init];
                     }
-                    [self.imgWeaponAmmoType setImage:self->cCell.imgBackground.image];
+                    [self.imgArmorAmmoType setImage:self->cCell.imgBackground.image];
                     
                     if (! self.imgSeason){
                         self.imgSeason = [[UIImageView alloc] init];
@@ -268,8 +268,8 @@
                     }
                     [self.imgLock setImage:self->cCell.btnLockAction.imageView.image];
                     
-                    if (! self.imgWeaponQuality){
-                        self.imgWeaponQuality = [[UIImageView alloc] init];
+                    if (! self.imgArmorQuality){
+                        self.imgArmorQuality = [[UIImageView alloc] init];
                     }
                     
                     NSString *staticHash = [self->cCell.lblHash text];
@@ -281,18 +281,18 @@
                            
                     [self.lblPower setText:self->cCell.lblPowerLevel.text];
                     
-                    [self.imgWeaponIcon setImage:self->cCell.imgItem.image];
+                    [self.imgArmorIcon setImage:self->cCell.imgItem.image];
                     
-                    [self.imgWeaponBurn setImage:self->cCell.imgItemBurn.image];
+                    [self.imgArmorBurn setImage:self->cCell.imgItemBurn.image];
                     
                     if (screeShot){
                         
                     
-                        if (! self.imgWeaponScreenshot){
-                            self.imgWeaponScreenshot = [[UIImageView alloc] init];
+                        if (! self.imgArmorScreenshot){
+                            self.imgArmorScreenshot = [[UIImageView alloc] init];
                         }
                         
-                        [self.imgWeaponScreenshot setImageWithURL:screeShot];
+                        [self.imgArmorScreenshot setImageWithURL:screeShot];
                     
                     }
                 }
@@ -343,6 +343,7 @@
                 st = [stats objectForKey:@"stats"];
                 
                 if (st){
+                    int totalPoints = 0;
                     
                     for(int sIndex = 0 ; sIndex < st.allKeys.count ; sIndex++){
                         
@@ -382,62 +383,50 @@
                         if (! sDef){
                             NSLog(@"Stat Key Not Found=%@",sKey);
                             
-                            if ([sKey isEqualToString:@"3614673599"]){
-                                //Blast Radius
-                                [_lblImpactLable setText:@"Blast Radius"];
+                           
+                            if ([sKey isEqualToString:@"2996146975"]){
+                                //Mobility
+                                [_lblImpactLable setText:@"Mobility"];
                                 [_lblImpactValue setText:statValue];
                                 [_pBarImpact setProgress:pBarValue.floatValue];
                             }
                             
-                            if ([sKey isEqualToString:@"2523465841"]){
-                                //Velocity
-                                [_lblRangeLabel setText:@"Velocity"];
+                            if ([sKey isEqualToString:@"4244567218"]){
+                                //Strength
+                                [_lblAimAssistLabel setText:@"Strength"];
+                                [_lblAimAssistValue setText:statValue];
+                                [_pBarAimAssist setProgress:pBarValue.floatValue];
+                            }
+                            
+                        
+                            if ([sKey isEqualToString:@"1943323491"]){
+                                [_lblStabilityLabel setText:@"Recovery"];
+                                [_lblStabilityValue setText:statValue];
+                                [_pBarStability setProgress:pBarValue.floatValue];
+                            }
+                            
+                            
+                            if ([sKey isEqualToString:@"1735777505"]){
+                                [_lblHandlingLabel setText:@"Discipline"];
+                                [_lblHandlingValue setText:statValue];
+                                [_pBarHandling setProgress:pBarValue.floatValue];
+                            }
+                            
+                            
+                            if ([sKey isEqualToString:@"392767087"]){
+                                [_lblRangeLabel setText:sDef.displayProperties.name];
                                 [_lblRangeValue setText:statValue];
                                 [_pBarRange setProgress:pBarValue.floatValue];
                             }
                             
-                            if ([sKey isEqualToString:@"4043523819"]){
-                                //Impact
-                                [_lblImpactValue setText:statValue];
-                                [_pBarImpact setProgress:pBarValue.floatValue];
-                            }
                             
-                            if ([sKey isEqualToString:@"4284893193"]){
-                                //Rounds per Minute
-                                [_lblRoundsValue setText:statValue];
-                            }
-                    
-                            if ( [sKey isEqualToString:@"2961396640"]){
-                                //Charge Time
-                                [_lblRoundsLabel setText:@"Charge Time"];
-                                [_lblRoundsValue setText:statValue];
-                            }
-                            
-                            
-                            if ([sKey isEqualToString:@"4188031367"]){
-                                //Reload Speed
+                            if ([sKey isEqualToString:@"144602215"]){
+                                //Intellect
+                                [_lblReloadSpeedLabel setTag:@"Intellect"];
                                 [_lblReloadValue setText:statValue];
                                 [_pBarReload setProgress:pBarValue.floatValue];
                             }
-                            
-                            if ([sKey isEqualToString:@"2715839340"]){
-                                //Recoil Direction
-                                [_lblRecoilValue setText:statValue];
-                                
-                            }
-                            
-                            
-                            if ([sKey isEqualToString:@"3871231066"]){
-                                //Magazine
-                                [_lblMagazineValue setText:statValue];
-                            }
-                            
-                            
-                            if ([sKey isEqualToString:@"1345609583"]){
-                                //Aim Assist
-                                [_lblAimAssistValue setText:statValue];
-                                [_pBarAimAssist setProgress:pBarValue.floatValue];
-                            }
+
                             
                             
                         }
@@ -446,39 +435,66 @@
                             NSLog(@"Stat Key=%,Name=%,Value=%@",sKey,sDef.displayProperties.name,statValue);
                      
                             
-                            if ([sDef.displayProperties.name isEqualToString:@"Blast Radius"]){
-                                //Blast Radius
-                                [_lblImpactLable setText:@"Blast Radius"];
+                            if ([sDef.displayProperties.name isEqualToString:@"Mobility"]){
+                                //Mobility
+                                [_lblImpactLable setText:@"Mobility"];
                                 [_lblImpactValue setText:statValue];
                                 [_pBarImpact setProgress:pBarValue.floatValue];
                             }
                             
                             
-                            if ([sDef.displayProperties.name isEqualToString:@"Handling"]){
-                                [_lblHandlingValue setText:statValue];
-                                [_pBarHandling setProgress:pBarValue.floatValue];
-                            }
                             
-                            if ([sDef.displayProperties.name isEqualToString:@"Stability"]){
-                                [_lblStabilityValue setText:statValue];
-                                [_pBarStability setProgress:pBarValue.floatValue];
-                            }
-                            
-                            if ([sDef.displayProperties.name isEqualToString:@"Magazine"]){
-                                [_lblMagazineValue setText:statValue];
-                            }
-                            
-                            
-                            if ([sDef.displayProperties.name isEqualToString:@"Range"]){
+                            if ([sDef.displayProperties.name isEqualToString:@"Resilience"]){
+                                [_lblRangeLabel setText:sDef.displayProperties.name];
                                 [_lblRangeValue setText:statValue];
                                 [_pBarRange setProgress:pBarValue.floatValue];
                             }
                             
-                            if ([sDef.displayProperties.name isEqualToString:@"Aim Assistance"]){
-                                //Aim Assist
+                            if ([sDef.displayProperties.name isEqualToString:@"Recovery"]){
+                                [_lblStabilityLabel setText:@"Recovery"];
+                                [_lblStabilityValue setText:statValue];
+                                [_pBarStability setProgress:pBarValue.floatValue];
+                            }
+                            
+                            
+                            if ([sDef.displayProperties.name isEqualToString:@"Discipline"]){
+                                [_lblHandlingLabel setText:@"Discipline"];
+                                [_lblHandlingValue setText:statValue];
+                                [_pBarHandling setProgress:pBarValue.floatValue];
+                            }
+                            
+                            
+                            
+                            if ([sDef.displayProperties.name isEqualToString:@"Intellect"]){
+                                //Intellect
+                                [_lblReloadSpeedLabel setTag:@"Intellect"];
+                                [_lblReloadValue setText:statValue];
+                                [_pBarReload setProgress:pBarValue.floatValue];
+                            }
+                            
+                            
+                            
+                            if ([sDef.displayProperties.name isEqualToString:@"Strength"]){
+                                //Strength
+                                [_lblAimAssistLabel setText:@"Strength"];
                                 [_lblAimAssistValue setText:statValue];
                                 [_pBarAimAssist setProgress:pBarValue.floatValue];
                             }
+                            
+                            
+                            
+                            if ([sDef.displayProperties.name isEqualToString:@"Total"]){
+                                //Total
+                                [_lblRecoilValue setText:statValue];
+                                
+                            }
+  
+                            if ([sDef.displayProperties.name isEqualToString:@"Magazine"]){
+                                [_lblMagazineValue setText:statValue];
+                            }
+                            
+
+
                             
                             if ([sDef.displayProperties.name isEqualToString:@"Velocity"]){
                                 //Velocity
@@ -496,6 +512,17 @@
                             
                             
                         }
+                        
+                        
+                        
+                    
+                            //Total
+                            
+                            totalPoints += [statValue intValue];
+                            
+                          
+                            [_lblRecoilValue setText:[NSString stringWithFormat:@"%d",totalPoints]];
+                       
                         
                         
                     }
@@ -571,14 +598,14 @@
                 
                 [self.lblFlavoredText setText:bClass.flavorText];
                 
-                NSLog(@"Weapon Name=%@",self.lblWeaponName.text);
-                [self.lblWeaponType setText:bClass.itemTypeAndTierDisplayName];
-                NSLog(@"Weapon Type=%@",self.lblWeaponType.text);
+                NSLog(@"Armor Name=%@",self.lblArmorName.text);
+                [self.lblArmorType setText:bClass.itemTypeAndTierDisplayName];
+                NSLog(@"Armor Type=%@",self.lblArmorType.text);
                 
             }
             
-            [self.imgWeaponIcon.layer setBorderColor:anyCell.imgItem.layer.borderColor];
-            [self.imgWeaponIcon.layer setBorderWidth:anyCell.imgItem.layer.borderWidth];
+            [self.imgArmorIcon.layer setBorderColor:anyCell.imgItem.layer.borderColor];
+            [self.imgArmorIcon.layer setBorderWidth:anyCell.imgItem.layer.borderWidth];
             
             
             switch(objTier.integerValue){
@@ -588,23 +615,23 @@
                 case 5: //legendary
                     
                     if (! [anyCell.imgMaster isHidden]){
-                        [self.imgWeaponQuality setImage:[UIImage imageNamed:@"LegendaryMasterFrame.png"]];
-                        [self.imgWeaponQuality setHidden:NO];
+                        [self.imgArmorQuality setImage:[UIImage imageNamed:@"LegendaryMasterFrame.png"]];
+                        [self.imgArmorQuality setHidden:NO];
 
                     }else{
-                        [self.imgWeaponQuality setImage:[UIImage imageNamed:@"LegendaryFrame.png"]];
-                        [self.imgWeaponQuality setHidden:NO];
+                        [self.imgArmorQuality setImage:[UIImage imageNamed:@"LegendaryFrame.png"]];
+                        [self.imgArmorQuality setHidden:NO];
                     }
                     
                     break;
                 case 6: //exotic
                     
                     if (! [anyCell.imgMaster isHidden]){
-                        [self.imgWeaponQuality setImage:[UIImage imageNamed:@"ExoticMasterFrame.png"]];
-                        [self.imgWeaponQuality setHidden:NO];
+                        [self.imgArmorQuality setImage:[UIImage imageNamed:@"ExoticMasterFrame.png"]];
+                        [self.imgArmorQuality setHidden:NO];
                     }else{
-                        [self.imgWeaponQuality setImage:[UIImage imageNamed:@"ExoticFrame.png"]];
-                        [self.imgWeaponQuality setHidden:NO];
+                        [self.imgArmorQuality setImage:[UIImage imageNamed:@"ExoticFrame.png"]];
+                        [self.imgArmorQuality setHidden:NO];
                     }
                     
                     break;
@@ -1082,7 +1109,7 @@
                         [pImg setImageWithURLRequest:request placeholderImage:imgPH success:^
                                 (NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                             
-                            NSLog(@"Weapon Details:setPerkByData:Icon->%@",baseURL);
+                            NSLog(@"Armor Details:setPerkByData:Icon->%@",baseURL);
                             
                             switch(anyIndex){
                                 case 0:{
@@ -1145,7 +1172,7 @@
                                              
                         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                              
-                            NSLog(@"Weapon Details:setPerkByData:Exception->%@",baseURL);
+                            NSLog(@"Armor Details:setPerkByData:Exception->%@",baseURL);
                         }];
                         
                         
@@ -1159,7 +1186,7 @@
         
         
     } @catch (NSException *exception) {
-        NSLog(@"Weapon Details:setPerkByData:Exception->%@",exception.description);
+        NSLog(@"Armor Details:setPerkByData:Exception->%@",exception.description);
     } @finally {
         
         hasIcon   = NO;
@@ -1273,7 +1300,8 @@
     
 }
 
--(void) loadWeaponDetail:(INSTBaseClass *) weaponData withWeaponCell:(ItemCellTableView*) anyCell charactersData:(NSMutableDictionary *) characters{
+-(void) loadArmorDetail:(INSTBaseClass *) armorData withArmorCell:(ItemCellTableView*) anyCell
+         charactersData:(NSMutableDictionary *) characters{
     
     NSDictionary *response = nil,
                  *statData = nil;
@@ -1285,14 +1313,14 @@
     
     @try {
         
-        if (weaponData){
+        if (armorData){
             
             self->allCharsData = characters;
-            self->cWeapon = weaponData;
+            self->cArmor = armorData;
             self->cCell = anyCell;
             
             return;
-            response = (NSDictionary*)[weaponData response];
+            response = (NSDictionary*)[armorData response];
             
             if (response){
                 invData =  (INVDInventory*) [response objectForKey:@"instance"];
@@ -1307,26 +1335,26 @@
                     NSString *baseURL    = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,anyCell.lblMisc.text];
                     NSURL *screeShot = [[NSURL alloc] initWithString:baseURL];
                     
-                    if (! self.lblWeaponName){
-                        self.lblWeaponName = [[UILabel alloc] init];
+                    if (! self.lblArmorName){
+                        self.lblArmorName = [[UILabel alloc] init];
                     }
                         
-                    [self.lblWeaponName setText:anyCell.lblItemName.text];
+                    [self.lblArmorName setText:anyCell.lblItemName.text];
                     
-                    NSLog(@"Weapon Name=%@",self.lblWeaponName.text);
-                    [self.lblWeaponType setText:anyCell.lblItemType.text];
-                    NSLog(@"Weapon Type=%@",self.lblWeaponType.text);
+                    NSLog(@"Armor Name=%@",self.lblArmorName.text);
+                    [self.lblArmorType setText:anyCell.lblItemType.text];
+                    NSLog(@"Armor Type=%@",self.lblArmorType.text);
                     
                     if (screeShot){
                         
                         
-                        if (! self.imgWeaponScreenshot){
-                            self.imgWeaponScreenshot = [[UIImageView alloc] init];
+                        if (! self.imgArmorScreenshot){
+                            self.imgArmorScreenshot = [[UIImageView alloc] init];
                         }
                         
-                        [self.imgWeaponScreenshot setImageWithURL:screeShot];
+                        [self.imgArmorScreenshot setImageWithURL:screeShot];
                         
-                        [self.imgWeaponIcon setImage:anyCell.imgItem.image];
+                        [self.imgArmorIcon setImage:anyCell.imgItem.image];
                     }
                 }
                 
@@ -1666,7 +1694,7 @@
 
     self.timer = nil;
     self->timerCounter = 0;
-    NSLog(@"WeaponsDetailsViiewController Timer Stopped");
+    NSLog(@"ArmorDetailsViiewController Timer Stopped");
 }
 
 

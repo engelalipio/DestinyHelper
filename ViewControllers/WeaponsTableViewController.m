@@ -207,40 +207,73 @@
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
-
-    WeaponDetailsViewController *targetVC = (WeaponDetailsViewController *) segue.destinationViewController;
+    WeaponDetailsViewController *targetVC = nil;
+    ItemCellTableView *selectedCell = nil;
     
-    ItemCellTableView *selectedCell = (ItemCellTableView*) sender;
-    if ([targetVC isKindOfClass:[WeaponDetailsViewController class]]){
-       
-        if (selectedCell){
-            
-            NSString *weaponKey = selectedCell.lblHash.text,
-                     *instanceKey = selectedCell.lblInstanceId.text;
-            
-            if (instanceKey.length == 0){
-                instanceKey = [self resolveItemInstanceId:weaponKey
-                                       withItemCollection:self.destWeapons];
+    INSTBaseClass *itemResponse = nil;
+    
+    NSString *weaponKey   = nil,
+             *compareKey  = nil,
+             *instanceKey = nil;
+    
+    @try {
+        
+        targetVC = (WeaponDetailsViewController *) segue.destinationViewController;
+        
+        selectedCell = (ItemCellTableView*) sender;
+        if ([targetVC isKindOfClass:[WeaponDetailsViewController class]]){
+           
+            if (selectedCell){
                 
-                if (instanceKey.length > 0){
-                    [selectedCell.lblInstanceId setText:instanceKey];
-                }
-            }
-            
-            if (weaponKey){
+                weaponKey = selectedCell.lblHash.text;
+                instanceKey = selectedCell.lblInstanceId.text;
                 
-                INSTBaseClass *itemResponse =  (INSTBaseClass*) [self->instanceData objectForKey:weaponKey];
-                
-                if (itemResponse){
+                if (instanceKey.length == 0){
+                    instanceKey = [self resolveItemInstanceId:weaponKey
+                                           withItemCollection:self.destWeapons];
                     
-                    [targetVC loadWeaponDetail:itemResponse
-                                withWeaponCell:selectedCell
-                                charactersData:self->allCharsData];
-                    
+                    if (instanceKey.length > 0){
+                        [selectedCell.lblInstanceId setText:instanceKey];
+                    }
                 }
                 
+                if (weaponKey){
+                    
+                    
+                    compareKey = [self resolveItemInstanceId:weaponKey
+                                         withItemCollection:self.destWeapons];
+                    
+                    if (![instanceKey isEqualToString:compareKey] ){
+                        NSLog(@"WeaponsVC:prepareForSegue:Setting MatchFrom=%@, To=%@",instanceKey,compareKey);
+                        [selectedCell.lblInstanceId setText:compareKey];
+                        
+                    }
+                    
+                    
+                    itemResponse =  (INSTBaseClass*) [self->instanceData objectForKey:weaponKey];
+                    
+                    if (itemResponse){
+                        
+                        [targetVC loadWeaponDetail:itemResponse
+                                    withWeaponCell:selectedCell
+                                    charactersData:self->allCharsData];
+                        
+                    }
+                    
+                }
             }
         }
+        
+    } @catch (NSException *exception) {
+        NSLog(@"WeaponsVC:prepareForSegue:Exception=%@",exception.description);
+    } @finally {
+        
+        targetVC = nil;
+        selectedCell = nil;
+        
+        itemResponse = nil;
+        weaponKey   = nil;
+        instanceKey = nil;
     }
     
 }
@@ -311,7 +344,6 @@
         
         if (weaponHash){
             
-           
              
             //[self.refreshControl beginRefreshing];
             
@@ -330,6 +362,10 @@
             // [self.refreshControl endRefreshing];
               NSLog(@"WeaponsViewController:refreshLockedWeaponAction:finished!");
             
+            
+            [self.tableView deselectRowAtIndexPath:selectedRow animated:NO];
+            
+            NSLog(@"WeaponsViewController:refreshLockedArmorAction:deselectRowAtIndexPath");
             
         }
         
@@ -1252,7 +1288,7 @@
 
 -(void) handleDoubleTap:(UITapGestureRecognizer *) recognize{
     
-    NSLog(@"WeaponsTableViewController:handleDoubleTap:Invoked...");
+    //NSLog(@"WeaponsTableViewController:handleDoubleTap:Invoked...");
     
     ItemCellTableView *cCell = nil;
     
@@ -1299,23 +1335,19 @@
                     
                 NSLog(@"handleDoubleTap:For %@ IndexPath Section->[%d],Row->[%d]",strHashKey,selectedIndexPath.section, selectedIndexPath.row);
                 
-                    if (strHashKey.length > 0){
-                        
-                        [cCell transferItemAction:self->allCharsData];
-                      //  [self performSegueWithIdentifier:@"segWeaponDetail" sender:cCell];
-                    }
-                    else{
+                    if (strHashKey.length == 0){
                         
                         strHashKey = [self resolveItemInstanceId:strStaticKey
                                               withItemCollection:self.destWeapons];
                         
-                        
-                            if (strHashKey.length > 0){
-                                [cCell.lblInstanceId setText:strHashKey];
-                                [cCell transferItemAction:self->allCharsData];
-                               // [self performSegueWithIdentifier:@"segWeaponDetail" sender:cCell];
-                            }
+                         
+                        [cCell.lblInstanceId setText:strHashKey];
+                       
                     }
+                  
+                    [cCell.lblInstanceId setText:strHashKey];
+                    [cCell transferItemAction:self->allCharsData];
+                    
                }
                
             }
@@ -1323,9 +1355,12 @@
         }
         
     } @catch (NSException *exception) {
-        
+        NSLog(@"WeaponsTableViewController:handleDoubleTap:Exception->%@",exception.description);
     } @finally {
         
+        cCell = nil;
+        
+        processRequest = NO;
     }
     
     
@@ -1372,7 +1407,7 @@
                 if (fObject){
                 
                     strInstanceHashKey = [fObject itemInstanceId];
-                     
+                    NSLog(@"WeaponsVC:resolveItemInstanceId:For StaticHash=[%@] with InstanceHash=[%@]",staticKey,strInstanceHashKey);
                 }
             }
         }
@@ -2173,15 +2208,20 @@
     
     ItemTableViewCell *cCell = nil;
     ItemCellTableView *tCell =  nil;
+    
+    NSString *strHashKey     = nil,
+             *strInstanceKey = nil;
+    
     @try {
         
          cCell = [self.tableView cellForRowAtIndexPath:indexPath];
          
-        tCell = (ItemCellTableView*) [self.tableView cellForRowAtIndexPath:indexPath];
+         tCell = (ItemCellTableView*) [self.tableView cellForRowAtIndexPath:indexPath];
+        
         if (tCell){
             
-            NSString *strHashKey     = [tCell.lblHash text],
-                     *strInstanceKey = [tCell.lblInstanceId text];
+            strHashKey     = [tCell.lblHash text];
+            strInstanceKey = [tCell.lblInstanceId text];
             
             if (strInstanceKey.length == 0){
                 strInstanceKey = [self resolveItemInstanceId:strHashKey
@@ -2201,7 +2241,7 @@
             [tCell.layer setShadowOffset: CGSizeMake(-1, 1)];
             [tCell.layer setBorderColor:[UIColor systemYellowColor].CGColor];
             
-            NSLog(@"didSelectRowAtIndexPath:For %@ IndexPath Section->[%d],Row->[%d],Static Hash->[%@],Instance->[%@]",
+            NSLog(@"WeaponsVC:didSelectRow=%@ Section->[%d],Row->[%d],Static Hash->[%@],Instance->[%@]",
                   tCell.lblItemName.text, indexPath.section,indexPath.row,strHashKey,strInstanceKey);
 
             
@@ -2212,10 +2252,12 @@
       
         
     } @catch (NSException *exception) {
-        
+        NSLog(@"WeaponsVC:tableView:didSelectRowAtIndexPath:Exception->%@",exception.description);
     } @finally {
-        
-        
+        cCell = nil;
+        tCell =  nil;
+        strHashKey     = nil;
+        strInstanceKey = nil;
     }
 }
 
@@ -2951,19 +2993,7 @@
             }
         }
        
-    }else{
-        
-        /*if (cell.lblHash.text.length > 0){
-            [cell.lblHash setText:@""];
-        }
-        
-        if (cell.lblInstanceId.text.length > 0){
-            [cell.lblInstanceId setText:@""];
-        }*/
-        
- 
     }
-    
  
 }
  

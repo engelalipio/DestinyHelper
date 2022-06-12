@@ -1,5 +1,5 @@
 //
-//  WeaponDetailsViewController.h
+//  ArmorDetailsViewController.h
 //  DestinyHelper
 //
 //  Created by Bertle on 10/8/20.
@@ -12,7 +12,7 @@
 #import "ItemCellTableView.h"
  
 
-@interface WeaponDetailsViewController : UIViewController<UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface ArmorDetailsViewController : UIViewController<UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>
 
 
 @property (strong, nonatomic) IBOutlet UIButton *btnBarrelPerk1;
@@ -37,18 +37,18 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *btnClose;
 
-@property (strong, nonatomic) IBOutlet UIImageView *imgWeaponIcon;
+@property (strong, nonatomic) IBOutlet UIImageView *imgArmorIcon;
 
-@property (strong, nonatomic) IBOutlet UIImageView *imgWeaponScreenshot;
+@property (strong, nonatomic) IBOutlet UIImageView *imgArmorScreenshot;
 
 @property (strong, nonatomic) IBOutlet UILabel *lblPower;
 @property (strong, nonatomic) IBOutlet UILabel *lblFlavoredText;
 
-@property (strong, nonatomic) IBOutlet UIImageView *imgWeaponQuality;
+@property (strong, nonatomic) IBOutlet UIImageView *imgArmorQuality;
 
-@property (strong, nonatomic) IBOutlet UIImageView *imgWeaponBurn;
-@property (strong, nonatomic) IBOutlet UILabel *lblWeaponName;
-@property (strong, nonatomic) IBOutlet UILabel *lblWeaponType;
+@property (strong, nonatomic) IBOutlet UIImageView *imgArmorBurn;
+@property (strong, nonatomic) IBOutlet UILabel *lblArmorName;
+@property (strong, nonatomic) IBOutlet UILabel *lblArmorType;
 
 @property (nonatomic,strong) NSTimer   *timer;
 @property (nonatomic,strong) NSRunLoop *loop;
@@ -64,6 +64,7 @@
 @property (nonatomic) BOOL isVaultItems;
 @property (strong, nonatomic) IBOutlet UILabel *lblEnemiesDefeatedLabel;
 @property (strong, nonatomic) IBOutlet UILabel *lblEnemiesDefeatedValue;
+@property (strong, nonatomic) IBOutlet UIImageView *imgArmorType;
 
 @property (strong, nonatomic) IBOutlet UILabel *lblItemDescription;
 
@@ -90,7 +91,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *lblAimAssistLabel;
 
 @property (strong, nonatomic) IBOutlet UILabel *lblAimAssistValue;
-@property (strong, nonatomic) IBOutlet UILabel *lblWeaponDamageType;
+@property (strong, nonatomic) IBOutlet UILabel *lblArmorDamageType;
 
 
 @property (strong, nonatomic) IBOutlet UILabel *lblRecoilLabel;
@@ -122,7 +123,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *lblTrait8Desc;
 @property (strong, nonatomic) IBOutlet UILabel *lblTrait9Desc;
 @property (strong, nonatomic) IBOutlet UIImageView *imgSeason;
-@property (strong, nonatomic) IBOutlet UIImageView *imgWeaponAmmoType;
+@property (strong, nonatomic) IBOutlet UIImageView *imgArmorAmmoType;
 
 @property (strong, nonatomic) IBOutlet UIImageView *imgLock;
 @property (strong, nonatomic) IBOutlet UIProgressView *pBarRange;
@@ -135,7 +136,7 @@
 -(void) loadInventories;
 -(void) closeAction;
 
--(void) loadWeaponDetail:(INSTBaseClass *) weaponData withWeaponCell:(ItemCellTableView*) anyCell charactersData:(NSDictionary *) characters;
+-(void) loadArmorDetail:(INSTBaseClass *) armorData withArmorCell:(ItemCellTableView*) anyCell charactersData:(NSDictionary *) characters;
 
 - (IBAction)weaponAction:(UIButton *)sender;
 
