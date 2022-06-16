@@ -77,6 +77,7 @@
 @synthesize memberships = _memberships;
 @synthesize destPublicVendors = _destPublicVendors;
 @synthesize clans = _clans;
+@synthesize syncQueue = _syncQueue;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -104,11 +105,11 @@
     [self loadGroupInfo];
     [self loadCharacters];
 
-   // [self loadPublicVendors];
+  //  [self loadPublicVendors];
   //  [self loadCharacterWeaponsStats];
 
     [self loadCharacterInventories];
-    [self loadVaultItems];
+    //[self loadVaultItems];
     [self startTimer];
 }
  
@@ -614,6 +615,19 @@
                                                                 
                                                             } andErrorBlock:^(NSError *exception) {
                                                                 NSLog(@"🤺:GuardianViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Exception->%@",exception.description);
+                                                                
+                                                                
+                                                                if ([exception.localizedDescription isEqualToString:kBungieNeedsAuthenticateMessage]){
+                                                                    
+                                                                    [self dismissViewControllerAnimated:NO completion:^(void){
+                                                                        
+                                                                        [[NSNotificationCenter defaultCenter]
+                                                                           postNotificationName:kBungieNeedsAuthenticateMessage
+                                                                         object:exception];
+                                                                        
+                                                                    }];
+                                                                    
+                                                                }
                                                             }];
                                                             
                                                         }
@@ -1014,18 +1028,20 @@
                                                     }
                                                     else
                                                     {
-                                                    NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item Def Not Found",strItemHash);
+                                                     NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item Def Not Found",strItemHash);
                                                                                                     
-                                                    dispatch_queue_t vaultQueue ;
+                                                   
                                                 
-                                                    vaultQueue = dispatch_queue_create("com.ams.DestinyHelper.VaultActionQueue", NULL);
-                                                 
-                                                    dispatch_async(vaultQueue, ^{
+                                                    if (! self.syncQueue){
+                                                        self.syncQueue = dispatch_queue_create("DestinyHelper.VaultActionQueue", NULL);
+                                                        NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.VaultActionQueue Started...]");
+                                                    }
+                                                   
+                                                    dispatch_async(self.syncQueue, ^{
                                                     
-                                                    NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.lockItemActionQueue Started...]");
-                                                    
-                                                                            
-                                                    [NetworkAPISingleClient retrieveStaticEntityDefinitionByManifestType:@"DestinyInventoryItemDefinition" staticHashId:strItemHash completionBlock:^(NSArray *values) {
+                                                    [NetworkAPISingleClient retrieveStaticEntityDefinitionByManifestType:@"DestinyInventoryItemDefinition"
+                                                                                                            staticHashId:strItemHash
+                                                                                                         completionBlock:^(NSArray *values) {
                                                         if (values){
                                                          NSLog(@"🤺:GuardianViewController:subClassLookup:static:Received->%@",strItemHash);
                                                             INVDDestinyInventoryBaseClass *invItem = (INVDDestinyInventoryBaseClass *) [values firstObject];
@@ -1035,10 +1051,9 @@
                                                                     INVDResponse *iItemDef = [[INVDResponse alloc]
                                                                                         initWithDictionary:[invItem response]];
                                                                                                             
-                                                                                                            
                                                                     if ( iItemDef){
                                                                         [self->appDelegate.destinyInventoryItemDefinitions
-                                                                                    setObject:invItem
+                                                                                    setObject:iItemDef
                                                                                     forKey:strItemHash];
                                                                                                                 
                                                                         [self processVaultItem:iItemDef
@@ -1051,16 +1066,26 @@
                                                                                                                                                                 
                                                         } andErrorBlock:^(NSError *exception) {
                                                         NSLog(@"🤺:GuardianViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Exception->%@",exception.description);
+                                                            
+                                                            
+                                                            if ([exception.localizedDescription isEqualToString:kBungieNeedsAuthenticateMessage]){
+                                                                
+                                                                [self dismissViewControllerAnimated:NO completion:^(void){
+                                                                    
+                                                                    [[NSNotificationCenter defaultCenter]
+                                                                       postNotificationName:kBungieNeedsAuthenticateMessage
+                                                                     object:exception];
+                                                                    
+                                                                }];
+                                                            }
                                                     }];
-
-                                                                                                                  
-                                                                        
-                                                    NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.lockItemActionQueue Done!]");
+                   
+                                                        NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.VaultActionQueue Done!]");
                                                                         
                                                     });
                                                                            
                                                     }
-                                                        }
+                                                   }
                                                             
                                                     }
                                                     else{
@@ -1312,6 +1337,16 @@
             }
                 andErrorBlock:^(NSError *exception){
                     NSLog(@"🤺:loadCharacters:loadPublicVendorsDetails:getVendor:Exception->%@",exception.description);
+                
+                if ([exception.localizedDescription isEqualToString:kBungieNeedsAuthenticateMessage]){
+                    [self dismissViewControllerAnimated:NO completion:^(void){
+                        
+                        [[NSNotificationCenter defaultCenter]
+                           postNotificationName:kBungieNeedsAuthenticateMessage
+                         object:exception];
+                        
+                    }];
+                }
                 }];
                    
             
@@ -1372,6 +1407,17 @@
             
         }andErrorBlock:^(NSError *exception) {
             NSLog(@"🤺:loadCharacterWeaponsStats:NetworkAPISingleClient:getCharacter:Exception->%@",exception.description);
+            
+            
+            if ([exception.localizedDescription isEqualToString:kBungieNeedsAuthenticateMessage]){
+                [self dismissViewControllerAnimated:NO completion:^(void){
+                    
+                    [[NSNotificationCenter defaultCenter]
+                       postNotificationName:kBungieNeedsAuthenticateMessage
+                     object:exception];
+                    
+                }];
+            }
         }];
         
          
@@ -1443,6 +1489,18 @@
         }
         andErrorBlock:^(NSError *exception) {
             NSLog(@"🤺:NetworkAPISingleClient:loadVaultItems:Exception->%@",exception.description);
+            
+            
+            if ([exception.localizedDescription isEqualToString:kBungieNeedsAuthenticateMessage]){
+                
+                [self dismissViewControllerAnimated:NO completion:^(void){
+                    
+                    [[NSNotificationCenter defaultCenter]
+                       postNotificationName:kBungieNeedsAuthenticateMessage
+                     object:exception];
+                    
+                }];
+            }
         }];
         
      
@@ -1603,6 +1661,15 @@
                }
                andErrorBlock:^(NSError *exception){
                    NSLog(@"🤺:loadCharacters:NetworkAPISingleClient:getCharacterInventory:Exception->%@",exception.description);
+                   if ([exception.localizedDescription isEqualToString:kBungieNeedsAuthenticateMessage]){
+                       [self dismissViewControllerAnimated:NO completion:^(void){
+                           
+                           [[NSNotificationCenter defaultCenter]
+                              postNotificationName:kBungieNeedsAuthenticateMessage
+                            object:exception];
+                           
+                       }];
+                   }
                }];
                
             
@@ -1736,6 +1803,16 @@
                }
                andErrorBlock:^(NSError *exception){
                    NSLog(@"🤺:GuardianViewController:loadCharacters:NetworkAPISingleClient:getCharacter:Exception->%@",exception.description);
+                   
+                   if ([exception.localizedDescription isEqualToString:kBungieNeedsAuthenticateMessage]){
+                       [self dismissViewControllerAnimated:NO completion:^(void){
+                           
+                           [[NSNotificationCenter defaultCenter]
+                              postNotificationName:kBungieNeedsAuthenticateMessage
+                            object:exception];
+                           
+                       }];
+                   }
                }];
                
             

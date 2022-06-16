@@ -120,7 +120,9 @@
     NSDictionary *response = nil,
                  *statData = nil,
                  *perkData = nil,
-                *plugsData = nil;
+                 *plugsData = nil,
+                 *energy    = nil,
+                 *oData     = nil;
                 
     INVDInventory *invData = nil;
     
@@ -134,7 +136,20 @@
             response = (NSDictionary*)[self->cArmor response];
             
             if (response){
+                
+                oData =  (NSDictionary*) [response objectForKey:@"instance"];
+                
                 invData =  (INVDInventory*) [response objectForKey:@"instance"];
+                
+                if (oData){
+                    NSDictionary *data = [oData objectForKey:@"data"];
+                    if (data){
+                        energy = (NSDictionary*) [data objectForKey:@"energy"];
+                        if (energy){
+                            [self setArmorEnergy:energy];
+                        }
+                    }
+                }
                 
                 statData = (NSDictionary*) [response objectForKey:@"stats"];
                 
@@ -310,6 +325,85 @@
 
   
 }
+
+-(void)setArmorEnergy:(NSDictionary *) energyData {
+    
+    NSString *strEType = nil,
+             *strEUsed = nil,
+             *strEUnused = nil,
+             *strTotal = nil,
+             *strEnergyDisplay = nil;
+    
+    Destiny2EnergyType eType = Any;
+    
+    @try {
+         
+        if (energyData){
+            /*
+             energyTypeHash:728351493 // <EnergyType "Arc">
+             energyType:1 // enum DestinyEnergyType "Arc"
+             energyCapacity:10
+             energyUsed:9
+             energyUnused:1
+             
+             
+             Any= 0,
+             Arc= 1,
+             Thermal= 2,
+             Void= 3,
+             Ghost= 4,
+             Subclass= 5
+             Stasis = 6
+             */
+            
+           
+            strEType = [energyData objectForKey:@"energyType"];
+            strTotal = [energyData objectForKey:@"energyCapacity"];
+            strEUsed = [energyData objectForKey:@"energyUsed"];
+            strEUnused = [energyData objectForKey:@"energyUnused"];
+            
+            strEnergyDisplay = [NSString stringWithFormat:@"[%@/%@]",strEUsed,strTotal];
+            
+            switch([strEType intValue]){
+                    
+                case Any:
+                   
+                    break;
+                case Arc:
+                    
+                    [self.lblEnemiesDefeatedValue setText:strEnergyDisplay];
+                  
+               
+                    break;
+                case Thermal:
+                    [self.lblEnemiesDefeatedValue setText:strEnergyDisplay];
+                 
+                    break;
+                case Void:
+                    [self.lblEnemiesDefeatedValue setText:strEnergyDisplay];
+
+                    break;
+                case Stasis:
+                    [self.lblEnemiesDefeatedValue setText:strEnergyDisplay];
+
+                    break;
+                case Ghost:
+                     
+                    break;
+                
+            }
+            
+        }
+        
+    } @catch (NSException *exception) {
+        NSLog(@"ArmorVC:setArmorEnergy:Exception->%@",exception.description);
+    } @finally {
+       strEType = nil;
+        
+    }
+    
+}
+
 
 -(void) setInstanceStatsByData:(NSDictionary *)statInstanceData{
     

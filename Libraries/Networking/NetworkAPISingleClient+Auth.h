@@ -32,6 +32,10 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
                           completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
 
++ (AFJSONRequestOperation *)refreshToken:(NSString *)existingToken
+                          completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;
+
 + (AFJSONRequestOperation *)retrieveManifest:(NSString *)maxCount
                           completionBlock:(void(^) (NSArray * values))
 completionBlock andErrorBlock:(void(^) (NSError *))errorBlock;

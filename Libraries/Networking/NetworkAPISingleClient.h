@@ -50,6 +50,7 @@
 - (void)resumeOperations;
 
 #pragma mark Properties
+
 @property (nonatomic, strong) NSMutableArray *suspendedOperations;
 
 @end

@@ -123,8 +123,11 @@
     
     if (appDelegate != nil){
         
-        if ([appDelegate currentAccessToken]){
+        if ([appDelegate currentAccessToken] && [appDelegate currentRefreshToken]){
             self->isLoggedIn = YES;
+            [self.btnLogin setTitle:@"Refresh Token"
+                           forState:UIControlStateNormal];
+            
          }
         
         //[self.btnLogin setHidden:isLoggedIn];
@@ -151,6 +154,7 @@
     
     appDelegate = [AppDelegate currentDelegate];
     
+    [self registerNotifications];
     [self setupButtons];
     [self setupImages];
     
@@ -166,6 +170,26 @@
     }
 
 }
+
+
+-(void) registerNotifications{
+   
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kBungieNeedsAuthenticateMessage
+        object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
+          
+        
+        [self.btnLogin setTitle:@"Login" forState:UIControlStateNormal];
+         self->isLoggedIn = NO;
+        [appDelegate setCurrentAccessToken:nil];
+        [appDelegate setCurrentRefreshToken:nil];
+        
+    
+        
+    }];
+    
+}
+
 
 -(void) setupButtons{
     
@@ -276,9 +300,35 @@
         NSLog(@"HomeViewController:loginAction:Invoked...");
     }
     
+    if (![self.btnLogin.currentTitle isEqualToString:@"Login"]){
+        
+        RefreshToken *rToken = [appDelegate currentRefreshToken];
+        
+        if (rToken){
+            [appDelegate refreshOAuthToken:rToken  ];
+        }
+    }
+    
     [self endTimer];
 }
 
+-(BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender{
+ 
+    BOOL result = YES;
+    
+    @try {
+        
+        if (![self.btnLogin.currentTitle isEqualToString:@"Login"]){
+            result = NO;
+        }
+        
+    } @catch (NSException *exception) {
+        NSLog(@"HomeVC:shouldPerformSegueWithIdentifier:Exception->%@",exception.description);
+    } @finally {
+        
+    }
+    return result;
+}
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     

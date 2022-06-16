@@ -19,7 +19,7 @@
 #import "WeaponsTableViewController.h"
 #import "WeaponDetailsViewController.h"
 #import "ArmorDetailsViewController.h"
-
+ 
 @interface ItemsViewController ()
 {
     AppDelegate *appDelegate;
@@ -68,7 +68,7 @@
 @synthesize lblItemDescription = _lblItemDescription;
 @synthesize parentVC = _parentVC;
 @synthesize isVaultItems = _isVaultItems;
-
+@synthesize syncQueue = _syncQueue;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -1282,6 +1282,7 @@
                           [cBucketDef addObject:bucketFilter];
                     }
                     
+                 
                     for(int fIdx = 0 ; fIdx < filteredItems.count ; fIdx++){
                        
                         NSString *cFBucket = [filteredItems objectAtIndex:fIdx];
@@ -1305,37 +1306,53 @@
                                     //Need to get instance data
                                     NSLog(@"ItemsViewController:loadInventories:APICall to getInstancedItem:For->%@",strHashKey);
                                     
-                                    [NetworkAPISingleClient getInstancedItem:strInstanceId completionBlock:^(NSArray *values){
-                                            
-                                        if (values){
-                                            
-                                            INSTBaseClass *instanceBase = (INSTBaseClass*) [values firstObject];
-                                                    
-                                            NSString *strIDX = [NSString stringWithFormat:@"%d",fIdx],
-                                                     *strSDX = [NSString stringWithFormat:@"%d",idx];
-                                                
-                                            NSDictionary *callerInfo = [[NSDictionary alloc]
-                                                            initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
-                                                                                    @"loadInventories",@"MethodName",
-                                                                                    strIDX,@"CurrentIndex",
-                                                                                    strSDX,@"CurrentSection",
-                                                                                    strHashKey, @"itemHashKey",
-                                                                                    strInstanceId, @"itemInstanceId",nil];
-                                                    
-                                            [[NSNotificationCenter defaultCenter]
-                                                postNotificationName:kDestinyLoadedInstancedItemNotification
-                                                                object:instanceBase
-                                                            userInfo:callerInfo];
-                                                    
-                                      NSLog(@"ItemsViewController:loadInventories:kDestinyLoadedInstancedItemNotification:Raised->%@",strHashKey);
-                                                
-                                                
-                                     }
-                                                
+                                    if (!self.syncQueue){
+                                        self.syncQueue = dispatch_queue_create("com.ams.DestinyHelper.InvActionQueue", NULL);
                                     }
-                                    andErrorBlock:^(NSError *exception){
-                                     NSLog(@"ItemsViewController:loadInventories:getInstancedItem:Exception->%@",exception.description);
-                                     }];
+                                    
+                                    dispatch_async(self.syncQueue, ^{
+                                    
+                                        NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.InvActionQueue Started...]");
+                                    
+
+                                        [NetworkAPISingleClient getInstancedItem:strInstanceId completionBlock:^(NSArray *values){
+                                                
+                                            if (values){
+                                                
+                                                INSTBaseClass *instanceBase = (INSTBaseClass*) [values firstObject];
+                                                        
+                                                NSString *strIDX = [NSString stringWithFormat:@"%d",fIdx],
+                                                         *strSDX = [NSString stringWithFormat:@"%d",idx];
+                                                    
+                                                NSDictionary *callerInfo = [[NSDictionary alloc]
+                                                                initWithObjectsAndKeys:@"ItemsViewController",@"ClassName",
+                                                                                        @"loadInventories",@"MethodName",
+                                                                                        strIDX,@"CurrentIndex",
+                                                                                        strSDX,@"CurrentSection",
+                                                                                        strHashKey, @"itemHashKey",
+                                                                                        strInstanceId, @"itemInstanceId",nil];
+                                                        
+                                                [[NSNotificationCenter defaultCenter]
+                                                    postNotificationName:kDestinyLoadedInstancedItemNotification
+                                                                    object:instanceBase
+                                                                userInfo:callerInfo];
+                                                        
+                                          NSLog(@"ItemsViewController:loadInventories:kDestinyLoadedInstancedItemNotification:Raised->%@",strHashKey);
+                                                    
+                                                    
+                                         }
+                                                    
+                                        }
+                                        andErrorBlock:^(NSError *exception){
+                                         NSLog(@"ItemsViewController:loadInventories:getInstancedItem:Exception->%@",exception.description);
+                                         }];
+
+                                                                              
+                                    
+                                        NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.InvActionQueue Done!]");
+                                    
+                                    });
+                                    
                                     
                                 }
                             }
@@ -2560,11 +2577,11 @@
                 
                 if (appDelegate.destinyInventoryItemDefinitions){
                     
-                    NSDictionary *itemObj = (NSDictionary *)[appDelegate.destinyInventoryItemDefinitions objectForKey:strHashKey];
+                   // NSDictionary *itemObj = (NSDictionary *)[appDelegate.destinyInventoryItemDefinitions objectForKey:strHashKey];
                     
-                    INVDResponse *itemDef = nil;
+                    INVDResponse *itemDef = (INVDResponse*) [appDelegate.destinyInventoryItemDefinitions objectForKey:strHashKey];
                     
-                    if ([itemObj isKindOfClass:[INVDResponse class]]){
+                   /* if ([itemObj isKindOfClass:[INVDResponse class]]){
                         itemDef = (INVDResponse*) itemObj;
                     }
                     
@@ -2573,7 +2590,7 @@
                         (INVDDestinyInventoryBaseClass*) itemObj;
                         
                         itemDef = [[INVDResponse alloc] initWithDictionary:itemDefBase.response];
-                    }
+                    }*/
                     
                     if (itemDef){
                         

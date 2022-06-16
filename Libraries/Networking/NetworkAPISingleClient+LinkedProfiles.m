@@ -423,7 +423,7 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
         
         appDelegate = [AppDelegate currentDelegate];
         
-        servicePath = [NSString stringWithFormat:@"%@?components=400,401,403", anyVendorId];
+        servicePath = [NSString stringWithFormat:@"%@?components=400,401,402", anyVendorId];
  
         NSLog(@"Invoking::getVendor=%@",servicePath);
         

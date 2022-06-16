@@ -9,6 +9,8 @@
 
 #define kBungieAPIBaseURL @"https://www.bungie.net/Platform"
 
+#define kBungieNeedsAuthenticateMessage @"Expected status code in (200-299), got 401"
+
 #define kBungieAPIKey @"4842bb28dcf24563af2ae2eba9919cbd"
 
 #define kBungieClientID @"5433"

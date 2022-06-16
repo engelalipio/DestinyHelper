@@ -12,6 +12,7 @@
 
 @interface ItemsViewController : UIViewController<UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>
 
+@property (nonatomic, strong) dispatch_queue_t syncQueue;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblPlayerName;
 @property (weak, nonatomic) IBOutlet UILabel *lblPlayerMotto;

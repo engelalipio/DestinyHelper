@@ -3261,7 +3261,11 @@
                             
                             if (appDelegate.destinyInventoryItemDefinitions){
                                 
-                                INVDResponse *itemDef =   [appDelegate.destinyInventoryItemDefinitions objectForKey:strHashKey];
+                               // NSDictionary *itemObj = (NSDictionary *)[appDelegate.destinyInventoryItemDefinitions objectForKey:strHashKey];
+                                
+                                INVDResponse *itemDef = (INVDResponse*) [appDelegate.destinyInventoryItemDefinitions objectForKey:strHashKey];
+                                
+                              
                                 
                                
                                 if (itemDef){
@@ -3276,6 +3280,17 @@
                                     
                                     double t = 0;
                                     int    i = 0;
+                                    
+                                   /* if ([itemObj isKindOfClass:[INVDResponse class]]){
+                                        itemDef = (INVDResponse*) itemObj;
+                                    }
+                                    
+                                    if ([itemObj isKindOfClass:[INVDDestinyInventoryBaseClass class]]){
+                                        INVDDestinyInventoryBaseClass *itemDefBase =
+                                        (INVDDestinyInventoryBaseClass*) itemObj;
+                                        
+                                        itemDef = [[INVDResponse alloc] initWithDictionary:itemDefBase.response];
+                                    }*/
                                     
                           
                                     NSNumber *objHash = [NSNumber numberWithDouble:[itemDef hash]];

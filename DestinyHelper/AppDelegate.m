@@ -86,6 +86,8 @@
     
     AccessToken *aToken = (AccessToken*) [self loadCustomObjectWithKey:@"AccessToken"];
     
+    RefreshToken *rToken = (RefreshToken*) [self loadCustomObjectWithKey:@"RefreshToken"];
+    
     if (aToken){
         NSLog(@"AppDelegate:checkAccessToken:Access Token already exists...");
         
@@ -103,6 +105,9 @@
             }
             else{
                 NSLog(@"AppDelegate:checkAccessToken:tokenExpInterval needs to be refreshed!");
+                if (rToken){
+                    [self refreshOAuthToken:rToken];
+                }
                 return ;
             }
         }
@@ -110,8 +115,7 @@
         
 
     }
-    
-    RefreshToken *rToken = (RefreshToken*) [self loadCustomObjectWithKey:@"RefreshToken"];
+
     
     if (rToken){
         NSLog(@"AppDelegate:checkAccessToken:Refresh Token already exists...");
@@ -343,28 +347,41 @@
             }
             
             //Refresh Token
-            if ([oAuthResponse objectForKey:@"refresh_token"] != nil){
-                
-                rToken = [[RefreshToken alloc] init];
-                
-                 
-                [rToken setValue:[oAuthResponse objectForKey:@"refresh_token"]];
-                
+            rToken = [[RefreshToken alloc] init];
+            
+            if (! [oAuthResponse objectForKey:@"refresh_token"]){
+                //Use existing access token
+                strTokenValue = (NSString*)  [oAuthResponse objectForKey:@"access_token"];
+                strExpires = [oAuthResponse objectForKey:@"expires_in"];
+            }else{
+                //Use refresh token
+                strTokenValue = (NSString*) [oAuthResponse objectForKey:@"refresh_token"];
                 strExpires = [oAuthResponse objectForKey:@"refresh_expires_in"];
+            }
                 
-                expRefr = [strExpires doubleValue];
+            if ([strTokenValue length] > 0){
+            
+              NSLog(@"AppDelegate:LoginOAuthResponse:RefreshToken->%@",strTokenValue);
                 
-                [rToken setExpires:expRefr];
+               [rToken setValue:strTokenValue];
+               
+               expRefr = [strExpires doubleValue];
+               
+               [rToken setExpires:expRefr];
+               
+               if (rToken != nil){
+                   
+                   [aResponse setRefreshToken:rToken];
+                   [self setCurrentRefreshToken:rToken];
+                   
+                   [self saveCustomObject:rToken key:@"RefreshToken"];
+                   
+               }
                 
-                if (rToken != nil){
-                    [aResponse setRefreshToken:rToken];
-                    [self setCurrentRefreshToken:rToken];
-                    
-                    [self saveCustomObject:rToken key:@"RefreshToken"];
-                    
-                }
                 
             }
+                
+
             
             if ([oAuthResponse objectForKey:@"membership_id"] != nil){
                 [aResponse setMembershipId:[oAuthResponse objectForKey:@"membership_id"]];
@@ -1605,30 +1622,56 @@
 }
 
 
--(void) validateOAuthToken{
+-(void) refreshOAuthToken:(RefreshToken *) currentRefreshToken{
+    
+    NSString *currentRefreshTokenValue = nil;
+ 
     
     @try{
         
-       /* [NetworkAPISingleClient retrieveToken:<#(NSString *)#> completionBlock:<#^(NSArray *values)completionBlock#> andErrorBlock:<#^(NSError *)errorBlock#>]
         
-        [NetworkAPISingleClient authorize:@"en" completionBlock:^(NSArray *data){
+        if (currentRefreshToken){
             
-            if (data){
+            currentRefreshTokenValue = [currentRefreshToken value];
+            
+        }
+        
+        if (currentRefreshTokenValue.length > 0){
+            [NetworkAPISingleClient refreshToken:currentRefreshTokenValue
+                             completionBlock:^(NSArray *values){
+            
+            if (values){
                 
-            }
+                [[NSNotificationCenter defaultCenter]
+                   postNotificationName:kDestinyOAuthSFNotification
+                 object:values];
+                
+                
+                }
             
-        } andErrorBlock:^(NSError *error){
+            }
+            andErrorBlock:^(NSError *error){
             NSLog(@"%@",error.description);
-        }];*/
-        
+                if ([error.localizedDescription isEqualToString:kBungieNeedsAuthenticateMessage]){
+                    
+                    [[NSNotificationCenter defaultCenter]
+                       postNotificationName:kBungieNeedsAuthenticateMessage
+                     object:error];
+                    
+                    
+                    
+                }
+            }];
+        }
+      
   
         
     }
     @catch(NSException *oEx){
-        
+        NSLog(@"%@",oEx.description);
     }
     @finally{
-        
+        currentRefreshTokenValue = nil;
     }
     
 }

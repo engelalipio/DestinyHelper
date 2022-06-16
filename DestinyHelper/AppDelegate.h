@@ -74,7 +74,6 @@ enum Destiny2StatCategory{
     Primary = 3
 };
 
-
 enum Destiny2AmmunitionType{
     None = 0,
     AmmoPrimary = 1,
@@ -205,6 +204,16 @@ enum Destiny2PlugAvailabilityMode{
     AvailableIfSocketContainsMatchingPlugCategory= 2
 };
 
+typedef NS_ENUM(int, Destiny2EnergyType) {
+    Any,
+    Arc,
+    Thermal,
+    Void,
+    Ghost,
+    Subclas,
+    Stasis
+};
+/*
 enum Destiny2EnergyType{
     Any= 0,
     Arc= 1,
@@ -212,8 +221,9 @@ enum Destiny2EnergyType{
     Void= 3,
     Ghost= 4,
     Subclass= 5
+ Stasis: 6
 };
-
+*/
 enum Destiny2ItemPerkVisibility{
     PerkVisible= 0,
     PerkDisabled= 1,
@@ -234,7 +244,7 @@ enum Destiny2DamageType{
     DamageThermal= 3,
     DamageVoid= 4,
     Raid= 5,
-    Stasis= 6
+    DTStasis= 6
 };
 
 enum Destiny2SocketCategoryStyle{
@@ -332,6 +342,10 @@ enum Destiny2ItemSortType{
 +(AppDelegate *) currentDelegate;
 
 -(void) loadCharacters: (NSNotification *) anyMembership;
+
+-(void) checkAccessToken;
+
+-(void) refreshOAuthToken:(RefreshToken *) currentRefreshToken;
 
 @end
 

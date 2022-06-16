@@ -51,7 +51,7 @@
     }
     
     if (appDelegate){
-        if ([appDelegate currentAccessTokenValue]){
+        if ([appDelegate currentAccessTokenValue] && [appDelegate currentRefreshToken]){
           [self.btnLogin setHidden:YES];
         }
     }

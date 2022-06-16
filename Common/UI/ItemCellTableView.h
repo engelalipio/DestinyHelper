@@ -34,6 +34,8 @@
 @property (weak) UITableView *parentTableView;
 @property (weak) UIViewController *parentViewController;
 
+@property (nonatomic, strong) dispatch_queue_t syncQueue;
+
 - (IBAction)lockStateAction:(id)sender;
 
 - (IBAction)sendVaultAction:(id)sender;

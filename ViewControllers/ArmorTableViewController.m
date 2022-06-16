@@ -1204,7 +1204,7 @@
                     if (response){
                         
                         NSDictionary *instance = (NSDictionary*) [response objectForKey:@"instance"],
-                                    *itemD    = (NSDictionary*) [response objectForKey:@"item"];
+                                     *itemD    = (NSDictionary*) [response objectForKey:@"item"];
                         
                         if (performMatch){
                             
@@ -1258,7 +1258,8 @@
                                        
                                 }
                                 
-                                NSDictionary *pStat = (NSDictionary*) [data objectForKey:@"primaryStat"] ;
+                                NSDictionary *pStat = (NSDictionary*) [data objectForKey:@"primaryStat"],
+                                             *energy = (NSDictionary *) [data objectForKey:@"energy"];
                                 
                                 if (pStat){
                                     NSObject *objValue =   [pStat objectForKey:@"value"];
@@ -1266,6 +1267,10 @@
                                         [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
                                       
                                     }
+                                }
+                                
+                                if (energy){
+                                    [self setArmorEnergy:energy withTableCell:cell];
                                 }
                             }
                         }
@@ -1369,10 +1374,12 @@
                                     
                                     switch([invItem.message integerValue]){
                                         case 0:
-                                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"] forState:UIControlStateNormal];
+                                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock.open"]
+                                                                forState:UIControlStateNormal];
                                             break;
                                         case 1:
-                                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"] forState:UIControlStateNormal];
+                                            [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                                forState:UIControlStateNormal];
                                             break;
                                     }
                                 }
@@ -1398,6 +1405,9 @@
                                 
                                 t = [invResponse defaultDamageType];
                                 i= (int) t;
+                                
+                                
+                                [cell.imgItemBurn setHidden:YES];
                                 
                                 objDamageType =  [NSString stringWithFormat:@"%d",i];
                                 
@@ -2084,8 +2094,10 @@
                     
                     if (appDelegate.destinyInventoryItemDefinitions){
                         
-                        INVDResponse *itemDef =   [appDelegate.destinyInventoryItemDefinitions objectForKey:strHashKey];
                         
+                       // NSDictionary *itemObj = (NSDictionary *)[appDelegate.destinyInventoryItemDefinitions objectForKey:strHashKey];
+                        
+                        INVDResponse *itemDef = (INVDResponse*) [appDelegate.destinyInventoryItemDefinitions objectForKey:strHashKey];
                         
                         if (itemDef){
                            
@@ -2100,7 +2112,18 @@
                             double t = 0;
                             int    i = 0;
                             
-                  
+                           /* if ([itemObj isKindOfClass:[INVDResponse class]]){
+                                itemDef = (INVDResponse*) itemObj;
+                            }
+                            
+                            if ([itemObj isKindOfClass:[INVDDestinyInventoryBaseClass class]]){
+                                INVDDestinyInventoryBaseClass *itemDefBase =
+                                (INVDDestinyInventoryBaseClass*) itemObj;
+                                
+                                itemDef = [[INVDResponse alloc] initWithDictionary:itemDefBase.response];
+                            }*/
+                            
+                            
                             NSNumber *objHash = [NSNumber numberWithDouble:[itemDef hash]];
                             
                             strHashKey = [objHash stringValue];
@@ -2124,6 +2147,9 @@
                             i= (int) t;
                             
                             objDamageType =  [NSString stringWithFormat:@"%d",i];
+                            
+                            [cell.imgItemBurn setHidden:YES];
+                            [cell.imgBackground setHidden:YES];
                             
                             if (objDamageType){
                             
@@ -2236,7 +2262,8 @@
                                                        
                                                 }
                                                 
-                                                NSDictionary *pStat = (NSDictionary*) [data objectForKey:@"primaryStat"] ;
+                                                NSDictionary *pStat = (NSDictionary*) [data objectForKey:@"primaryStat"],
+                                                             *energy = (NSDictionary *) [data objectForKey:@"energy"];
                                                 
                                                 if (pStat){
                                                     NSObject *objValue =   [pStat objectForKey:@"value"];
@@ -2244,6 +2271,10 @@
                                                         [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
                                                       
                                                     }
+                                                }
+                                                
+                                                if (energy){
+                                                    [self setArmorEnergy:energy withTableCell:cell];
                                                 }
                                             }
                                         }
@@ -2363,6 +2394,92 @@
   
 }
  
+
+-(void)setArmorEnergy:(NSDictionary *) energyData withTableCell:(ItemCellTableView *) cell{
+    
+    NSString *strEType = nil,
+             *strEUsed = nil,
+             *strEUnused = nil,
+             *strTotal = nil,
+             *strEnergyDisplay = nil;
+    
+    Destiny2EnergyType eType = Any;
+    
+    @try {
+         
+        if (energyData){
+            /*
+             energyTypeHash:728351493 // <EnergyType "Arc">
+             energyType:1 // enum DestinyEnergyType "Arc"
+             energyCapacity:10
+             energyUsed:9
+             energyUnused:1
+             
+             
+             Any= 0,
+             Arc= 1,
+             Thermal= 2,
+             Void= 3,
+             Ghost= 4,
+             Subclass= 5
+             Stasis = 6
+             */
+            
+           
+            strEType = [energyData objectForKey:@"energyType"];
+            strTotal = [energyData objectForKey:@"energyCapacity"];
+            strEUsed = [energyData objectForKey:@"energyUsed"];
+            strEUnused = [energyData objectForKey:@"energyUnused"];
+            
+            strEnergyDisplay = [NSString stringWithFormat:@"[%@/%@]",strEUsed,strTotal];
+            
+            switch([strEType intValue]){
+                    
+                case Any:
+                    [cell.imgItemBurn setHidden:YES];
+                    [cell.lblDamageType setText:@""];
+                    break;
+                case Arc:
+                    [cell.imgItemBurn setHidden:NO];
+                    [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_arc.png"]];
+                    [cell.lblDamageType setText:strEnergyDisplay];
+               
+                    break;
+                case Thermal:
+                    [cell.imgItemBurn setHidden:NO];
+                    [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_solar.png"]];
+                    [cell.lblDamageType setText:strEnergyDisplay];
+                 
+                    break;
+                case Void:
+                    [cell.imgItemBurn setHidden:NO];
+                    [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_void.png"]];
+                    [cell.lblDamageType setText:strEnergyDisplay];
+
+                    break;
+                case Stasis:
+                    [cell.imgItemBurn setHidden:NO];
+                    [cell.imgItemBurn setImage:[UIImage imageNamed:@"damage_stasis.png"]];
+                    [cell.lblDamageType setText:strEnergyDisplay];
+
+                    break;
+                case Ghost:
+                    [cell.imgItemBurn setHidden:YES];
+                    [cell.lblDamageType setText:@""];
+                    break;
+                
+            }
+            
+        }
+        
+    } @catch (NSException *exception) {
+        NSLog(@"ArmorVC:setArmorEnergy:Exception->%@",exception.description);
+    } @finally {
+       strEType = nil;
+        
+    }
+    
+}
 
 /*
 // Override to support conditional editing of the table view.

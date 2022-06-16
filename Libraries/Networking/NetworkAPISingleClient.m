@@ -248,41 +248,50 @@
     
     __weak NetworkAPISingleClient *me	= self;
     __block AFJSONRequestOperation	*operation	= [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-                                                                                                success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                                                                    NSLog(@"Base request header: %@ \n\n\nRequest Successful: \n\n\nrequest = %@ \n\n\nresponse = %@ \n\n\nresponseString = %@", [me description], [request description], [[operation request] allHTTPHeaderFields], [operation responseString]);
-                                                                                                    
-                                                                                    
-                                                                                    
-                                                                                                    // [[amsAppDelegate currentDelegate] resetTimer];
-                                                                                                    
-                                                                                                    if (successBlock) {
-                                                                                                        successBlock(request, response, JSON);
-                                                                                                    }
-                                                                                                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                                                                                                    NSLog(@"Base request header: %@ \n\n\nRequest failure: \nrequest = %@ \nresponse = %@ \nerror = %@ \nJSON = %@", [self description], request, response, error, JSON);
-                                                                                                    
-                                                                                                    /* If it is not a time out issues */
-                                                                                                    if (error.domain != NSURLErrorDomain && error.code != -1001) {
-                                                                                                        
-                                                                                                        if ([self hasChallengeInJSONRequest:request response:response]) {
-                                                                                                            // stop queue and store request for later
-                                                                                                            [self.operationQueue setSuspended:YES];
-                                                                                                            AFJSONRequestOperation *suspendedOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                                                                                successBlock(request, response, JSON);
-                                                                                                            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                                                                                                                failureBlock(request, response, error, JSON);
-                                                                                                            }];
-                                                                                                            [self.suspendedOperations addObject:suspendedOperation];
-                                                                                                        }
-                                                                                                    }
-                                                                                                    
-                                                                                                    
-                                                                                                    if (failureBlock) {
-                                                                                                        if (![self validteIfLogginPage:error]) {
-                                                                                                            failureBlock(request, response, error, JSON);
-                                                                                                        }
-                                                                                                    }
-                                                                                                }];
+    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        BOOL bLogSuccess = NO;
+        
+        if (bLogSuccess){
+        NSLog(@"Base request header: %@ \n\n\nRequest Successful: \n\n\nrequest = %@ \n\n\nresponse = %@ \n\n\nresponseString = %@", [me description], [request description], [[operation request] allHTTPHeaderFields], [operation responseString]);
+        }
+        
+        // [[amsAppDelegate currentDelegate] resetTimer];
+        
+        if (successBlock) {
+            successBlock(request, response, JSON);
+        }
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        
+        
+        BOOL bLogFailue = YES;
+        
+        if (bLogFailue){
+        NSLog(@"Base request header: %@ \n\n\nRequest failure: \nrequest = %@ \nresponse = %@ \nerror = %@ \nJSON = %@", [self description], request, response, error, JSON);
+        }
+        
+        /* If it is not a time out issues */
+        if (error.domain != NSURLErrorDomain && error.code != -1001) {
+            
+            if ([self hasChallengeInJSONRequest:request response:response]) {
+                // stop queue and store request for later
+                [self.operationQueue setSuspended:YES];
+                AFJSONRequestOperation *suspendedOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                    successBlock(request, response, JSON);
+                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                    failureBlock(request, response, error, JSON);
+                }];
+                [self.suspendedOperations addObject:suspendedOperation];
+            }
+        }
+        
+        
+        if (failureBlock) {
+            if (![self validteIfLogginPage:error]) {
+                failureBlock(request, response, error, JSON);
+            }
+        }
+    }];
     
     /*[operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
      [me validateCertificateWithChallege:challenge];

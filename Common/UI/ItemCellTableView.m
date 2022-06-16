@@ -31,6 +31,8 @@
 @synthesize imgItemBurn = _imgItemBurn;
 @synthesize imgCrafted = _imgCrafted;
 @synthesize imgMaster = _imgMaster;
+@synthesize syncQueue = _syncQueue;
+
 + (id)instanceFromNib
 {
     NSString *className = @"ItemCellTableView";
@@ -2569,43 +2571,43 @@
                 [payload setItemReferenceHash:selectedItemHash];
                 [payload setTransferToVault:YES];
                     
-                     NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
-                     
-                     NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
-                     
-                     payload  = nil;
-                     
-                     NSError *writeError = nil;
-                     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData options:NSJSONReadingMutableContainers
-                                                                          error:&writeError];
-                     
-                     NSString *jsonString = [[NSString alloc] initWithData:jsonData
-                                                                  encoding:NSUTF8StringEncoding];
-                     NSLog(@"JSON Output: %@", jsonString);
+                 NSDictionary *dictData = [[NSDictionary alloc] initWithDictionary: [payload dictionaryRepresentation]];
                  
+                 NSArray *arrayData = [NSArray arrayWithObject:payload.dictionaryRepresentation];
                  
-                 dispatch_queue_t sendToVaultActionQueue ;
+                 payload  = nil;
+                 
+                 NSError *writeError = nil;
+                 NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrayData options:NSJSONReadingMutableContainers
+                                                                      error:&writeError];
+                 
+                 NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                              encoding:NSUTF8StringEncoding];
+                 NSLog(@"JSON Output: %@", jsonString);
+             
+                 
+                 if (! self.syncQueue){
+                     self.syncQueue = dispatch_queue_create("com.ams.DestinyHelper.sendVaultActionQueue", NULL);
+                     NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.sendVaultActionQueue.Instanciated...]");
+                 }
                               
-                sendToVaultActionQueue = dispatch_queue_create("com.ams.DestinyHelper.sendVaultActionQueue", NULL);
-                               
-                dispatch_async(sendToVaultActionQueue, ^{
+             
+                dispatch_async(self.syncQueue, ^{
                             
-                            NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.lsendVaultActionQueueStarted...]");
-                                      
-                                          
-                            [NetworkAPISingleClient sendItemToVault:jsonString
-                                                vaultAction:transferAction
-                                        completionBlock:^(NSArray *values) {
-                                              
-                                if (values){
-                                    NSLog(@"ItemCellTableView:sendVaultActionQueue:Received->%@",values);
-                                }
-                                               
-                            } andErrorBlock:^(NSError *exception) {
-                                              NSLog(@"ItemCellTableView:sendVaultActionQueue:Exception->%@",exception.description);
-                            }];
+                        
+                [NetworkAPISingleClient sendItemToVault:jsonString
+                                    vaultAction:transferAction
+                            completionBlock:^(NSArray *values){
+                                  
+                if (values){
+                    NSLog(@"ItemCellTableView:sendVaultActionQueue:Received->%@",values);
+                }
+                                   
+                }andErrorBlock:^(NSError *exception) {
+                                  NSLog(@"ItemCellTableView:sendVaultActionQueue:Exception->%@",exception.description);
+                }];
                                         
-                            NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.sendVaultActionQueue Done!]");
+                NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.sendVaultActionQueue Done!]");
                                     
                 });
                          
@@ -2654,12 +2656,12 @@
                                                                  encoding:NSUTF8StringEncoding];
                     NSLog(@"JSON Output: %@", jsonString);
                 
+                    if (! self.syncQueue){
+                        self.syncQueue = dispatch_queue_create("com.ams.DestinyHelper.lockItemActionQueue", NULL);
+                        NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.lockItemActionQueue.Instanciated...]");
+                    }
                 
-                    dispatch_queue_t lockItemActionQueue ;
-                
-                    lockItemActionQueue = dispatch_queue_create("com.ams.DestinyHelper.lockItemActionQueue", NULL);
-                 
-                    dispatch_async(lockItemActionQueue, ^{
+                    dispatch_async(self.syncQueue, ^{
                     
                         NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.lockItemActionQueue Started...]");
                     

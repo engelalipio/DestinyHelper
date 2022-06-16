@@ -73,6 +73,87 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
     
 }
 
+
++ (AFJSONRequestOperation *)refreshToken:(NSString *)existingToken
+                          completionBlock:(void(^) (NSArray * values))
+completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
+    
+    NSString    *message          = @"",
+                *servicePath      = @"",
+                *client_id        = @"",
+                *tokenValue       = @"";
+    
+    NSURL        *url  = nil;
+    
+    AFJSONRequestOperation *request = nil;
+    
+    NetworkAPISingleClient *api = nil;
+    
+    NSMutableDictionary *params = nil;
+ 
+    @try {
+        
+        client_id = kBungieClientID;
+       
+        params = [[NSMutableDictionary alloc] init];
+        
+       // [params setValue:@"application/x-www-form-urlencoded" forKey:@"Content-Type"];
+        [params setValue:@"refresh_token" forKey:@"grant_type"];
+        [params setValue:existingToken forKey:@"refresh_token"];
+        [params setValue:client_id forKey:@"client_id"];
+        
+        servicePath =  [NSString stringWithFormat:@"%@%@",kBungieAPIBaseURL,kDestinyOAuthRefreshToken];
+        
+        NSLog(@"Invoking::refreshToken::%@",servicePath);
+        
+        url = [[NSURL alloc] initWithString:kBungieBaseURL];
+        
+        api =  [[NetworkAPISingleClient sharedClient] initWithBaseURL:url];
+    
+       // [api setDefaultHeader:@"Content-Type" value:@"application/json;charset=UTF-8;"];
+        [api setParameterEncoding:AFFormURLParameterEncoding];
+        [api setDefaultHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
+        [api setDefaultHeader:@"Accept" value:@"application/json"];
+        [api setDefaultHeader:@"Origin" value:kDestinyOriginHeader];
+        [api setDefaultHeader:@"Authority" value:@"www.bungie.net"];
+        [api setDefaultHeader:@"X-API-Key" value:kBungieAPIKey];
+       
+        tokenValue = [NetworkAPISingleClient getAuthorizationTokenHeaderValue];
+        
+        if (tokenValue ){
+            [api setDefaultHeader:@"Authorization" value:tokenValue];
+        }
+        
+        
+       /* [api setDefaultHeader:@"Access-Control-Allow-Origin" value:kBungieBaseURL];
+        [api setDefaultHeader:@"Access-Control-Allow-Methods" value:@"POST, GET, PUT, UPDATE, DELETE, OPTIONS"];
+        [api setDefaultHeader:@"Access-Control-Allow-Headers" value:@"Authorization, Origin, Content-Type, Accept, X-requested-With"];
+        [api setDefaultHeader:@"Access-Control-Allow-Credentials" value:@"true"];*/
+        
+        
+        [api makePostOperationWithObject:params
+                                            atPath:servicePath
+                                                completionBlock:completionBlock
+                                     andErrorBlock:errorBlock];
+        
+
+        
+        message = servicePath;
+      
+        NSLog(@"refreshToken:Completed::%@",message);
+    }
+    @catch (NSException *exception) {
+        message = [exception description];
+        NSLog(@"refreshToken:Error::%@",message);
+    }
+    @finally {
+        message = @"";
+        api = nil;
+        servicePath = nil;
+    }
+    return request;
+}
+
 /*
 
  Access Token Request
@@ -117,7 +198,6 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
         [params setValue:client_id forKey:@"client_id"];
 
         
-        
         servicePath =  [NSString stringWithFormat:@"%@%@",kBungieAPIBaseURL,kDestinyOAuthRefreshToken];
         
         NSLog(@"Invoking::retrieveToken::%@",servicePath);
@@ -136,8 +216,7 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
         [api setDefaultHeader:@"Access-Control-Allow-Methods" value:@"POST, GET, PUT, UPDATE, DELETE, OPTIONS"];
         [api setDefaultHeader:@"Access-Control-Allow-Headers" value:@"Authorization, Origin, Content-Type, Accept, X-requested-With"];
         [api setDefaultHeader:@"Access-Control-Allow-Credentials" value:@"true"];
-        
-        
+                
         [api makePostOperationWithObject:params
                                             atPath:servicePath
                                                 completionBlock:completionBlock
@@ -162,6 +241,39 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
 
     
 }
+
+
++ (NSString*) getAuthorizationTokenHeaderValue{
+    
+    NSString *tokenValue  = nil,
+             *headerValue = nil;
+    
+    AppDelegate *appDelegate = nil;
+    
+    @try {
+        
+          appDelegate = [AppDelegate currentDelegate];
+        
+            if (appDelegate){
+                tokenValue = [appDelegate currentAccessTokenValue];
+        
+                if (tokenValue ){
+                    headerValue = [NSString stringWithFormat:@"Bearer %@",tokenValue];
+                    NSLog(@"NetworkAPISingleClient(LinkedProfiles):getAuthorizationTokenHeaderValue:Token->%@",headerValue);
+                }
+            }
+        
+    } @catch (NSException *exception) {
+        NSLog(@"NetworkAPISingleClient(LinkedProfiles):getAuthorizationTokenHeaderValue:Exception->%@",exception.description);
+    } @finally {
+        tokenValue = nil;
+        appDelegate = nil;
+    }
+    
+    return headerValue;
+}
+
+
 #pragma -> /Platform/Destiny2/Manifest
 + (AFJSONRequestOperation *)retrieveManifest:(NSString *)maxCount
                          completionBlock:(void(^) (NSArray * values))

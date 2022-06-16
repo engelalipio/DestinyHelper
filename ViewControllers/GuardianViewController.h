@@ -26,6 +26,8 @@
 @property (strong, nonatomic) IBOutlet UITableView *tblChars;
 
 
+@property (nonatomic, strong) dispatch_queue_t syncQueue;
+
 @property (weak, nonatomic) IBOutlet UIImageView *imgPlayerLogo;
 @property (weak, nonatomic) IBOutlet UIImageView *imgPlayerBG;
 
