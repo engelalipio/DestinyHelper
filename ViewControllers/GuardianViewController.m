@@ -105,7 +105,7 @@
     [self loadGroupInfo];
     [self loadCharacters];
 
-  //  [self loadPublicVendors];
+    [self loadPublicVendors];
   //  [self loadCharacterWeaponsStats];
 
     [self loadCharacterInventories];
@@ -752,7 +752,7 @@
                         
                     }
                     
-                    indexPath = [NSIndexPath indexPathForRow:iVendorRow inSection:1];
+                    indexPath = [NSIndexPath indexPathForRow:iVendorRow inSection:3];
                     
                     cell = [self.tblChars cellForRowAtIndexPath:indexPath];
                     
@@ -784,8 +784,8 @@
                                     if (vendorGroupDef){
                                         vendorGroup = [vendorGroupDef categoryName];
                                         if (vendorGroup){
-                                            [cell.lblGuardianCareer setHidden:NO];
-                                            [cell.lblGuardianCareer setText:vendorGroup];
+                                            
+                                            [cell.lblGuardianRace setText:vendorGroup];
                                       
                                         }
                                     }
@@ -822,7 +822,10 @@
                         [cell.imgEmblem setImageWithURL:imageURL];
                         
                         [cell.lblGuardianClass setText:vendorName];
-                        [cell.lblGuardianRace setText:vendorTitle];
+                        
+                        [cell.lblGuardianCareer setHidden:NO];
+                        [cell.lblGuardianCareer setText:vendorTitle];
+                        
                         [cell.lblGuardianGender setText:@""];
                         [cell.lblLightLevel setText:@""];
                     }
@@ -960,165 +963,165 @@
             NSString *className =  [userInfo objectForKey:@"ClassName"],
                      *methodName =  [userInfo objectForKey:@"MethodName"],
                      *currentCharacter = [userInfo objectForKey:@"SelectedCharacter"];
-                if (vaultBase){
-                     
-                    vResponse = (VAULTResponse*) [VAULTResponse modelObjectWithDictionary:vaultBase.response];
-                    
-                    if (vResponse){
-                    
-                        profInv = (NSDictionary *) [vResponse profileInventory];
+    if (vaultBase){
+         
+        vResponse = (VAULTResponse*) [VAULTResponse modelObjectWithDictionary:vaultBase.response];
+        
+        if (vResponse){
+        
+            profInv = (NSDictionary *) [vResponse profileInventory];
+            
+            if (profInv){
+                vData = (VAULTData *) [profInv data];
+                
+                if (vData){
+                    vItems = (NSArray*) [vData items] ;
+                    if (vItems){
+                    NSLog(@"🤺:GuardianViewController:kDestinyLoadedProfileVaultNotification:Vault Items Count = %d",vItems.count);
                         
-                        if (profInv){
-                            vData = (VAULTData *) [profInv data];
+                      
+                        for(int vIDX = 0; vIDX < vItems.count; vIDX++){
                             
-                            if (vData){
-                                vItems = (NSArray*) [vData items] ;
-                                if (vItems){
-                                NSLog(@"🤺:GuardianViewController:kDestinyLoadedProfileVaultNotification:Vault Items Count = %d",vItems.count);
+                            VAULTItems *vaultItem = (VAULTItems*) [vItems objectAtIndex:vIDX];
+                            
+                            if (vaultItem){
+                                
+                                
+                                NSNumber *objItemBucket     = [NSNumber numberWithDouble:vaultItem.bucketHash],
+                                         *objItemLocation   = [NSNumber numberWithDouble:vaultItem.location],
+                                         *objItemHash       = [NSNumber numberWithDouble:vaultItem.itemHash];
+                                
+                                NSInteger iItemBucket   = [objItemBucket integerValue],
+                                          iItemLocation = [objItemLocation integerValue];
+                                
+                                
+                                NSString *strItemHash = [NSString stringWithFormat:@"%@",objItemHash],
+                                         *strItemLocation = [NSString stringWithFormat:@"%@",objItemLocation],
+                                         *strBucketHash = [NSString stringWithFormat:@"%@",objItemBucket],
+                                         *strInstanceId = vaultItem.itemInstanceId,
+                                         *strFullKey = [NSString stringWithFormat:@"%@_%@",strBucketHash,strItemHash];
+                                
+                                
+                                if (strItemHash){
+                               
+                                    if (strItemLocation){
+                                 
+                                        switch(iItemLocation){
+                                            case 1://Equipped
+                                                if (![self->destCharEquippedData.allKeys containsObject:strItemHash]){
+                                                    [self->destCharEquippedData setValue:vaultItem forKey:strItemHash];
+                                                    //NSLog(@"GuardianViewController:VaultNotification:%@Equipped Item ",strItemHash);
+                                                }
+                                                break;
+                                            case 2://Vault
+                                               
+                                                if ([strBucketHash isEqualToString:kDestinyVaultHash]){
+                                                    //General
+                                                    
+                                                    
+                                    if ( appDelegate.destinyInventoryItemDefinitions){
                                     
-                                  
-                                    for(int vIDX = 0; vIDX < vItems.count; vIDX++){
+                                        INVDResponse *iItemDef = (INVDResponse *)[appDelegate.destinyInventoryItemDefinitions objectForKey:strItemHash];
                                         
-                                        VAULTItems *vaultItem = (VAULTItems*) [vItems objectAtIndex:vIDX];
-                                        
-                                        if (vaultItem){
+                                        if (iItemDef){
                                             
-                                            
-                                            NSNumber *objItemBucket     = [NSNumber numberWithDouble:vaultItem.bucketHash],
-                                                     *objItemLocation   = [NSNumber numberWithDouble:vaultItem.location],
-                                                     *objItemHash       = [NSNumber numberWithDouble:vaultItem.itemHash];
-                                            
-                                            NSInteger iItemBucket   = [objItemBucket integerValue],
-                                                      iItemLocation = [objItemLocation integerValue];
-                                            
-                                            
-                                            NSString *strItemHash = [NSString stringWithFormat:@"%@",objItemHash],
-                                                     *strItemLocation = [NSString stringWithFormat:@"%@",objItemLocation],
-                                                     *strBucketHash = [NSString stringWithFormat:@"%@",objItemBucket],
-                                                     *strInstanceId = vaultItem.itemInstanceId,
-                                                     *strFullKey = [NSString stringWithFormat:@"%@_%@",strBucketHash,strItemHash];
-                                            
-                                            
-                                            if (strItemHash){
-                                           
-                                                if (strItemLocation){
-                                             
-                                                    switch(iItemLocation){
-                                                        case 1://Equipped
-                                                            if (![self->destCharEquippedData.allKeys containsObject:strItemHash]){
-                                                                [self->destCharEquippedData setValue:vaultItem forKey:strItemHash];
-                                                                //NSLog(@"GuardianViewController:VaultNotification:%@Equipped Item ",strItemHash);
-                                                            }
-                                                            break;
-                                                        case 2://Vault
-                                                            
-                                                            if ([strBucketHash isEqualToString:kDestinyVaultHash]){
-                                                                //General
-                                                                
-                                                                
-                                                if ( appDelegate.destinyInventoryItemDefinitions){
-                                                
-                                                    INVDResponse *iItemDef = (INVDResponse *)[appDelegate.destinyInventoryItemDefinitions objectForKey:strItemHash];
-                                                    
-                                                    if (iItemDef){
-                                                        
-                                                        [self processVaultItem:iItemDef
-                                                                 withVaultItem:vaultItem];
-                                                        
-                                                    }
-                                                    else
-                                                    {
-                                                     NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item Def Not Found",strItemHash);
-                                                                                                    
-                                                   
-                                                
-                                                    if (! self.syncQueue){
-                                                        self.syncQueue = dispatch_queue_create("DestinyHelper.VaultActionQueue", NULL);
-                                                        NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.VaultActionQueue Started...]");
-                                                    }
-                                                   
-                                                    dispatch_async(self.syncQueue, ^{
-                                                    
-                                                    [NetworkAPISingleClient retrieveStaticEntityDefinitionByManifestType:@"DestinyInventoryItemDefinition"
-                                                                                                            staticHashId:strItemHash
-                                                                                                         completionBlock:^(NSArray *values) {
-                                                        if (values){
-                                                         NSLog(@"🤺:GuardianViewController:subClassLookup:static:Received->%@",strItemHash);
-                                                            INVDDestinyInventoryBaseClass *invItem = (INVDDestinyInventoryBaseClass *) [values firstObject];
-                                                                                                                             
-                                                                if (invItem){
-                                                                                                        
-                                                                    INVDResponse *iItemDef = [[INVDResponse alloc]
-                                                                                        initWithDictionary:[invItem response]];
-                                                                                                            
-                                                                    if ( iItemDef){
-                                                                        [self->appDelegate.destinyInventoryItemDefinitions
-                                                                                    setObject:iItemDef
-                                                                                    forKey:strItemHash];
-                                                                                                                
-                                                                        [self processVaultItem:iItemDef
-                                                                        withVaultItem:vaultItem];
-                                                                    }
-                                                                                                            
-                                                               }
-                                                                                                                                                                    
-                                                         }
-                                                                                                                                                                
-                                                        } andErrorBlock:^(NSError *exception) {
-                                                        NSLog(@"🤺:GuardianViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Exception->%@",exception.description);
-                                                            
-                                                            
-                                                            if ([exception.localizedDescription isEqualToString:kBungieNeedsAuthenticateMessage]){
-                                                                
-                                                                [self dismissViewControllerAnimated:NO completion:^(void){
-                                                                    
-                                                                    [[NSNotificationCenter defaultCenter]
-                                                                       postNotificationName:kBungieNeedsAuthenticateMessage
-                                                                     object:exception];
-                                                                    
-                                                                }];
-                                                            }
-                                                    }];
-                   
-                                                        NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.VaultActionQueue Done!]");
-                                                                        
-                                                    });
-                                                                           
-                                                    }
-                                                   }
-                                                            
-                                                    }
-                                                    else{
-                                                        
-                                                        if (![self->destVaultData.allKeys containsObject:strFullKey]){
-                                                            [self->destVaultData setValue:vaultItem forKey:strFullKey];
-                                                            NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
-                                                        }
-                                                        
-                                                        if (![self->destCharInventoryData.allKeys containsObject:strFullKey]){
-                                                            [self->destCharInventoryData setValue:vaultItem forKey:strFullKey];
-                                                            NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
-                                                        }
-                                                    }
-                                                    
-                                                    
-                                                            break;
-                                                    }
-                                            
-                                                  
-                                             }
-                                           }
+                                            [self processVaultItem:iItemDef
+                                                     withVaultItem:vaultItem];
                                             
                                         }
-                                        
-                                    }
+                                        else
+                                        {
+                                         NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item Def Not Found",strItemHash);
+                                                                                        
+                                       
                                     
-                                }
+                                        if (! self.syncQueue){
+                                            self.syncQueue = dispatch_queue_create("DestinyHelper.VaultActionQueue", NULL);
+                                            NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.VaultActionQueue Started...]");
+                                        }
+                                       
+                                        dispatch_async(self.syncQueue, ^{
+                                        
+                                        [NetworkAPISingleClient retrieveStaticEntityDefinitionByManifestType:@"DestinyInventoryItemDefinition"
+                                                                                                staticHashId:strItemHash
+                                                                                             completionBlock:^(NSArray *values) {
+                                            if (values){
+                                             NSLog(@"🤺:GuardianViewController:subClassLookup:static:Received->%@",strItemHash);
+                                                INVDDestinyInventoryBaseClass *invItem = (INVDDestinyInventoryBaseClass *) [values firstObject];
+                                                                                                                 
+                                                    if (invItem){
+                                                                                            
+                                                        INVDResponse *iItemDef = [[INVDResponse alloc]
+                                                                            initWithDictionary:[invItem response]];
+                                                                                                
+                                                        if ( iItemDef){
+                                                            [self->appDelegate.destinyInventoryItemDefinitions
+                                                                        setObject:iItemDef
+                                                                        forKey:strItemHash];
+                                                                                                    
+                                                            [self processVaultItem:iItemDef
+                                                            withVaultItem:vaultItem];
+                                                        }
+                                                                                                
+                                                   }
+                                                                                                                                                        
+                                             }
+                                                                                                                                                    
+                                            } andErrorBlock:^(NSError *exception) {
+                                            NSLog(@"🤺:GuardianViewController:retrieveStaticEntityDefinitionByManifestType:loadItems:Exception->%@",exception.description);
+                                                
+                                                
+                                                if ([exception.localizedDescription isEqualToString:kBungieNeedsAuthenticateMessage]){
+                                                    
+                                                    [self dismissViewControllerAnimated:NO completion:^(void){
+                                                        
+                                                        [[NSNotificationCenter defaultCenter]
+                                                           postNotificationName:kBungieNeedsAuthenticateMessage
+                                                         object:exception];
+                                                        
+                                                    }];
+                                                }
+                                        }];
+       
+                                            NSLog(@"[Custom Queue Async ->com.ams.DestinyHelper.VaultActionQueue Done!]");
+                                                            
+                                        });
+                                                               
+                                        }
+                                       }
+                                                
+                                        }
+                                        else{
+                                            
+                                            if (![self->destVaultData.allKeys containsObject:strFullKey]){
+                                                [self->destVaultData setValue:vaultItem forKey:strFullKey];
+                                                NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
+                                            }
+                                            
+                                            if (![self->destCharInventoryData.allKeys containsObject:strFullKey]){
+                                                [self->destCharInventoryData setValue:vaultItem forKey:strFullKey];
+                                                NSLog(@"🤺:GuardianViewController:VaultNotification:%@Vault Item ",strFullKey);
+                                            }
+                                        }
+                                        
+                                        
+                                                break;
+                                        }
+                                
+                                      
+                                 }
+                               }
+                                
                             }
+                            
                         }
-                         
+                        
                     }
                 }
+            }
+             
+        }
+    }
                 
         }];
     
@@ -2225,6 +2228,9 @@
                 
                 [header setText:headerTitle];
                 break;
+            case 3:
+                [header setText:@"Public Vendors"];
+                break;
             }
         return header;
     
@@ -3029,6 +3035,126 @@
                 [cell.lblGuardianCareer setText:@""];
                 break;
             }
+            case 3:
+                
+                vendorHash =  [self.destPublicVendors objectAtIndex:indexPath.row];
+                
+                VNDDetails *vendorDetails =  (VNDDetails*)[self->destPVendorData objectForKey:vendorHash];
+                
+                VNDDetailsDisplayProperties *vDisplayProps = nil;
+                
+                VNDDetailsGroups *vendorGroups = nil;
+                
+                NSString *vendorName = nil,
+                         *vendorDesc = nil,
+                         *vendorTitle = nil,
+                         *imageName   = nil,
+                         *emblem      = nil,
+                         *baseURL     = nil,
+                         *vendorGroup = nil;
+                
+                NSURL   *emblemURL     = nil,
+                         *imageURL     = nil;
+                
+                GuardianCellTableView *cell = nil;
+                
+                NSIndexPath *indexPath = nil;
+                
+                int iVendorRow  = -1;
+                
+                for (int iVDX = 0; iVDX < self->destPVendorData.allKeys.count; iVDX++) {
+                    
+                    NSString *vendorKey = [self->destPVendorData.allKeys objectAtIndex:iVDX];
+                    
+                    if ([vendorKey isEqualToString:vendorHash]){
+                        iVendorRow = iVDX;
+                        break;
+                    }
+                    
+                }
+                
+                indexPath = [NSIndexPath indexPathForRow:iVendorRow inSection:3];
+                
+                cell = [self.tblChars cellForRowAtIndexPath:indexPath];
+                
+                
+                if (!cell.tag){
+                    [cell setTag:[vendorHash integerValue]];
+                }
+                
+                
+                vDisplayProps = (VNDDetailsDisplayProperties*) [vendorDetails displayProperties] ;
+                
+                NSArray *groups = (NSArray*) [vendorDetails groups];
+                
+                if (groups){
+                    
+                    vendorGroups = (VNDDetailsGroups*) [groups firstObject];
+                    
+                    NSNumber *objGroupHash = [[NSNumber alloc] initWithDouble:[vendorGroups vendorGroupHash]];
+                    
+                    if (objGroupHash){
+                     
+                        if (self->appDelegate.destinyVendorGroupDefinitions){
+                            NSString *strGroupHash = [NSString stringWithFormat:@"%@",[objGroupHash stringValue]];
+                            
+                            if (strGroupHash){
+                                VendorGroupDefinition *vendorGroupDef = [appDelegate.destinyVendorGroupDefinitions
+                                                                         objectForKey:strGroupHash];
+                                
+                                if (vendorGroupDef){
+                                    vendorGroup = [vendorGroupDef categoryName];
+                                    if (vendorGroup){
+                                        [cell.lblGuardianRace setText:vendorGroup];
+                                     
+                                  
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+                 
+                if (vDisplayProps){
+                    
+                    vendorName = [vDisplayProps name];
+                    vendorDesc = [vDisplayProps description];
+                    vendorTitle = [vDisplayProps subtitle];
+                    
+                    
+                    if (vDisplayProps.hasIcon){
+                        imageName  = [vDisplayProps icon];
+                        emblem = [vDisplayProps largeIcon];
+                    }
+                    
+                    if (imageName){
+                        baseURL  = [NSString stringWithFormat:@"%@%@", kBungieBaseURL,imageName];
+                        imageURL = [[NSURL alloc] initWithString:baseURL];
+                    }
+                    
+                    if (emblem){
+                        emblem = [NSString stringWithFormat:@"%@%@",kBungieBaseURL,emblem];
+                        emblemURL = [[NSURL alloc] initWithString:emblem];
+                    }
+                    
+                    [cell.imgBackground setImageWithURL:emblemURL];
+                    
+                    [cell.imgEmblem setImageWithURL:imageURL];
+                    
+                    [cell.lblGuardianClass setText:vendorName];
+                   
+                    
+                    [cell.lblGuardianCareer setHidden:NO];
+                    [cell.lblGuardianCareer setText:vendorTitle];
+                    
+                    [cell.lblGuardianGender setText:@""];
+                    [cell.lblLightLevel setText:@""];
+                }
+
+                
+                
+                break;
         }
         
         
@@ -3072,6 +3198,13 @@
             }
             
             break;
+        case 3:
+            
+            if (self.destPublicVendors){
+                iRows = self.destPublicVendors.count;
+            }
+            
+            break;
     }
 
     return iRows;
@@ -3087,6 +3220,12 @@
         iRows = (self.clans.count > 0 ? 3 : 2);
     }
    
+    if (self.destPublicVendors){
+        
+        if (self.destPublicVendors.count > 0){
+            iRows+= 1;
+        }
+    }
 
     return iRows;
     

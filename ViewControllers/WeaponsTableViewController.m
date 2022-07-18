@@ -3201,6 +3201,12 @@
                                 case 8://Crafted
                                     [cell.imgCrafted setHidden:NO];
                                     break;
+                                case 9://Crafter + locked
+                                    [cell.btnLockAction setImage:[UIImage systemImageNamed:@"lock"]
+                                                            forState:UIControlStateNormal];
+                                    [cell.imgCrafted setHidden:NO];
+
+                                    break;
                                 case 12://bitmask ItemState ["Masterwork", "Crafted"]
                                     
                                     [cell.imgCrafted setHidden:NO];
@@ -3413,68 +3419,68 @@
                                         
                                         INSTBaseClass *instanceBase = [self->instanceData objectForKey:strHashKey];
                                         
-                                        if (instanceBase){
-                                           
-                                            NSDictionary *response = (NSDictionary *)[instanceBase response];
+                                    if (instanceBase){
+                                        
+                                        NSDictionary *response = (NSDictionary *)[instanceBase response];
+                                        
+                                        if (response){
                                             
-                                            if (response){
+                                            NSDictionary *instance = (NSDictionary*) [response objectForKey:@"instance"];
+                                            
+                                            if (instance){
+                                                NSDictionary *data = (NSDictionary*) [instance objectForKey:@"data"];
                                                 
-                                                NSDictionary *instance = (NSDictionary*) [response objectForKey:@"instance"];
-                                                
-                                                if (instance){
-                                                    NSDictionary *data = (NSDictionary*) [instance objectForKey:@"data"];
+                                                if (data){
                                                     
-                                                    if (data){
+                                                    NSNumber *objIsEquipped = [data objectForKey:@"isEquipped"];
+                                                    
+                                                    if (objIsEquipped){
                                                         
-                                                        NSNumber *objIsEquipped = [data objectForKey:@"isEquipped"];
+                                                        BOOL isEquipped = [objIsEquipped boolValue];
                                                         
-                                                        if (objIsEquipped){
-                                                            
-                                                            BOOL isEquipped = [objIsEquipped boolValue];
-                                                            
-                                                            [cell.layer setMasksToBounds:NO];
-                                                            [cell.layer setCornerRadius:0];
-                                                            [cell.layer setBorderWidth:1];
-                                                            [cell.layer setShadowOffset: CGSizeMake(0, 0)];
-                                                            [cell.layer setBorderColor:[UIColor clearColor].CGColor];
-                                                            
-                                                              if (isEquipped){
-                                                                  
-                                                                [cell.layer setMasksToBounds:YES];
-                                                                [cell.layer setCornerRadius:5];
-                                                                [cell.layer setBorderWidth:3];
-                                                                [cell.layer setShadowOffset: CGSizeMake(-1, 1)];
-                                                                [cell.layer setBorderColor:[UIColor whiteColor].CGColor];
-
-                                                              }
-                                                               
-                                                        }
+                                                        [cell.layer setMasksToBounds:NO];
+                                                        [cell.layer setCornerRadius:0];
+                                                        [cell.layer setBorderWidth:1];
+                                                        [cell.layer setShadowOffset: CGSizeMake(0, 0)];
+                                                        [cell.layer setBorderColor:[UIColor clearColor].CGColor];
                                                         
-                                                        NSDictionary *pStat = (NSDictionary*) [data objectForKey:@"primaryStat"] ;
-                                                        
-                                                        if (pStat){
-                                                            NSObject *objValue =   [pStat objectForKey:@"value"];
-                                                            if (objValue){
+                                                            if (isEquipped){
                                                                 
-                                                                if ([cell.lblItemType.text isEqualToString:@"Artifact"]){
-                                                                    [cell.lblPowerLevel setTextColor:[UIColor systemBlueColor]];
-                                                                    [cCell.lblPowerLevel setTextColor:[UIColor systemBlueColor]];
-                                                                    [cell.lblPowerLevel setText:[NSString stringWithFormat:@"+%@",objValue]];
-                                                                    [cCell.lblPowerLevel setText:[NSString stringWithFormat:@"+%@",objValue]];
-                                                                }
-                                                                else
-                                                                {
-                                                                  [cell.lblPowerLevel setTextColor:[UIColor whiteColor]];
-                                                                  [cCell.lblPowerLevel setTextColor:[UIColor whiteColor]];
-                                                                  [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
-                                                                  [cCell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
-                                                                }
+                                                            [cell.layer setMasksToBounds:YES];
+                                                            [cell.layer setCornerRadius:5];
+                                                            [cell.layer setBorderWidth:3];
+                                                            [cell.layer setShadowOffset: CGSizeMake(-1, 1)];
+                                                            [cell.layer setBorderColor:[UIColor whiteColor].CGColor];
+
+                                                            }
+                                                            
+                                                    }
+                                                    
+                                                    NSDictionary *pStat = (NSDictionary*) [data objectForKey:@"primaryStat"] ;
+                                                    
+                                                    if (pStat){
+                                                        NSObject *objValue =   [pStat objectForKey:@"value"];
+                                                        if (objValue){
+                                                            
+                                                            if ([cell.lblItemType.text isEqualToString:@"Artifact"]){
+                                                                [cell.lblPowerLevel setTextColor:[UIColor systemBlueColor]];
+                                                                [cCell.lblPowerLevel setTextColor:[UIColor systemBlueColor]];
+                                                                [cell.lblPowerLevel setText:[NSString stringWithFormat:@"+%@",objValue]];
+                                                                [cCell.lblPowerLevel setText:[NSString stringWithFormat:@"+%@",objValue]];
+                                                            }
+                                                            else
+                                                            {
+                                                                [cell.lblPowerLevel setTextColor:[UIColor whiteColor]];
+                                                                [cCell.lblPowerLevel setTextColor:[UIColor whiteColor]];
+                                                                [cell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
+                                                                [cCell.lblPowerLevel setText:[NSString stringWithFormat:@"%@",objValue]];
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
+                                    }
                                      else
                                        {
                                             

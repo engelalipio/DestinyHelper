@@ -10,7 +10,8 @@
 #import "AppDelegate.h"
  
 
-@interface ItemsViewController : UIViewController<UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface ItemsViewController : UIViewController<UITabBarDelegate,UITableViewDataSource,UITableViewDelegate,
+UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t syncQueue;
 

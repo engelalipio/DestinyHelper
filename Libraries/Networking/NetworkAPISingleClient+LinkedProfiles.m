@@ -175,7 +175,7 @@ completionBlock andErrorBlock:(void(^) (NSError *))errorBlock{
         appDelegate = [AppDelegate currentDelegate];
         
         
-        urlPath = [NSString stringWithFormat:@"%@/Vendors/?components=400,401,403",kBungieAPIBaseD2URL];
+        urlPath = [NSString stringWithFormat:@"%@/Vendors/?components=101,400,402",kBungieAPIBaseD2URL];
         
        // servicePath = [NSString stringWithFormat:@"%@?components=%u", urlPath,cType];
         
