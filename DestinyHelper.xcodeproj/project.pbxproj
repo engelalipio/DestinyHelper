@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0FCCB77228AFFBDC007F8CFE /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FCCB77128AFFBDC007F8CFE /* StoreKit.framework */; };
 		AC00AFD52537721900922C2B /* GuardianCellTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC00AFD32537721900922C2B /* GuardianCellTableView.m */; };
 		AC00AFD62537721900922C2B /* GuardianCellTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC00AFD42537721900922C2B /* GuardianCellTableView.xib */; };
 		AC03956326056FF9009951D3 /* WeaponsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC03956226056FF9009951D3 /* WeaponsTableViewController.m */; };
@@ -381,6 +382,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0FCCB77128AFFBDC007F8CFE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		AC00AFD22537721900922C2B /* GuardianCellTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GuardianCellTableView.h; sourceTree = "<group>"; };
 		AC00AFD32537721900922C2B /* GuardianCellTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GuardianCellTableView.m; sourceTree = "<group>"; };
 		AC00AFD42537721900922C2B /* GuardianCellTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GuardianCellTableView.xib; sourceTree = "<group>"; };
@@ -1046,12 +1048,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FCCB77228AFFBDC007F8CFE /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0FCCB77028AFFBDC007F8CFE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0FCCB77128AFFBDC007F8CFE /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		AC00AFD1253771CD00922C2B /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1529,6 +1540,7 @@
 				ACE2D20C25225DE900FF095A /* Images */,
 				ACE2D18D25225C1700FF095A /* DestinyHelper */,
 				ACE2D18C25225C1700FF095A /* Products */,
+				0FCCB77028AFFBDC007F8CFE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

@@ -87,6 +87,8 @@
     
 }
 
+
+
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -1921,15 +1923,23 @@
 }
 
 
- 
-
-
 -(void) closeAction{
     
+    NSString *message = nil;
     
-    
+    @try {
+        message = @"WeaponDetailsViewController:closeAction";
+        
+        NSLog(@"%@:Invoked...",message);
+        
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        message = nil;
+    }
     
 }
 
  
+
 @end
